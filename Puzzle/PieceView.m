@@ -12,6 +12,7 @@
 
 @synthesize image, number, isLifted, isPositioned, edges, position, angle, tempAngle;
 
+
 - (void)setup {
             
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
@@ -22,10 +23,27 @@
     
 }
 
+
+
+#pragma mark
+#pragma GESTURE HANDLING
+
+-(CGPoint)sum:(CGPoint)a plus:(CGPoint)b firstWeight:(float)f {
+    
+    return CGPointMake(f*a.x+(1-f)*b.x, f*a.y+(1-f)*b.y);
+    
+}
+
+-(CGPoint)sum:(CGPoint)a plus:(CGPoint)b {
+    
+    return CGPointMake(a.x+b.x, a.y+b.y);
+    
+}
+
 - (void)move:(UIPanGestureRecognizer*)gesture {
         
     CGPoint traslation = [gesture translationInView:self.superview];
-    CGPoint newOrigin = CGPointMake(self.frame.origin.x+traslation.x, self.frame.origin.y+traslation.y);
+    CGPoint newOrigin = [self sum:self.frame.origin plus:traslation];
     CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, self.frame.size.width, self.frame.size.height);
     
     self.frame = newFrame;
@@ -73,17 +91,165 @@
 }
 
 
+
+
 #pragma mark
 #pragma DRAWING
 
-- (void)drawEdgeFromPoint:(CGPoint)a toPoint:(CGPoint)b ofType:(int)type inContext:(CGContextRef)ctx {
+#define PADDING 60
+
+- (void)drawEdgeNumber:(int)n ofType:(int)type inContext:(CGContextRef)ctx {
+    
+    float x = self.frame.size.width;
+    float y = self.frame.size.height;
+    float l;
+    float p = PADDING;
+    
+    BOOL vertical = NO;
+    int sign;
+    
+    CGPoint a;
+    CGPoint b;
+        
+    switch (n) {
+        case 1:
+            a = CGPointMake(p, p);
+            b = CGPointMake(x-p, p);
+            vertical = YES;
+            sign = -1;
+            break;
+        case 2:
+            a = CGPointMake(x-p, p);
+            b = CGPointMake(x-p, y-p);
+            sign = 1;
+            break;
+        case 3:
+            a = CGPointMake(x-p, y-p);
+            b = CGPointMake(p, y-p);
+            vertical = YES;
+            sign = 1;
+            break;
+        case 4:
+            a = CGPointMake(p, y-p);
+            b = CGPointMake(p, p);
+            sign = -1;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (type<0) {
+        sign *= -1;
+    }
+    
+    if (vertical) {
+        l = y;
+    } else {
+        l = x;
+    }
+    
+    float l3 = (l-2*p)/3;
+
     
     UIGraphicsPushContext(ctx);
     
     CGContextBeginPath(ctx);
-    CGContextMoveToPoint(ctx, a.x, a.y);
+    
+    
+        
+        CGContextMoveToPoint(ctx, a.x, a.y);
+        
+        CGPoint point = [self sum:a plus:b firstWeight:2.0/3.0];
+        CGContextAddLineToPoint(ctx, point.x, point.y);
+        //NSLog(@"p = ( %.1f, %.1f )", p.x, p.y);
+
+        
+    if (abs(type)==1) { //Triangolino
+
+        CGPoint p2 = [self sum:a plus:b firstWeight:1.0/2.0];
+
+        if (!vertical) {
+            p2 = [self sum:p2 plus:CGPointMake(sign*(p-20), 0)];
+        } else {
+            p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-20))];
+        }
+        
+        CGContextAddLineToPoint(ctx, p2.x, p2.y);
+        
+        
+        CGPoint p3 = [self sum:a plus:b firstWeight:1.0/3.0];
+        CGContextAddLineToPoint(ctx, p3.x, p3.y);        
+
+    } else if (abs(type)==2) { //Cerchietto
+        
+        CGPoint p2 = [self sum:a plus:b firstWeight:1.0/2.0];
+        
+        switch (n) {
+            case 1:
+                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, M_PI, 0, sign+1);
+                break;
+            case 2:
+                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, M_PI*3/2, M_PI/2, sign-1);
+                break;
+            case 3:
+                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, 0, M_PI, sign-1);
+                break;
+            case 4:
+                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, M_PI/2, M_PI*3/2, sign+1);
+                break;
+            default:
+                break;
+        }
+
+    } else if (abs(type)==3) { //Quadratino
+        
+        CGPoint p2 = point;
+        CGPoint p3 = point;
+        CGPoint p4 = point;
+        
+        switch (n) {
+            case 1:
+                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-20))];
+                p3 = [self sum:p2 plus:CGPointMake(l3, 0)];
+                p4 = [self sum:point plus:CGPointMake(l3, 0)];
+                break;
+            case 2:
+                p2 = [self sum:p2 plus:CGPointMake(sign*(p-20), 0)];
+                p3 = [self sum:p2 plus:CGPointMake(0, l3)];
+                p4 = [self sum:point plus:CGPointMake(0 , l3)];
+                break;
+            case 3:
+                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-20))];
+                p3 = [self sum:p2 plus:CGPointMake(-l3, 0)];
+                p4 = [self sum:point plus:CGPointMake(-l3, 0)];
+                break;
+            case 4:
+                p2 = [self sum:p2 plus:CGPointMake(sign*(p-20), 0)];
+                p3 = [self sum:p2 plus:CGPointMake(0, -l3)];
+                p4 = [self sum:point plus:CGPointMake(0 , -l3)];
+                break;
+            default:
+                break;
+        }
+        
+        CGContextAddLineToPoint(ctx, p2.x, p2.y);
+        CGContextAddLineToPoint(ctx, p3.x, p3.y);
+        CGContextAddLineToPoint(ctx, p4.x, p4.y);
+
+    
+        
+    } else {
+        
+        point = [self sum:a plus:b firstWeight:1.0/3.0];
+        CGContextAddLineToPoint(ctx, point.x, point.y);
+    
+    }
+    
     CGContextAddLineToPoint(ctx, b.x, b.y);
     CGContextStrokePath(ctx);
+    
+    
     
     UIGraphicsPopContext();
     
@@ -94,15 +260,10 @@
 {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
-    float p = 10;
-    float x = self.frame.size.width;
-    float y = self.frame.size.height;
-
-    [self drawEdgeFromPoint:CGPointMake(p, p)       toPoint:CGPointMake(x-p, p)     ofType:0 inContext:ctx];
-    [self drawEdgeFromPoint:CGPointMake(x-p, p)     toPoint:CGPointMake(x-p, y-p)   ofType:0 inContext:ctx];
-    [self drawEdgeFromPoint:CGPointMake(x-p, y-p)   toPoint:CGPointMake(p, y-p)     ofType:0 inContext:ctx];
-    //[self drawEdgeFromPoint:CGPointMake(p, y-p)     toPoint:CGPointMake(p, p)       ofType:0 inContext:ctx];
-    
+    [self drawEdgeNumber:1 ofType:1 inContext:ctx];
+    [self drawEdgeNumber:2 ofType:2 inContext:ctx];
+    [self drawEdgeNumber:3 ofType:3 inContext:ctx];
+    [self drawEdgeNumber:4 ofType:-2 inContext:ctx];    
 
 }
 
