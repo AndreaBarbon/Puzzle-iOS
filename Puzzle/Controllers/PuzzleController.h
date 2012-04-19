@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface PuzzleController : UIViewController
+
+@property (nonatomic, retain) NSArray *pieces;
 
 @end

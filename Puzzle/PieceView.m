@@ -17,6 +17,9 @@
             
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
     UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
+    
+    self.backgroundColor = [UIColor clearColor];
+    
 
     [self addGestureRecognizer:pan];
     [self addGestureRecognizer:rot];
@@ -152,13 +155,11 @@
     float l3 = (l-2*p)/3;
 
     
-    UIGraphicsPushContext(ctx);
+    //UIGraphicsPushContext(ctx);
     
-    CGContextBeginPath(ctx);
     
     
         
-        CGContextMoveToPoint(ctx, a.x, a.y);
         
         CGPoint point = [self sum:a plus:b firstWeight:2.0/3.0];
         CGContextAddLineToPoint(ctx, point.x, point.y);
@@ -247,23 +248,45 @@
     }
     
     CGContextAddLineToPoint(ctx, b.x, b.y);
-    CGContextStrokePath(ctx);
     
     
     
-    UIGraphicsPopContext();
+    //UIGraphicsPopContext();
     
 }
 
 
+#define LINE_WIDTH 1
+
 - (void)drawRect:(CGRect)rect
 {
+    
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
-    [self drawEdgeNumber:1 ofType:1 inContext:ctx];
+    
+    
+    CGContextSetRGBFillColor(ctx, 1, 1, 1, 0.75);
+    CGContextSetLineWidth(ctx, LINE_WIDTH);
+    CGContextSetLineJoin(ctx, kCGLineJoinRound);
+ 
+    
+    CGContextBeginPath(ctx);
+    CGContextMoveToPoint(ctx, PADDING, PADDING);
+
+    [self drawEdgeNumber:1 ofType:-3 inContext:ctx];
     [self drawEdgeNumber:2 ofType:2 inContext:ctx];
     [self drawEdgeNumber:3 ofType:3 inContext:ctx];
-    [self drawEdgeNumber:4 ofType:-2 inContext:ctx];    
+    [self drawEdgeNumber:4 ofType:-2 inContext:ctx];
+
+    /*
+    CGContextClosePath(ctx);
+    CGContextDrawPath(ctx, kCGPathFillStroke);
+    */
+    
+    //CGPathRef path = CGContextCopyPath(ctx);
+
+    CGContextClip(ctx);
+    [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 
 }
 

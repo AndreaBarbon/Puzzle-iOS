@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
+		B84014EF1540D3340075734A /* Trefoil_knot_arb.png in Resources */ = {isa = PBXBuildFile; fileRef = B84014EE1540D3340075734A /* Trefoil_knot_arb.png */; };
 		B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC515400B2A00AF69BC /* UIKit.framework */; };
 		B87C5CC815400B2A00AF69BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC715400B2A00AF69BC /* Foundation.framework */; };
 		B87C5CCA15400B2A00AF69BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC915400B2A00AF69BC /* CoreGraphics.framework */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B84014EB1540D0880075734A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		B84014EE1540D3340075734A /* Trefoil_knot_arb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Trefoil_knot_arb.png; sourceTree = "<group>"; };
 		B87C5CC115400B2A00AF69BC /* Puzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Puzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B87C5CC515400B2A00AF69BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B87C5CC715400B2A00AF69BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -48,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */,
 				B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */,
 				B87C5CC815400B2A00AF69BC /* Foundation.framework in Frameworks */,
 				B87C5CCA15400B2A00AF69BC /* CoreGraphics.framework in Frameworks */,
@@ -78,6 +83,7 @@
 		B87C5CC415400B2A00AF69BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B84014EB1540D0880075734A /* QuartzCore.framework */,
 				B87C5CC515400B2A00AF69BC /* UIKit.framework */,
 				B87C5CC715400B2A00AF69BC /* Foundation.framework */,
 				B87C5CC915400B2A00AF69BC /* CoreGraphics.framework */,
@@ -89,6 +95,7 @@
 		B87C5CCD15400B2A00AF69BC /* Puzzle */ = {
 			isa = PBXGroup;
 			children = (
+				B84014EE1540D3340075734A /* Trefoil_knot_arb.png */,
 				B87C5CF31540174900AF69BC /* Controllers */,
 				B87C5CED1540170E00AF69BC /* Views */,
 				B87C5CE9154014C300AF69BC /* Classes */,
@@ -192,6 +199,7 @@
 			files = (
 				B87C5CD215400B2A00AF69BC /* InfoPlist.strings in Resources */,
 				B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */,
+				B84014EF1540D3340075734A /* Trefoil_knot_arb.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +321,7 @@
 				B87C5CE015400B2A00AF69BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
