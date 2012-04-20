@@ -89,7 +89,7 @@
     
     float f = PIECE_SIZE*PIECE_NUMBER-2*(PIECE_NUMBER)*PADDING;
         
-    img = [UIImage imageWithCGImage:[img CGImage] scale:img.size.width/f orientation:1];
+    img = [[UIImage imageWithCGImage:[img CGImage] scale:img.size.width/f orientation:1] imageRotatedByDegrees:0];
     
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
     
