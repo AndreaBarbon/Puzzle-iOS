@@ -19,4 +19,15 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
+
+#define PADDING 30.0
+
+#define PIECE_SIZE 200
+
+#define PIECE_NUMBER 5
+#define N 25
+
+
+
+
 @end

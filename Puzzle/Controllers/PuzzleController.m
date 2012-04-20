@@ -39,13 +39,6 @@
     [self setup];
 }
 
-#define PADDING 50.0
-
-#define PIECE_SIZE 300
-
-#define PIECE_NUMBER 3
-#define N 9
-
 
 
 - (NSArray *)splitImage:(UIImage *)im{

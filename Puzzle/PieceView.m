@@ -44,6 +44,8 @@
 }
 
 - (void)move:(UIPanGestureRecognizer*)gesture {
+    
+    [self.superview bringSubviewToFront:self];
         
     CGPoint traslation = [gesture translationInView:self.superview];
     CGPoint newOrigin = [self sum:self.frame.origin plus:traslation];
@@ -97,7 +99,6 @@
 #pragma mark
 #pragma DRAWING
 
-#define PADDING 50
 #define CO_PADDING 0
 
 - (void)drawEdgeNumber:(int)n ofType:(int)type inContext:(CGContextRef)ctx {
