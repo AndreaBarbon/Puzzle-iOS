@@ -62,9 +62,7 @@
     if ([gesture state]==UIGestureRecognizerStateEnded) {
 
         int t = floor(ABS(tempAngle)/(M_PI/4));
-        
-        NSLog(@"t=%d", t);
-        
+                
         if (t%2==0) {
             t/=2;
         } else {
@@ -80,7 +78,7 @@
         }];
         
         angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
-        NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+        //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
         tempAngle = 0;
 
     } else {
@@ -274,10 +272,10 @@
     CGContextBeginPath(ctx);
     CGContextMoveToPoint(ctx, PADDING, PADDING);
 
-    [self drawEdgeNumber:1 ofType:-3 inContext:ctx];
-    [self drawEdgeNumber:2 ofType:2 inContext:ctx];
-    [self drawEdgeNumber:3 ofType:3 inContext:ctx];
-    [self drawEdgeNumber:4 ofType:-2 inContext:ctx];
+    for (int i=1; i<5; i++) {
+        int e = [[edges objectAtIndex:i-1] intValue];
+        [self drawEdgeNumber:i ofType:e inContext:ctx];
+    }
 
     /*
     CGContextClosePath(ctx);

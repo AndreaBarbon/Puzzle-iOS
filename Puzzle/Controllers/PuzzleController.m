@@ -62,8 +62,8 @@
     //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
 
     
-    float w = PIECE_SIZE; //(size.width-(x-1)*ww)/x + 2*ww;
-    float h = PIECE_SIZE; //(size.height-(y-1)*hh)/y + 2*hh;
+    float w = PIECE_SIZE;
+    float h = PIECE_SIZE;
     
     //NSLog(@"w, h = %.1f, %.1f", w, h);
 
@@ -77,18 +77,6 @@
             [arr addObject:[im subimageWithRect:portion]];
         }
     }
-
-    /*
-    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:9];
-    for (int i=0;i<x;i++){
-        for (int j=0;j<y;j++){
-            CGRect portion = CGRectMake(i * (w-ww)-2*ww, j * (h-hh)-2*hh, w, h);
-            NSLog(@"===> w, h = %.1f, %.1f", portion.origin.x, portion.origin.y);
-            [arr addObject:[im subimageWithRect:portion]];
-            
-        }
-    }
-    */
 
     return arr;
     
@@ -124,22 +112,41 @@
             
             PieceView *piece = [[PieceView alloc] initWithFrame:portion];
             piece.image = [array objectAtIndex:j+PIECE_NUMBER*i];
+            
+            NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
+            
+            for (int k=0; k<4; k++) {
+                int e = arc4random_uniform(3)+1;
+                [a addObject:[NSNumber numberWithInt:e]];
+            }
+            
+            if (i>0) {
+                int l = [arrayPieces count]-PIECE_NUMBER;
+                int e = [[[[arrayPieces objectAtIndex:l] edges] objectAtIndex:1] intValue];
+                [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:-e]];
+                //NSLog(@"e = %d", e);
+            }
+            
+            if (j>0) {
+                int e = [[[[arrayPieces lastObject] edges] objectAtIndex:2] intValue];
+                [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:-e]];
+                //NSLog(@"e = %d", e);
+            }
+            
+            
+            piece.edges = [NSArray arrayWithArray:a];
+            
+            for (int k=0; k<4; k++) {
+                //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
+            }
+
+            
             [arrayPieces addObject:piece];
             [piece setNeedsDisplay];
             [self.view addSubview:piece];
             
         }
     }
-    /*
-    for (int i=0; i<N; i++) {
-        //CGRect rect = CGRectMake(40*(N-i), 40*i, PIECE_SIZE, PIECE_SIZE);
-        PieceView *piece = [[PieceView alloc] initWithFrame:CGRectMake(0, 20*N, PIECE_SIZE, PIECE_SIZE)];
-        piece.image = [array objectAtIndex:i];
-        [piece setNeedsDisplay];
-        [arrayPieces addObject:piece];
-        [self.view addSubview:piece];
-    }
-    */
     
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
     
