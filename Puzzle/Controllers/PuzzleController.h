@@ -10,8 +10,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 
-@interface PuzzleController : UIViewController
+@interface PuzzleController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, retain) NSArray *pieces;
+@property (nonatomic, retain) UIPopoverController *popover;
+
 
 @end

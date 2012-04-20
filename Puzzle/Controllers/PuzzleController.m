@@ -17,7 +17,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces;
+@synthesize pieces, popover;
 
 
 - (void)setup {
@@ -75,28 +75,26 @@
     
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)createPuzzleFromImage:(UIImage*)image {
+    
+    for (PieceView *p in pieces) {
+        [p removeFromSuperview];
+    }
+    
     
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:N];
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
-    //array = [NSMutableArray arrayWithArray:[[self class] splitImage:[UIImage imageNamed:@"Facebook_icon.png"]]];
-    
-    
-    UIImage *img = [UIImage imageNamed:@"Cover.png"];
-    
     float f = PIECE_SIZE*PIECE_NUMBER-2*(PIECE_NUMBER)*PADDING;
-        
-    img = [[UIImage imageWithCGImage:[img CGImage] scale:img.size.width/f orientation:1] imageRotatedByDegrees:0];
+    
+    UIImage *img = [[UIImage imageWithCGImage:[image CGImage] scale:image.size.width/f orientation:1] imageRotatedByDegrees:0];
     
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
     
     array = [NSMutableArray arrayWithArray:[self splitImage:img]];
     NSLog(@"Pieces:%d", [array count]);
     
-
+    
     
     for (int i=0;i<PIECE_NUMBER;i++){
         for (int j=0;j<PIECE_NUMBER;j++){
@@ -126,13 +124,26 @@
                 //NSLog(@"e = %d", e);
             }
             
+            if (i==0) {
+                [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:0]];
+            }
+            if (i==PIECE_NUMBER-1) {
+                [a replaceObjectAtIndex:1 withObject:[NSNumber numberWithInt:0]];
+            }
+            if (j==0) {
+                [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:0]];
+            }
+            if (j==PIECE_NUMBER-1) {
+                [a replaceObjectAtIndex:2 withObject:[NSNumber numberWithInt:0]];
+            }
+
             
             piece.edges = [NSArray arrayWithArray:a];
             
             for (int k=0; k<4; k++) {
                 //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
             }
-
+            
             
             [arrayPieces addObject:piece];
             [piece setNeedsDisplay];
@@ -142,9 +153,59 @@
     }
     
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+
+    
+    //array = [NSMutableArray arrayWithArray:[[self class] splitImage:[UIImage imageNamed:@"Facebook_icon.png"]]];
+    
+    
+    UIImage *img = [UIImage imageNamed:@"Cover.png"];
+    
+    [self createPuzzleFromImage:img];
+    
+    
+    
     
     
 }
+
+- (IBAction)dc:(id)sender {
+    
+    NSLog(@"DC");
+    
+    UIImagePickerController *c = [[UIImagePickerController alloc] init];
+    c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    c.allowsEditing = YES;
+    c.delegate = self;
+    
+    popover = [[UIPopoverController alloc] initWithContentViewController:c];
+
+    popover.delegate = self;
+    
+    [popover presentPopoverFromRect:CGRectMake(10, 30, 10, 10) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES   ];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    [popover dismissPopoverAnimated:YES];
+
+    UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
+
+    [self createPuzzleFromImage:img];
+
+    
+    
+}
+
+
+
+
 
 - (void)viewDidUnload
 {

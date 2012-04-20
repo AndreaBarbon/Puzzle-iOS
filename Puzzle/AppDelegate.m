@@ -16,6 +16,8 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
+@synthesize puzzle;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -23,7 +25,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    PuzzleController *puzzle = [[PuzzleController alloc] init];
+    puzzle = [[PuzzleController alloc] init];
     [self.window addSubview:puzzle.view];
     
     return YES;

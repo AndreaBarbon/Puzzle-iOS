@@ -256,7 +256,7 @@
 }
 
 
-#define LINE_WIDTH 1
+#define LINE_WIDTH 2
 
 - (void)drawRect:(CGRect)rect
 {
@@ -279,8 +279,6 @@
     }
 
     /*
-    CGContextClosePath(ctx);
-    CGContextDrawPath(ctx, kCGPathFillStroke);
     */
     
     //CGPathRef path = CGContextCopyPath(ctx);
@@ -288,6 +286,16 @@
     CGContextClip(ctx);
     [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 
+
+    CGContextBeginPath(ctx);
+    CGContextMoveToPoint(ctx, PADDING, PADDING);
+    
+    for (int i=1; i<5; i++) {
+        int e = [[edges objectAtIndex:i-1] intValue];
+        [self drawEdgeNumber:i ofType:e inContext:ctx];
+    }
+    CGContextClosePath(ctx);
+    CGContextDrawPath(ctx, kCGPathStroke);
 }
 
 
