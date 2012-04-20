@@ -99,7 +99,8 @@
 #pragma mark
 #pragma DRAWING
 
-#define PADDING 60
+#define PADDING 50
+#define CO_PADDING 0
 
 - (void)drawEdgeNumber:(int)n ofType:(int)type inContext:(CGContextRef)ctx {
     
@@ -171,9 +172,9 @@
         CGPoint p2 = [self sum:a plus:b firstWeight:1.0/2.0];
 
         if (!vertical) {
-            p2 = [self sum:p2 plus:CGPointMake(sign*(p-20), 0)];
+            p2 = [self sum:p2 plus:CGPointMake(sign*(p-CO_PADDING), 0)];
         } else {
-            p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-20))];
+            p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-CO_PADDING))];
         }
         
         CGContextAddLineToPoint(ctx, p2.x, p2.y);
@@ -211,22 +212,22 @@
         
         switch (n) {
             case 1:
-                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-20))];
+                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-CO_PADDING))];
                 p3 = [self sum:p2 plus:CGPointMake(l3, 0)];
                 p4 = [self sum:point plus:CGPointMake(l3, 0)];
                 break;
             case 2:
-                p2 = [self sum:p2 plus:CGPointMake(sign*(p-20), 0)];
+                p2 = [self sum:p2 plus:CGPointMake(sign*(p-CO_PADDING), 0)];
                 p3 = [self sum:p2 plus:CGPointMake(0, l3)];
                 p4 = [self sum:point plus:CGPointMake(0 , l3)];
                 break;
             case 3:
-                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-20))];
+                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-CO_PADDING))];
                 p3 = [self sum:p2 plus:CGPointMake(-l3, 0)];
                 p4 = [self sum:point plus:CGPointMake(-l3, 0)];
                 break;
             case 4:
-                p2 = [self sum:p2 plus:CGPointMake(sign*(p-20), 0)];
+                p2 = [self sum:p2 plus:CGPointMake(sign*(p-CO_PADDING), 0)];
                 p3 = [self sum:p2 plus:CGPointMake(0, -l3)];
                 p4 = [self sum:point plus:CGPointMake(0 , -l3)];
                 break;

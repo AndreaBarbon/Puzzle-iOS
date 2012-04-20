@@ -8,6 +8,7 @@
 
 #import "PuzzleController.h"
 #import "PieceView.h"
+#import "UIImage+CWAdditions.h"
 
 @interface PuzzleController ()
 
@@ -38,30 +39,57 @@
     [self setup];
 }
 
-#define N 9
-#define kXSlices 3
-#define kYSlices 3
+#define PADDING 50.0
 
 #define PIECE_SIZE 300
 
+#define PIECE_NUMBER 3
+#define N 9
 
-+ (NSArray *)splitImageInTo9:(UIImage *)im{
+
+
+- (NSArray *)splitImage:(UIImage *)im{
     
-    CGSize size = [im size];
-    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:9];
-    for (int i=0;i<3;i++){
-        for (int j=0;j<3;j++){
-            CGRect portion = CGRectMake(i * size.width/3.0, j * size.height/3.0, size.width/3.0, size.height/3.0);
-            UIGraphicsBeginImageContext(portion.size);
-            CGContextRef context = UIGraphicsGetCurrentContext();
-            CGContextScaleCTM(context, 1.0, -1.0);
-            CGContextTranslateCTM(context, 0, -portion.size.height);
-            CGContextTranslateCTM(context, -portion.origin.x, -portion.origin.y);
-            CGContextDrawImage(context,CGRectMake(0.0, 0.0,size.width,  size.height), im.CGImage);
-            [arr addObject:UIGraphicsGetImageFromCurrentImageContext()];
-            UIGraphicsEndImageContext();
+    float x = PIECE_NUMBER;
+    float y= PIECE_NUMBER;
+    
+    //CGSize size = [im size];
+    
+    float ww = PADDING;
+    float hh = PADDING;
+    
+    
+    //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
+
+    
+    float w = PIECE_SIZE; //(size.width-(x-1)*ww)/x + 2*ww;
+    float h = PIECE_SIZE; //(size.height-(y-1)*hh)/y + 2*hh;
+    
+    //NSLog(@"w, h = %.1f, %.1f", w, h);
+
+    
+
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:N];
+    for (int i=0;i<x;i++){
+        for (int j=0;j<y;j++){
+            CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (h-2*hh)-hh, w, h);
+            //NSLog(@"===> w, h = %.1f, %.1f", portion.origin.x, portion.origin.y);
+            [arr addObject:[im subimageWithRect:portion]];
         }
     }
+
+    /*
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:9];
+    for (int i=0;i<x;i++){
+        for (int j=0;j<y;j++){
+            CGRect portion = CGRectMake(i * (w-ww)-2*ww, j * (h-hh)-2*hh, w, h);
+            NSLog(@"===> w, h = %.1f, %.1f", portion.origin.x, portion.origin.y);
+            [arr addObject:[im subimageWithRect:portion]];
+            
+        }
+    }
+    */
+
     return arr;
     
 }
@@ -73,19 +101,45 @@
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:N];
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
-    array = [NSMutableArray arrayWithArray:[[self class] splitImageInTo9:[UIImage imageNamed:@"Trefoil_knot_arb.png"]]];
+    //array = [NSMutableArray arrayWithArray:[[self class] splitImage:[UIImage imageNamed:@"Facebook_icon.png"]]];
+    
+    
+    UIImage *img = [UIImage imageNamed:@"Cover.png"];
+    
+    float f = PIECE_SIZE*PIECE_NUMBER-2*(PIECE_NUMBER)*PADDING;
+        
+    img = [UIImage imageWithCGImage:[img CGImage] scale:img.size.width/f orientation:1];
+    
+    //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
+    
+    array = [NSMutableArray arrayWithArray:[self splitImage:img]];
     NSLog(@"Pieces:%d", [array count]);
     
 
     
+    for (int i=0;i<PIECE_NUMBER;i++){
+        for (int j=0;j<PIECE_NUMBER;j++){
+            
+            CGRect portion = CGRectMake(i * (PIECE_SIZE-2*PADDING)-PADDING+50, j * (PIECE_SIZE-2*PADDING)-PADDING+50, PIECE_SIZE, PIECE_SIZE);
+            
+            PieceView *piece = [[PieceView alloc] initWithFrame:portion];
+            piece.image = [array objectAtIndex:j+PIECE_NUMBER*i];
+            [arrayPieces addObject:piece];
+            [piece setNeedsDisplay];
+            [self.view addSubview:piece];
+            
+        }
+    }
+    /*
     for (int i=0; i<N; i++) {
-        CGRect rect = CGRectMake(20*(N-i), 20*i, PIECE_SIZE, PIECE_SIZE);
-        PieceView *piece = [[PieceView alloc] initWithFrame:rect];
+        //CGRect rect = CGRectMake(40*(N-i), 40*i, PIECE_SIZE, PIECE_SIZE);
+        PieceView *piece = [[PieceView alloc] initWithFrame:CGRectMake(0, 20*N, PIECE_SIZE, PIECE_SIZE)];
         piece.image = [array objectAtIndex:i];
         [piece setNeedsDisplay];
         [arrayPieces addObject:piece];
         [self.view addSubview:piece];
     }
+    */
     
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
     
