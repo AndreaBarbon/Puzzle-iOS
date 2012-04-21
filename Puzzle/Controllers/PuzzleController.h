@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "PieceView.h"
 
-@interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate> {
+
+@interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate, PieceViewProtocol> {
     
     BOOL swiping;
     CGPoint drawerFirstPoint;
@@ -19,6 +21,8 @@
 
 
 @property (nonatomic, retain) NSArray *pieces;
+@property (nonatomic, retain) NSArray *lattice;
+
 @property (nonatomic, retain) UIPopoverController *popover;
 
 @property (nonatomic, retain) IBOutlet UIScrollView *sv;

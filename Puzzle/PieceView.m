@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate;
 
 
 - (void)setup {
@@ -66,6 +66,9 @@
         if (self.isFree) {
             NSLog(@"I'm #%d and I'm free!", self.number);
         }
+        
+    [delegate pieceMoved:self];
+        
     }
     
 }

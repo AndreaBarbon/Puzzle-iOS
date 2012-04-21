@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class PieceView;
+
+
+@protocol PieceViewProtocol
+
+-(void)pieceMoved:(PieceView*)piece;
+
+@end
+
+
 @interface PieceView : UIView {
         
 }
@@ -28,10 +38,13 @@
 @property(nonatomic) float tempAngle;
 @property(nonatomic) float boxHeight;
 
+@property (nonatomic, assign) id<PieceViewProtocol> delegate;
+
 
 - (void)move:(UIPanGestureRecognizer*)gesture;
 - (void)rotate:(UIRotationGestureRecognizer*)gesture;
 - (id)initWithFrame:(CGRect)frame padding:(float)p;
+
 
 
 @end

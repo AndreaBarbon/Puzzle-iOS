@@ -7,7 +7,6 @@
 //
 
 #import "PuzzleController.h"
-#import "PieceView.h"
 #import "UIImage+CWAdditions.h"
 
 @interface PuzzleController ()
@@ -17,9 +16,32 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, sv, infoButton, piceSize;
+@synthesize pieces, popover, sv, infoButton, piceSize, lattice;
 
 
+- (void)pieceMoved:(PieceView *)piece {
+    
+    for (int i=0; i<N; i++) {
+        
+        UIView *v = [lattice objectAtIndex:N-i-1];
+        NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
+        
+        if (v.frame.origin.x<piece.center.x && v.frame.origin.y<piece.center.y && piece.isFree) {
+            
+            [UIView animateWithDuration:0.4 animations:^{
+                piece.frame = CGRectMake(
+                                         v.frame.origin.x-self.padding,
+                                         v.frame.origin.y-self.padding, 
+                                         piece.frame.size.width, 
+                                         piece.frame.size.height);
+            }];
+            
+            NSLog(@"Found");
+            return;
+        }
+    }
+    
+}
 
 - (void)setup {
     
@@ -89,6 +111,7 @@
 
 - (void)createPuzzleFromImage:(UIImage*)image {
     
+    
     for (PieceView *p in pieces) {
         [p removeFromSuperview];
     }
@@ -114,6 +137,7 @@
             CGRect portion = CGRectMake(i * (piceSize-2*self.padding)-self.padding+50, j * (piceSize-2*self.padding)-self.padding+50, piceSize, piceSize);
             
             PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
+            piece.delegate = self;
             piece.image = [array objectAtIndex:j+PIECE_NUMBER*i];
             piece.number = j+PIECE_NUMBER*i;
             piece.size = piceSize;
@@ -175,6 +199,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    
+    NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:N];
+
+    for (int i=0;i<PIECE_NUMBER;i++){
+        for (int j=0;j<PIECE_NUMBER;j++){
+            float w = piceSize-2*self.padding;
+            CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+self.padding, w-1, w-1);
+            UIView *v = [[UIView alloc] initWithFrame:rect];
+            v.backgroundColor = [UIColor whiteColor];
+            v.alpha = .1;
+            [a addObject:v];
+            [self.view addSubview:v];
+        }
+    }
+    
+    lattice = [[NSArray alloc] initWithArray:a];
     
     
     UIImage *img = [UIImage imageNamed:@"Cover.png"];
