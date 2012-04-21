@@ -207,7 +207,7 @@
     for (int i=0;i<PIECE_NUMBER;i++){
         for (int j=0;j<PIECE_NUMBER;j++){
             float w = piceSize-2*self.padding;
-            CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+self.padding, w-1, w-1);
+            CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+2*self.padding, w-1, w-1);
             UIView *v = [[UIView alloc] initWithFrame:rect];
             v.backgroundColor = [UIColor whiteColor];
             v.alpha = .1;
