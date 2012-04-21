@@ -22,7 +22,7 @@
 - (NSURL *)applicationDocumentsDirectory;
 
 
-#define PADDING 30.0
+#define PADDING 25.0
 
 #define PIECE_SIZE 200
 

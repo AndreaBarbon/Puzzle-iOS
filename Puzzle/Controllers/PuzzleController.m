@@ -17,7 +17,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover;
+@synthesize pieces, popover, sv, infoButton;
 
 
 - (void)setup {
@@ -155,24 +155,91 @@
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
 }
 
+- (void) setUpGestureHandlersOnScrollView:(UIScrollView *)scrollView {
+    
+    for (UIGestureRecognizer *gestureRecognizer in scrollView.gestureRecognizers) {     
+        if ([gestureRecognizer  isKindOfClass:[UIPanGestureRecognizer class]])
+        {
+            UIPanGestureRecognizer *panGR = (UIPanGestureRecognizer *) gestureRecognizer;
+            panGR.minimumNumberOfTouches = 2;               
+        }
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     
-
-    
-    //array = [NSMutableArray arrayWithArray:[[self class] splitImage:[UIImage imageNamed:@"Facebook_icon.png"]]];
-    
-    
     UIImage *img = [UIImage imageNamed:@"Cover.png"];
+    
+    //sv.contentSize = CGSizeMake(floorf(PIECE_SIZE*N/sv.frame.size.width)*sv.frame.size.width, PIECE_SIZE+2*PADDING);
+    //[sv setFrame:CGRectMake(0, 0, sv.frame.size.width, PIECE_SIZE+2*PADDING)];
     
     [self createPuzzleFromImage:img];
     
+    [self shuffle];
+
     
+    UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
+    [swipeR setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:swipeR];
     
+    UISwipeGestureRecognizer *swipeL = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeL:)];
+    [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:swipeL];
     
+
+}
+
+- (void)swipeInDirection:(UISwipeGestureRecognizerDirection)direction {
     
+    int sgn = 1;
+    if (direction==UISwipeGestureRecognizerDirectionLeft) {
+        sgn *= -1;
+    }
+    
+    if (!swiping) {
+        
+        [UIView animateWithDuration:1 animations:^{
+            
+            swiping = YES;
+            for (PieceView *p in pieces) {
+                if (!p.isFree)
+                    p.center = CGPointMake(p.center.x+sgn*self.view.frame.size.width, p.center.y);
+            }
+            
+        }completion:^(BOOL finished){
+
+            swiping = NO;
+            
+        }];
+        
+    }
+}
+
+- (void)swipeR:(UISwipeGestureRecognizer*)swipe {
+
+    [self swipeInDirection:UISwipeGestureRecognizerDirectionRight];
+}
+
+
+- (void)swipeL:(UISwipeGestureRecognizer*)swipe {
+        
+    [self swipeInDirection:UISwipeGestureRecognizerDirectionLeft];
+    
+}
+
+- (NSArray*)shuffleArray:(NSArray*)array {
+    
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:array];
+    
+    for(NSUInteger i = [array count]; i > 1; i--) {
+        NSUInteger j = arc4random_uniform(i);
+        [temp exchangeObjectAtIndex:i-1 withObjectAtIndex:j];
+    }
+    
+    return [NSArray arrayWithArray:temp];
 }
 
 - (IBAction)dc:(id)sender {
@@ -188,7 +255,7 @@
 
     popover.delegate = self;
     
-    [popover presentPopoverFromRect:CGRectMake(10, 30, 10, 10) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES   ];
+    [popover presentPopoverFromRect:infoButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES   ];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -198,9 +265,80 @@
     UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
 
     [self createPuzzleFromImage:img];
+    [self shuffle];
+
+
+}
+
+- (void)shuffle {
+    
+    pieces = [self shuffleArray:pieces];
+    
+    [UIView animateWithDuration:1 animations:^{
+        
+        
+        for (int i=0; i<N; i++) {          
+            PieceView *p = [pieces objectAtIndex:i];            
+            CGRect rect = p.frame;
+            rect.origin.x = PIECE_SIZE*i;
+            rect.origin.y = 30;
+            p.frame = rect;
+            
+            int r = arc4random_uniform(4);
+            p.transform = CGAffineTransformMakeRotation(r*M_PI_2);
+            p.angle = r*M_PI_2;
+            
+        }
+        
+        
+        
+//        int e = arc4random_uniform(N-1);
+//        
+//        for (int i=e; i<N; i++) {
+//            
+//            
+//            PieceView *p = [pieces objectAtIndex:i];
+//            CGRect rect = p.frame;
+//            rect.origin.x = PIECE_SIZE*j;
+//            rect.origin.y = 30;
+//            p.frame = rect;
+//
+//            int r = arc4random_uniform(4);
+//            p.transform = CGAffineTransformMakeRotation(r*M_PI_2);
+//            p.angle = r*M_PI_2;
+//
+//            j++;
+//            if (i==N-1) i=-1;
+//            if (i==e-1) break;
+//            
+//        }
+    }];
 
     
-    
+}
+
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake)
+    {
+        NSLog(@"Shuffle!");
+        [self shuffle];
+    }
+}
+
+-(BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self resignFirstResponder];
+    [super viewWillDisappear:animated];
 }
 
 

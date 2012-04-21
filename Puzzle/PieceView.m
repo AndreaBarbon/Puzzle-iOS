@@ -7,10 +7,11 @@
 //
 
 #import "PieceView.h"
+#import "PuzzleController.h"
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, edges, position, angle, tempAngle;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, tempAngle, boxHeight;
 
 
 - (void)setup {
@@ -20,6 +21,8 @@
     
     self.backgroundColor = [UIColor clearColor];
     
+    boxHeight = PIECE_SIZE;
+        
 
     [self addGestureRecognizer:pan];
     [self addGestureRecognizer:rot];
@@ -46,6 +49,7 @@
 - (void)move:(UIPanGestureRecognizer*)gesture {
     
     [self.superview bringSubviewToFront:self];
+    
         
     CGPoint traslation = [gesture translationInView:self.superview];
     CGPoint newOrigin = [self sum:self.frame.origin plus:traslation];
@@ -54,6 +58,22 @@
     self.frame = newFrame;
 
     [gesture setTranslation:CGPointZero inView:self.superview];
+    
+    
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+
+        CGPoint point = [gesture locationInView:self.superview];
+        self.isFree = (point.y>boxHeight);
+    }
+    
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    
     
 }
 
@@ -265,7 +285,7 @@
     
     
     
-    CGContextSetRGBFillColor(ctx, 1, 1, 1, 0.75);
+    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.75);
     CGContextSetLineWidth(ctx, LINE_WIDTH);
     CGContextSetLineJoin(ctx, kCGLineJoinRound);
  

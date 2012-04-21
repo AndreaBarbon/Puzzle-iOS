@@ -10,10 +10,16 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 
-@interface PuzzleController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate>
+@interface PuzzleController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate> {
+    
+    BOOL swiping;
+}
 
 @property (nonatomic, retain) NSArray *pieces;
 @property (nonatomic, retain) UIPopoverController *popover;
+
+@property (nonatomic, retain) IBOutlet UIScrollView *sv;
+@property (nonatomic, retain) IBOutlet UIButton *infoButton;
 
 
 @end

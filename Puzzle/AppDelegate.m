@@ -25,6 +25,8 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
+    application.applicationSupportsShakeToEdit = YES;
+    
     puzzle = [[PuzzleController alloc] init];
     [self.window addSubview:puzzle.view];
     
