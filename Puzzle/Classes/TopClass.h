@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TopClass : NSObject
+
+// 0 < PUZZLE_SIZE <= 1
+#define PUZZLE_SIZE 0.9
+
+
+
+@interface TopClass : UIViewController
+
+@property(nonatomic) float padding;
+
 
 @end

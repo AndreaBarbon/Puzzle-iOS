@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, tempAngle, boxHeight;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding;
 
 
 - (void)setup {
@@ -20,9 +20,7 @@
     UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
     
     self.backgroundColor = [UIColor clearColor];
-    
-    boxHeight = PIECE_SIZE;
-        
+            
 
     [self addGestureRecognizer:pan];
     [self addGestureRecognizer:rot];
@@ -130,7 +128,7 @@
     float x = self.frame.size.width;
     float y = self.frame.size.height;
     float l;
-    float p = PADDING;
+    float p = self.padding;
     
     BOOL vertical = NO;
     int sign;
@@ -295,7 +293,7 @@
  
     
     CGContextBeginPath(ctx);
-    CGContextMoveToPoint(ctx, PADDING, PADDING);
+    CGContextMoveToPoint(ctx, self.padding, self.padding);
 
     for (int i=1; i<5; i++) {
         int e = [[edges objectAtIndex:i-1] intValue];
@@ -312,7 +310,7 @@
 
 
     CGContextBeginPath(ctx);
-    CGContextMoveToPoint(ctx, PADDING, PADDING);
+    CGContextMoveToPoint(ctx, self.padding, self.padding);
     
     for (int i=1; i<5; i++) {
         int e = [[edges objectAtIndex:i-1] intValue];
@@ -328,8 +326,12 @@
 #pragma mark
 #pragma UNUSEFUL
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame padding:(float)p
 {
+    
+    padding = p;
+    boxHeight = frame.size.height;
+
     self = [super initWithFrame:frame];
     if (self) {
         

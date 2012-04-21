@@ -17,12 +17,22 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, sv, infoButton;
+@synthesize pieces, popover, sv, infoButton, piceSize;
+
 
 
 - (void)setup {
     
-    self.view.frame = [[UIScreen mainScreen] bounds];
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    
+    self.padding = rect.size.width/PIECE_NUMBER*0.2;
+    piceSize = PUZZLE_SIZE*rect.size.width/(PIECE_NUMBER)+2*self.padding;
+    
+    self.view.frame = rect;
+    
+    
+    
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -36,6 +46,7 @@
 
 - (void)awakeFromNib {
     
+    [super awakeFromNib];
     [self setup];
 }
 
@@ -48,15 +59,16 @@
     
     //CGSize size = [im size];
     
-    float ww = PADDING;
-    float hh = PADDING;
+    float ww = self.padding;
+    float hh = self.padding;
     
     
     //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
 
+    NSLog(@"Piece size = %.1f", piceSize);
     
-    float w = PIECE_SIZE;
-    float h = PIECE_SIZE;
+    float w = piceSize;
+    float h = piceSize;
     
     //NSLog(@"w, h = %.1f, %.1f", w, h);
 
@@ -85,7 +97,7 @@
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:N];
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
-    float f = PIECE_SIZE*PIECE_NUMBER-2*(PIECE_NUMBER)*PADDING;
+    float f = piceSize*PIECE_NUMBER-2*(PIECE_NUMBER)*self.padding;
     
     UIImage *img = [[UIImage imageWithCGImage:[image CGImage] scale:image.size.width/f orientation:1] imageRotatedByDegrees:0];
     
@@ -99,11 +111,12 @@
     for (int i=0;i<PIECE_NUMBER;i++){
         for (int j=0;j<PIECE_NUMBER;j++){
             
-            CGRect portion = CGRectMake(i * (PIECE_SIZE-2*PADDING)-PADDING+50, j * (PIECE_SIZE-2*PADDING)-PADDING+50, PIECE_SIZE, PIECE_SIZE);
+            CGRect portion = CGRectMake(i * (piceSize-2*self.padding)-self.padding+50, j * (piceSize-2*self.padding)-self.padding+50, piceSize, piceSize);
             
-            PieceView *piece = [[PieceView alloc] initWithFrame:portion];
+            PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
             piece.image = [array objectAtIndex:j+PIECE_NUMBER*i];
             piece.number = j+PIECE_NUMBER*i;
+            piece.size = piceSize;
             
             NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
             
@@ -183,23 +196,25 @@
 - (void)organizeDrawer {
     
     NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:pieces];
-
-    if (drawerFirstPoint.x==0 && drawerFirstPoint.y==0) {
-        
-        drawerFirstPoint.x = [[temp objectAtIndex:0] frame].origin.x;
-        drawerFirstPoint.y = [[temp objectAtIndex:0] frame].origin.y;
-    }
     
     
+    //Removes removed pieces
+    bool removed = NO;
     for (int i=0; i<[pieces count]; i++) {
         
         PieceView *p = [pieces objectAtIndex:i];
-        
-        if (p.isFree)
+        if (p.isFree) {
             [temp removeObject:p];
-        
+            removed = YES;
+        }
     }
     
+    
+    if ((drawerFirstPoint.x==0 && drawerFirstPoint.y==0) ){//|| removed) {
+        
+        drawerFirstPoint.x = [[temp objectAtIndex:0] frame].origin.x;
+        drawerFirstPoint.y = [[temp objectAtIndex:0] frame].origin.y;
+    }    
     
     
     
@@ -247,7 +262,7 @@
     }
     
     PieceView *p = [temp lastObject];
-    if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<self.view.frame.size.width-p.frame.size.width+PADDING) {
+    if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<self.view.frame.size.width-p.frame.size.width+self.padding) {
         return;
     }
     
@@ -258,10 +273,9 @@
             swiping = YES;
 
             drawerFirstPoint.x = drawerFirstPoint.x+sgn*self.view.frame.size.width;
-            NSLog(@"first point = %.1f", drawerFirstPoint.x);
-            
             [self organizeDrawer];
-
+            //NSLog(@"first point = %.1f", drawerFirstPoint.x);
+            
 
         }completion:^(BOOL finished){
 
@@ -330,7 +344,7 @@
         for (int i=0; i<N; i++) {          
             PieceView *p = [pieces objectAtIndex:i];            
             CGRect rect = p.frame;
-            rect.origin.x = PIECE_SIZE*i+10;
+            rect.origin.x = piceSize*i+10;
             rect.origin.y = 30;
             p.frame = rect;
             
@@ -349,7 +363,7 @@
 //            
 //            PieceView *p = [pieces objectAtIndex:i];
 //            CGRect rect = p.frame;
-//            rect.origin.x = PIECE_SIZE*j;
+//            rect.origin.x = piceSize*j;
 //            rect.origin.y = 30;
 //            p.frame = rect;
 //

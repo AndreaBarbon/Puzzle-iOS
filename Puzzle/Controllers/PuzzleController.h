@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-#import "AppDelegate.h"
 
-@interface PuzzleController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate> {
+@interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate> {
     
     BOOL swiping;
     CGPoint drawerFirstPoint;
 }
+
+@property(nonatomic) float piceSize;
+
 
 @property (nonatomic, retain) NSArray *pieces;
 @property (nonatomic, retain) UIPopoverController *popover;

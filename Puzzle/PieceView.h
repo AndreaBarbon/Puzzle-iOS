@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AppDelegate.h"
 
 @interface PieceView : UIView {
-    
+        
 }
 
 @property(nonatomic, retain) NSArray *edges;
@@ -24,12 +23,15 @@
 @property(nonatomic) int position;
 
 @property(nonatomic) float angle;
+@property(nonatomic) float size;
+@property(nonatomic) float padding;
 @property(nonatomic) float tempAngle;
 @property(nonatomic) float boxHeight;
 
 
 - (void)move:(UIPanGestureRecognizer*)gesture;
 - (void)rotate:(UIRotationGestureRecognizer*)gesture;
+- (id)initWithFrame:(CGRect)frame padding:(float)p;
 
 
 @end

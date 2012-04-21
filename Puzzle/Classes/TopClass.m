@@ -10,4 +10,28 @@
 
 @implementation TopClass
 
+@synthesize padding;
+
+
+
+- (void)setup {
+
+
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    
+    [super awakeFromNib];
+    [self setup];
+}
+
 @end
