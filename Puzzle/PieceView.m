@@ -63,7 +63,11 @@
     if (gesture.state == UIGestureRecognizerStateEnded) {
 
         CGPoint point = [gesture locationInView:self.superview];
+        
         self.isFree = (point.y>boxHeight);
+        if (self.isFree) {
+            NSLog(@"I'm #%d and I'm free!", self.number);
+        }
     }
     
 }

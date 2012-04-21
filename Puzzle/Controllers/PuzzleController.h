@@ -13,6 +13,7 @@
 @interface PuzzleController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate> {
     
     BOOL swiping;
+    CGPoint drawerFirstPoint;
 }
 
 @property (nonatomic, retain) NSArray *pieces;

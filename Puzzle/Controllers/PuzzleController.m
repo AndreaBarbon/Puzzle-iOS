@@ -103,6 +103,7 @@
             
             PieceView *piece = [[PieceView alloc] initWithFrame:portion];
             piece.image = [array objectAtIndex:j+PIECE_NUMBER*i];
+            piece.number = j+PIECE_NUMBER*i;
             
             NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
             
@@ -153,17 +154,9 @@
     }
     
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
-}
-
-- (void) setUpGestureHandlersOnScrollView:(UIScrollView *)scrollView {
     
-    for (UIGestureRecognizer *gestureRecognizer in scrollView.gestureRecognizers) {     
-        if ([gestureRecognizer  isKindOfClass:[UIPanGestureRecognizer class]])
-        {
-            UIPanGestureRecognizer *panGR = (UIPanGestureRecognizer *) gestureRecognizer;
-            panGR.minimumNumberOfTouches = 2;               
-        }
-    }
+    [self shuffle];
+    [self organizeDrawer];
 }
 
 - (void)viewDidLoad
@@ -172,13 +165,8 @@
     
     
     UIImage *img = [UIImage imageNamed:@"Cover.png"];
-    
-    //sv.contentSize = CGSizeMake(floorf(PIECE_SIZE*N/sv.frame.size.width)*sv.frame.size.width, PIECE_SIZE+2*PADDING);
-    //[sv setFrame:CGRectMake(0, 0, sv.frame.size.width, PIECE_SIZE+2*PADDING)];
-    
+
     [self createPuzzleFromImage:img];
-    
-    [self shuffle];
 
     
     UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
@@ -192,23 +180,89 @@
 
 }
 
+- (void)organizeDrawer {
+    
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:pieces];
+
+    if (drawerFirstPoint.x==0 && drawerFirstPoint.y==0) {
+        
+        drawerFirstPoint.x = [[temp objectAtIndex:0] frame].origin.x;
+        drawerFirstPoint.y = [[temp objectAtIndex:0] frame].origin.y;
+    }
+    
+    
+    for (int i=0; i<[pieces count]; i++) {
+        
+        PieceView *p = [pieces objectAtIndex:i];
+        
+        if (p.isFree)
+            [temp removeObject:p];
+        
+    }
+    
+    
+    
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        for (int i=0; i<[temp count]; i++) {
+            
+            PieceView *p = [temp objectAtIndex:i];
+            
+            CGRect rect = p.frame;
+            PieceView *p2;
+            
+            if (i>0) {
+                p2 = [temp objectAtIndex:i-1];
+                CGRect rect2 = p2.frame;
+                rect.origin.x = rect2.origin.x+rect2.size.width+10;
+                rect.origin.y = 30;
+            } else {
+                rect.origin = drawerFirstPoint;
+            }
+            p.frame = rect;
+        }
+    }];
+
+}
+
 - (void)swipeInDirection:(UISwipeGestureRecognizerDirection)direction {
+    
+    
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:pieces];
+    for (PieceView *p in pieces) {
+        if (p.isFree) {
+            [temp removeObject:p];
+        }
+    }
+
     
     int sgn = 1;
     if (direction==UISwipeGestureRecognizerDirectionLeft) {
         sgn *= -1;
     }
     
+    if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.x>0) {
+        return;
+    }
+    
+    PieceView *p = [temp lastObject];
+    if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<self.view.frame.size.width-p.frame.size.width+PADDING) {
+        return;
+    }
+    
     if (!swiping) {
         
-        [UIView animateWithDuration:1 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             
             swiping = YES;
-            for (PieceView *p in pieces) {
-                if (!p.isFree)
-                    p.center = CGPointMake(p.center.x+sgn*self.view.frame.size.width, p.center.y);
-            }
+
+            drawerFirstPoint.x = drawerFirstPoint.x+sgn*self.view.frame.size.width;
+            NSLog(@"first point = %.1f", drawerFirstPoint.x);
             
+            [self organizeDrawer];
+
+
         }completion:^(BOOL finished){
 
             swiping = NO;
@@ -243,9 +297,7 @@
 }
 
 - (IBAction)dc:(id)sender {
-    
-    NSLog(@"DC");
-    
+        
     UIImagePickerController *c = [[UIImagePickerController alloc] init];
     c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     c.allowsEditing = YES;
@@ -265,7 +317,7 @@
     UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
 
     [self createPuzzleFromImage:img];
-    [self shuffle];
+
 
 
 }
@@ -273,14 +325,12 @@
 - (void)shuffle {
     
     pieces = [self shuffleArray:pieces];
-    
-    [UIView animateWithDuration:1 animations:^{
-        
+            
         
         for (int i=0; i<N; i++) {          
             PieceView *p = [pieces objectAtIndex:i];            
             CGRect rect = p.frame;
-            rect.origin.x = PIECE_SIZE*i;
+            rect.origin.x = PIECE_SIZE*i+10;
             rect.origin.y = 30;
             p.frame = rect;
             
@@ -312,7 +362,6 @@
 //            if (i==e-1) break;
 //            
 //        }
-    }];
 
     
 }
@@ -322,8 +371,12 @@
 {
     if (motion == UIEventSubtypeMotionShake)
     {
-        NSLog(@"Shuffle!");
-        [self shuffle];
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            NSLog(@"Shuffle!");
+            [self shuffle];
+            
+        }];
     }
 }
 
