@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors;
 
 
 - (void)setup {
@@ -23,7 +23,8 @@
     
     self.backgroundColor = [UIColor clearColor];
             
-
+    neighbors = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:0],[NSNumber numberWithInt:0],[NSNumber numberWithInt:0],[NSNumber numberWithInt:0], nil];
+    
     [self addGestureRecognizer:pan];
     [self addGestureRecognizer:rot];
     [self addGestureRecognizer:tap];
@@ -116,15 +117,15 @@
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
     
-
+    angle += M_PI/2;
+    
+    angle = angle - floor(angle/(2*M_PI))*2*M_PI;
+    
+    [UIView animateWithDuration:0.2 animations:^{
         
-         angle += M_PI/2;
+        self.transform = CGAffineTransformMakeRotation(angle);
         
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            self.transform = CGAffineTransformMakeRotation(angle);
-            
-        }];
+    }];
     
 }
 
@@ -334,7 +335,30 @@
 }
 
 
+-(int)edgeNumber:(int)i {
+    
+    return [[edges objectAtIndex:i] intValue];
+}
 
+-(void)setNeighborNumber:(int)i forEdge:(int)edge {
+    
+    NSMutableArray *temp = [NSMutableArray arrayWithCapacity:4];
+    
+    for (int j=0; j<4; j++) {
+        
+        if (j==edge) {
+            [temp addObject:[NSNumber numberWithInt:i]];
+        } else {
+            [temp addObject:[neighbors objectAtIndex:j]];
+        }
+        
+    }
+    
+    neighbors = [[NSArray alloc] initWithArray:temp];
+    
+    NSLog(@"Set neighbor #%d for edge %d", [[neighbors objectAtIndex:edge] intValue], edge);
+    
+}
 
 #pragma mark
 #pragma UNUSEFUL

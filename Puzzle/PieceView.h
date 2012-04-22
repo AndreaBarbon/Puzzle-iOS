@@ -26,6 +26,7 @@
 
 
 @property(nonatomic, retain) NSArray *edges;
+@property(nonatomic, retain) NSArray *neighbors;
 @property(nonatomic, retain) UIImage *image;
 
 @property(nonatomic) BOOL isPositioned;
@@ -46,6 +47,8 @@
 - (void)move:(UIPanGestureRecognizer*)gesture;
 - (void)rotate:(UIRotationGestureRecognizer*)gesture;
 - (id)initWithFrame:(CGRect)frame padding:(float)p;
+- (int)edgeNumber:(int)i;
+- (void)setNeighborNumber:(int)i forEdge:(int)edge;
 
 
 

@@ -18,6 +18,61 @@
 
 @synthesize pieces, popover, sv, piceSize, lattice;
 
+- (PieceView*)pieceAtPosition:(int)j {
+    
+    for (PieceView *p in pieces) {
+        if (p.position == j) {
+            return p;
+        }
+    }
+    
+    return nil;
+}
+
+
+- (void)checkNeighborsOfPieceNumber:(PieceView*)piece {
+    
+    PieceView *otherPiece;
+    int j = piece.position;
+    
+    int rotation = floor(piece.angle/(M_PI/2));
+    rotation = rotation%4;    
+
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:4];
+    NSArray *a = [NSArray arrayWithObjects:
+                  [NSNumber numberWithInt:-1],
+                  [NSNumber numberWithInt:+PIECE_NUMBER],
+                  [NSNumber numberWithInt:1], 
+                  [NSNumber numberWithInt:-PIECE_NUMBER],
+                  nil];
+    
+    for (int s=0; s<4; s++) {
+
+        int k=0;
+        int r = abs(s-rotation)%4;
+        int i = [[a objectAtIndex:s] intValue];
+        int l = [[a objectAtIndex:r] intValue];
+        //NSLog(@"s=%d, (s+rotation)mod4=%d", s, r);
+     
+        if (j+i>=0 && j+i<N) {
+            
+            otherPiece = [self pieceAtPosition:j+i];
+            //NSLog(@"Checking position %d, number+l = %d ", j+i, piece.number+l);
+            if (otherPiece != nil && piece.number+l==otherPiece.number) {
+                k = otherPiece.number;
+                [otherPiece setNeighborNumber:piece.number forEdge:(r+2)%4];
+                //NSLog(@"Found neighbor #%d", k);
+            }
+            
+        }
+        
+        [array addObject:[NSNumber numberWithInt:k]];
+    }
+    
+    piece.neighbors = array;
+    
+}
+
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i {
     
     piece.isPositioned = NO;
@@ -32,10 +87,16 @@
                                  piece.frame.size.height);
     }];
     
+    int rotation = floor(piece.angle/(M_PI/2));
+    rotation = rotation%4;
+    
     piece.position = i;
-    if (piece.number == i) {
+    if (piece.number == i && rotation==0) {
         piece.isPositioned = YES;
+        NSLog(@"Piece positioned!");
     }
+    
+    [self checkNeighborsOfPieceNumber:piece];
 }
 
 - (void)pieceMoved:(PieceView *)piece {
@@ -493,6 +554,12 @@
 }
 
 
+
++ (float)float:(float)f modulo:(float)m {
+
+    return f - floor(f/m)*m;
+
+}
 
 
 

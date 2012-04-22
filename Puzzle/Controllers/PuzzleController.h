@@ -19,6 +19,8 @@
     IBOutlet UIView *menuButtonView;
 }
 
++(float)float:(float)f modulo:(float)m;
+
 @property(nonatomic) float piceSize;
 
 
