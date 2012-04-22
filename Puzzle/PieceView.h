@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @class PieceView;
+@class PuzzleController;
 
 
 @protocol PieceViewProtocol
 
 -(void)pieceMoved:(PieceView*)piece;
+-(void)pieceRotated:(PieceView*)piece;
 
 @end
 
@@ -22,7 +24,8 @@
         
 }
 
-@property (nonatomic, assign) id<PieceViewProtocol> delegate;
+//@property (nonatomic, assign) id<PieceViewProtocol> delegate;
+@property (nonatomic, assign) PuzzleController *delegate;
 
 
 @property(nonatomic, retain) NSArray *edges;
@@ -32,6 +35,8 @@
 @property(nonatomic) BOOL isPositioned;
 @property(nonatomic) BOOL isLifted;
 @property(nonatomic) BOOL isFree;
+@property(nonatomic) BOOL hasNeighbors;
+@property(nonatomic) CGPoint oldPosition;
 
 @property(nonatomic) int number;
 @property(nonatomic) int position;
@@ -49,7 +54,6 @@
 - (id)initWithFrame:(CGRect)frame padding:(float)p;
 - (int)edgeNumber:(int)i;
 - (void)setNeighborNumber:(int)i forEdge:(int)edge;
-
-
+- (NSArray*)allTheNeighborsBut:(NSMutableArray*)excluded;
 
 @end

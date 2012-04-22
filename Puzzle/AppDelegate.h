@@ -26,8 +26,8 @@
 
 #define PIECE_SIZE 350.0
 
-#define PIECE_NUMBER 5
-#define N PIECE_NUMBER*PIECE_NUMBER
+#define PIECE_NUMBER 3
+//#define N PIECE_NUMBER*PIECE_NUMBER
 
 
 

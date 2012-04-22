@@ -17,11 +17,22 @@
     BOOL swiping;
     CGPoint drawerFirstPoint;
     IBOutlet UIView *menuButtonView;
+    IBOutlet UISlider *slider;
+
 }
 
 +(float)float:(float)f modulo:(float)m;
 
+-(PieceView*)pieceWithNumber:(int)j;
+- (PieceView*)pieceWithPosition:(int)j;
+
+
+-(BOOL)pieceIsOut:(PieceView*)piece;
+- (void)movePiece:(PieceView*)piece toLatticePoint:(int)i;
+
 @property(nonatomic) float piceSize;
+@property(nonatomic) float N;
+@property(nonatomic) int pieceNumber;
 
 
 @property (nonatomic, retain) NSArray *pieces;

@@ -16,21 +16,31 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, sv, piceSize, lattice;
+@synthesize pieces, popover, sv, piceSize, lattice, N, pieceNumber;
+
+- (void)computePieceSize {
+    
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    self.padding = rect.size.width/pieceNumber*0.2;
+    piceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
+}
 
 - (PieceView*)pieceAtPosition:(int)j {
     
     for (PieceView *p in pieces) {
+            
         if (p.position == j) {
             return p;
         }
     }
-    
+        
     return nil;
 }
 
 
 - (void)checkNeighborsOfPieceNumber:(PieceView*)piece {
+    
+
     
     PieceView *otherPiece;
     int j = piece.position;
@@ -41,26 +51,30 @@
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:4];
     NSArray *a = [NSArray arrayWithObjects:
                   [NSNumber numberWithInt:-1],
-                  [NSNumber numberWithInt:+PIECE_NUMBER],
+                  [NSNumber numberWithInt:+pieceNumber],
                   [NSNumber numberWithInt:1], 
-                  [NSNumber numberWithInt:-PIECE_NUMBER],
+                  [NSNumber numberWithInt:-pieceNumber],
                   nil];
     
     for (int s=0; s<4; s++) {
 
-        int k=0;
+        int k = [[piece.neighbors objectAtIndex:s] intValue];
         int r = abs(s-rotation)%4;
         int i = [[a objectAtIndex:s] intValue];
         int l = [[a objectAtIndex:r] intValue];
         //NSLog(@"s=%d, (s+rotation)mod4=%d", s, r);
      
+        
+        //Looks for neighbors
+        
         if (j+i>=0 && j+i<N) {
             
             otherPiece = [self pieceAtPosition:j+i];
-            //NSLog(@"Checking position %d, number+l = %d ", j+i, piece.number+l);
-            if (otherPiece != nil && piece.number+l==otherPiece.number) {
+            if (otherPiece != nil && piece.number+l==otherPiece.number && ABS(piece.angle-otherPiece.angle)<M_PI/2) {
                 k = otherPiece.number;
+                //NSLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", j+i, piece.number+l, k);
                 [otherPiece setNeighborNumber:piece.number forEdge:(r+2)%4];
+                piece.hasNeighbors = YES;
                 //NSLog(@"Found neighbor #%d", k);
             }
             
@@ -101,37 +115,76 @@
 
 - (void)pieceMoved:(PieceView *)piece {
     
-    CGPoint point = piece.frame.origin;        
-    piece.isFree = (point.y>piceSize);
-
+    CGPoint point = piece.frame.origin;   
+    
+    if (!piece.hasNeighbors) {
+        piece.isFree = (point.y>piceSize);
+    } else {
+        piece.isFree = YES;
+    }
+    
     
     if (piece.isFree) {
         
-        for (int i=N-1; i>-1; i--) {
+        if ( [self pieceIsOut:piece] ) 
+        {
+            NSLog(@"Piece is out");
             
-            UIView *v = [lattice objectAtIndex:i];
-            //NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
+            [UIView animateWithDuration:0.4 animations:^{
+                
+                for (PieceView *p in [piece allTheNeighborsBut:nil]) {
+                    p.center = p.oldPosition;
+                    NSLog(@"Set old position for piece #%d", p.number);
+                }
+                piece.center = piece.oldPosition;
+                NSLog(@"BOSS - Set old position for piece #%d", piece.number);
+
+            }];
             
-            if (v.frame.origin.x<piece.center.x && v.frame.origin.y<piece.center.y) {
+        } else if (piece.center.x != piece.oldPosition.x || piece.center.y != piece.oldPosition.y) {
+                        
+            for (int i=N-1; i>-1; i--) {
                 
-                [self movePiece:piece toLatticePoint:i];
+                UIView *v = [lattice objectAtIndex:i];
+                //NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
                 
-                break;
+                if (v.frame.origin.x<piece.center.x && v.frame.origin.y<piece.center.y) {
+                    
+                    [self movePiece:piece toLatticePoint:i];
+                    
+                    break;
+                }
             }
         }
+        
+
+        
     }
     
     [self organizeDrawer];
-
+    
+    piece.oldPosition = piece.center;
+    
     
 }
+
+- (void)pieceRotated:(PieceView *)piece {
+
+    piece.oldPosition = piece.center;
+    [self checkNeighborsOfPieceNumber:piece];    
+    
+}
+
+
 
 - (void)setup {
         
     CGRect rect = [[UIScreen mainScreen] bounds];
     
-    self.padding = rect.size.width/PIECE_NUMBER*0.2;
-    piceSize = PUZZLE_SIZE*rect.size.width/(PIECE_NUMBER)+2*self.padding;
+    pieceNumber = 4;
+    N = pieceNumber*pieceNumber;
+    
+    [self computePieceSize];
     
     self.view.frame = rect;
         
@@ -159,8 +212,8 @@
 
 - (NSArray *)splitImage:(UIImage *)im{
     
-    float x = PIECE_NUMBER;
-    float y= PIECE_NUMBER;
+    float x = pieceNumber;
+    float y= pieceNumber;
     
     //CGSize size = [im size];
     
@@ -193,17 +246,19 @@
 }
 
 - (void)createPuzzleFromImage:(UIImage*)image {
-    
+
+    [self computePieceSize];
     
     for (PieceView *p in pieces) {
         [p removeFromSuperview];
     }
     
+    [self createLattice];
     
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:N];
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
-    float f = piceSize*PIECE_NUMBER-2*(PIECE_NUMBER)*self.padding;
+    float f = piceSize*pieceNumber-2*(pieceNumber)*self.padding;
     
     UIImage *img = [[UIImage imageWithCGImage:[image CGImage] scale:image.size.width/f orientation:1] imageRotatedByDegrees:0];
     
@@ -214,16 +269,19 @@
     
     
     
-    for (int i=0;i<PIECE_NUMBER;i++){
-        for (int j=0;j<PIECE_NUMBER;j++){
+    for (int i=0;i<pieceNumber;i++){
+        for (int j=0;j<pieceNumber;j++){
             
             CGRect portion = CGRectMake(i * (piceSize-2*self.padding)-self.padding+50, j * (piceSize-2*self.padding)-self.padding+50, piceSize, piceSize);
             
             PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
             piece.delegate = self;
-            piece.image = [array objectAtIndex:j+PIECE_NUMBER*i];
-            piece.number = j+PIECE_NUMBER*i;
+            piece.image = [array objectAtIndex:j+pieceNumber*i];
+            piece.number = j+pieceNumber*i;
             piece.size = piceSize;
+            piece.position = -1;
+            NSNumber *n = [NSNumber numberWithInt:N];
+            piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
             
             NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
             
@@ -233,7 +291,7 @@
             }
             
             if (i>0) {
-                int l = [arrayPieces count]-PIECE_NUMBER;
+                int l = [arrayPieces count]-pieceNumber;
                 int e = [[[[arrayPieces objectAtIndex:l] edges] objectAtIndex:1] intValue];
                 [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:-e]];
                 //NSLog(@"e = %d", e);
@@ -248,13 +306,13 @@
             if (i==0) {
                 [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:0]];
             }
-            if (i==PIECE_NUMBER-1) {
+            if (i==pieceNumber-1) {
                 [a replaceObjectAtIndex:1 withObject:[NSNumber numberWithInt:0]];
             }
             if (j==0) {
                 [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:0]];
             }
-            if (j==PIECE_NUMBER-1) {
+            if (j==pieceNumber-1) {
                 [a replaceObjectAtIndex:2 withObject:[NSNumber numberWithInt:0]];
             }
 
@@ -269,29 +327,44 @@
             [arrayPieces addObject:piece];
             [piece setNeedsDisplay];
             [self.view addSubview:piece];
-            
+                        
         }
     }
     
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
     
-    [self shuffle];
-    [self organizeDrawer];
+    if (FALSE) {
+        
+        for (PieceView *p in pieces) {
+            p.isFree = YES;
+        }
+        
+    } else {
+        [self shuffle];
+        [self organizeDrawer];
+    }
+
 }
 
 - (void)createLattice {
     
+    [lattice removeFromSuperview];
     
-    float w = (piceSize-2*self.padding)*PIECE_NUMBER;
+    
+    float w = (piceSize-2*self.padding)*pieceNumber;
     
     CGRect rect = [[UIScreen mainScreen] bounds];
         
     rect = CGRectMake((rect.size.width-w)/2, piceSize + 2*self.padding + 20, w, w);
     
     lattice = [[Lattice alloc] init];
-    [lattice initWithFrame:rect withNumber:PIECE_NUMBER];
+    [lattice initWithFrame:rect withNumber:pieceNumber];
     lattice.frame = self.view.frame;
     [self.view addSubview:lattice];
+
+    [self.view bringSubviewToFront:slider];
+    [self.view bringSubviewToFront:menuButtonView];
+
     
 }
 
@@ -561,6 +634,71 @@
 
 }
 
+- (PieceView*)pieceWithNumber:(int)j {
+    
+    for (PieceView *p in pieces) {
+        if (p.number==j) {
+            return p;
+        }
+    }
+    
+    return nil;
+}
+
+- (PieceView*)pieceWithPosition:(int)j {
+    
+    for (PieceView *p in pieces) {
+        if (p.position==j) {
+            return p;
+        }
+    }
+    
+    return nil;
+}
+
+- (BOOL)pieceIsOut:(PieceView *)piece {
+    
+    UIView *v0 = [lattice objectAtIndex:0];    
+    UIView *v = [lattice objectAtIndex:N-1];
+    
+    NSLog(@"DCCC N-1= %.1f", N);
+
+    
+    if (piece.center.x > v.frame.origin.x+v.frame.size.width ||
+        piece.center.y > v.frame.origin.y+v.frame.size.width ||
+        piece.center.x < v0.frame.origin.x ||
+        piece.center.y < v0.frame.origin.y
+  )
+    {
+        return YES;
+    }
+    
+    for (PieceView *p in [piece allTheNeighborsBut:nil]) {
+        
+        if (p.center.x > v.frame.origin.x+v.frame.size.width ||
+            p.center.y > v.frame.origin.y+v.frame.size.width ||
+            p.center.x < v0.frame.origin.x ||
+            p.center.y < v0.frame.origin.y
+            ) 
+        {
+            return YES;
+        }
+    }
+    
+    NSLog(@"IN");
+    
+    return NO;
+}
+
+- (IBAction)pieceNumberChanged:(UISlider*)sender {
+    
+    pieceNumber = floorf(sender.value);
+    N = pieceNumber*pieceNumber;
+    
+    NSLog(@"Piece number=%d", pieceNumber);
+    NSLog(@"N = %.1f", N);
+    
+}
 
 
 - (void)viewDidUnload

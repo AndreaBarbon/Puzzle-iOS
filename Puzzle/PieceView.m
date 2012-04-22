@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors, hasNeighbors, oldPosition;
 
 
 - (void)setup {
@@ -22,8 +22,6 @@
     tap.numberOfTapsRequired = 2;
     
     self.backgroundColor = [UIColor clearColor];
-            
-    neighbors = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:0],[NSNumber numberWithInt:0],[NSNumber numberWithInt:0],[NSNumber numberWithInt:0], nil];
     
     [self addGestureRecognizer:pan];
     [self addGestureRecognizer:rot];
@@ -35,6 +33,19 @@
 
 #pragma mark
 #pragma GESTURE HANDLING
+
+-(BOOL)isNeighborOf:(PieceView*)piece {
+    
+    for (PieceView *p in [self allTheNeighborsBut:nil]) {
+        
+        if (p.number==piece.number) {
+            
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 -(CGPoint)sum:(CGPoint)a plus:(CGPoint)b firstWeight:(float)f {
     
@@ -48,22 +59,97 @@
     
 }
 
+- (void)translateWithVector:(CGPoint)traslation {
+
+    CGPoint newOrigin = [self sum:self.frame.origin plus:traslation];
+    CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, self.frame.size.width, self.frame.size.height);
+    self.frame = newFrame;
+}
+
+- (void)movedNeighborhoodExcludingPieces:(NSMutableArray*)excluded {
+    
+    for (int j=0; j<[neighbors count]; j++) {
+        
+        int i = [[neighbors objectAtIndex:j] intValue];
+        
+        if (i<delegate.N) {
+            PieceView *piece = [delegate pieceWithNumber:i];
+            
+            BOOL present = NO;
+            for (PieceView *p in excluded) {
+                
+                if (piece==p) {
+                    present = YES;
+                }
+            }
+            
+            if (!present) {
+                [excluded addObject:piece];
+                [piece movedNeighborhoodExcludingPieces:excluded];
+                [delegate pieceMoved:piece];
+            } else {
+            }
+            
+        }
+    }
+    
+}
+
+- (void)translateNeighborhoodExcluding:(NSMutableArray*)excluded WithVector:(CGPoint)traslation {
+ 
+    for (int j=0; j<[neighbors count]; j++) {
+        
+        int i = [[neighbors objectAtIndex:j] intValue];
+        
+        if (i<delegate.N) {
+            //NSLog(@"From piece #%d, translating the other, i=%d", self.number ,i);
+            PieceView *piece = [delegate pieceWithNumber:i];
+            
+            BOOL present = NO;
+            for (PieceView *p in excluded) {
+                
+                if (piece==p) {
+                    present = YES;
+                }
+            }
+            
+            if (!present) {
+                //NSLog(@"Taslo anche il pezzo #%d", i);
+                [piece translateWithVector:traslation];
+                [excluded addObject:piece];
+                [piece translateNeighborhoodExcluding:excluded WithVector:traslation];
+            } else {
+                //NSLog(@"Il pezzo #%d c'era già", i);
+            }
+            
+        }
+    }
+    
+}
+
 - (void)move:(UIPanGestureRecognizer*)gesture {
     
     [self.superview bringSubviewToFront:self];
     
+    if (gesture.state == UIGestureRecognizerStateBegan) {
         
+        oldPosition = self.center;
+        
+    }
+        
+    NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
     CGPoint traslation = [gesture translationInView:self.superview];
-    CGPoint newOrigin = [self sum:self.frame.origin plus:traslation];
-    CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, self.frame.size.width, self.frame.size.height);
-    
-    self.frame = newFrame;
+
+    [self translateWithVector:traslation];
+    [self translateNeighborhoodExcluding:excluded WithVector:traslation];
 
     [gesture setTranslation:CGPointZero inView:self.superview];
-    
+
     
     if (gesture.state == UIGestureRecognizerStateEnded) {
-        
+
+        NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
+        [self movedNeighborhoodExcludingPieces:excluded];
         [delegate pieceMoved:self];
         
     }
@@ -105,6 +191,9 @@
         //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
         tempAngle = 0;
         
+        [delegate pieceMoved:self];
+
+        
     } else {
         self.transform = CGAffineTransformRotate(self.transform, rotation);
         tempAngle += rotation;
@@ -113,6 +202,8 @@
     //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
     
     [gesture setRotation:0];
+    
+    
 }
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
@@ -126,6 +217,27 @@
         self.transform = CGAffineTransformMakeRotation(angle);
         
     }];
+    
+    
+    //Rotate the neighborhood
+    for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
+        
+        CGAffineTransform transform = CGAffineTransformMakeTranslation(self.center.x-p.center.x, self.center.y-p.center.y);
+        transform = CGAffineTransformRotate(transform,angle);
+        transform = CGAffineTransformTranslate(transform, p.center.x-self.center.x, p.center.y-self.center.y);
+
+        
+        [UIView animateWithDuration:0.2 animations:^{
+                        
+            p.transform = transform;
+            
+        }];
+        
+        [delegate pieceRotated:p];
+        
+    }
+
+    [delegate pieceRotated:self];
     
 }
 
@@ -342,7 +454,7 @@
 
 -(void)setNeighborNumber:(int)i forEdge:(int)edge {
     
-    NSMutableArray *temp = [NSMutableArray arrayWithCapacity:4];
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:4];
     
     for (int j=0; j<4; j++) {
         
@@ -358,7 +470,56 @@
     
     NSLog(@"Set neighbor #%d for edge %d", [[neighbors objectAtIndex:edge] intValue], edge);
     
+    hasNeighbors = YES;
+    
 }
+
+
+- (NSArray*)allTheNeighborsBut:(NSMutableArray*)excluded {
+    
+    if (excluded==nil) {
+        excluded = [[NSMutableArray alloc] init];
+    }
+    [excluded addObject:self];
+    
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:delegate.N-1];
+            
+        for (int j=0; j<[neighbors count]; j++) {
+            
+            int i = [[neighbors objectAtIndex:j] intValue];
+            
+            
+            if (i<delegate.N) {
+                PieceView *otherPiece = [delegate pieceWithNumber:i];
+                
+                BOOL present = NO;
+                for (PieceView *p in excluded) {
+                                        
+                    if (otherPiece.number==p.number) {
+                        present = YES;
+                    }
+                }
+                
+                
+                if (!present) {
+                    [temp addObject:otherPiece];
+                }
+            }
+        }            
+    
+    NSMutableArray *temp2 = [[NSMutableArray alloc] initWithArray:temp];
+    [excluded addObjectsFromArray:temp];
+
+    for (PieceView *p in temp2) {
+        [temp addObjectsFromArray:[p allTheNeighborsBut:excluded]];
+    }
+    
+    
+    //NSLog(@"Neighbors: %d", [temp count]);
+    
+    return [NSArray arrayWithArray:temp];
+}
+
 
 #pragma mark
 #pragma UNUSEFUL
