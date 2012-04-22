@@ -24,7 +24,7 @@
     for (int i=0; i<N; i++) {
         
         UIView *v = [lattice objectAtIndex:N-i-1];
-        NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
+        //NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
         
         if (v.frame.origin.x<piece.center.x && v.frame.origin.y<piece.center.y && piece.isFree) {
             
