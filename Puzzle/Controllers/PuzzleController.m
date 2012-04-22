@@ -16,42 +16,64 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, sv, infoButton, piceSize, lattice;
+@synthesize pieces, popover, sv, piceSize, lattice;
 
+- (void)movePiece:(PieceView*)piece toLatticePoint:(int)i {
+    
+    piece.isPositioned = NO;
+
+    UIView *v = [lattice objectAtIndex:i];
+
+    [UIView animateWithDuration:0.4 animations:^{
+        piece.frame = CGRectMake(
+                                 v.frame.origin.x-self.padding,
+                                 v.frame.origin.y-self.padding, 
+                                 piece.frame.size.width, 
+                                 piece.frame.size.height);
+    }];
+    
+    piece.position = i;
+    if (piece.number == i) {
+        piece.isPositioned = YES;
+    }
+}
 
 - (void)pieceMoved:(PieceView *)piece {
     
-    for (int i=0; i<N; i++) {
+    CGPoint point = piece.frame.origin;        
+    piece.isFree = (point.y>piceSize);
+
+    
+    if (piece.isFree) {
         
-        UIView *v = [lattice objectAtIndex:N-i-1];
-        //NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
-        
-        if (v.frame.origin.x<piece.center.x && v.frame.origin.y<piece.center.y && piece.isFree) {
+        for (int i=N-1; i>-1; i--) {
             
-            [UIView animateWithDuration:0.4 animations:^{
-                piece.frame = CGRectMake(
-                                         v.frame.origin.x-self.padding,
-                                         v.frame.origin.y-self.padding, 
-                                         piece.frame.size.width, 
-                                         piece.frame.size.height);
-            }];
+            UIView *v = [lattice objectAtIndex:i];
+            //NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
             
-            NSLog(@"Found");
-            return;
+            if (v.frame.origin.x<piece.center.x && v.frame.origin.y<piece.center.y) {
+                
+                [self movePiece:piece toLatticePoint:i];
+                
+                break;
+            }
         }
     }
+    
+    [self organizeDrawer];
+
     
 }
 
 - (void)setup {
-    
+        
     CGRect rect = [[UIScreen mainScreen] bounds];
     
     self.padding = rect.size.width/PIECE_NUMBER*0.2;
     piceSize = PUZZLE_SIZE*rect.size.width/(PIECE_NUMBER)+2*self.padding;
     
     self.view.frame = rect;
-    
+        
     
     
 
@@ -196,29 +218,34 @@
     [self organizeDrawer];
 }
 
+- (void)createLattice {
+    
+    
+    float w = (piceSize-2*self.padding)*PIECE_NUMBER;
+    
+    CGRect rect = [[UIScreen mainScreen] bounds];
+        
+    rect = CGRectMake((rect.size.width-w)/2, piceSize + 2*self.padding + 20, w, w);
+    
+    lattice = [[Lattice alloc] init];
+    [lattice initWithFrame:rect withNumber:PIECE_NUMBER];
+    lattice.frame = self.view.frame;
+    [self.view addSubview:lattice];
+    
+}
+
+- (void)pinch:(UIPinchGestureRecognizer*)gesture {
+    
+    NSLog(@"Pinched!");
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    
-    
-    NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:N];
-
-    for (int i=0;i<PIECE_NUMBER;i++){
-        for (int j=0;j<PIECE_NUMBER;j++){
-            float w = piceSize-2*self.padding;
-            CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+2*self.padding, w-1, w-1);
-            UIView *v = [[UIView alloc] initWithFrame:rect];
-            v.backgroundColor = [UIColor whiteColor];
-            v.alpha = .1;
-            [a addObject:v];
-            [self.view addSubview:v];
-        }
-    }
-    
-    lattice = [[NSArray alloc] initWithArray:a];
-    
-    
+    [self createLattice];
+        
     UIImage *img = [UIImage imageNamed:@"Cover.png"];
 
     [self createPuzzleFromImage:img];
@@ -232,7 +259,9 @@
     [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.view addGestureRecognizer:swipeL];
     
-
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    [self.view addGestureRecognizer:pinch];
+    
 }
 
 - (void)organizeDrawer {
@@ -359,16 +388,29 @@
     c.allowsEditing = YES;
     c.delegate = self;
     
-    popover = [[UIPopoverController alloc] initWithContentViewController:c];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+            
+        popover = [[UIPopoverController alloc] initWithContentViewController:c];
+        popover.delegate = self;
+        [popover presentPopoverFromRect:menuButtonView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+        
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        [self presentModalViewController:c animated:YES];
+    }
 
-    popover.delegate = self;
-    
-    [popover presentPopoverFromRect:infoButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES   ];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    [popover dismissPopoverAnimated:YES];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+
+        [popover dismissPopoverAnimated:YES];
+        
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+
+        [self dismissModalViewControllerAnimated:YES];
+    }
 
     UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
 

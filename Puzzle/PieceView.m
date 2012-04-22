@@ -17,8 +17,7 @@
 - (void)setup {
             
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
-    
+    UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rotateTap:)];
     tap.numberOfTapsRequired = 2;
     
@@ -63,15 +62,8 @@
     
     
     if (gesture.state == UIGestureRecognizerStateEnded) {
-
-        CGPoint point = [gesture locationInView:self.superview];
         
-        self.isFree = (point.y>boxHeight);
-        if (self.isFree) {
-            NSLog(@"I'm #%d and I'm free!", self.number);
-        }
-        
-    [delegate pieceMoved:self];
+        [delegate pieceMoved:self];
         
     }
     

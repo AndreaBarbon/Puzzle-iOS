@@ -22,6 +22,9 @@
         
 }
 
+@property (nonatomic, assign) id<PieceViewProtocol> delegate;
+
+
 @property(nonatomic, retain) NSArray *edges;
 @property(nonatomic, retain) UIImage *image;
 
@@ -38,7 +41,6 @@
 @property(nonatomic) float tempAngle;
 @property(nonatomic) float boxHeight;
 
-@property (nonatomic, assign) id<PieceViewProtocol> delegate;
 
 
 - (void)move:(UIPanGestureRecognizer*)gesture;

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B82AC5C7154411B500208887 /* Lattice.m in Sources */ = {isa = PBXBuildFile; fileRef = B82AC5C6154411B500208887 /* Lattice.m */; };
 		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
 		B84014F11540DFBD0075734A /* Cover.png in Resources */ = {isa = PBXBuildFile; fileRef = B84014F01540DFBD0075734A /* Cover.png */; };
 		B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
@@ -25,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B82AC5C5154411B500208887 /* Lattice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lattice.h; path = Classes/Lattice.h; sourceTree = "<group>"; };
+		B82AC5C6154411B500208887 /* Lattice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lattice.m; path = Classes/Lattice.m; sourceTree = "<group>"; };
 		B84014EB1540D0880075734A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B84014F01540DFBD0075734A /* Cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cover.png; sourceTree = "<group>"; };
 		B84014F21540E57D0075734A /* UIImage+CWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CWAdditions.h"; path = "Classes/UIImage+CWAdditions.h"; sourceTree = "<group>"; };
@@ -128,6 +131,8 @@
 				B87C5CE7154014BF00AF69BC /* TopClass.m */,
 				B84014F21540E57D0075734A /* UIImage+CWAdditions.h */,
 				B84014F31540E57D0075734A /* UIImage+CWAdditions.m */,
+				B82AC5C5154411B500208887 /* Lattice.h */,
+				B82AC5C6154411B500208887 /* Lattice.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -222,6 +227,7 @@
 				B87C5CEC154014EE00AF69BC /* PieceView.m in Sources */,
 				B87C5CF11540174400AF69BC /* PuzzleController.m in Sources */,
 				B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */,
+				B82AC5C7154411B500208887 /* Lattice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
