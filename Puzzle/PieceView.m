@@ -26,7 +26,7 @@
     [self addGestureRecognizer:pan];
     [self addGestureRecognizer:rot];
     [self addGestureRecognizer:tap];
-    
+        
 }
 
 
@@ -133,7 +133,7 @@
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
-        oldPosition = self.center;
+        oldPosition = [self realCenter];
         
     }
         
@@ -167,41 +167,51 @@
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture {
     
-    float rotation = [gesture rotation];
-    
-    if ([gesture state]==UIGestureRecognizerStateEnded) {
+    if (!self.hasNeighbors) {
         
-        int t = floor(ABS(tempAngle)/(M_PI/4));
+        float rotation = [gesture rotation];
         
-        if (t%2==0) {
-            t/=2;
+        if ([gesture state]==UIGestureRecognizerStateEnded) {
+            
+            int t = floor(ABS(tempAngle)/(M_PI/4));
+            
+            if (t%2==0) {
+                t/=2;
+            } else {
+                t= (t+1)/2;
+            }
+            
+            rotation = angle + tempAngle/ABS(tempAngle) * t*M_PI/2;
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                self.transform = CGAffineTransformMakeRotation(rotation);
+                
+            }];
+            
+            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
+            angle = [PuzzleController float:angle modulo:2*M_PI];
+            if (angle>6.1) {
+                angle = 0.0;
+            }
+            
+            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+            tempAngle = 0;
+            
+            [delegate pieceRotated:self];
+            
+            
         } else {
-            t= (t+1)/2;
+            self.transform = CGAffineTransformRotate(self.transform, rotation);
+            tempAngle += rotation;
         }
         
-        rotation = angle + tempAngle/ABS(tempAngle) * t*M_PI/2;
+        //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
         
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            self.transform = CGAffineTransformMakeRotation(rotation);
-            
-        }];
         
-        angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
-        //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
-        tempAngle = 0;
+        [gesture setRotation:0];
         
-        [delegate pieceMoved:self];
-
-        
-    } else {
-        self.transform = CGAffineTransformRotate(self.transform, rotation);
-        tempAngle += rotation;
     }
-    
-    //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
-    
-    [gesture setRotation:0];
     
     
 }
@@ -226,12 +236,16 @@
         transform = CGAffineTransformRotate(transform,angle);
         transform = CGAffineTransformTranslate(transform, p.center.x-self.center.x, p.center.y-self.center.y);
 
+        NSLog(@"Center = %.1f",[p realCenter].x);
         
         [UIView animateWithDuration:0.2 animations:^{
                         
             p.transform = transform;
             
         }];
+        
+        NSLog(@"Center after tranform = %.1f", [p realCenter].x);
+
         
         [delegate pieceRotated:p];
         
@@ -543,6 +557,11 @@
     
     [self setup];
     
+}
+
+- (CGPoint)realCenter {
+   
+    return  CGPointMake(self.frame.origin.x + self.frame.size.width/2, self.frame.origin.y + self.frame.size.height/2);
 }
 
 @end

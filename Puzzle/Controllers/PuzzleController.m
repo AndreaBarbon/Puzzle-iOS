@@ -70,12 +70,12 @@
         if (j+i>=0 && j+i<N) {
             
             otherPiece = [self pieceAtPosition:j+i];
-            if (otherPiece != nil && piece.number+l==otherPiece.number && ABS(piece.angle-otherPiece.angle)<M_PI/2) {
+            if (otherPiece != nil && otherPiece.isFree && piece.number+l==otherPiece.number && (ABS(piece.angle-otherPiece.angle)<M_PI/4)) {
                 k = otherPiece.number;
                 //NSLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", j+i, piece.number+l, k);
                 [otherPiece setNeighborNumber:piece.number forEdge:(r+2)%4];
                 piece.hasNeighbors = YES;
-                //NSLog(@"Found neighbor #%d", k);
+                NSLog(@"Found neighbor #%d", k);
             }
             
         }
@@ -111,6 +111,7 @@
     }
     
     [self checkNeighborsOfPieceNumber:piece];
+    
 }
 
 - (void)pieceMoved:(PieceView *)piece {
@@ -128,27 +129,32 @@
         
         if ( [self pieceIsOut:piece] ) 
         {
-            NSLog(@"Piece is out");
             
             [UIView animateWithDuration:0.4 animations:^{
                 
                 for (PieceView *p in [piece allTheNeighborsBut:nil]) {
-                    p.center = p.oldPosition;
-                    NSLog(@"Set old position for piece #%d", p.number);
+                    CGRect rect = p.frame;
+                    rect.origin.x = p.oldPosition.x-p.frame.size.width/2;
+                    rect.origin.y = p.oldPosition.y-p.frame.size.height/2;
+                    p.frame = rect;
+                    NSLog(@"Reset the old position (%.1f, %.1f) for piece #%d", p.oldPosition.x, p.oldPosition.y, p.number);
                 }
-                piece.center = piece.oldPosition;
-                NSLog(@"BOSS - Set old position for piece #%d", piece.number);
+                CGRect rect = piece.frame;
+                rect.origin.x = piece.oldPosition.x-piece.frame.size.width/2;
+                rect.origin.y = piece.oldPosition.y-piece.frame.size.height/2;
+                piece.frame = rect;                
+                NSLog(@"BOSS - Reset the old position (%.1f, %.1f) for piece #%d", piece.oldPosition.x, piece.oldPosition.y, piece.number);
 
             }];
             
-        } else if (piece.center.x != piece.oldPosition.x || piece.center.y != piece.oldPosition.y) {
+        } else if ([piece realCenter].x != piece.oldPosition.x || [piece realCenter].y != piece.oldPosition.y) {
                         
             for (int i=N-1; i>-1; i--) {
                 
                 UIView *v = [lattice objectAtIndex:i];
-                //NSLog(@"v origin = %.1f, %.1f - piece.center = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, piece.center.x, piece.center.y);
+                //NSLog(@"v origin = %.1f, %.1f - [piece realCenter] = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, [piece realCenter].x, [piece realCenter].y);
                 
-                if (v.frame.origin.x<piece.center.x && v.frame.origin.y<piece.center.y) {
+                if (v.frame.origin.x<[piece realCenter].x && v.frame.origin.y<[piece realCenter].y) {
                     
                     [self movePiece:piece toLatticePoint:i];
                     
@@ -163,14 +169,39 @@
     
     [self organizeDrawer];
     
-    piece.oldPosition = piece.center;
+    piece.oldPosition = [piece realCenter];
+    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+
+    
+}
+
+- (int)positionNumberForCenter:(CGPoint)center {
     
     
+    for (int i=N-1; i>-1; i--) {
+        
+        UIView *v = [lattice objectAtIndex:i];
+        //NSLog(@"v origin = %.1f, %.1f - [piece realCenter] = %.1f, %.1f", v.frame.origin.x, v.frame.origin.y, [piece realCenter].x, [piece realCenter].y);
+        
+        if (v.frame.origin.x<center.x && v.frame.origin.y<center.y) {
+            
+            NSLog(@"New position = %d", i);
+            
+            return i;
+        }
+    }
+
+    
+    return 0;
 }
 
 - (void)pieceRotated:(PieceView *)piece {
 
-    piece.oldPosition = piece.center;
+    piece.oldPosition = [piece realCenter];
+    piece.position = [self positionNumberForCenter:piece.oldPosition];
+    
+    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+
     [self checkNeighborsOfPieceNumber:piece];    
     
 }
@@ -567,9 +598,9 @@
             p.frame = rect;
             
             int r = arc4random_uniform(4);
-            p.transform = CGAffineTransformMakeRotation(r*M_PI_2);
-            p.angle = r*M_PI_2;
-            
+            p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
+            p.angle = r*M_PI/2;
+            NSLog(@"angle=%.1f", p.angle);
         }
         
         
@@ -661,31 +692,32 @@
     UIView *v0 = [lattice objectAtIndex:0];    
     UIView *v = [lattice objectAtIndex:N-1];
     
-    NSLog(@"DCCC N-1= %.1f", N);
 
     
-    if (piece.center.x > v.frame.origin.x+v.frame.size.width ||
-        piece.center.y > v.frame.origin.y+v.frame.size.width ||
-        piece.center.x < v0.frame.origin.x ||
-        piece.center.y < v0.frame.origin.y
+    if ([piece realCenter].x > v.frame.origin.x+v.frame.size.width ||
+        [piece realCenter].y > v.frame.origin.y+v.frame.size.width ||
+        [piece realCenter].x < v0.frame.origin.x ||
+        [piece realCenter].y < v0.frame.origin.y
   )
     {
+        NSLog(@"Piece is #%d out, N= %.1f", piece.number, N);
         return YES;
     }
     
     for (PieceView *p in [piece allTheNeighborsBut:nil]) {
         
-        if (p.center.x > v.frame.origin.x+v.frame.size.width ||
-            p.center.y > v.frame.origin.y+v.frame.size.width ||
-            p.center.x < v0.frame.origin.x ||
-            p.center.y < v0.frame.origin.y
+        if ([p realCenter].x > v.frame.origin.x+v.frame.size.width ||
+            [p realCenter].y > v.frame.origin.y+v.frame.size.width ||
+            [p realCenter].x < v0.frame.origin.x ||
+            [p realCenter].y < v0.frame.origin.y
             ) 
         {
+            NSLog(@"Piece is #%d out, N= %.1f", piece.number, N);
             return YES;
         }
     }
     
-    NSLog(@"IN");
+    //NSLog(@"IN");
     
     return NO;
 }
@@ -698,7 +730,7 @@
     NSLog(@"Piece number=%d", pieceNumber);
     NSLog(@"N = %.1f", N);
     
-}
+}   
 
 
 - (void)viewDidUnload
