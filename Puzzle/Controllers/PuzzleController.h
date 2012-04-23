@@ -18,7 +18,7 @@
     CGPoint drawerFirstPoint;
     IBOutlet UIView *menuButtonView;
     IBOutlet UISlider *slider;
-
+    UIImageView *imageView;
 }
 
 +(float)float:(float)f modulo:(float)m;
@@ -40,7 +40,7 @@
 
 @property (nonatomic, retain) UIPopoverController *popover;
 
-@property (nonatomic, retain) IBOutlet UIScrollView *sv;
+@property (nonatomic, retain) UIImage *image;
 
 
 @end

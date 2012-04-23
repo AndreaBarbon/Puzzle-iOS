@@ -16,7 +16,38 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, sv, piceSize, lattice, N, pieceNumber;
+@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber;
+
+- (BOOL)isPuzzleComplete {
+    
+    for (PieceView *p in pieces) {
+        if (!p.isPositioned) {
+            NSLog(@"Piece #%d is not positioned", p.number);
+            return NO;
+        }
+    }
+    
+    return YES;
+    
+}
+
+- (void)puzzleCompleted {
+        
+    imageView = [[UIImageView alloc] initWithImage:image];
+    UIView *v0 = [lattice objectAtIndex:0];
+    float w = v0.bounds.size.width+1;
+    CGRect rect = CGRectMake(v0.frame.origin.x, v0.frame.origin.y, w*pieceNumber, w*pieceNumber);
+    
+    imageView.frame = rect;
+    imageView.alpha = 0;
+    [self.view addSubview:imageView];
+    
+    [UIView animateWithDuration:1.5 animations:^{
+        
+        imageView.alpha = 1;
+
+    }];
+}
 
 - (void)computePieceSize {
     
@@ -171,6 +202,10 @@
     
     piece.oldPosition = [piece realCenter];
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+    
+    if ([self isPuzzleComplete]) {
+        [self puzzleCompleted];
+    }
 
     
 }
@@ -203,6 +238,10 @@
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
 
     [self checkNeighborsOfPieceNumber:piece];    
+    
+    if ([self isPuzzleComplete]) {
+        [self puzzleCompleted];
+    }
     
 }
 
@@ -276,7 +315,7 @@
     
 }
 
-- (void)createPuzzleFromImage:(UIImage*)image {
+- (void)createPuzzleFromImage:(UIImage*)image_ {
 
     [self computePieceSize];
     
@@ -291,7 +330,7 @@
     
     float f = piceSize*pieceNumber-2*(pieceNumber)*self.padding;
     
-    UIImage *img = [[UIImage imageWithCGImage:[image CGImage] scale:image.size.width/f orientation:1] imageRotatedByDegrees:0];
+    UIImage *img = [[UIImage imageWithCGImage:[image_ CGImage] scale:image_.size.width/f orientation:1] imageRotatedByDegrees:0];
     
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
     
@@ -390,7 +429,7 @@
     
     lattice = [[Lattice alloc] init];
     [lattice initWithFrame:rect withNumber:pieceNumber];
-    lattice.frame = self.view.frame;
+    //lattice.frame = self.view.frame;
     [self.view addSubview:lattice];
 
     [self.view bringSubviewToFront:slider];
@@ -411,9 +450,9 @@
     
     [self createLattice];
         
-    UIImage *img = [UIImage imageNamed:@"Cover.png"];
+    image = [UIImage imageNamed:@"Cover.png"];
 
-    [self createPuzzleFromImage:img];
+    [self createPuzzleFromImage:image];
 
     
     UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
@@ -577,11 +616,10 @@
         [self dismissModalViewControllerAnimated:YES];
     }
 
-    UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
+    image = [info objectForKey:UIImagePickerControllerEditedImage];
 
-    [self createPuzzleFromImage:img];
-
-
+    [imageView removeFromSuperview];
+    [self createPuzzleFromImage:image];
 
 }
 
