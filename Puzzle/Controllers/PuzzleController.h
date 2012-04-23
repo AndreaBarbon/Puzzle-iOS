@@ -17,8 +17,8 @@
     BOOL swiping;
     CGPoint drawerFirstPoint;
     IBOutlet UIView *menuButtonView;
-    IBOutlet UISlider *slider;
-    UIImageView *imageView;
+    IBOutlet UIView *drawerView;
+    IBOutlet UIStepper *stepper;
 }
 
 +(float)float:(float)f modulo:(float)m;
@@ -41,6 +41,7 @@
 @property (nonatomic, retain) UIPopoverController *popover;
 
 @property (nonatomic, retain) UIImage *image;
+@property (nonatomic, retain) UIImageView *imageView;
 
 
 @end

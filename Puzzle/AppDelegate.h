@@ -22,9 +22,5 @@
 - (NSURL *)applicationDocumentsDirectory;
 
 
-#define PADDING 50.0
-
-
-
 
 @end

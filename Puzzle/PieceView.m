@@ -17,15 +17,21 @@
 - (void)setup {
             
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+    [pan setMinimumNumberOfTouches:1];
+    [pan setMaximumNumberOfTouches:1];
+    [self addGestureRecognizer:pan];
+
+    
     UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];    
+    [self addGestureRecognizer:rot];
+
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rotateTap:)];
     tap.numberOfTapsRequired = 2;
+    [self addGestureRecognizer:tap];
     
     self.backgroundColor = [UIColor clearColor];
-    
-    [self addGestureRecognizer:pan];
-    [self addGestureRecognizer:rot];
-    [self addGestureRecognizer:tap];
+        
         
 }
 
@@ -167,51 +173,51 @@
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture {
     
-    if (!self.hasNeighbors) {
-        
-        float rotation = [gesture rotation];
-        
-        if ([gesture state]==UIGestureRecognizerStateEnded) {
-            
-            int t = floor(ABS(tempAngle)/(M_PI/4));
-            
-            if (t%2==0) {
-                t/=2;
-            } else {
-                t= (t+1)/2;
-            }
-            
-            rotation = angle + tempAngle/ABS(tempAngle) * t*M_PI/2;
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                
-                self.transform = CGAffineTransformMakeRotation(rotation);
-                
-            }];
-            
-            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
-            angle = [PuzzleController float:angle modulo:2*M_PI];
-            if (angle>6.1) {
-                angle = 0.0;
-            }
-            
-            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
-            tempAngle = 0;
-            
-            [delegate pieceRotated:self];
-            
-            
-        } else {
-            self.transform = CGAffineTransformRotate(self.transform, rotation);
-            tempAngle += rotation;
-        }
-        
-        //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
-        
-        
-        [gesture setRotation:0];
-        
-    }
+//    if (!self.hasNeighbors) {
+//        
+//        float rotation = [gesture rotation];
+//        
+//        if ([gesture state]==UIGestureRecognizerStateEnded) {
+//            
+//            int t = floor(ABS(tempAngle)/(M_PI/4));
+//            
+//            if (t%2==0) {
+//                t/=2;
+//            } else {
+//                t= (t+1)/2;
+//            }
+//            
+//            rotation = angle + tempAngle/ABS(tempAngle) * t*M_PI/2;
+//            
+//            [UIView animateWithDuration:0.2 animations:^{
+//                
+//                self.transform = CGAffineTransformMakeRotation(rotation);
+//                
+//            }];
+//            
+//            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
+//            angle = [PuzzleController float:angle modulo:2*M_PI];
+//            if (angle>6.1) {
+//                angle = 0.0;
+//            }
+//            
+//            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+//            tempAngle = 0;
+//            
+//            [delegate pieceRotated:self];
+//            
+//            
+//        } else {
+//            self.transform = CGAffineTransformRotate(self.transform, rotation);
+//            tempAngle += rotation;
+//        }
+//        
+//        //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
+//        
+//        
+//        [gesture setRotation:0];
+//        
+//    }
     
     
 }
@@ -252,6 +258,8 @@
     }
 
     [delegate pieceRotated:self];
+    
+    NSLog(@"Angle of #%d = %.1f", self.number, self.angle);
     
 }
 
@@ -482,7 +490,7 @@
     
     neighbors = [[NSArray alloc] initWithArray:temp];
     
-    NSLog(@"Set neighbor #%d for edge %d", [[neighbors objectAtIndex:edge] intValue], edge);
+    NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
     
     hasNeighbors = YES;
     
