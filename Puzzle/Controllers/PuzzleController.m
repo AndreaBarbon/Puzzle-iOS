@@ -101,7 +101,7 @@
         if (j+i>=0 && j+i<N) {
             
             otherPiece = [self pieceAtPosition:j+i];
-            if (otherPiece != nil && otherPiece.isFree && piece.number+l==otherPiece.number && (ABS(piece.angle-otherPiece.angle)<M_PI/4)) {
+            if (otherPiece != nil && piece.isFree && otherPiece.isFree && piece.number+l==otherPiece.number && (ABS(piece.angle-otherPiece.angle)<M_PI/4)) {
                 k = otherPiece.number;
                 //NSLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", j+i, piece.number+l, k);
                 [otherPiece setNeighborNumber:piece.number forEdge:(r+2)%4];
@@ -425,7 +425,9 @@
     
     CGRect rect = [[UIScreen mainScreen] bounds];
         
-    rect = CGRectMake((rect.size.width-w)/2, piceSize + 2*self.padding + 20, w, w);
+    float marginTop = (rect.size.height - w + piceSize)/2;
+    
+    rect = CGRectMake((rect.size.width-w)/2, marginTop, w, w);
     
     lattice = [[Lattice alloc] init];
     [lattice initWithFrame:rect withNumber:pieceNumber];
