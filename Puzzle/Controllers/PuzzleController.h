@@ -19,16 +19,11 @@
     IBOutlet UIView *menuButtonView;
     IBOutlet UIView *drawerView;
     IBOutlet UIStepper *stepper;
+    IBOutlet UIStepper *stepperDrawer;
+    IBOutlet UIButton *restartButton;
+    int DrawerPosition;
 }
 
-+(float)float:(float)f modulo:(float)m;
-
--(PieceView*)pieceWithNumber:(int)j;
-- (PieceView*)pieceWithPosition:(int)j;
-
-
--(BOOL)pieceIsOut:(PieceView*)piece;
-- (void)movePiece:(PieceView*)piece toLatticePoint:(int)i;
 
 @property(nonatomic) float piceSize;
 @property(nonatomic) float N;
@@ -42,6 +37,24 @@
 
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView *imageView;
+
+
+
++(float)float:(float)f modulo:(float)m;
+
+- (PieceView*)pieceWithNumber:(int)j;
+- (PieceView*)pieceWithPosition:(int)j;
+- (int)positionOfPiece:(PieceView*)piece;
+
+- (IBAction)scrollDrawer:(id)sender;
+- (IBAction)restartPuzzle:(id)sender;
+
+- (CGRect)frameOfLatticePiece:(int)i;
+
+
+-(BOOL)pieceIsOut:(PieceView*)piece;
+- (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated;
+
 
 
 @end

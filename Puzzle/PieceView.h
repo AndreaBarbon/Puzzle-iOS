@@ -22,6 +22,7 @@
 
 @interface PieceView : UIView {
         
+    
 }
 
 //@property (nonatomic, assign) id<PieceViewProtocol> delegate;
@@ -31,6 +32,7 @@
 @property(nonatomic, retain) NSArray *edges;
 @property(nonatomic, retain) NSArray *neighbors;
 @property(nonatomic, retain) UIImage *image;
+@property(nonatomic, retain) UIView *centerView;
 
 @property(nonatomic) BOOL isPositioned;
 @property(nonatomic) BOOL isLifted;

@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors, hasNeighbors, oldPosition;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView;
 
 
 - (void)setup {
@@ -19,6 +19,8 @@
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
     [pan setMinimumNumberOfTouches:1];
     [pan setMaximumNumberOfTouches:1];
+    pan.delaysTouchesBegan = YES;
+
     [self addGestureRecognizer:pan];
 
     
@@ -31,6 +33,12 @@
     [self addGestureRecognizer:tap];
     
     self.backgroundColor = [UIColor clearColor];
+    
+    
+    centerView = [[UIView alloc] init];
+    centerView.backgroundColor = [UIColor blackColor];
+    centerView.alpha = 0.5;
+    [self addSubview:centerView];
         
         
 }
@@ -131,6 +139,11 @@
         }
     }
     
+    for (PieceView *p in [self allTheNeighborsBut:nil]) {
+        p.position = [delegate positionOfPiece:p];
+    }
+    self.position = [delegate positionOfPiece:self]; 
+    
 }
 
 - (void)move:(UIPanGestureRecognizer*)gesture {
@@ -223,10 +236,12 @@
 }
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
-    
+        
     angle += M_PI/2;
     
     angle = angle - floor(angle/(2*M_PI))*2*M_PI;
+    
+    centerView.frame = CGRectZero;
     
     [UIView animateWithDuration:0.2 animations:^{
         
@@ -234,32 +249,81 @@
         
     }];
     
-    
     //Rotate the neighborhood
     for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
-        
-        CGAffineTransform transform = CGAffineTransformMakeTranslation(self.center.x-p.center.x, self.center.y-p.center.y);
-        transform = CGAffineTransformRotate(transform,angle);
-        transform = CGAffineTransformTranslate(transform, p.center.x-self.center.x, p.center.y-self.center.y);
 
-        NSLog(@"Center = %.1f",[p realCenter].x);
+
         
-        [UIView animateWithDuration:0.2 animations:^{
-                        
-            p.transform = transform;
+            UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+        
+            CGPoint selfOrigin = [mainWindow convertPoint:[self realCenter] fromWindow:nil];
+            CGPoint pOrigin = [mainWindow convertPoint:[p realCenter] fromWindow:nil];
             
-        }];
+            pOrigin = [p convertPoint:pOrigin fromView:mainWindow];
+            selfOrigin = [p convertPoint:selfOrigin fromView:mainWindow];
+            
+            
+            
+            float x = (selfOrigin.x-pOrigin.x);
+            float y = (selfOrigin.y-pOrigin.y);
+            
+            
+            CGAffineTransform transform = p.transform;
+            //NSLog(@"Old transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
+            
+            CGAffineTransform matrix = CGAffineTransformIdentity;
+            matrix = CGAffineTransformRotate(matrix,0);
+            
+            //NSLog(@"Matrix \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
+            
+            float xx = x;
+            float yy = y;
+            
+            x = xx*matrix.a + yy*matrix.b;
+            y = xx*matrix.c + yy*matrix.d;
+            
+            //NSLog(@"(%.1f,%.1f)", x, y );
+            //p.centerView.frame = CGRectMake(x, y, 10, 10);
+            
+            
+            
+            
+            CGAffineTransform originalTransform = p.transform;
+            transform = CGAffineTransformTranslate(originalTransform , x, y);
+            transform = CGAffineTransformRotate(transform,angle-p.angle);
+            transform = CGAffineTransformTranslate(transform, -x,-y);
+            
+            //NSLog(@"New transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
+            
+            
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                p.transform = transform;
+                p.angle = angle;
+                
+            } completion:^(BOOL finished){
+                
+                CGPoint point = p.center;
+                point.x += transform.tx;
+                point.y += transform.ty;
+                p.transform = CGAffineTransformMakeRotation(p.angle);
+                p.center = point;
+                
+                //p.transform = originalTransform;
+                
+            }];
+            
         
-        NSLog(@"Center after tranform = %.1f", [p realCenter].x);
-
+            [delegate pieceRotated:p];
         
-        [delegate pieceRotated:p];
+        
         
     }
-
-    [delegate pieceRotated:self];
     
-    NSLog(@"Angle of #%d = %.1f", self.number, self.angle);
+    [delegate pieceRotated:self];
+        
+
     
 }
 
@@ -476,6 +540,7 @@
 
 -(void)setNeighborNumber:(int)i forEdge:(int)edge {
     
+
     NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:4];
     
     for (int j=0; j<4; j++) {
@@ -490,7 +555,7 @@
     
     neighbors = [[NSArray alloc] initWithArray:temp];
     
-    NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
+    //NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
     
     hasNeighbors = YES;
     
