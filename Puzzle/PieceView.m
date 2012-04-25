@@ -128,30 +128,26 @@
             }
             
             if (!present) {
-                //NSLog(@"Taslo anche il pezzo #%d", i);
                 [piece translateWithVector:traslation];
                 [excluded addObject:piece];
                 [piece translateNeighborhoodExcluding:excluded WithVector:traslation];
-            } else {
-                //NSLog(@"Il pezzo #%d c'era già", i);
             }
-            
         }
     }
     
-    for (PieceView *p in [self allTheNeighborsBut:nil]) {
-        p.position = [delegate positionOfPiece:p];
-    }
-    self.position = [delegate positionOfPiece:self]; 
+//    for (PieceView *p in [self allTheNeighborsBut:nil]) {
+//        p.position = [delegate positionOfPiece:p];
+//    }
+//    self.position = [delegate positionOfPiece:self]; 
     
 }
 
 - (void)move:(UIPanGestureRecognizer*)gesture {
     
-    [self.superview bringSubviewToFront:self];
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
-        
+
+        [self.superview bringSubviewToFront:self];
         oldPosition = [self realCenter];
         
     }

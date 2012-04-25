@@ -67,8 +67,25 @@
 
 - (void)computePieceSize {
     
-    piceSize = 200;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        piceSize = 200;
+        
+    }else{  
+        
+        piceSize = 100;
+    }
+
     self.padding = piceSize*0.15;
+
+    CGRect frame = drawerView.frame;
+    frame.size.height = piceSize+2*self.padding;
+    drawerView.frame = frame;
+   
+    frame = stepperDrawer.frame;
+    frame.origin.y = drawerView.frame.size.height+10;
+    stepperDrawer.frame = frame;
+    
     
 //    piceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
     
@@ -601,7 +618,7 @@
         }
         
     } else {
-        //[self shuffle];
+        [self shuffle];
         [self organizeDrawer];
     }
     
@@ -756,7 +773,7 @@
                 p2 = [temp objectAtIndex:i-1];
                 CGRect rect2 = p2.frame;
                 rect.origin.x = rect2.origin.x+rect2.size.width+10;
-                rect.origin.y = 30;
+                rect.origin.y = 25;
             } else {
                 rect.origin = drawerFirstPoint;
             }
@@ -895,7 +912,7 @@
             PieceView *p = [pieces objectAtIndex:i];            
             CGRect rect = p.frame;
             rect.origin.x = piceSize*i+10;
-            rect.origin.y = 30;
+            rect.origin.y = 25;
             p.frame = rect;
             
             int r = arc4random_uniform(4);

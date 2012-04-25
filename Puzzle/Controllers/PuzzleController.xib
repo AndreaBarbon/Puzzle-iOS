@@ -45,6 +45,8 @@
 								<int key="NSvFlags">256</int>
 								<string key="NSFrame">{{20, 23}, {18, 19}}</string>
 								<reference key="NSSuperview" ref="64352340"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -79,6 +81,7 @@
 								<int key="NSvFlags">256</int>
 								<string key="NSFrame">{{1, 0}, {57, 66}}</string>
 								<reference key="NSSuperview" ref="64352340"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="703604833"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -97,6 +100,7 @@
 						</array>
 						<string key="NSFrame">{{266, 397}, {58, 66}}</string>
 						<reference key="NSSuperview" ref="811427304"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="262311744"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="873945829">
@@ -105,11 +109,12 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIStepper" id="303472629">
+					<object class="IBUIStepper" id="450405074">
 						<reference key="NSNextResponder" ref="811427304"/>
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 416}, {94, 27}}</string>
 						<reference key="NSSuperview" ref="811427304"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="64352340"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -121,12 +126,13 @@
 						<double key="IBUIMinimumValue">4</double>
 						<double key="IBUIMaximumValue">100</double>
 					</object>
-					<object class="IBUIView" id="1056063311">
+					<object class="IBUIView" id="950110971">
 						<reference key="NSNextResponder" ref="811427304"/>
 						<int key="NSvFlags">290</int>
 						<string key="NSFrameSize">{320, 260}</string>
 						<reference key="NSSuperview" ref="811427304"/>
-						<reference key="NSNextKeyView" ref="72240880"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="282432830"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">10</int>
@@ -9967,12 +9973,13 @@ AAEAAQABA</bytes>
 						<float key="IBUIAlpha">0.89999997615814209</float>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIStepper" id="857368795">
+					<object class="IBUIStepper" id="282856151">
 						<reference key="NSNextResponder" ref="811427304"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{206, 279}, {94, 27}}</string>
+						<string key="NSFrame">{{216, 269}, {94, 27}}</string>
 						<reference key="NSSuperview" ref="811427304"/>
-						<reference key="NSNextKeyView" ref="303472629"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="450405074"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -9981,12 +9988,13 @@ AAEAAQABA</bytes>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<double key="IBUIMaximumValue">100</double>
 					</object>
-					<object class="IBUIButton" id="72240880">
+					<object class="IBUIButton" id="282432830">
 						<reference key="NSNextResponder" ref="811427304"/>
-						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{114, 274}, {77, 37}}</string>
+						<int key="NSvFlags">-2147483380</int>
+						<string key="NSFrame">{{134, 411}, {77, 37}}</string>
 						<reference key="NSSuperview" ref="811427304"/>
-						<reference key="NSNextKeyView" ref="857368795"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="282856151"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -10006,7 +10014,8 @@ AAEAAQABA</bytes>
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="1056063311"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="950110971"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">10</int>
@@ -14427,7 +14436,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">stepper</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="303472629"/>
+						<reference key="destination" ref="450405074"/>
 					</object>
 					<int key="connectionID">29</int>
 				</object>
@@ -14435,7 +14444,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">drawerView</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="1056063311"/>
+						<reference key="destination" ref="950110971"/>
 					</object>
 					<int key="connectionID">32</int>
 				</object>
@@ -14443,7 +14452,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">stepperDrawer</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="857368795"/>
+						<reference key="destination" ref="282856151"/>
 					</object>
 					<int key="connectionID">34</int>
 				</object>
@@ -14451,7 +14460,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">restartButton</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="72240880"/>
+						<reference key="destination" ref="282432830"/>
 					</object>
 					<int key="connectionID">38</int>
 				</object>
@@ -14467,7 +14476,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">pieceNumberChanged:</string>
-						<reference key="source" ref="303472629"/>
+						<reference key="source" ref="450405074"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">13</int>
 					</object>
@@ -14476,7 +14485,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">scrollDrawer:</string>
-						<reference key="source" ref="857368795"/>
+						<reference key="source" ref="282856151"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">13</int>
 					</object>
@@ -14485,7 +14494,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">restartPuzzle:</string>
-						<reference key="source" ref="72240880"/>
+						<reference key="source" ref="282432830"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -14516,10 +14525,10 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<reference key="object" ref="811427304"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="64352340"/>
-							<reference ref="303472629"/>
-							<reference ref="1056063311"/>
-							<reference ref="857368795"/>
-							<reference ref="72240880"/>
+							<reference ref="450405074"/>
+							<reference ref="950110971"/>
+							<reference ref="282856151"/>
+							<reference ref="282432830"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -14544,24 +14553,25 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">28</int>
-						<reference key="object" ref="303472629"/>
+						<reference key="object" ref="450405074"/>
 						<reference key="parent" ref="811427304"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">31</int>
-						<reference key="object" ref="1056063311"/>
+						<reference key="object" ref="950110971"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="811427304"/>
 						<string key="objectName">DraverView</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">33</int>
-						<reference key="object" ref="857368795"/>
+						<reference key="object" ref="282856151"/>
 						<reference key="parent" ref="811427304"/>
 						<string key="objectName">StepperDrawer</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">37</int>
-						<reference key="object" ref="72240880"/>
+						<reference key="object" ref="282432830"/>
 						<reference key="parent" ref="811427304"/>
 					</object>
 				</array>
@@ -14586,7 +14596,69 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 			<nil key="sourceID"/>
 			<int key="maxID">39</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">PuzzleController</string>
+					<string key="superclassName">TopClass</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="restartPuzzle:">id</string>
+						<string key="scrollDrawer:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="restartPuzzle:">
+							<string key="name">restartPuzzle:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="scrollDrawer:">
+							<string key="name">scrollDrawer:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="drawerView">UIView</string>
+						<string key="menuButtonView">UIView</string>
+						<string key="restartButton">UIButton</string>
+						<string key="stepper">UIStepper</string>
+						<string key="stepperDrawer">UIStepper</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="drawerView">
+							<string key="name">drawerView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="menuButtonView">
+							<string key="name">menuButtonView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="restartButton">
+							<string key="name">restartButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="stepper">
+							<string key="name">stepper</string>
+							<string key="candidateClassName">UIStepper</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="stepperDrawer">
+							<string key="name">stepperDrawer</string>
+							<string key="candidateClassName">UIStepper</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PuzzleController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TopClass</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TopClass.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
