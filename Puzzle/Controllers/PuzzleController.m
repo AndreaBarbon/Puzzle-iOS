@@ -1042,8 +1042,8 @@
     {
         [UIView animateWithDuration:0.5 animations:^{
             
-            NSLog(@"Shuffle!");
-            [self shuffle];
+            //NSLog(@"Shuffle!");
+            //[self shuffle];
             
         }];
     }

@@ -26,6 +26,12 @@
 		B87C5CEC154014EE00AF69BC /* PieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B87C5CEB154014EE00AF69BC /* PieceView.m */; };
 		B87C5CF11540174400AF69BC /* PuzzleController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87C5CEF1540174400AF69BC /* PuzzleController.m */; };
 		B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CF01540174400AF69BC /* PuzzleController.xib */; };
+		B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
+		B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
+		B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
+		B8DFA69B15497ED300256385 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69515497ED300256385 /* Default-Portrait~ipad.png */; };
+		B8DFA69C15497ED300256385 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69615497ED300256385 /* Default.png */; };
+		B8DFA69D15497ED300256385 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69715497ED300256385 /* Default@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +63,12 @@
 		B87C5CEE1540174400AF69BC /* PuzzleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleController.h; path = Controllers/PuzzleController.h; sourceTree = "<group>"; };
 		B87C5CEF1540174400AF69BC /* PuzzleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleController.m; path = Controllers/PuzzleController.m; sourceTree = "<group>"; };
 		B87C5CF01540174400AF69BC /* PuzzleController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleController.xib; path = Controllers/PuzzleController.xib; sourceTree = "<group>"; };
+		B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
+		B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
+		B8DFA69515497ED300256385 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		B8DFA69615497ED300256385 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		B8DFA69715497ED300256385 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +123,7 @@
 		B87C5CCD15400B2A00AF69BC /* Puzzle */ = {
 			isa = PBXGroup;
 			children = (
+				B8DFA69115497ED300256385 /* Default */,
 				B84014F01540DFBD0075734A /* Cover.png */,
 				B87C5CF31540174900AF69BC /* Controllers */,
 				B87C5CED1540170E00AF69BC /* Views */,
@@ -164,6 +177,19 @@
 				B87C5CF01540174400AF69BC /* PuzzleController.xib */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		B8DFA69115497ED300256385 /* Default */ = {
+			isa = PBXGroup;
+			children = (
+				B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */,
+				B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */,
+				B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */,
+				B8DFA69515497ED300256385 /* Default-Portrait~ipad.png */,
+				B8DFA69615497ED300256385 /* Default.png */,
+				B8DFA69715497ED300256385 /* Default@2x.png */,
+			);
+			path = Default;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +248,12 @@
 				B84014F11540DFBD0075734A /* Cover.png in Resources */,
 				B853810A1548D83D00F3BFA5 /* PiecePositioned.wav in Resources */,
 				B853810B1548D83D00F3BFA5 /* PuzzleCompleted.wav in Resources */,
+				B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */,
+				B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */,
+				B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */,
+				B8DFA69B15497ED300256385 /* Default-Portrait~ipad.png in Resources */,
+				B8DFA69C15497ED300256385 /* Default.png in Resources */,
+				B8DFA69D15497ED300256385 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
