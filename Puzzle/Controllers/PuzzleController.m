@@ -617,7 +617,7 @@
         
     } else {
         [self shuffle];
-        [self organizeDrawerWithOrientation:self.interfaceOrientation];
+        //[self organizeDrawerWithOrientation:self.interfaceOrientation];
     }
     
 }
@@ -831,7 +831,7 @@
                     rect.origin.x = (self.padding*0.75)/4;
                 } else {
                     rect.origin.x = rect2.origin.x+rect2.size.width+10;
-                    rect.origin.y = 20+(self.padding*0.75)/4;
+                    rect.origin.y = (self.padding*0.75)/4;
                 }
                 
             } else {
@@ -1001,14 +1001,15 @@
 - (void)shuffle {
     
     pieces = [self shuffleArray:pieces];
-            
+
         
         for (int i=0; i<N; i++) {          
             PieceView *p = [pieces objectAtIndex:i];            
             CGRect rect = p.frame;
             rect.origin.x = piceSize*i+10;
-            rect.origin.y = 15+(self.padding)/2;;
+            rect.origin.y = 20+(self.padding*0.75)/4;
             p.frame = rect;
+            
             
             int r = arc4random_uniform(4);
             p.angle = [[self class] float:r*M_PI_2 modulo:2*M_PI];
@@ -1016,6 +1017,7 @@
             //NSLog(@"angle=%.1f", p.angle);
         }
     
+
 }
 
 
@@ -1157,19 +1159,26 @@
 
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         
-        drawerFirstPoint = CGPointMake(drawerFirstPoint.y-20, drawerFirstPoint.x);
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+            drawerFirstPoint = CGPointMake(drawerFirstPoint.y, drawerFirstPoint.x);   
+        } else {  
+            drawerFirstPoint = CGPointMake(drawerFirstPoint.y-0.5, drawerFirstPoint.x);
+        }
         
-        drawerSize = piceSize+1.8*self.padding-20;
-        rect.size.width = drawerSize;
+        drawerSize = piceSize+1.8*self.padding;
+        rect.size.width = drawerSize-20;
         rect.size.height = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height-stepperFrame.size.height-30;
         stepperFrame.origin.x = rect.size.width+10;
         
     } else {
         
-        drawerFirstPoint = CGPointMake(drawerFirstPoint.y, drawerFirstPoint.x+20);
-        
-        drawerSize = piceSize+1.8*self.padding;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+            drawerFirstPoint = CGPointMake(drawerFirstPoint.y, drawerFirstPoint.x);   
+        } else {  
+            drawerFirstPoint = CGPointMake(drawerFirstPoint.y, drawerFirstPoint.x+0.5);
+        }        
+        drawerSize = piceSize+1.8*self.padding-20;
         rect.size.height = drawerSize;
         rect.size.width = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height+10;
