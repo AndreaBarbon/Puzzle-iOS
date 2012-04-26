@@ -23,6 +23,7 @@
     IBOutlet UIStepper *stepperDrawer;
     IBOutlet UIButton *restartButton;
     int DrawerPosition;
+    float drawerSize;
 }
 
 

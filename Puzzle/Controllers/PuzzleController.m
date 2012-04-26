@@ -78,14 +78,8 @@
     }
 
     self.padding = piceSize*0.15;
-
-    CGRect frame = drawerView.frame;
-    frame.size.height = piceSize+2*self.padding;
-    drawerView.frame = frame;
-   
-    frame = stepperDrawer.frame;
-    frame.origin.y = drawerView.frame.size.height+10;
-    stepperDrawer.frame = frame;
+    
+    drawerSize = piceSize+1.8*self.padding;
     
     
 //    piceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
@@ -219,9 +213,9 @@
 
 - (BOOL)isPositioned:(PieceView*)piece  {
     
-    if (piece.number == piece.position && ABS(piece.angle) < 1) {
+    if (piece.isFree && piece.number == piece.position && ABS(piece.angle) < 1) {
         
-        //NSLog(@"Piece positioned!");
+        NSLog(@"Piece #%d positioned!", piece.number);
         //Flashes and block the piece
         if (!piece.isPositioned) {
             piece.isPositioned = YES;
@@ -256,7 +250,9 @@
     piece.oldPosition = [piece realCenter];
 
     
-    [self isPositioned:piece];
+    if (!piece.isPositioned) {
+        [self isPositioned:piece];
+    }
     
     [self checkNeighborsOfPieceNumber:piece];
     
@@ -266,6 +262,7 @@
 - (void)bringDrawerToTop {
 
     [self.view bringSubviewToFront:drawerView];
+    [self.view bringSubviewToFront:stepperDrawer];
     [self.view bringSubviewToFront:stepper];
 
     for (PieceView *p in pieces) {
@@ -282,7 +279,14 @@
     
     if (!piece.hasNeighbors) {
         
-        if (point.y>piceSize) {
+        BOOL outOfDrawer;
+        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            outOfDrawer = point.y>drawerSize-self.padding;
+        } else {
+            outOfDrawer = point.x>drawerSize-self.padding;
+        }
+        
+        if (outOfDrawer) {
             
             if (!piece.isFree && ![self pieceIsOut:piece]) {
              
@@ -348,7 +352,7 @@
         
     }
     
-    [self organizeDrawer];
+    [self organizeDrawerWithOrientation:self.interfaceOrientation];
     [self bringDrawerToTop];
 
     piece.oldPosition = [piece realCenter];
@@ -609,7 +613,7 @@
         
     } else {
         [self shuffle];
-        [self organizeDrawer];
+        [self organizeDrawerWithOrientation:self.interfaceOrientation];
     }
     
 }
@@ -677,8 +681,11 @@
     NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
     positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     positionedSound.volume = 0.3;
-    positionedSound.enableRate = YES;
-    positionedSound.rate = 1.5;
+    
+    if ([positionedSound respondsToSelector:@selector(setEnableRate:)]) {
+        positionedSound.enableRate = YES;
+        positionedSound.rate = 1.5; 
+    }
     
     soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"wav"];
     soundURL = [NSURL fileURLWithPath:soundPath];
@@ -691,7 +698,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    CGRect rect = [[UIScreen mainScreen] bounds];
 
+    
+    
     image = [UIImage imageNamed:@"Cover.png"];
     
     [self loadSounds];
@@ -699,15 +711,41 @@
     [self createLattice];
     [self createPuzzleFromImage:image];
     
+    
+    //Resize the drawer
+    CGRect drawerFrame = drawerView.frame;
+    CGRect stepperFrame = stepperDrawer.frame;
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        drawerFrame.size.width = drawerSize;
+        drawerFrame.size.height = [[UIScreen mainScreen] bounds].size.width;
+        stepperFrame.origin.y = 10;
+        stepperFrame.origin.x = drawerFrame.size.width+10;
+        
+    } else {
+        
+        drawerFrame.size.height = drawerSize;
+        drawerFrame.size.width = [[UIScreen mainScreen] bounds].size.height;
+        stepperFrame.origin.y = drawerFrame.size.height+10;
+        stepperFrame.origin.x = 10;
+    }
+    
+        drawerView.frame = drawerFrame;
+        stepperDrawer.frame = stepperFrame;
+        
+    
+    
+    
+    
     //Add the image;
     imageView = [[UIImageView alloc] initWithImage:image];
-    CGRect rect = [[UIScreen mainScreen] bounds];
     rect = CGRectMake(0, (rect.size.height-rect.size.width)/2, rect.size.width, rect.size.width);
     imageView.frame = rect;
     imageView.alpha = 0;
     [self.view addSubview:imageView];
     
-    imageView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+    //imageView.transform = CGAffineTransformMakeRotation(-M_PI/2);
     
     
 //    CGRect rect = [[UIScreen mainScreen] bounds];
@@ -743,7 +781,7 @@
     
 }
 
-- (void)organizeDrawer {
+- (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
     NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:pieces];
     
@@ -780,8 +818,15 @@
             if (i>0) {
                 p2 = [temp objectAtIndex:i-1];
                 CGRect rect2 = p2.frame;
-                rect.origin.x = rect2.origin.x+rect2.size.width+10;
-                rect.origin.y = 15+(self.padding)/2;
+                
+                if (UIInterfaceOrientationIsLandscape(orientation)) {
+                    rect.origin.y = rect2.origin.y+rect2.size.width+10;
+                    rect.origin.x = (self.padding*0.75)/4;
+                } else {
+                    rect.origin.x = rect2.origin.x+rect2.size.width+10;
+                    rect.origin.y = 20+(self.padding*0.75)/4;
+                }
+                
             } else {
                 rect.origin = drawerFirstPoint;
             }
@@ -819,33 +864,68 @@
         sgn *= -1;
     }
     
-    if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.x>0) {
-        return;
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.y>0) {
+            return;
+        }
+        
+        PieceView *p = [temp lastObject];
+        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.y<self.view.frame.size.height-p.frame.size.height+self.padding) {
+            return;
+        }
+        
+        if (!swiping) {
+            
+            [UIView animateWithDuration:0.5 animations:^{
+                
+                swiping = YES;
+                
+                drawerFirstPoint.y = drawerFirstPoint.y+sgn*self.view.frame.size.height;
+                [self organizeDrawerWithOrientation:self.interfaceOrientation];
+                //NSLog(@"first point = %.1f", drawerFirstPoint.x);
+                
+                
+            }completion:^(BOOL finished){
+                
+                swiping = NO;
+                
+            }];
+            
+        }
+        
+    } else {
+        
+        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.x>0) {
+            return;
+        }
+        
+        PieceView *p = [temp lastObject];
+        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<self.view.frame.size.width-p.frame.size.width+self.padding) {
+            return;
+        }
+        
+        if (!swiping) {
+            
+            [UIView animateWithDuration:0.5 animations:^{
+                
+                swiping = YES;
+                
+                drawerFirstPoint.x = drawerFirstPoint.x+sgn*self.view.frame.size.width;
+                [self organizeDrawerWithOrientation:self.interfaceOrientation];
+                //NSLog(@"first point = %.1f", drawerFirstPoint.x);
+                
+                
+            }completion:^(BOOL finished){
+                
+                swiping = NO;
+                
+            }];
+            
+        }
     }
     
-    PieceView *p = [temp lastObject];
-    if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<self.view.frame.size.width-p.frame.size.width+self.padding) {
-        return;
-    }
-    
-    if (!swiping) {
-        
-        [UIView animateWithDuration:0.5 animations:^{
-            
-            swiping = YES;
-
-            drawerFirstPoint.x = drawerFirstPoint.x+sgn*self.view.frame.size.width;
-            [self organizeDrawer];
-            //NSLog(@"first point = %.1f", drawerFirstPoint.x);
-            
-
-        }completion:^(BOOL finished){
-
-            swiping = NO;
-            
-        }];
-        
-    }
 }
 
 - (void)swipeR:(UISwipeGestureRecognizer*)swipe {
@@ -1071,8 +1151,79 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+{       
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        return YES;
+
+    } else {  
+
+        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+        
+    }
+    
+    
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+    //Rotate the drawer
+
+    CGRect rect = drawerView.frame;
+    CGRect stepperFrame = stepperDrawer.frame;
+
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        
+        drawerFirstPoint = CGPointMake(drawerFirstPoint.y-20, drawerFirstPoint.x);
+        
+        drawerSize = piceSize+1.8*self.padding-20;
+        rect.size.width = drawerSize;
+        rect.size.height = [[UIScreen mainScreen] bounds].size.width;
+        stepperFrame.origin.y = 10;
+        stepperFrame.origin.x = rect.size.width+10;
+        
+    } else {
+        
+        drawerFirstPoint = CGPointMake(drawerFirstPoint.y, drawerFirstPoint.x+20);
+        
+        drawerSize = piceSize+1.8*self.padding;
+        rect.size.height = drawerSize;
+        rect.size.width = [[UIScreen mainScreen] bounds].size.height;
+        stepperFrame.origin.y = rect.size.height+10;
+        stepperFrame.origin.x = 10;
+    }
+        
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        drawerView.frame = rect;
+        stepperDrawer.frame = stepperFrame;
+        
+    }];
+    
+    
+    [self organizeDrawerWithOrientation:toInterfaceOrientation];
+    
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
+    CGRect rect = imageView.frame;
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        float pad = ([[UIScreen mainScreen] bounds].size.height - rect.size.width)/1;
+        rect.origin.x = pad;
+        rect.origin.y = 0;
+        
+    } else {
+        
+        float pad = ([[UIScreen mainScreen] bounds].size.height - rect.size.height)/1;
+        rect.origin.y = pad;
+        rect.origin.x = 0;
+    }   
+    
+    imageView.frame = rect;
 }
 
 @end
