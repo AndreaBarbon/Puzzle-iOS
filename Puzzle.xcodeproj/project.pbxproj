@@ -11,6 +11,9 @@
 		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
 		B84014F11540DFBD0075734A /* Cover.png in Resources */ = {isa = PBXBuildFile; fileRef = B84014F01540DFBD0075734A /* Cover.png */; };
 		B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
+		B853810A1548D83D00F3BFA5 /* PiecePositioned.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381081548D83D00F3BFA5 /* PiecePositioned.wav */; };
+		B853810B1548D83D00F3BFA5 /* PuzzleCompleted.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */; };
+		B85381101548D91B00F3BFA5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B853810F1548D91B00F3BFA5 /* AVFoundation.framework */; };
 		B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC515400B2A00AF69BC /* UIKit.framework */; };
 		B87C5CC815400B2A00AF69BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC715400B2A00AF69BC /* Foundation.framework */; };
 		B87C5CCA15400B2A00AF69BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC915400B2A00AF69BC /* CoreGraphics.framework */; };
@@ -32,6 +35,9 @@
 		B84014F01540DFBD0075734A /* Cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cover.png; sourceTree = "<group>"; };
 		B84014F21540E57D0075734A /* UIImage+CWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CWAdditions.h"; path = "Classes/UIImage+CWAdditions.h"; sourceTree = "<group>"; };
 		B84014F31540E57D0075734A /* UIImage+CWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CWAdditions.m"; path = "Classes/UIImage+CWAdditions.m"; sourceTree = "<group>"; };
+		B85381081548D83D00F3BFA5 /* PiecePositioned.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = PiecePositioned.wav; sourceTree = "<group>"; };
+		B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = PuzzleCompleted.wav; sourceTree = "<group>"; };
+		B853810F1548D91B00F3BFA5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B87C5CC115400B2A00AF69BC /* Puzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Puzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B87C5CC515400B2A00AF69BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B87C5CC715400B2A00AF69BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -58,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B85381101548D91B00F3BFA5 /* AVFoundation.framework in Frameworks */,
 				B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */,
 				B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */,
 				B87C5CC815400B2A00AF69BC /* Foundation.framework in Frameworks */,
@@ -72,6 +79,8 @@
 		B87C5CB615400B2A00AF69BC = {
 			isa = PBXGroup;
 			children = (
+				B85381081548D83D00F3BFA5 /* PiecePositioned.wav */,
+				B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */,
 				B87C5CCD15400B2A00AF69BC /* Puzzle */,
 				B87C5CC415400B2A00AF69BC /* Frameworks */,
 				B87C5CC215400B2A00AF69BC /* Products */,
@@ -89,6 +98,7 @@
 		B87C5CC415400B2A00AF69BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B853810F1548D91B00F3BFA5 /* AVFoundation.framework */,
 				B84014EB1540D0880075734A /* QuartzCore.framework */,
 				B87C5CC515400B2A00AF69BC /* UIKit.framework */,
 				B87C5CC715400B2A00AF69BC /* Foundation.framework */,
@@ -210,6 +220,8 @@
 				B87C5CD215400B2A00AF69BC /* InfoPlist.strings in Resources */,
 				B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */,
 				B84014F11540DFBD0075734A /* Cover.png in Resources */,
+				B853810A1548D83D00F3BFA5 /* PiecePositioned.wav in Resources */,
+				B853810B1548D83D00F3BFA5 /* PuzzleCompleted.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

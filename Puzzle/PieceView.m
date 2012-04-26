@@ -182,51 +182,51 @@
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture {
     
-//    if (!self.hasNeighbors) {
-//        
-//        float rotation = [gesture rotation];
-//        
-//        if ([gesture state]==UIGestureRecognizerStateEnded) {
-//            
-//            int t = floor(ABS(tempAngle)/(M_PI/4));
-//            
-//            if (t%2==0) {
-//                t/=2;
-//            } else {
-//                t= (t+1)/2;
-//            }
-//            
-//            rotation = angle + tempAngle/ABS(tempAngle) * t*M_PI/2;
-//            
-//            [UIView animateWithDuration:0.2 animations:^{
-//                
-//                self.transform = CGAffineTransformMakeRotation(rotation);
-//                
-//            }];
-//            
-//            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
-//            angle = [PuzzleController float:angle modulo:2*M_PI];
-//            if (angle>6.1) {
-//                angle = 0.0;
-//            }
-//            
-//            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
-//            tempAngle = 0;
-//            
-//            [delegate pieceRotated:self];
-//            
-//            
-//        } else {
-//            self.transform = CGAffineTransformRotate(self.transform, rotation);
-//            tempAngle += rotation;
-//        }
-//        
-//        //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
-//        
-//        
-//        [gesture setRotation:0];
-//        
-//    }
+    if (!self.hasNeighbors) {
+        
+        float rotation = [gesture rotation];
+        
+        if ([gesture state]==UIGestureRecognizerStateEnded) {
+            
+            int t = floor(ABS(tempAngle)/(M_PI/4));
+            
+            if (t%2==0) {
+                t/=2;
+            } else {
+                t= (t+1)/2;
+            }
+            
+            rotation = angle + tempAngle/ABS(tempAngle) * t*M_PI/2;
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                self.transform = CGAffineTransformMakeRotation(rotation);
+                
+            }];
+            
+            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
+            angle = [PuzzleController float:angle modulo:2*M_PI];
+            if (angle>6.1) {
+                angle = 0.0;
+            }
+            
+            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+            tempAngle = 0;
+            
+            [delegate pieceRotated:self];
+            
+            
+        } else {
+            self.transform = CGAffineTransformRotate(self.transform, rotation);
+            tempAngle += rotation;
+        }
+        
+        //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
+        
+        
+        [gesture setRotation:0];
+        
+    }
     
     
 }
@@ -311,13 +311,48 @@
             }];
             
         
-            [delegate pieceRotated:p];
         
         
         
     }
+
+    BOOL areOut = NO;
+    for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
+        if ([delegate pieceIsOut:p]) {
+            areOut = YES;
+            break;
+        }
+    }
+
     
-    [delegate pieceRotated:self];
+    if (!areOut) {
+        
+        for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
+            [delegate pieceRotated:p];
+        }
+        [delegate pieceRotated:self];
+
+    } else {
+    
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
+                CGRect rect = p.frame;
+                rect.origin.x = p.oldPosition.x-p.frame.size.width/2;
+                rect.origin.y = p.oldPosition.y-p.frame.size.height/2;
+                p.frame = rect;                
+                p.position = [delegate positionOfPiece:p];
+                p.transform = CGAffineTransformMakeRotation(p.angle-M_PI_2);
+                p.angle -= M_PI_2;
+            }
+            self.transform = CGAffineTransformMakeRotation(self.angle-M_PI_2);
+            self.angle -= M_PI_2;
+            
+        }];
+
+    }
+    
         
 
     

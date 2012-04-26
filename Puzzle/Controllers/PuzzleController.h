@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PieceView.h"
 #import "Lattice.h"
+#import <AVFoundation/AVAudioPlayer.h>
 
 
 @interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate, PieceViewProtocol> {
@@ -29,6 +30,9 @@
 @property(nonatomic) float N;
 @property(nonatomic) int pieceNumber;
 
+@property (nonatomic, strong) AVAudioPlayer *positionedSound;
+@property (nonatomic, strong) AVAudioPlayer *completedSound;
+
 
 @property (nonatomic, retain) NSArray *pieces;
 @property (nonatomic, retain) Lattice *lattice;
@@ -42,6 +46,7 @@
 
 +(float)float:(float)f modulo:(float)m;
 
+- (BOOL)pieceIsOut:(PieceView *)piece;
 - (PieceView*)pieceWithNumber:(int)j;
 - (PieceView*)pieceWithPosition:(int)j;
 - (int)positionOfPiece:(PieceView*)piece;

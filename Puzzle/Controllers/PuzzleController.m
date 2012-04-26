@@ -18,7 +18,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber, imageView;
+@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound;
 
 - (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
 
@@ -63,6 +63,7 @@
 - (void)puzzleCompleted {
         
     [self toggleImage];
+    [completedSound play];
 }
 
 - (void)computePieceSize {
@@ -145,14 +146,13 @@
 
 
         
-        if (j+i>=0 && j+i<N)                                            //Evita di andare fuori board
-            /*
+        if (j+i>=0 && j+i<N                                             //Evita di andare fuori board
+            
             && !( r==2 && (piece.number+1)%pieceNumber==0 )             //bottom piece checking down
             && !( r==0 && (piece.number)%pieceNumber==0 )               //top piece checking up
             && !( r==1 && pieceNumber%(piece.number+1)==0 )             //right piece checking right
             && !( r==3 && pieceNumber%(piece.number)==pieceNumber-1 )   //left piece checking left
-            )*/
-            {
+            ){
             
             
             otherPiece = [self pieceAtPosition:j+i];
@@ -217,12 +217,27 @@
     
 }
 
+- (BOOL)isPositioned:(PieceView*)piece  {
+    
+    if (piece.number == piece.position && ABS(piece.angle) < 1) {
+        
+        //NSLog(@"Piece positioned!");
+        //Flashes and block the piece
+        if (!piece.isPositioned) {
+            piece.isPositioned = YES;
+            piece.userInteractionEnabled = NO;
+            [positionedSound play];
+        }
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated {
     
     //NSLog(@"Moving piece #%d to position %d", piece.number, i);
-
-    
-    piece.isPositioned = NO;
 
     if (animated) {
         
@@ -236,48 +251,22 @@
 
     }
     
-    int rotation = floor(piece.angle/(M_PI/2));
-    rotation = rotation%4;
     
     piece.position = i;
     piece.oldPosition = [piece realCenter];
 
     
-    if (piece.number == i && rotation==0) {
-        piece.isPositioned = YES;
-        //NSLog(@"Piece positioned!");
-    }
+    [self isPositioned:piece];
     
     [self checkNeighborsOfPieceNumber:piece];
     
-    
-    
-//    CGPoint point = lattice.bounds.origin;
-//    
-//    float y = i%pieceNumber;    
-//    float x = pieceNumber%i;
-//    
-//    NSLog(@"Origin = (%.1f, %.1f)",point.x,point.y);
-//    NSLog(@"Point %d = (%.0f, %.0f)", i ,x, y);
-//    
-//    x = point.x + lattice.scale*(piceSize-2*self.padding)*x;
-//    y = point.y + lattice.scale*(piceSize-2*self.padding)*y;
-//    
-//    
-//    
-//    [UIView animateWithDuration:0.4 animations:^{
-//        piece.frame = CGRectMake(
-//                                 x,
-//                                 y, 
-//                                 lattice.scale*piceSize, 
-//                                 lattice.scale*piceSize);
-//    }];
     
 }
 
 - (void)bringDrawerToTop {
 
     [self.view bringSubviewToFront:drawerView];
+    [self.view bringSubviewToFront:stepper];
 
     for (PieceView *p in pieces) {
         if (!p.isFree) {
@@ -404,6 +393,7 @@
     
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
 
+    [self isPositioned:piece];
     [self checkNeighborsOfPieceNumber:piece];    
     
     if ([self isPuzzleComplete]) {
@@ -640,8 +630,8 @@
     lattice = [[Lattice alloc] init];
     [lattice initWithFrame:rect withNumber:pieceNumber withDelegate:self];
     
-    CGRect screen = [[UIScreen mainScreen] bounds];
-    float optimalPiceSize = PUZZLE_SIZE*screen.size.width/(pieceNumber)+2*self.padding;
+    //CGRect screen = [[UIScreen mainScreen] bounds];
+    //float optimalPiceSize = PUZZLE_SIZE*screen.size.width/(pieceNumber)+2*self.padding;
     lattice.scale = 1; //optimalPiceSize/piceSize;
     [self resizeLattice];
 
@@ -672,8 +662,8 @@
     float z = [gesture scale];
     lattice.scale *= z;
     z = lattice.scale;
-    [self resizeLattice];
     
+    [self resizeLattice];
     [self refreshPositions];        
     
 
@@ -681,12 +671,30 @@
     [gesture setScale:1];
     
 }
+- (void)loadSounds {
+    
+    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"wav"];
+    NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
+    positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
+    positionedSound.volume = 0.3;
+    positionedSound.enableRate = YES;
+    positionedSound.rate = 1.5;
+    
+    soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"wav"];
+    soundURL = [NSURL fileURLWithPath:soundPath];
+    self.completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
+    
+    
+
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     image = [UIImage imageNamed:@"Cover.png"];
+    
+    [self loadSounds];
 
     [self createLattice];
     [self createPuzzleFromImage:image];
@@ -773,7 +781,7 @@
                 p2 = [temp objectAtIndex:i-1];
                 CGRect rect2 = p2.frame;
                 rect.origin.x = rect2.origin.x+rect2.size.width+10;
-                rect.origin.y = 25;
+                rect.origin.y = 15+(self.padding)/2;
             } else {
                 rect.origin = drawerFirstPoint;
             }
@@ -912,7 +920,7 @@
             PieceView *p = [pieces objectAtIndex:i];            
             CGRect rect = p.frame;
             rect.origin.x = piceSize*i+10;
-            rect.origin.y = 25;
+            rect.origin.y = 15+(self.padding)/2;;
             p.frame = rect;
             
             int r = arc4random_uniform(4);
