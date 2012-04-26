@@ -38,7 +38,7 @@
 		B82AC5C5154411B500208887 /* Lattice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lattice.h; path = Classes/Lattice.h; sourceTree = "<group>"; };
 		B82AC5C6154411B500208887 /* Lattice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lattice.m; path = Classes/Lattice.m; sourceTree = "<group>"; };
 		B84014EB1540D0880075734A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		B84014F01540DFBD0075734A /* Cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cover.png; sourceTree = "<group>"; };
+		B84014F01540DFBD0075734A /* Cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cover.png; path = Puzzle/Cover.png; sourceTree = "<group>"; };
 		B84014F21540E57D0075734A /* UIImage+CWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CWAdditions.h"; path = "Classes/UIImage+CWAdditions.h"; sourceTree = "<group>"; };
 		B84014F31540E57D0075734A /* UIImage+CWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CWAdditions.m"; path = "Classes/UIImage+CWAdditions.m"; sourceTree = "<group>"; };
 		B85381081548D83D00F3BFA5 /* PiecePositioned.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = PiecePositioned.wav; sourceTree = "<group>"; };
@@ -93,6 +93,7 @@
 			children = (
 				B85381081548D83D00F3BFA5 /* PiecePositioned.wav */,
 				B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */,
+				B84014F01540DFBD0075734A /* Cover.png */,
 				B87C5CCD15400B2A00AF69BC /* Puzzle */,
 				B87C5CC415400B2A00AF69BC /* Frameworks */,
 				B87C5CC215400B2A00AF69BC /* Products */,
@@ -124,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				B8DFA69115497ED300256385 /* Default */,
-				B84014F01540DFBD0075734A /* Cover.png */,
 				B87C5CF31540174900AF69BC /* Controllers */,
 				B87C5CED1540170E00AF69BC /* Views */,
 				B87C5CE9154014C300AF69BC /* Classes */,

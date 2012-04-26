@@ -213,9 +213,11 @@
 
 - (BOOL)isPositioned:(PieceView*)piece  {
     
+    //NSLog(@"Angle = %.1f", piece.angle);
+    
     if (piece.isFree && piece.number == piece.position && ABS(piece.angle) < 1) {
         
-        NSLog(@"Piece #%d positioned!", piece.number);
+        //NSLog(@"Piece #%d positioned!", piece.number);
         //Flashes and block the piece
         if (!piece.isPositioned) {
             piece.isPositioned = YES;
@@ -298,7 +300,9 @@
             piece.isFree = NO;
             [UIView animateWithDuration:0.4 animations:^{
 
-            piece.transform = CGAffineTransformMakeScale(piceSize/piece.bounds.size.width, piceSize/piece.bounds.size.height);
+            CGAffineTransform transform = CGAffineTransformMakeScale(piceSize/piece.bounds.size.width, piceSize/piece.bounds.size.height);
+                transform = CGAffineTransformRotate(transform, piece.angle);
+                piece.transform = transform;
 
             }];
         }
@@ -720,15 +724,15 @@
         
         drawerFrame.size.width = drawerSize;
         drawerFrame.size.height = [[UIScreen mainScreen] bounds].size.width;
-        stepperFrame.origin.y = 10;
+        stepperFrame.origin.y = drawerFrame.size.height-stepperFrame.size.height-30;
         stepperFrame.origin.x = drawerFrame.size.width+10;
         
     } else {
         
         drawerFrame.size.height = drawerSize;
-        drawerFrame.size.width = [[UIScreen mainScreen] bounds].size.height;
+        drawerFrame.size.width = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = drawerFrame.size.height+10;
-        stepperFrame.origin.x = 10;
+        stepperFrame.origin.x = drawerFrame.size.width-stepperFrame.size.width-10;
     }
     
         drawerView.frame = drawerFrame;
@@ -812,6 +816,9 @@
             
             PieceView *p = [temp objectAtIndex:i];
             
+            p.userInteractionEnabled = YES;
+
+            
             CGRect rect = p.frame;
             PieceView *p2;
             
@@ -872,7 +879,7 @@
         }
         
         PieceView *p = [temp lastObject];
-        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.y<self.view.frame.size.height-p.frame.size.height+self.padding) {
+        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.y<[[UIScreen mainScreen] bounds].size.height-p.frame.size.height+self.padding) {
             return;
         }
         
@@ -882,7 +889,7 @@
                 
                 swiping = YES;
                 
-                drawerFirstPoint.y = drawerFirstPoint.y+sgn*self.view.frame.size.height;
+                drawerFirstPoint.y += sgn*[[UIScreen mainScreen] bounds].size.width;
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
@@ -902,7 +909,7 @@
         }
         
         PieceView *p = [temp lastObject];
-        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<self.view.frame.size.width-p.frame.size.width+self.padding) {
+        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<[[UIScreen mainScreen] bounds].size.height-p.frame.size.width+self.padding) {
             return;
         }
         
@@ -912,7 +919,7 @@
                 
                 swiping = YES;
                 
-                drawerFirstPoint.x = drawerFirstPoint.x+sgn*self.view.frame.size.width;
+                drawerFirstPoint.x += sgn*[[UIScreen mainScreen] bounds].size.width;
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
@@ -1004,8 +1011,8 @@
             p.frame = rect;
             
             int r = arc4random_uniform(4);
-            p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
-            p.angle = r*M_PI/2;
+            p.angle = [[self class] float:r*M_PI_2 modulo:2*M_PI];
+            p.transform = CGAffineTransformMakeRotation(p.angle);
             //NSLog(@"angle=%.1f", p.angle);
         }
     
@@ -1155,7 +1162,7 @@
         drawerSize = piceSize+1.8*self.padding-20;
         rect.size.width = drawerSize;
         rect.size.height = [[UIScreen mainScreen] bounds].size.width;
-        stepperFrame.origin.y = 10;
+        stepperFrame.origin.y = rect.size.height-stepperFrame.size.height-30;
         stepperFrame.origin.x = rect.size.width+10;
         
     } else {
@@ -1164,9 +1171,9 @@
         
         drawerSize = piceSize+1.8*self.padding;
         rect.size.height = drawerSize;
-        rect.size.width = [[UIScreen mainScreen] bounds].size.height;
+        rect.size.width = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height+10;
-        stepperFrame.origin.x = 10;
+        stepperFrame.origin.x = rect.size.width-stepperFrame.size.width-10;
     }
         
     
