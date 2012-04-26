@@ -123,7 +123,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<double key="IBUIValue">4</double>
-						<double key="IBUIMinimumValue">4</double>
+						<double key="IBUIMinimumValue">2</double>
 						<double key="IBUIMaximumValue">100</double>
 					</object>
 					<object class="IBUIView" id="950110971">

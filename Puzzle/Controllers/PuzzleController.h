@@ -42,11 +42,12 @@
 
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIImageView *imageViewLattice;
 
 
 
 +(float)float:(float)f modulo:(float)m;
-
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 - (BOOL)pieceIsOut:(PieceView *)piece;
 - (PieceView*)pieceWithNumber:(int)j;
 - (PieceView*)pieceWithPosition:(int)j;

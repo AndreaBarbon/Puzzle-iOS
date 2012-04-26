@@ -18,7 +18,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound;
+@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice;
 
 - (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
     
@@ -27,13 +27,16 @@
 }
 
 - (BOOL)isPuzzleComplete {
-    
+        
     for (PieceView *p in pieces) {
         if (!p.isPositioned) {
             //NSLog(@"Piece #%d is not positioned", p.number);
+            
             return NO;
         }
     }
+    
+    [self puzzleCompleted];
     
     return YES;
     
@@ -43,13 +46,13 @@
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
-        [self toggleImage];
+        [self toggleImageWithDuration:0.5];
     }
     
 }
-- (void)toggleImage {
+- (void)toggleImageWithDuration:(float)duration {
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:duration animations:^{
         if (imageView.alpha==0) {
             [self.view bringSubviewToFront:imageView];
             imageView.alpha = 1;
@@ -62,7 +65,19 @@
 
 - (void)puzzleCompleted {
     
-    [self toggleImage];
+    //imageView.frame = lattice.bounds;
+    
+    [self.view bringSubviewToFront:lattice];
+    for (UIView *v in lattice.pieces) {
+        v.alpha = 0;
+    }
+    
+    [UIView animateWithDuration:1 animations:^{
+        
+        imageViewLattice.alpha = 1;
+
+    }];
+    
     [completedSound play];
 }
 
@@ -81,10 +96,7 @@
     
     drawerSize = piceSize+1.8*self.padding;
     
-    
     //    piceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
-    
-    
     
 }
 
@@ -100,6 +112,21 @@
     }
     
     return nil;
+}
+
+- (BOOL)shouldCheckNeighborsOfPiece:(PieceView*)piece inDirection:(int)r {
+    
+    if (piece.position!=0) {
+        
+        return (!( r==2 && (piece.position+1)%pieceNumber==0 )             //bottom piece checking down
+        && !( r==0 && (piece.position)%pieceNumber==0 )               //top piece checking up
+        && !( r==1 && pieceNumber%(piece.position+1)==0 )             //right piece checking right
+        && !( r==3 && pieceNumber%(piece.position)==pieceNumber-1 ));   //left piece checking left
+    
+    } else {
+        return (r==1 || r==2);
+    }
+    
 }
 
 
@@ -140,13 +167,7 @@
         
         
         
-        if (j+i>=0 && j+i<N                                             //Evita di andare fuori board
-            
-            && !( r==2 && (piece.number+1)%pieceNumber==0 )             //bottom piece checking down
-            && !( r==0 && (piece.number)%pieceNumber==0 )               //top piece checking up
-            && !( r==1 && pieceNumber%(piece.number+1)==0 )             //right piece checking right
-            && !( r==3 && pieceNumber%(piece.number)==pieceNumber-1 )   //left piece checking left
-            ){
+        if (j+i>=0 && j+i<N && [self shouldCheckNeighborsOfPiece:piece inDirection:r] ){
             
             
             otherPiece = [self pieceAtPosition:j+i];
@@ -159,7 +180,7 @@
                 
                 if (piece.isFree && otherPiece.isFree) {
                     
-                    //NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
+                    NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
                     
                     
                     if (piece.number+l==otherPiece.number) {
@@ -220,7 +241,9 @@
         if (!piece.isPositioned) {
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
-            [positionedSound play];
+            if (![self isPuzzleComplete]) {
+                [positionedSound play];
+            }
         }
         
         return YES;
@@ -263,7 +286,8 @@
     
     [self.view bringSubviewToFront:drawerView];
     [self.view bringSubviewToFront:stepperDrawer];
-    [self.view bringSubviewToFront:stepper];
+    [self.view bringSubviewToFront:menuButtonView];
+    //[self.view bringSubviewToFront:stepper];
     
     for (PieceView *p in pieces) {
         if (!p.isFree) {
@@ -357,11 +381,10 @@
     
     piece.oldPosition = [piece realCenter];
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+
     
-    if ([self isPuzzleComplete]) {
-        [self puzzleCompleted];
-    }
-    
+    [self isPositioned:piece];
+
     
 }
 
@@ -398,11 +421,7 @@
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
     [self isPositioned:piece];
-    [self checkNeighborsOfPieceNumber:piece];    
-    
-    if ([self isPuzzleComplete]) {
-        [self puzzleCompleted];
-    }
+    [self checkNeighborsOfPieceNumber:piece];
     
 }
 
@@ -425,26 +444,6 @@
     traslation.y = lattice.frame.origin.y - traslation.y;
     lattice.frame = CGRectMake(traslation.x, traslation.y, lattice.bounds.size.width, lattice.bounds.size.height);
     
-    //    for (PieceView *p in pieces) {
-    //        if (p.isFree) {
-    //            
-    //            traslation = [gesture translationInView:lattice.superview];
-    //            
-    //            traslation.x = p.frame.origin.x - traslation.x;
-    //            traslation.y = p.frame.origin.y - traslation.y;
-    //            p.frame = CGRectMake(traslation.x, traslation.y, p.bounds.size.width, p.bounds.size.height);
-    //        }
-    //    }
-    
-    
-    //    traslation = [gesture translationInView:imageView.superview];
-    //    
-    //    traslation.x = imageView.frame.origin.x - traslation.x;
-    //    traslation.y = imageView.frame.origin.y - traslation.y;
-    //    imageView.frame = CGRectMake(traslation.x, traslation.y, imageView.bounds.size.width, imageView.bounds.size.height);
-    
-    //    lattice.transform = CGAffineTransformMakeTranslation(-traslation.x, -traslation.y);
-    
     [self refreshPositions];
     [gesture setTranslation:CGPointZero inView:lattice.superview];
     
@@ -453,13 +452,13 @@
 
 - (void)setup {
     
-    CGRect rect = [[UIScreen mainScreen] bounds];
     
     pieceNumber = PIECE_NUMBER;
     N = pieceNumber*pieceNumber;
     
-    [self computePieceSize];
+    //[self computePieceSize];
     
+    CGRect rect = [[UIScreen mainScreen] bounds];
     self.view.frame = rect;
     
     
@@ -532,7 +531,11 @@
     
     float f = piceSize*pieceNumber-2*(pieceNumber)*self.padding;
     
-    UIImage *img = [[UIImage imageWithCGImage:[image_ CGImage] scale:image_.size.width/f orientation:1] imageRotatedByDegrees:0];
+    //UIImage *img = [[UIImage imageWithCGImage:[image_ CGImage] scale:image_.size.width/f orientation:1] imageRotatedByDegrees:0];
+
+    UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
+    
+    
     
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
     
@@ -545,7 +548,7 @@
         for (int j=0;j<pieceNumber;j++){
             
             CGRect portion = CGRectMake(i * (piceSize-2*self.padding)-self.padding+50, j * (piceSize-2*self.padding)-self.padding+50, piceSize, piceSize);
-            
+                        
             PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
             piece.delegate = self;
             piece.image = [array objectAtIndex:j+pieceNumber*i];
@@ -614,6 +617,11 @@
     } else {
         [self shuffle];
         [self organizeDrawerWithOrientation:self.interfaceOrientation];
+        for (PieceView *p in pieces) {
+            CGRect rect = p.frame;
+            rect.origin.y += 20;
+            p.frame = rect;
+        }
     }
     
 }
@@ -642,9 +650,23 @@
     //lattice.frame = self.view.frame;
     [self.view addSubview:lattice];
     
-    [self.view bringSubviewToFront:stepper];
+    //[self.view bringSubviewToFront:stepper];
     [self.view bringSubviewToFront:menuButtonView];
     [self.view bringSubviewToFront:drawerView];
+    
+    
+    //Add the image
+    
+    CGPoint latticeOrigin = [self frameOfLatticePiece:0].origin;
+    
+    imageViewLattice.image = image;
+    imageViewLattice.frame = CGRectMake(latticeOrigin.x+self.padding, latticeOrigin.y+self.padding, pieceNumber*lattice.scale*(piceSize-2*self.padding), pieceNumber*lattice.scale*(piceSize-2*self.padding));
+    imageViewLattice.alpha = 0;
+    [lattice addSubview:imageViewLattice];
+    
+    
+
+    
     
     
 }
@@ -711,6 +733,18 @@
     [self createLattice];
     [self createPuzzleFromImage:image];
     
+
+    
+    //Add the image;
+    imageView = [[UIImageView alloc] initWithImage:image];
+    rect = CGRectMake(0, (rect.size.height-rect.size.width)/2, rect.size.width, rect.size.width);
+    imageView.frame = rect;
+    imageView.alpha = 0;
+    [self.view addSubview:imageView];
+    
+    imageViewLattice = [[UIImageView alloc] initWithImage:image];
+    
+    
     
     //Resize the drawer
     CGRect drawerFrame = drawerView.frame;
@@ -735,24 +769,7 @@
     stepperDrawer.frame = stepperFrame;
     
     
-    
-    
-    
-    //Add the image;
-    imageView = [[UIImageView alloc] initWithImage:image];
-    rect = CGRectMake(0, (rect.size.height-rect.size.width)/2, rect.size.width, rect.size.width);
-    imageView.frame = rect;
-    imageView.alpha = 0;
-    [self.view addSubview:imageView];
-    
-    //imageView.transform = CGAffineTransformMakeRotation(-M_PI/2);
-    
-    
-    //    CGRect rect = [[UIScreen mainScreen] bounds];
-    //    rect = CGRectMake(rect.size.width, piceSize+50, rect.size.width-150, rect.size.width-150);
-    //    imageView = [[UIImageView alloc] initWithFrame:rect];
-    //    imageView.image = image;
-    //    [self.view addSubview:imageView];
+
     
     
     UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
@@ -802,10 +819,11 @@
         
         drawerFirstPoint.x = [[temp objectAtIndex:0] frame].origin.x;
         drawerFirstPoint.y = [[temp objectAtIndex:0] frame].origin.y;
-    }    
+        //NSLog(@"FirstPoint = %.1f, %.1f", drawerView.frame.origin.x, drawerView.frame.origin.y);
+
+    }
     
-    
-    
+
     [UIView animateWithDuration:0.5 animations:^{
         
         for (int i=0; i<[temp count]; i++) {
@@ -821,14 +839,24 @@
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
                     rect.origin.y = rect2.origin.y+rect2.size.width+10;
-                    rect.origin.x = (self.padding*0.75)/4;
+                    rect.origin.x = (self.padding*0.75)/2;
                 } else {
                     rect.origin.x = rect2.origin.x+rect2.size.width+10;
-                    rect.origin.y = 20+(self.padding*0.75)/4;
+                    rect.origin.y = (self.padding*0.75)/2;
                 }
                 
             } else {
-                rect.origin = drawerFirstPoint;
+                
+                if (UIInterfaceOrientationIsLandscape(orientation)) {
+                    rect.origin.y = drawerFirstPoint.y;
+                    rect.origin.x = (self.padding*0.75)/2;;
+                } else {
+                    rect.origin.x = drawerFirstPoint.x;
+                    rect.origin.y = (self.padding*0.75)/2;;
+                }
+                
+                //NSLog(@"FirstPoint was %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
+
             }
             p.frame = rect;
         }
@@ -882,7 +910,7 @@
                 
                 swiping = YES;
                 
-                drawerFirstPoint.y = drawerFirstPoint.y+sgn*self.view.frame.size.height;
+                drawerFirstPoint.y += sgn*self.view.frame.size.height;
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
@@ -912,7 +940,7 @@
                 
                 swiping = YES;
                 
-                drawerFirstPoint.x = drawerFirstPoint.x+sgn*self.view.frame.size.width;
+                drawerFirstPoint.x += sgn*self.view.frame.size.width;
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
@@ -1000,13 +1028,13 @@
         PieceView *p = [pieces objectAtIndex:i];            
         CGRect rect = p.frame;
         rect.origin.x = piceSize*i+10;
-        rect.origin.y = 15+(self.padding)/2;;
+        rect.origin.y = 5;
         p.frame = rect;
         
         int r = arc4random_uniform(4);
         p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
         p.angle = r*M_PI/2;
-        //NSLog(@"angle=%.1f", p.angle);
+        NSLog(@"angle=%.1f", p.angle);
     }
     
 }
@@ -1118,6 +1146,15 @@ return f - floor(f/m)*m;
     
 }
 
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    //UIGraphicsBeginImageContext(newSize);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();    
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 
 - (void)viewDidUnload
 {
@@ -1150,23 +1187,23 @@ return f - floor(f/m)*m;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         
-        drawerFirstPoint = CGPointMake(drawerFirstPoint.y-20, drawerFirstPoint.x);
+        drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
         drawerSize = piceSize+1.8*self.padding-20;
         rect.size.width = drawerSize;
         rect.size.height = [[UIScreen mainScreen] bounds].size.width;
-        stepperFrame.origin.y = 10;
+        stepperFrame.origin.y = rect.size.height - stepperFrame.size.height-30;
         stepperFrame.origin.x = rect.size.width+10;
         
     } else {
         
-        drawerFirstPoint = CGPointMake(drawerFirstPoint.y, drawerFirstPoint.x+20);
+        drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
-        drawerSize = piceSize+1.8*self.padding;
+        drawerSize = piceSize+1.8*self.padding-20;
         rect.size.height = drawerSize;
-        rect.size.width = [[UIScreen mainScreen] bounds].size.height;
+        rect.size.width = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height+10;
-        stepperFrame.origin.x = 10;
+        stepperFrame.origin.x = rect.size.width - stepperFrame.size.width-10;
     }
     
     
@@ -1179,6 +1216,9 @@ return f - floor(f/m)*m;
     
     
     [self organizeDrawerWithOrientation:toInterfaceOrientation];
+    
+    //NSLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
+
     
 }
 
