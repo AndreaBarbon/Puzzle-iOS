@@ -1008,30 +1008,6 @@
             p.angle = r*M_PI/2;
             //NSLog(@"angle=%.1f", p.angle);
         }
-        
-        
-        
-//        int e = arc4random_uniform(N-1);
-//        
-//        for (int i=e; i<N; i++) {
-//            
-//            
-//            PieceView *p = [pieces objectAtIndex:i];
-//            CGRect rect = p.frame;
-//            rect.origin.x = piceSize*j;
-//            rect.origin.y = 30;
-//            p.frame = rect;
-//
-//            int r = arc4random_uniform(4);
-//            p.transform = CGAffineTransformMakeRotation(r*M_PI_2);
-//            p.angle = r*M_PI_2;
-//
-//            j++;
-//            if (i==N-1) i=-1;
-//            if (i==e-1) break;
-//            
-//        }
-
     
 }
 
