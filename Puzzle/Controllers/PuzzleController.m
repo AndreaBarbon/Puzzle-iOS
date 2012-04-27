@@ -440,9 +440,12 @@
     
     CGPoint traslation = [gesture translationInView:lattice.superview];
     
-    traslation.x = lattice.frame.origin.x - traslation.x;
-    traslation.y = lattice.frame.origin.y - traslation.y;
-    lattice.frame = CGRectMake(traslation.x, traslation.y, lattice.bounds.size.width, lattice.bounds.size.height);
+//    traslation.x = lattice.frame.origin.x - traslation.x;
+//    traslation.y = lattice.frame.origin.y - traslation.y;
+//    
+//    lattice.frame = CGRectMake(-traslation.x, -traslation.y, lattice.bounds.size.width, lattice.bounds.size.height);
+
+    lattice.center = CGPointMake(lattice.center.x - traslation.x, lattice.center.y - traslation.y);
     
     [self refreshPositions];
     [gesture setTranslation:CGPointZero inView:lattice.superview];
@@ -664,29 +667,65 @@
     imageViewLattice.alpha = 0;
     [lattice addSubview:imageViewLattice];
     
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    [lattice addGestureRecognizer:pinch];
+    
     NSLog(@"Lattice created");
     
 }
 
-- (void)resizeLattice {
+- (void)resizeLatticeWithCenter:(CGPoint)center {
     
     float z = lattice.scale;
     lattice.contentScaleFactor = z;
     
-    CGAffineTransform transform = CGAffineTransformMakeTranslation(self.view.center.x, self.view.center.y);
+    float w = (piceSize-2*self.padding)*pieceNumber*lattice.scale;
+    
+    CGPoint latticeCenter = CGPointMake(lattice.frame.origin.x+0.5*w, 
+                                        lattice.frame.origin.y+0.5*w);
+    
+    NSLog(@"Lattice center = %.1f, %.1f", latticeCenter.x, latticeCenter.y);
+    
+    CGPoint translation = CGPointMake(latticeCenter.x-center.x, latticeCenter.y-center.y);
+    
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(translation.x, translation.y);
     transform = CGAffineTransformScale(transform, z, z);
-    transform = CGAffineTransformTranslate(transform, -self.view.center.x, -self.view.center.y);
+    transform = CGAffineTransformTranslate(transform, -translation.x, -translation.y);
+    
     lattice.transform = transform;
     
+    UIView *centerView = [[UIView alloc] initWithFrame:CGRectMake(center.x, center.y, 10, 10)];
+    UIView *originView = [[UIView alloc] initWithFrame:CGRectMake(lattice.center.x, lattice.center.y, 10, 10)];
+    centerView.backgroundColor = [UIColor blueColor];
+    originView.backgroundColor = [UIColor redColor];
+    [lattice addSubview:centerView];
+    [self.view addSubview:originView];
+    
+}
+
+- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        UIView *piece = gestureRecognizer.view;
+        CGPoint locationInView = [gestureRecognizer locationInView:piece];
+        CGPoint locationInSuperview = [gestureRecognizer locationInView:piece.superview];
+        
+        piece.layer.anchorPoint = CGPointMake(locationInView.x / piece.bounds.size.width, locationInView.y / piece.bounds.size.height);
+        piece.center = locationInSuperview;
+    }
 }
 
 - (void)pinch:(UIPinchGestureRecognizer*)gesture {
     
+    [self adjustAnchorPointForGestureRecognizer:gesture];
+    
     float z = [gesture scale];
     lattice.scale *= z;
-    z = lattice.scale;
     
-    [self resizeLattice];
+    lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
+
+    
+    //[self resizeLatticeWithCenter:[gesture locationInView:self.view]];
     [self refreshPositions];        
     
     
@@ -788,10 +827,7 @@
     [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
     [swipeL setNumberOfTouchesRequired:2];
     [self.view addGestureRecognizer:swipeL];
-    
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
-    [self.view addGestureRecognizer:pinch];
-    
+        
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
     [pan setMinimumNumberOfTouches:1];
@@ -993,7 +1029,7 @@
     return [NSArray arrayWithArray:temp];
 }
 
-- (IBAction)dc:(id)sender {
+- (IBAction)toggleMenu:(id)sender {
 
     menu.duringGame = YES;
     [self.view addSubview:menu.view];
@@ -1209,9 +1245,7 @@ return f - floor(f/m)*m;
         latticeRect = CGRectMake((latticeRect.size.width-w)/2, (latticeRect.size.height-w)/2+drawerSize/2, w, w);
         
     }
-        
-    NSLog(@"DC");
-    
+            
     return latticeRect;
 }
 

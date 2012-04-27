@@ -52,7 +52,7 @@
 
 
 
-+(float)float:(float)f modulo:(float)m;
++ (float)float:(float)f modulo:(float)m;
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 
 - (BOOL)pieceIsOut:(PieceView *)piece;
@@ -66,7 +66,7 @@
 - (CGRect)frameOfLatticePiece:(int)i;
 
 
--(BOOL)pieceIsOut:(PieceView*)piece;
+- (BOOL)pieceIsOut:(PieceView*)piece;
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated;
 
 - (void)startNewGame;
