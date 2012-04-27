@@ -737,8 +737,6 @@
     imageViewLattice = [[UIImageView alloc] initWithImage:image];
     
 
-    [self createPuzzleFromImage:image];
-
     
     //Resize the drawer
     CGRect drawerFrame = drawerView.frame;
@@ -767,8 +765,9 @@
     
     //CGRect menuRect = CGRectMake((rect.size.width-320)/2, (rect.size.height-320)/2, 320, 320);
     menu = [[MenuController alloc] init];
-    menu.view.center = self.view.center;
     menu.delegate = self;
+    menu.duringGame = NO;
+    menu.view.center = self.view.center;
     [self.view addSubview:menu.view];
     
     
@@ -995,22 +994,26 @@
 }
 
 - (IBAction)dc:(id)sender {
+
+    menu.duringGame = YES;
+    [self.view addSubview:menu.view];
+    [self.view bringSubviewToFront:menu.view];
     
-    UIImagePickerController *c = [[UIImagePickerController alloc] init];
-    c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    c.allowsEditing = YES;
-    c.delegate = self;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        
-        popover = [[UIPopoverController alloc] initWithContentViewController:c];
-        popover.delegate = self;
-        [popover presentPopoverFromRect:menuButtonView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-        
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        
-        [self presentModalViewController:c animated:YES];
-    }
+//    UIImagePickerController *c = [[UIImagePickerController alloc] init];
+//    c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//    c.allowsEditing = YES;
+//    c.delegate = self;
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+//        
+//        popover = [[UIPopoverController alloc] initWithContentViewController:c];
+//        popover.delegate = self;
+//        [popover presentPopoverFromRect:menuButtonView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+//        
+//    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//        
+//        [self presentModalViewController:c animated:YES];
+//    }
     
 }
 
@@ -1310,6 +1313,7 @@ return f - floor(f/m)*m;
     NSLog(@"Starting a new game");
     
     [self createPuzzleFromImage:image];
+    receivedFirstTouch = NO;
     
     
     
