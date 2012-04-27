@@ -180,7 +180,7 @@
                 
                 if (piece.isFree && otherPiece.isFree) {
                     
-                    NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
+                    //NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
                     
                     
                     if (piece.number+l==otherPiece.number) {
@@ -195,7 +195,7 @@
                             otherPiece.hasNeighbors = YES;
                             
                         } else {
-                            //NSLog(@"0 Wrong angles. ");
+                            //NSLog(@"0 Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
                         }
                     } else {
                         //NSLog(@"-------> Wrong numbers. They are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d", piece.number+l, otherPiece.number, piece.number, otherPiece.number, direction, rotation, r);
@@ -236,7 +236,7 @@
     
     if (piece.isFree && piece.number == piece.position && ABS(piece.angle) < 1) {
         
-        NSLog(@"Piece #%d positioned!", piece.number);
+        //NSLog(@"Piece #%d positioned!", piece.number);
         //Flashes and block the piece
         if (!piece.isPositioned) {
             piece.isPositioned = YES;
@@ -322,7 +322,7 @@
             piece.isFree = NO;
             [UIView animateWithDuration:0.4 animations:^{
                 
-                piece.transform = CGAffineTransformMakeScale(piceSize/piece.bounds.size.width, piceSize/piece.bounds.size.height);
+                piece.transform = CGAffineTransformScale(piece.transform, piceSize/piece.bounds.size.width, piceSize/piece.bounds.size.height);
                 
             }];
         }
@@ -617,11 +617,6 @@
     } else {
         [self shuffle];
         [self organizeDrawerWithOrientation:self.interfaceOrientation];
-        for (PieceView *p in pieces) {
-            CGRect rect = p.frame;
-            rect.origin.y += 20;
-            p.frame = rect;
-        }
     }
     
 }
@@ -635,22 +630,27 @@
     
     CGRect rect = [[UIScreen mainScreen] bounds];
     
-    float marginTop = (rect.size.height - w + piceSize)/2;
+    //Center the lattice
+
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
     
-    rect = CGRectMake((rect.size.width-w)/2, marginTop, w, w);
+        rect = CGRectMake((rect.size.height-w)/2+drawerSize/2, (rect.size.width-w)/2, w, w);
+    
+    } else {
+        
+        rect = CGRectMake((rect.size.width-w)/2, (rect.size.height-w)/2+drawerSize/2, w, w);
+    
+    }
     
     lattice = [[Lattice alloc] init];
     [lattice initWithFrame:rect withNumber:pieceNumber withDelegate:self];
     
-    //CGRect screen = [[UIScreen mainScreen] bounds];
-    //float optimalPiceSize = PUZZLE_SIZE*screen.size.width/(pieceNumber)+2*self.padding;
+    //float optimalPiceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
     lattice.scale = 1; //optimalPiceSize/piceSize;
-    [self resizeLattice];
+    //[self resizeLattice];
     
-    //lattice.frame = self.view.frame;
     [self.view addSubview:lattice];
     
-    //[self.view bringSubviewToFront:stepper];
     [self.view bringSubviewToFront:menuButtonView];
     [self.view bringSubviewToFront:drawerView];
     
@@ -664,10 +664,7 @@
     imageViewLattice.alpha = 0;
     [lattice addSubview:imageViewLattice];
     
-    
-
-    
-    
+    NSLog(@"Lattice created");
     
 }
 
@@ -724,18 +721,12 @@
     
     CGRect rect = [[UIScreen mainScreen] bounds];
     
-    
-    
-    image = [UIImage imageNamed:@"Cover.png"];
-    
     [self loadSounds];
-    
-    [self createLattice];
-    [self createPuzzleFromImage:image];
-    
-
+    [self computePieceSize];
     
     //Add the image;
+    image = [UIImage imageNamed:@"Cover.png"];
+    
     imageView = [[UIImageView alloc] initWithImage:image];
     rect = CGRectMake(0, (rect.size.height-rect.size.width)/2, rect.size.width, rect.size.width);
     imageView.frame = rect;
@@ -744,13 +735,17 @@
     
     imageViewLattice = [[UIImageView alloc] initWithImage:image];
     
-    
+
+    [self createPuzzleFromImage:image];
+
     
     //Resize the drawer
     CGRect drawerFrame = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        NSLog(@"Landscape!");
         
         drawerFrame.size.width = drawerSize;
         drawerFrame.size.height = [[UIScreen mainScreen] bounds].size.width;
@@ -802,6 +797,10 @@
     
     NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:pieces];
     
+    if ([temp count] == 0) {
+        return;
+    }
+    
     
     //Removes removed pieces
     bool removed = NO;
@@ -848,17 +847,24 @@
             } else {
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    rect.origin.y = drawerFirstPoint.y;
-                    rect.origin.x = (self.padding*0.75)/2;;
+                    rect.origin.y = drawerFirstPoint.y+10;
+                    rect.origin.x = (self.padding*0.75)/2;
                 } else {
-                    rect.origin.x = drawerFirstPoint.x;
-                    rect.origin.y = (self.padding*0.75)/2;;
+                    rect.origin.x = drawerFirstPoint.x+10;
+                    rect.origin.y = (self.padding*0.75)/2;
                 }
                 
                 //NSLog(@"FirstPoint was %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
 
             }
+
+            if (!didRotate) {
+                rect.origin.y += 20;
+            }
+            
             p.frame = rect;
+            
+
         }
     }];
     
@@ -1014,7 +1020,6 @@
     image = [info objectForKey:UIImagePickerControllerEditedImage];
     imageView.image = image;
     
-    [self createLattice];
     [self createPuzzleFromImage:image];
     
 }
@@ -1034,7 +1039,7 @@
         int r = arc4random_uniform(4);
         p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
         p.angle = r*M_PI/2;
-        NSLog(@"angle=%.1f", p.angle);
+        //NSLog(@"angle=%.1f", p.angle);
     }
     
 }
@@ -1207,11 +1212,41 @@ return f - floor(f/m)*m;
     }
     
     
+    
+    if (!receivedFirstTouch) {
+        
+        float w = (piceSize-2*self.padding)*pieceNumber;
+        
+        CGRect latticeRect = [[UIScreen mainScreen] bounds];
+        
+        //Center the lattice
+        
+        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+                        
+            latticeRect = CGRectMake((latticeRect.size.height-w)/2+drawerSize/2, (latticeRect.size.width-w)/2, w, w);
+            
+        } else {
+            
+            latticeRect = CGRectMake((latticeRect.size.width-w)/2, (latticeRect.size.height-w)/2+drawerSize/2, w, w);
+            
+        }
+        
+        [UIView animateWithDuration:duration animations:^{
+
+            lattice.frame = latticeRect;
+            
+        }];
+        
+    }
+    
+    
+    
+    
     [UIView animateWithDuration:duration animations:^{
         
         drawerView.frame = rect;
         stepperDrawer.frame = stepperFrame;
-        
+
     }];
     
     
@@ -1220,9 +1255,17 @@ return f - floor(f/m)*m;
     //NSLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
 
     
+    //Center the board
+    
+
+    
+    
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
+    
+    didRotate = YES;
     
     CGRect rect = imageView.frame;
     
@@ -1240,6 +1283,14 @@ return f - floor(f/m)*m;
     }   
     
     imageView.frame = rect;
+    
+
 }
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    receivedFirstTouch = YES;
+}
+
 
 @end

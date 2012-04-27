@@ -16,6 +16,9 @@
 @interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate, PieceViewProtocol> {
     
     BOOL swiping;
+    BOOL didRotate;
+    BOOL receivedFirstTouch;
+    
     CGPoint drawerFirstPoint;
     IBOutlet UIView *menuButtonView;
     IBOutlet UIView *drawerView;

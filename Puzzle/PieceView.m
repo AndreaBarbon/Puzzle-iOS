@@ -210,7 +210,7 @@
                 angle = 0.0;
             }
             
-            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+            //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             tempAngle = 0;
             
             [delegate pieceRotated:self];
@@ -233,9 +233,9 @@
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
         
-    angle += M_PI/2;
     
-    angle = angle - floor(angle/(2*M_PI))*2*M_PI;
+    angle += M_PI_2;
+    angle = [PuzzleController float:angle modulo:2*M_PI];
     
     centerView.frame = CGRectZero;
     
@@ -244,6 +244,7 @@
         self.transform = CGAffineTransformMakeRotation(angle);
         
     }];
+    
     
     //Rotate the neighborhood
     for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
@@ -309,6 +310,8 @@
                 //p.transform = originalTransform;
                 
             }];
+        
+        
             
         
         
