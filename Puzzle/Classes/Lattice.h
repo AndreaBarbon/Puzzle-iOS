@@ -14,12 +14,14 @@
 
 @interface Lattice : UIView {
     
-    NSArray *pieces;
+    
 }
 
 @property (nonatomic, assign) UIViewController *delegate;
+@property (nonatomic, retain) NSArray *pieces;
+@property (nonatomic) float scale;
 
-- (void)initWithFrame:(CGRect)frame withNumber:(int)n;
+- (void)initWithFrame:(CGRect)frame withNumber:(int)n withDelegate:(id)delegate;
 - (id)objectAtIndex:(int)i;
 
 @end
