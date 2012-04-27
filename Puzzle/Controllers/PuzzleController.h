@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-#import "PieceView.h"
-#import "Lattice.h"
 #import <AVFoundation/AVAudioPlayer.h>
 
+#import "PieceView.h"
+#import "MenuController.h"
+#import "Lattice.h"
 
-@interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate, PieceViewProtocol> {
+
+@interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate, PieceViewProtocol, MenuProtocol> {
     
     BOOL swiping;
     BOOL didRotate;
@@ -42,6 +44,7 @@
 @property (nonatomic, retain) Lattice *lattice;
 
 @property (nonatomic, retain) UIPopoverController *popover;
+@property (nonatomic, retain) MenuController *menu;
 
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView *imageView;
@@ -51,6 +54,7 @@
 
 +(float)float:(float)f modulo:(float)m;
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
+
 - (BOOL)pieceIsOut:(PieceView *)piece;
 - (PieceView*)pieceWithNumber:(int)j;
 - (PieceView*)pieceWithPosition:(int)j;
@@ -64,6 +68,8 @@
 
 -(BOOL)pieceIsOut:(PieceView*)piece;
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated;
+
+- (void)startNewGame;
 
 
 

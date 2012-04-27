@@ -18,7 +18,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice;
+@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu;
 
 - (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
     
@@ -449,7 +449,6 @@
     
 }
 
-
 - (void)setup {
     
     
@@ -644,6 +643,7 @@
     
     lattice = [[Lattice alloc] init];
     [lattice initWithFrame:rect withNumber:pieceNumber withDelegate:self];
+    lattice.frame = [self frameForLatticeWithOrientation:self.interfaceOrientation];
     
     //float optimalPiceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
     lattice.scale = 1; //optimalPiceSize/piceSize;
@@ -720,6 +720,7 @@
     
     
     CGRect rect = [[UIScreen mainScreen] bounds];
+    self.view.frame = rect;
     
     [self loadSounds];
     [self computePieceSize];
@@ -762,6 +763,13 @@
     
     drawerView.frame = drawerFrame;
     stepperDrawer.frame = stepperFrame;
+    
+    
+    //CGRect menuRect = CGRectMake((rect.size.width-320)/2, (rect.size.height-320)/2, 320, 320);
+    menu = [[MenuController alloc] init];
+    menu.view.center = self.view.center;
+    menu.delegate = self;
+    [self.view addSubview:menu.view];
     
     
 
@@ -1183,6 +1191,27 @@ return f - floor(f/m)*m;
     
 }
 
+- (CGRect)frameForLatticeWithOrientation:(UIInterfaceOrientation)orientation {
+    
+    float w = (piceSize-2*self.padding)*pieceNumber;
+    
+    CGRect latticeRect = [[UIScreen mainScreen] bounds];
+        
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        
+        latticeRect = CGRectMake((latticeRect.size.height-w)/2+drawerSize/2, (latticeRect.size.width-w)/2, w, w);
+        
+    } else {
+        
+        latticeRect = CGRectMake((latticeRect.size.width-w)/2, (latticeRect.size.height-w)/2+drawerSize/2, w, w);
+        
+    }
+        
+    NSLog(@"DC");
+    
+    return latticeRect;
+}
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
     //Rotate the drawer
@@ -1215,25 +1244,9 @@ return f - floor(f/m)*m;
     
     if (!receivedFirstTouch) {
         
-        float w = (piceSize-2*self.padding)*pieceNumber;
-        
-        CGRect latticeRect = [[UIScreen mainScreen] bounds];
-        
-        //Center the lattice
-        
-        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-                        
-            latticeRect = CGRectMake((latticeRect.size.height-w)/2+drawerSize/2, (latticeRect.size.width-w)/2, w, w);
-            
-        } else {
-            
-            latticeRect = CGRectMake((latticeRect.size.width-w)/2, (latticeRect.size.height-w)/2+drawerSize/2, w, w);
-            
-        }
-        
         [UIView animateWithDuration:duration animations:^{
 
-            lattice.frame = latticeRect;
+            lattice.frame = [self frameForLatticeWithOrientation:toInterfaceOrientation];
             
         }];
         
@@ -1290,6 +1303,22 @@ return f - floor(f/m)*m;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     receivedFirstTouch = YES;
+}
+
+- (void)startNewGame {
+    
+    NSLog(@"Starting a new game");
+    
+    [self createPuzzleFromImage:image];
+    
+    
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        
+        lattice.frame = [self frameForLatticeWithOrientation:self.interfaceOrientation];
+        
+    }];
+    
 }
 
 
