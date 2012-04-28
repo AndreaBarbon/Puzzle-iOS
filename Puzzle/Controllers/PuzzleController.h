@@ -15,7 +15,7 @@
 #import "Lattice.h"
 
 
-@interface PuzzleController : TopClass <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate, PieceViewProtocol, MenuProtocol> {
+@interface PuzzleController : TopClass < UIScrollViewDelegate, PieceViewProtocol, MenuProtocol> {
     
     BOOL swiping;
     BOOL didRotate;
@@ -29,12 +29,14 @@
     IBOutlet UIButton *restartButton;
     int DrawerPosition;
     float drawerSize;
+    
 }
 
 
 @property(nonatomic) float piceSize;
 @property(nonatomic) float N;
 @property(nonatomic) int pieceNumber;
+@property(nonatomic) int loadedPieces;
 
 @property (nonatomic, strong) AVAudioPlayer *positionedSound;
 @property (nonatomic, strong) AVAudioPlayer *completedSound;
@@ -42,8 +44,8 @@
 
 @property (nonatomic, retain) NSArray *pieces;
 @property (nonatomic, retain) Lattice *lattice;
+@property (nonatomic, retain) UIPanGestureRecognizer *pan;
 
-@property (nonatomic, retain) UIPopoverController *popover;
 @property (nonatomic, retain) MenuController *menu;
 
 @property (nonatomic, retain) UIImage *image;
@@ -59,6 +61,8 @@
 - (PieceView*)pieceWithNumber:(int)j;
 - (PieceView*)pieceWithPosition:(int)j;
 - (int)positionOfPiece:(PieceView*)piece;
+
+- (void)toggleImageWithDuration:(float)duration;
 
 - (IBAction)scrollDrawer:(id)sender;
 - (IBAction)restartPuzzle:(id)sender;

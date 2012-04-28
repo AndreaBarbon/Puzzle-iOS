@@ -18,7 +18,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, popover, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan;
 
 - (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
     
@@ -44,7 +44,7 @@
 
 - (void)toggleImage:(UILongPressGestureRecognizer*)gesture {
     
-    if (gesture.state == UIGestureRecognizerStateBegan) {
+    if (gesture.state == UIGestureRecognizerStateBegan && menu.view.alpha == 0) {
         
         [self toggleImageWithDuration:0.5];
     }
@@ -54,9 +54,14 @@
     
     [UIView animateWithDuration:duration animations:^{
         if (imageView.alpha==0) {
+            
+            menuButtonView.userInteractionEnabled = NO;
             [self.view bringSubviewToFront:imageView];
             imageView.alpha = 1;
+            
         } else if (imageView.alpha==1) {
+            
+            menuButtonView.userInteractionEnabled = YES;
             imageView.alpha = 0;
         }
     }];
@@ -258,7 +263,7 @@
     
     if (animated) {
         
-        [UIView animateWithDuration:0.4 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             piece.frame = [self frameOfLatticePiece:i];
         }];
         
@@ -435,21 +440,16 @@
 }
 
 - (void)pan:(UIPanGestureRecognizer*)gesture {
-    
-    //NSLog(@"Panning");
-    
-    CGPoint traslation = [gesture translationInView:lattice.superview];
-    
-//    traslation.x = lattice.frame.origin.x - traslation.x;
-//    traslation.y = lattice.frame.origin.y - traslation.y;
-//    
-//    lattice.frame = CGRectMake(-traslation.x, -traslation.y, lattice.bounds.size.width, lattice.bounds.size.height);
 
-    lattice.center = CGPointMake(lattice.center.x - traslation.x, lattice.center.y - traslation.y);
-    
-    [self refreshPositions];
-    [gesture setTranslation:CGPointZero inView:lattice.superview];
-    
+    if (menu.view.alpha == 0) {
+        
+        CGPoint traslation = [gesture translationInView:lattice.superview];
+        
+        lattice.center = CGPointMake(lattice.center.x - traslation.x, lattice.center.y - traslation.y);
+        
+        [self refreshPositions];
+        [gesture setTranslation:CGPointZero inView:lattice.superview];
+    }
 }
 
 - (void)setup {
@@ -482,6 +482,11 @@
 }
 
 
+- (void)didReceiveMemoryWarning {
+    
+    NSLog(@"\n\nDio can!\n\n");
+}
+
 
 - (NSArray *)splitImage:(UIImage *)im{
     
@@ -496,14 +501,14 @@
     
     //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
     
-    NSLog(@"Piece size = %.1f", piceSize);
+    NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber);
     
     float w = piceSize;
     float h = piceSize;
     
     //NSLog(@"w, h = %.1f, %.1f", w, h);
     
-    
+    loadedPieces = 0;
     
     NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:N];
     for (int i=0;i<x;i++){
@@ -511,8 +516,12 @@
             CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (h-2*hh)-hh, w, h);
             //NSLog(@"===> w, h = %.1f, %.1f", portion.origin.x, portion.origin.y);
             [arr addObject:[im subimageWithRect:portion]];
+            
+            loadedPieces++;
         }
     }
+    
+    NSLog(@"All the images splitted");
     
     return arr;
     
@@ -528,7 +537,6 @@
     
     [self createLattice];
     
-    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:N];
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
     float f = piceSize*pieceNumber-2*(pieceNumber)*self.padding;
@@ -541,7 +549,7 @@
     
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
     
-    array = [NSMutableArray arrayWithArray:[self splitImage:img]];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:img]];
     NSLog(@"Pieces:%d", [array count]);
     
     
@@ -670,6 +678,7 @@
     
     UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
     [lattice addGestureRecognizer:pinch];
+
     
     NSLog(@"Lattice created");
     
@@ -720,9 +729,14 @@
     [self adjustAnchorPointForGestureRecognizer:gesture];
     
     float z = [gesture scale];
-    lattice.scale *= z;
     
-    lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
+    CGSize screen = [[UIScreen mainScreen] bounds].size;
+    
+    if (lattice.scale*z*pieceNumber*piceSize>piceSize && lattice.scale*z*piceSize<screen.width) {
+        
+        lattice.scale *= z;
+        lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
+    }
 
     
     //[self resizeLatticeWithCenter:[gesture locationInView:self.view]];
@@ -802,19 +816,21 @@
     stepperDrawer.frame = stepperFrame;
     
     
-    //CGRect menuRect = CGRectMake((rect.size.width-320)/2, (rect.size.height-320)/2, 320, 320);
+    //Add the meu
     menu = [[MenuController alloc] init];
     menu.delegate = self;
     menu.duringGame = NO;
     menu.view.center = self.view.center;
     [self.view addSubview:menu.view];
-    
-    
 
+    
+    pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [pan setMinimumNumberOfTouches:1];
+    [pan setMaximumNumberOfTouches:1];
     
     
     UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
-    [longPressure setMinimumPressDuration:1];
+    [longPressure setMinimumPressDuration:1.1];
     [self.view addGestureRecognizer:longPressure];
     
     
@@ -827,12 +843,6 @@
     [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
     [swipeL setNumberOfTouchesRequired:2];
     [self.view addGestureRecognizer:swipeL];
-        
-    
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-    [pan setMinimumNumberOfTouches:1];
-    [pan setMaximumNumberOfTouches:1];
-    [self.view addGestureRecognizer:pan];
     
 }
 
@@ -846,13 +856,11 @@
     
     
     //Removes removed pieces
-    bool removed = NO;
     for (int i=0; i<[pieces count]; i++) {
         
         PieceView *p = [pieces objectAtIndex:i];
         if (p.isFree) {
             [temp removeObject:p];
-            removed = YES;
         }
     }
     
@@ -1007,14 +1015,18 @@
 
 - (void)swipeR:(UISwipeGestureRecognizer*)swipe {
     
-    [self swipeInDirection:UISwipeGestureRecognizerDirectionRight];
+    if (menu.view.alpha == 0) {
+        [self swipeInDirection:UISwipeGestureRecognizerDirectionRight];
+    }
+    
 }
 
 
 - (void)swipeL:(UISwipeGestureRecognizer*)swipe {
-    
-    [self swipeInDirection:UISwipeGestureRecognizerDirectionLeft];
-    
+
+    if (menu.view.alpha == 0) {
+        [self swipeInDirection:UISwipeGestureRecognizerDirectionLeft];
+    }
 }
 
 - (NSArray*)shuffleArray:(NSArray*)array {
@@ -1032,8 +1044,9 @@
 - (IBAction)toggleMenu:(id)sender {
 
     menu.duringGame = YES;
-    [self.view addSubview:menu.view];
     [self.view bringSubviewToFront:menu.view];
+    [menu toggleMenu];
+    
     
 //    UIImagePickerController *c = [[UIImagePickerController alloc] init];
 //    c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -1053,23 +1066,7 @@
     
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        
-        [popover dismissPopoverAnimated:YES];
-        
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        
-        [self dismissModalViewControllerAnimated:YES];
-    }
-    
-    image = [info objectForKey:UIImagePickerControllerEditedImage];
-    imageView.image = image;
-    
-    [self createPuzzleFromImage:image];
-    
-}
+
 
 - (void)shuffle {
     
@@ -1199,6 +1196,9 @@ return f - floor(f/m)*m;
 }
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    
+    NSLog(@"Scaling Image");
+    
     //UIGraphicsBeginImageContext(newSize);
     UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
     [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
@@ -1340,15 +1340,23 @@ return f - floor(f/m)*m;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     receivedFirstTouch = YES;
+    
+    if(imageView.alpha == 1) {
+        [self toggleImageWithDuration:0.5];
+    }
 }
 
 - (void)startNewGame {
     
     NSLog(@"Starting a new game");
-    
+        
     [self createPuzzleFromImage:image];
     receivedFirstTouch = NO;
+    [self bringDrawerToTop];
     
+    
+    [menu.game gameStarted];
+
     
     
     [UIView animateWithDuration:0.2 animations:^{
@@ -1357,6 +1365,13 @@ return f - floor(f/m)*m;
         
     }];
     
+}
+
+- (void)setPieceNumber:(int)pieceNumber_ {
+    
+    pieceNumber = pieceNumber_;
+    N = pieceNumber*pieceNumber;
+
 }
 
 

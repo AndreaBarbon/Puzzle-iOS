@@ -265,7 +265,6 @@
             float y = (selfOrigin.y-pOrigin.y);
             
             
-            CGAffineTransform transform = p.transform;
             //NSLog(@"Old transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
             
             CGAffineTransform matrix = CGAffineTransformIdentity;
@@ -284,8 +283,8 @@
             
             
             
-            
-            CGAffineTransform originalTransform = p.transform;
+            CGAffineTransform transform = p.transform;
+            CGAffineTransform originalTransform = transform;
             transform = CGAffineTransformTranslate(originalTransform , x, y);
             transform = CGAffineTransformRotate(transform,angle-p.angle);
             transform = CGAffineTransformTranslate(transform, -x,-y);
@@ -377,10 +376,10 @@
     float p = self.padding;
     
     BOOL vertical = NO;
-    int sign;
+    int sign = 1;
     
-    CGPoint a;
-    CGPoint b;
+    CGPoint a = CGPointZero;
+    CGPoint b = CGPointZero;
         
     switch (n) {
         case 1:

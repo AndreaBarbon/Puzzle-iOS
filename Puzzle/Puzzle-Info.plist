@@ -12,6 +12,10 @@
 	<array>
 		<string>Default-Landscape@2x~ipad.png</string>
 		<string>Default-Portrait~ipad.png</string>
+		<string>icon.png</string>
+		<string>icon@2x.png</string>
+		<string>icon-72.png</string>
+		<string>icon-144.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -21,6 +25,10 @@
 			<array>
 				<string>Default-Landscape@2x~ipad.png</string>
 				<string>Default-Portrait~ipad.png</string>
+				<string>icon.png</string>
+				<string>icon@2x.png</string>
+				<string>icon-72.png</string>
+				<string>icon-144.png</string>
 			</array>
 		</dict>
 	</dict>
