@@ -482,12 +482,6 @@
 }
 
 
-- (void)didReceiveMemoryWarning {
-    
-    NSLog(@"\n\nDio can!\n\n");
-}
-
-
 - (NSArray *)splitImage:(UIImage *)im{
     
     float x = pieceNumber;
@@ -514,8 +508,11 @@
     for (int i=0;i<x;i++){
         for (int j=0;j<y;j++){
             CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (h-2*hh)-hh, w, h);
-            //NSLog(@"===> w, h = %.1f, %.1f", portion.origin.x, portion.origin.y);
+
             [arr addObject:[im subimageWithRect:portion]];
+            
+            //[arr addObject:im];
+
             
             loadedPieces++;
         }
@@ -529,12 +526,15 @@
 
 - (void)createPuzzleFromImage:(UIImage*)image_ {
     
+    
     [self computePieceSize];
     
     for (PieceView *p in pieces) {
         [p removeFromSuperview];
     }
-    
+
+    pieces = nil;
+
     [self createLattice];
     
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
