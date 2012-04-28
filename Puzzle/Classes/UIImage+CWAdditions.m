@@ -198,7 +198,8 @@
     UIImage *imageCopy = UIGraphicsGetImageFromCurrentImageContext();  
     UIGraphicsEndImageContext();  
     
-    return imageCopy;  
+    return imageCopy;
+        
 }
 
 @end
@@ -208,10 +209,14 @@
 
 -(UIImage*)subimageWithRect:(CGRect)rect;
 {
+
+    //NSLog(@"Getting DC");
 	UIGraphicsBeginImageContextWithOptions(rect.size, NO, self.scale);
     [self drawAtPoint:CGPointMake(-rect.origin.x, -rect.origin.y)];
+    //NSLog(@"Getting graphic");
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    //NSLog(@"Got graphic");
     return image;
 }
 

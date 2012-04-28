@@ -8,6 +8,7 @@
 
 #import "MenuController.h"
 #import "PuzzleController.h"
+#import "NewGameController.h"
 
 @interface MenuController ()
 
@@ -15,27 +16,92 @@
 
 @implementation MenuController
 
-@synthesize delegate, duringGame;
+@synthesize delegate, duringGame, game;
 
 - (void)viewWillAppear:(BOOL)animated {
+    
 
-    resumeButton.hidden = !duringGame;
     
 }
+
+- (void)toggleMenu {
+    
+    
+    resumeButton.hidden = !duringGame;
+    showThePictureButton.hidden = !duringGame;    
+    
+    float obscuring;
+    
+    if (duringGame) {
+        
+        obscuring = 0.5;
+        
+    } else {
+        obscuring = 1;
+    }
+    
+    
+    if (self.view.alpha==0) {
+        
+        [delegate.view removeGestureRecognizer:delegate.pan];
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            obscuringView.alpha = obscuring;
+            self.view.alpha = 1;
+        }];
+        
+    } else {
+     
+        [delegate.view addGestureRecognizer:delegate.pan];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            obscuringView.alpha = 0;
+            self.view.alpha = 0;
+        }];
+    }
+    
+}
+
+- (void)createNewGame {
+    
+    [self toggleMenu];
+    [delegate startNewGame];
+            
+    game.view.transform = CGAffineTransformIdentity;
+        
+}
+
 
 - (IBAction)startNewGame:(id)sender {
     
     //Warning: are you sure?
     
-    [self.view removeFromSuperview];
-    [delegate startNewGame];
+    //[self toggleMenu];
+    //[delegate startNewGame];
+    
+
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        game.view.transform = CGAffineTransformMakeTranslation(-self.view.frame.size.width,0);
+        
+    }];
+    
     
 }
 
 - (IBAction)resumeGame:(id)sender {
     
-    [self.view removeFromSuperview];
-    
+    [self toggleMenu];
+
+}
+
+- (IBAction)showThePicture:(id)sender {
+
+    //[self toggleMenu];    
+    [delegate toggleImageWithDuration:0.5];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -50,7 +116,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    self.view.layer.masksToBounds = YES;
+    self.view.layer.cornerRadius = 20;
+
+    CGRect screen = [[UIScreen mainScreen] bounds];
+    CGRect rect = CGRectMake(0, 0, screen.size.height, screen.size.height);
+    obscuringView = [[UIView alloc] initWithFrame:rect];
+    obscuringView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    
+    [delegate.view addSubview:obscuringView];
+    [delegate.view bringSubviewToFront:self.view];
+    
+    resumeButton.hidden = YES;
+    showThePictureButton.hidden = YES; 
+    
+    
+    game = [[NewGameController alloc] init];    
+    game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
+    game.delegate = self;
+
+    [self.view addSubview:game.view];
+
 }
 
 - (void)viewDidUnload
