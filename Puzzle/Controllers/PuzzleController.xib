@@ -11,10 +11,9 @@
 			<string key="NS.object.0">1179</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
-			<string>IBUIButton</string>
-			<string>IBUIStepper</string>
-			<string>IBUIView</string>
 			<string>IBProxyObject</string>
+			<string>IBUIView</string>
+			<string>IBUIButton</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -114,7 +113,7 @@
 						<string key="NSFrameSize">{320, 260}</string>
 						<reference key="NSSuperview" ref="811427304"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="282856151"/>
+						<reference key="NSNextKeyView" ref="775788706"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">10</int>
@@ -9955,20 +9954,68 @@ AAEAAQABA</bytes>
 						<float key="IBUIAlpha">0.89999997615814209</float>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIStepper" id="282856151">
+					<object class="IBUIView" id="775788706">
 						<reference key="NSNextResponder" ref="811427304"/>
 						<int key="NSvFlags">292</int>
+						<array class="NSMutableArray" key="NSSubviews">
+							<object class="IBUIButton" id="807678388">
+								<reference key="NSNextResponder" ref="775788706"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{-7, -4}, {50, 35}}</string>
+								<reference key="NSSuperview" ref="775788706"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="93020608"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<float key="IBUIAlpha">0.5</float>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<string key="IBUINormalTitle">&lt;</string>
+								<reference key="IBUIHighlightedTitleColor" ref="27754075"/>
+								<object class="NSColor" key="IBUINormalTitleColor" id="778375862">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MCAwIDAAA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="1061150384"/>
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="951876151">
+									<int key="type">2</int>
+									<double key="pointSize">20</double>
+								</object>
+								<object class="NSFont" key="IBUIFont" id="976951563">
+									<string key="NSName">Helvetica-Bold</string>
+									<double key="NSSize">20</double>
+									<int key="NSfFlags">16</int>
+								</object>
+							</object>
+							<object class="IBUIButton" id="93020608">
+								<reference key="NSNextResponder" ref="775788706"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{51, -4}, {50, 35}}</string>
+								<reference key="NSSuperview" ref="775788706"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="64352340"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<float key="IBUIAlpha">0.5</float>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<string key="IBUINormalTitle">&gt;</string>
+								<reference key="IBUIHighlightedTitleColor" ref="27754075"/>
+								<reference key="IBUINormalTitleColor" ref="778375862"/>
+								<reference key="IBUINormalTitleShadowColor" ref="1061150384"/>
+								<reference key="IBUIFontDescription" ref="951876151"/>
+								<reference key="IBUIFont" ref="976951563"/>
+							</object>
+						</array>
 						<string key="NSFrame">{{216, 269}, {94, 27}}</string>
 						<reference key="NSSuperview" ref="811427304"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="807678388"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
+						<reference key="IBUIBackgroundColor" ref="873945829"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<double key="IBUIMaximumValue">100</double>
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
@@ -14403,9 +14450,9 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">stepperDrawer</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="282856151"/>
+						<reference key="destination" ref="775788706"/>
 					</object>
-					<int key="connectionID">34</int>
+					<int key="connectionID">44</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -14418,12 +14465,21 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">scrollDrawer:</string>
-						<reference key="source" ref="282856151"/>
+						<string key="label">scrollDrawerRight:</string>
+						<reference key="source" ref="807678388"/>
 						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">13</int>
+						<int key="IBEventType">7</int>
 					</object>
-					<int key="connectionID">35</int>
+					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">scrollDrawerLeft:</string>
+						<reference key="source" ref="93020608"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">48</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -14451,7 +14507,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<array class="NSMutableArray" key="children">
 							<reference ref="64352340"/>
 							<reference ref="950110971"/>
-							<reference ref="282856151"/>
+							<reference ref="775788706"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -14482,10 +14538,23 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<string key="objectName">DraverView</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">33</int>
-						<reference key="object" ref="282856151"/>
+						<int key="objectID">43</int>
+						<reference key="object" ref="775788706"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="93020608"/>
+							<reference ref="807678388"/>
+						</array>
 						<reference key="parent" ref="811427304"/>
-						<string key="objectName">StepperDrawer</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">41</int>
+						<reference key="object" ref="807678388"/>
+						<reference key="parent" ref="775788706"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">42</int>
+						<reference key="object" ref="93020608"/>
+						<reference key="parent" ref="775788706"/>
 					</object>
 				</array>
 			</object>
@@ -14496,7 +14565,11 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="31.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="33.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="1" key="41.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="42.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="1" key="42.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -14505,7 +14578,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">40</int>
+			<int key="maxID">48</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -14514,15 +14587,20 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<string key="superclassName">TopClass</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="restartPuzzle:">id</string>
-						<string key="scrollDrawer:">id</string>
+						<string key="scrollDrawerLeft:">id</string>
+						<string key="scrollDrawerRight:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="restartPuzzle:">
 							<string key="name">restartPuzzle:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="scrollDrawer:">
-							<string key="name">scrollDrawer:</string>
+						<object class="IBActionInfo" key="scrollDrawerLeft:">
+							<string key="name">scrollDrawerLeft:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="scrollDrawerRight:">
+							<string key="name">scrollDrawerRight:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
@@ -14531,7 +14609,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<string key="menuButtonView">UIView</string>
 						<string key="restartButton">UIButton</string>
 						<string key="stepper">UIStepper</string>
-						<string key="stepperDrawer">UIStepper</string>
+						<string key="stepperDrawer">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="drawerView">
@@ -14552,7 +14630,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="stepperDrawer">
 							<string key="name">stepperDrawer</string>
-							<string key="candidateClassName">UIStepper</string>
+							<string key="candidateClassName">UIView</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

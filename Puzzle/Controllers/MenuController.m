@@ -57,8 +57,16 @@
         
         [UIView animateWithDuration:0.2 animations:^{
             
+            NSLog(@"Animation started");
+            [delegate print_free_memory];
+
             obscuringView.alpha = 0;
             self.view.alpha = 0;
+            
+        } completion:^(BOOL finished) {
+            NSLog(@"Animation completed");
+            [delegate print_free_memory];
+            NSLog(@"\n\n\n\n");
         }];
     }
     
@@ -66,11 +74,16 @@
 
 - (void)createNewGame {
     
-    [self toggleMenu];
-    [delegate startNewGame];
-            
-    game.view.transform = CGAffineTransformIdentity;
+    @autoreleasepool {
         
+        [delegate startNewGame];
+        
+        game.view.transform = CGAffineTransformIdentity;
+        
+        [self toggleMenu];
+
+    }
+            
 }
 
 

@@ -25,7 +25,7 @@
     IBOutlet UIView *menuButtonView;
     IBOutlet UIView *drawerView;
     IBOutlet UIStepper *stepper;
-    IBOutlet UIStepper *stepperDrawer;
+    IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
     int DrawerPosition;
     float drawerSize;
@@ -64,8 +64,10 @@
 
 - (void)toggleImageWithDuration:(float)duration;
 
-- (IBAction)scrollDrawer:(id)sender;
 - (IBAction)restartPuzzle:(id)sender;
+- (IBAction)scrollDrawerRight:(id)sender;
+- (IBAction)scrollDrawerLeft:(id)sender;
+
 
 - (CGRect)frameOfLatticePiece:(int)i;
 

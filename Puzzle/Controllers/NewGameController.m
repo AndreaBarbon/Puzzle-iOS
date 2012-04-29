@@ -37,7 +37,17 @@
         [self dismissModalViewControllerAnimated:YES];
     }
         
-    image.image = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *temp = [info objectForKey:UIImagePickerControllerOriginalImage];    
+    CGRect rect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
+    
+    //rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    
+    
+
+    
+    image.image = [delegate.delegate clipImage:temp toRect:rect];
+    
+    
     
 }
 
@@ -79,18 +89,29 @@
     delegate.delegate.imageViewLattice.image = delegate.delegate.image;
     delegate.delegate.pieceNumber = (int)slider.value;
     
+    
+    [delegate.delegate removeOldPieces];
+
     [NSThread detachNewThreadSelector:@selector(createNewGame) toTarget:delegate withObject:nil];
+
+
+
+
     
 }
 
 - (void)gameStarted {
 
+    NSLog(@"Game effectively starting");
+    
     [timer invalidate];
     progressView.progress = 0.001;
     delegate.delegate.loadedPieces = 0;
     startButton.hidden = NO;    
     progressView.hidden = YES;  
     indicator.hidden = YES;
+
+    NSLog(@"Game effectively started");
 
 }
 

@@ -118,7 +118,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
-        piceSize = 200;
+        piceSize = 180;
         
     }else{  
         
@@ -130,7 +130,7 @@
     drawerSize = piceSize+1.8*self.padding;
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    int n = screenWidth/(piceSize+10);
+    int n = screenWidth/(piceSize+1);
     float unusedSpace = screenWidth - n*piceSize;
     drawerMargin = (float)(unusedSpace/(n+1));
     
@@ -594,6 +594,8 @@
     [self computePieceSize];
     [self createLattice];
     
+    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
+    
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
     float f = (float)(pieceNumber*(piceSize-2*self.padding));
@@ -874,13 +876,13 @@
         drawerFrame.size.width = drawerSize;
         drawerFrame.size.height = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = 10;
-        stepperFrame.origin.x = drawerFrame.size.width+10;
+        stepperFrame.origin.x = drawerFrame.size.width;
         
     } else {
         
         drawerFrame.size.height = drawerSize;
         drawerFrame.size.width = [[UIScreen mainScreen] bounds].size.height;
-        stepperFrame.origin.y = drawerFrame.size.height+10;
+        stepperFrame.origin.y = drawerFrame.size.height;
         stepperFrame.origin.x = 10;
     }
     
@@ -995,16 +997,17 @@
     
 }
 
-- (IBAction)scrollDrawer:(UIStepper*)sender {
+- (IBAction)scrollDrawerRight:(id)sender {
     
-    if (sender.value<DrawerPosition) {
-        [self swipeInDirection:UISwipeGestureRecognizerDirectionRight];
-    } else {
-        [self swipeInDirection:UISwipeGestureRecognizerDirectionLeft];
-    }
+    [self swipeInDirection:UISwipeGestureRecognizerDirectionRight];
     
-    DrawerPosition = sender.value;
     
+}
+
+- (IBAction)scrollDrawerLeft:(id)sender {
+    
+    [self swipeInDirection:UISwipeGestureRecognizerDirectionLeft];
+        
 }
 
 - (void)swipeInDirection:(UISwipeGestureRecognizerDirection)direction {
@@ -1029,7 +1032,7 @@
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
-        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.y>=0) {
+        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.y>=-piceSize) {
             return;
         }
         
@@ -1047,7 +1050,7 @@
                 
                 swiping = YES;
                 
-                drawerFirstPoint.y += sgn*(traslation+20);
+                drawerFirstPoint.y += sgn*(traslation);
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
@@ -1062,7 +1065,7 @@
         
     } else {
         
-        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.x>=0) {
+        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.x>=-piceSize) {
             return;
         }
         
@@ -1344,7 +1347,7 @@ return f - floor(f/m)*m;
         rect.size.width = drawerSize;
         rect.size.height = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height - stepperFrame.size.height-30;
-        stepperFrame.origin.x = rect.size.width+10;
+        stepperFrame.origin.x = rect.size.width;
         
     } else {
         
@@ -1353,7 +1356,7 @@ return f - floor(f/m)*m;
         drawerSize = piceSize+1.8*self.padding-20;
         rect.size.height = drawerSize;
         rect.size.width = [[UIScreen mainScreen] bounds].size.width;
-        stepperFrame.origin.y = rect.size.height+10;
+        stepperFrame.origin.y = rect.size.height;
         stepperFrame.origin.x = rect.size.width - stepperFrame.size.width-10;
     }
     

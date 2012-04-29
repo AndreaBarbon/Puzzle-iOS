@@ -9966,7 +9966,7 @@ AAEAAQABA</bytes>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<float key="IBUIValue">4</float>
 						<float key="IBUIMinValue">3</float>
-						<float key="IBUIMaxValue">40</float>
+						<float key="IBUIMaxValue">20</float>
 					</object>
 					<object class="IBUILabel" id="591954673">
 						<reference key="NSNextResponder" ref="544214420"/>
@@ -10110,10 +10110,9 @@ AAEAAQABA</bytes>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIActivityIndicatorView" id="131902398">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<string key="NSFrameSize">{37, 37}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<bool key="IBUIOpaque">NO</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>

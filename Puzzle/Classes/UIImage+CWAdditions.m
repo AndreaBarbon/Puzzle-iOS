@@ -196,6 +196,7 @@
                        CGRectMake(0, 0, imageSize.width, imageSize.height), 
                        imgRef);  
     UIImage *imageCopy = UIGraphicsGetImageFromCurrentImageContext();  
+    
     UIGraphicsEndImageContext();  
     
     return imageCopy;
@@ -217,7 +218,11 @@
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     //NSLog(@"Got graphic");
+    
+    CGContextRelease(UIGraphicsGetCurrentContext());
+    
     return image;
+        
 }
 
 -(UIImage*)stretchableImageFromLeftCapOfImage;

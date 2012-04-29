@@ -25,6 +25,8 @@
     IBOutlet UIProgressView *progressView;
     IBOutlet UIActivityIndicatorView *indicator;
     NSTimer *timer;
+    
+    int times;
 }
 
 @property (nonatomic, retain) UIPopoverController *popover;
