@@ -626,6 +626,11 @@
             
             for (int k=0; k<4; k++) {
                 int e = arc4random_uniform(3)+1;
+                
+                if (arc4random_uniform(2)>0) {
+                    e *= -1;
+                }
+                                
                 [a addObject:[NSNumber numberWithInt:e]];
             }
             
@@ -673,13 +678,15 @@
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
 
 
+    BOOL debugging = NO;
     
-    if (NO) {
+    if (debugging) {
         
         for (PieceView *p in pieces) {
             p.isFree = YES;
             [self movePiece:p toLatticePoint:p.number animated:NO];
         }
+        [imageViewLattice removeFromSuperview];
         
     } else {
         [self shuffle];
@@ -973,6 +980,8 @@
 
         }
     }];
+    
+    
     
 }
 
