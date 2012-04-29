@@ -129,6 +129,16 @@
     
     drawerSize = piceSize+1.8*self.padding;
     
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    int n = screenWidth/(piceSize+10);
+    float unusedSpace = screenWidth - n*piceSize;
+    drawerMargin = (float)(unusedSpace/(n+1));
+    
+    NSLog(@"n = %d, %.1f", n, drawerMargin);
+    
+    
+    
+    
     //    piceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
     
 }
@@ -950,20 +960,20 @@
                 CGRect rect2 = p2.frame;
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    rect.origin.y = rect2.origin.y+rect2.size.width+10;
+                    rect.origin.y = rect2.origin.y+rect2.size.width+drawerMargin;
                     rect.origin.x = (self.padding*0.75)/2;
                 } else {
-                    rect.origin.x = rect2.origin.x+rect2.size.width+10;
+                    rect.origin.x = rect2.origin.x+rect2.size.width+drawerMargin;
                     rect.origin.y = (self.padding*0.75)/2;
                 }
                 
             } else {
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    rect.origin.y = drawerFirstPoint.y+10;
+                    rect.origin.y = drawerFirstPoint.y+drawerMargin;
                     rect.origin.x = (self.padding*0.75)/2;
                 } else {
-                    rect.origin.x = drawerFirstPoint.x+10;
+                    rect.origin.x = drawerFirstPoint.x+drawerMargin;
                     rect.origin.y = (self.padding*0.75)/2;
                 }
                 
@@ -1013,15 +1023,21 @@
         sgn *= -1;
     }
     
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    float traslation = screenWidth-drawerMargin;
+    
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
-        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.y>0) {
+        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.y>=0) {
             return;
         }
         
         PieceView *p = [temp lastObject];
-        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.y<self.view.frame.size.height-p.frame.size.height+self.padding) {
+        if (
+            direction==UISwipeGestureRecognizerDirectionLeft && 
+            p.frame.origin.y<screenWidth-p.frame.size.height+self.padding
+            ) {
             return;
         }
         
@@ -1031,7 +1047,7 @@
                 
                 swiping = YES;
                 
-                drawerFirstPoint.y += sgn*self.view.frame.size.height;
+                drawerFirstPoint.y += sgn*(traslation+20);
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
@@ -1046,12 +1062,12 @@
         
     } else {
         
-        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.x>0) {
+        if (direction==UISwipeGestureRecognizerDirectionRight && drawerFirstPoint.x>=0) {
             return;
         }
         
         PieceView *p = [temp lastObject];
-        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<self.view.frame.size.width-p.frame.size.width+self.padding) {
+        if (direction==UISwipeGestureRecognizerDirectionLeft && p.frame.origin.x<screenWidth-p.frame.size.width+self.padding) {
             return;
         }
         
@@ -1061,7 +1077,7 @@
                 
                 swiping = YES;
                 
-                drawerFirstPoint.x += sgn*self.view.frame.size.width;
+                drawerFirstPoint.x += sgn*traslation;
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
@@ -1140,7 +1156,7 @@
     for (int i=0; i<N; i++) {          
         PieceView *p = [pieces objectAtIndex:i];            
         CGRect rect = p.frame;
-        rect.origin.x = piceSize*i+10;
+        rect.origin.x = piceSize*i+drawerMargin;
         rect.origin.y = 5;
         p.frame = rect;
         

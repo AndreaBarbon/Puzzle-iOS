@@ -29,7 +29,7 @@
     IBOutlet UIButton *restartButton;
     int DrawerPosition;
     float drawerSize;
-    
+    float drawerMargin;
 }
 
 
