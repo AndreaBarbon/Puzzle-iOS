@@ -74,7 +74,8 @@
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated;
 
 - (void)startNewGame;
-
-
+- (void)print_free_memory;
+- (void)removeOldPieces;
+- (UIImage*)clipImage:(UIImage*)img toRect:(CGRect)rect;
 
 @end

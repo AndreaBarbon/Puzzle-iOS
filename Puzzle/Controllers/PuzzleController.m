@@ -26,6 +26,34 @@
     
 }
 
+#import <mach/mach.h>
+#import <mach/mach_host.h>
+
+-(void)print_free_memory {
+    
+    mach_port_t host_port;
+    mach_msg_type_number_t host_size;
+    vm_size_t pagesize;
+    
+    host_port = mach_host_self();
+    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
+    host_page_size(host_port, &pagesize);        
+    
+    vm_statistics_data_t vm_stat;
+    
+    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS)
+        NSLog(@"Failed to fetch vm statistics");
+    
+    /* Stats in bytes */ 
+    natural_t mem_used = (vm_stat.active_count +
+                          vm_stat.inactive_count +
+                          vm_stat.wire_count) * pagesize;
+    natural_t mem_free = vm_stat.free_count * pagesize;
+    natural_t mem_total = mem_used + mem_free;
+    NSLog(@"used: %u free: %u total: %u", mem_used/ 100000, mem_free/ 100000, mem_total/ 100000);
+}
+
+
 - (BOOL)isPuzzleComplete {
         
     for (PieceView *p in pieces) {
@@ -83,7 +111,7 @@
 
     }];
     
-    [completedSound play];
+    //[completedSound play];
 }
 
 - (void)computePieceSize {
@@ -445,10 +473,12 @@
         
         CGPoint traslation = [gesture translationInView:lattice.superview];
         
-        lattice.center = CGPointMake(lattice.center.x - traslation.x, lattice.center.y - traslation.y);
-        
-        [self refreshPositions];
-        [gesture setTranslation:CGPointZero inView:lattice.superview];
+        if (ABS(traslation.x>0.03) || ABS(traslation.y) > 0.03) {
+            
+            lattice.center = CGPointMake(lattice.center.x - traslation.x, lattice.center.y - traslation.y);            
+            [self refreshPositions];
+            [gesture setTranslation:CGPointZero inView:lattice.superview];
+        }
     }
 }
 
@@ -481,6 +511,15 @@
     [self setup];
 }
 
+- (UIImage*)clipImage:(UIImage*)img toRect:(CGRect)rect {
+    
+    CGImageRef drawImage = CGImageCreateWithImageInRect(img.CGImage, rect);
+    UIImage *newImage = [UIImage imageWithCGImage:drawImage];
+    CGImageRelease(drawImage);
+    return newImage;
+    
+}
+
 
 - (NSArray *)splitImage:(UIImage *)im{
     
@@ -495,7 +534,9 @@
     
     //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
     
-    NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber);
+    NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber*pieceNumber);
+    [self print_free_memory];
+
     
     float w = piceSize;
     float h = piceSize;
@@ -507,47 +548,55 @@
     NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:N];
     for (int i=0;i<x;i++){
         for (int j=0;j<y;j++){
+            
             CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (h-2*hh)-hh, w, h);
-
-            [arr addObject:[im subimageWithRect:portion]];
             
-            //[arr addObject:im];
-
-            
+            //[arr addObject:[self clipImage:im toRect:portion]];            
+            [arr addObject:[im subimageWithRect:portion]];            
             loadedPieces++;
         }
     }
     
     NSLog(@"All the images splitted");
+    [self print_free_memory];
+
     
     return arr;
     
 }
 
-- (void)createPuzzleFromImage:(UIImage*)image_ {
-    
-    
-    [self computePieceSize];
-    
-    for (PieceView *p in pieces) {
-        [p removeFromSuperview];
+- (void)removeOldPieces {
+        
+    for (int i = 0; i<[pieces count]; i++) {
+        
+        PieceView *p = [pieces objectAtIndex:i];
+        [p removeFromSuperview];    
+        p = nil;
     }
+    
 
-    pieces = nil;
+    //pieces = nil;
+    
+}
 
+- (void)createPuzzleFromImage:(UIImage*)image_ {
+
+    [self computePieceSize];
     [self createLattice];
     
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
-    float f = piceSize*pieceNumber-2*(pieceNumber)*self.padding;
+    float f = (float)(pieceNumber*(piceSize-2*self.padding));
     
-    //UIImage *img = [[UIImage imageWithCGImage:[image_ CGImage] scale:image_.size.width/f orientation:1] imageRotatedByDegrees:0];
+    
+    NSLog(@"Piece number %d, piece size %.1f, f = %.1f, padding = %.1f", pieceNumber, piceSize, f, self.padding);
+    
+    UIImage *img = [[UIImage imageWithCGImage:[image_ CGImage] scale:image_.size.width/f orientation:1] imageRotatedByDegrees:0];
 
-    UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
-    
-    
-    
+    //UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
+    
+    
     
     NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:img]];
     NSLog(@"Pieces:%d", [array count]);
@@ -557,7 +606,12 @@
     for (int i=0;i<pieceNumber;i++){
         for (int j=0;j<pieceNumber;j++){
             
-            CGRect portion = CGRectMake(i * (piceSize-2*self.padding)-self.padding+50, j * (piceSize-2*self.padding)-self.padding+50, piceSize, piceSize);
+            CGRect portion = CGRectMake(
+                                        i * (piceSize-2*self.padding)-self.padding,
+                                        j * (piceSize-2*self.padding)-self.padding, 
+                                        piceSize, 
+                                        piceSize);
+            
                         
             PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
             piece.delegate = self;
@@ -617,11 +671,14 @@
     }
     
     pieces = [[NSArray alloc] initWithArray:arrayPieces];
+
+
     
-    if (FALSE) {
+    if (NO) {
         
         for (PieceView *p in pieces) {
             p.isFree = YES;
+            [self movePiece:p toLatticePoint:p.number animated:NO];
         }
         
     } else {
@@ -666,12 +723,9 @@
     [self.view bringSubviewToFront:drawerView];
     
     
-    //Add the image
-    
-    CGPoint latticeOrigin = [self frameOfLatticePiece:0].origin;
-    
+    //Add the image to lattice
     imageViewLattice.image = image;
-    imageViewLattice.frame = CGRectMake(latticeOrigin.x+self.padding, latticeOrigin.y+self.padding, pieceNumber*lattice.scale*(piceSize-2*self.padding), pieceNumber*lattice.scale*(piceSize-2*self.padding));
+    imageViewLattice.frame = CGRectMake(0 ,0, pieceNumber*lattice.scale*(piceSize-2*self.padding), pieceNumber*lattice.scale*(piceSize-2*self.padding));
     imageViewLattice.alpha = 0;
     [lattice addSubview:imageViewLattice];
     
@@ -725,26 +779,27 @@
 }
 
 - (void)pinch:(UIPinchGestureRecognizer*)gesture {
-    
-    [self adjustAnchorPointForGestureRecognizer:gesture];
-    
-    float z = [gesture scale];
-    
-    CGSize screen = [[UIScreen mainScreen] bounds].size;
-    
-    if (lattice.scale*z*pieceNumber*piceSize>piceSize && lattice.scale*z*piceSize<screen.width) {
-        
-        lattice.scale *= z;
-        lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
-    }
 
+    float z = [gesture scale];
+
+    if (z>1.03 || z < 0.97) {
+        
+        [self adjustAnchorPointForGestureRecognizer:gesture];
+        
+        
+        CGSize screen = [[UIScreen mainScreen] bounds].size;
+        
+        if (lattice.scale*z*pieceNumber*piceSize>piceSize && lattice.scale*z*piceSize<screen.width) {
+            
+            lattice.scale *= z;
+            lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
+        }
+        
+        [self refreshPositions];        
+        
+        [gesture setScale:1];
+    }
     
-    //[self resizeLatticeWithCenter:[gesture locationInView:self.view]];
-    [self refreshPositions];        
-    
-    
-    
-    [gesture setScale:1];
     
 }
 - (void)loadSounds {
@@ -1197,7 +1252,7 @@ return f - floor(f/m)*m;
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
     
-    NSLog(@"Scaling Image");
+    NSLog(@"Scaling Image to size %.1f", newSize.width);
     
     //UIGraphicsBeginImageContext(newSize);
     UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
@@ -1348,14 +1403,16 @@ return f - floor(f/m)*m;
 
 - (void)startNewGame {
     
-    NSLog(@"Starting a new game");
+    //NSLog(@"Starting a new game");
         
     [self createPuzzleFromImage:image];
+    
+
+    
     receivedFirstTouch = NO;
     [self bringDrawerToTop];
     
     
-    [menu.game gameStarted];
 
     
     
@@ -1364,6 +1421,11 @@ return f - floor(f/m)*m;
         lattice.frame = [self frameForLatticeWithOrientation:self.interfaceOrientation];
         
     }];
+    
+    //NSLog(@"Puzzle created");
+
+    [menu.game gameStarted];
+    
     
 }
 
