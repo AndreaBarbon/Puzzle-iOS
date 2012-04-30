@@ -23,7 +23,6 @@
     
     CGPoint drawerFirstPoint;
     IBOutlet UIView *menuButtonView;
-    IBOutlet UIView *drawerView;
     IBOutlet UIStepper *stepper;
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
@@ -42,9 +41,14 @@
 @property (nonatomic, strong) AVAudioPlayer *completedSound;
 
 
+
+
+@property (nonatomic, retain) IBOutlet UIView *drawerView;
+
 @property (nonatomic, retain) NSArray *pieces;
 @property (nonatomic, retain) Lattice *lattice;
 @property (nonatomic, retain) UIPanGestureRecognizer *pan;
+@property (nonatomic, retain) UIPanGestureRecognizer *panDrawer;
 
 @property (nonatomic, retain) MenuController *menu;
 
@@ -71,6 +75,8 @@
 
 - (CGRect)frameOfLatticePiece:(int)i;
 
+
+- (void)panDrawer:(UIPanGestureRecognizer*)gesture;
 
 - (BOOL)pieceIsOut:(PieceView*)piece;
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated;

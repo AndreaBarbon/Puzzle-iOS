@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView, isRotating;
 
 
 - (void)setup {
@@ -142,32 +142,78 @@
     
 }
 
+- (BOOL)areTherePiecesBeingRotated {
+    
+    BOOL rotating = NO;
+    
+    for (PieceView *p in delegate.pieces) {
+        if (p.isRotating && !p.isFree) {
+            return YES;
+        }
+    }
+    
+    return rotating;
+
+    
+}
+
 - (void)move:(UIPanGestureRecognizer*)gesture {
     
-    
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-
-        [self.superview bringSubviewToFront:self];
-        oldPosition = [self realCenter];
-        
-    }
-        
-    NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
     CGPoint traslation = [gesture translationInView:self.superview];
-
-    [self translateWithVector:traslation];
-    [self translateNeighborhoodExcluding:excluded WithVector:traslation];
-
-    [gesture setTranslation:CGPointZero inView:self.superview];
-
-    
-    if (gesture.state == UIGestureRecognizerStateEnded) {
-
-        NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
-        [self movedNeighborhoodExcludingPieces:excluded];
-        [delegate pieceMoved:self];
+                
+        if (gesture.state == UIGestureRecognizerStateBegan) {
+            
+            [self.superview bringSubviewToFront:self];
+            oldPosition = [self realCenter];
+            tr = 0;
+            
+        }
         
-    }
+        if (isFree || isLifted) {
+            
+            NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
+            
+            [self translateWithVector:traslation];
+            [self translateNeighborhoodExcluding:excluded WithVector:traslation];
+            
+            [gesture setTranslation:CGPointZero inView:self.superview];
+            
+            
+            if (gesture.state == UIGestureRecognizerStateEnded) {
+                
+                NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
+                [self movedNeighborhoodExcludingPieces:excluded];
+                [delegate pieceMoved:self];
+                
+            }
+            
+        } else { //Inside the drawer
+            
+            if (UIInterfaceOrientationIsLandscape(self.delegate.interfaceOrientation)) {
+                
+                if (ABS(traslation.x)<delegate.piceSize/4 || ABS(tr)>delegate.piceSize/4) {
+                    tr += ABS(traslation.y);
+                    [delegate panDrawer:gesture];
+                } else {
+                    [self translateWithVector:CGPointMake(traslation.x, 0)];
+                    [gesture setTranslation:CGPointZero inView:self.superview];
+                    self.isLifted = YES;
+                }
+                
+            } else {
+                
+                if (ABS(traslation.y)<delegate.piceSize/4 || ABS(tr)>delegate.piceSize/4 ) {
+                    tr += ABS(traslation.x);
+                    [delegate panDrawer:gesture];
+                } else {
+                    [self translateWithVector:CGPointMake(0, traslation.y)];
+                    [gesture setTranslation:CGPointZero inView:self.superview];
+                    self.isFree = YES;
+                }
+            }
+            
+        }
+        
     
 }
 
@@ -186,7 +232,7 @@
         
         float rotation = [gesture rotation];
         
-        if ([gesture state]==UIGestureRecognizerStateEnded) {
+        if ([gesture state]==UIGestureRecognizerStateEnded || [gesture state]==UIGestureRecognizerStateCancelled || [gesture state]==UIGestureRecognizerStateFailed) {
             
             int t = floor(ABS(tempAngle)/(M_PI/4));
             
@@ -202,6 +248,11 @@
                 
                 self.transform = CGAffineTransformMakeRotation(rotation);
                 
+            }completion:^(BOOL finished) {
+
+                self.isRotating = NO;
+                delegate.drawerView.userInteractionEnabled = YES;
+
             }];
             
             angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
@@ -216,7 +267,11 @@
             [delegate pieceRotated:self];
             
             
-        } else {
+        } else if (gesture.state==UIGestureRecognizerStateBegan || gesture.state==UIGestureRecognizerStateChanged){
+            
+            delegate.drawerView.userInteractionEnabled = NO;
+            
+            self.isRotating = YES;
             self.transform = CGAffineTransformRotate(self.transform, rotation);
             tempAngle += rotation;
         }
@@ -284,19 +339,19 @@
             
             
             CGAffineTransform transform = p.transform;
-            CGAffineTransform originalTransform = transform;
-            transform = CGAffineTransformTranslate(originalTransform , x, y);
-            transform = CGAffineTransformRotate(transform,angle-p.angle);
-            transform = CGAffineTransformTranslate(transform, -x,-y);
+            transform = CGAffineTransformTranslate(transform , -x, -y);
+            transform = CGAffineTransformRotate(transform,-M_PI_2);
+            transform = CGAffineTransformTranslate(transform, x,y);
+        transform = CGAffineTransformRotate(transform,M_PI);
             
             //NSLog(@"New transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
             
-            
+            p.angle = angle;
             
             [UIView animateWithDuration:0.2 animations:^{
                 
                 p.transform = transform;
-                p.angle = angle;
+
                 
             } completion:^(BOOL finished){
                 
@@ -348,6 +403,7 @@
                 p.transform = CGAffineTransformMakeRotation(p.angle-M_PI_2);
                 p.angle -= M_PI_2;
             }
+            
             self.transform = CGAffineTransformMakeRotation(self.angle-M_PI_2);
             self.angle -= M_PI_2;
             

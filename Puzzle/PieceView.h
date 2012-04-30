@@ -22,7 +22,7 @@
 
 @interface PieceView : UIView {
         
-    
+    float tr;
 }
 
 //@property (nonatomic, assign) id<PieceViewProtocol> delegate;
@@ -37,6 +37,7 @@
 @property(nonatomic) BOOL isPositioned;
 @property(nonatomic) BOOL isLifted;
 @property(nonatomic) BOOL isFree;
+@property(nonatomic) BOOL isRotating;
 @property(nonatomic) BOOL hasNeighbors;
 @property(nonatomic) CGPoint oldPosition;
 

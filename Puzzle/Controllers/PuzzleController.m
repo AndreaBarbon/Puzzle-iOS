@@ -18,7 +18,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView;
 
 - (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
     
@@ -419,7 +419,9 @@
         
     }
     
-    [self organizeDrawerWithOrientation:self.interfaceOrientation];
+    [UIView animateWithDuration:0.5 animations:^{
+        [self organizeDrawerWithOrientation:self.interfaceOrientation];
+    }];
     [self bringDrawerToTop];
     
     piece.oldPosition = [piece realCenter];
@@ -490,6 +492,37 @@
             [gesture setTranslation:CGPointZero inView:lattice.superview];
         }
     }
+}
+
+- (void)panDrawer:(UIPanGestureRecognizer*)gesture {
+    
+    if (menu.view.alpha == 0) {
+        
+        CGPoint traslation = [gesture translationInView:lattice.superview];
+        
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            
+            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
+                
+                drawerFirstPoint.y += [gesture velocityInView:self.view].y/25;
+                [gesture setTranslation:CGPointMake(traslation.x, 0) inView:lattice.superview];                
+            }
+            
+        } else {
+            
+            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
+                
+                drawerFirstPoint.x += [gesture velocityInView:self.view].x/25;
+                [gesture setTranslation:CGPointMake(0, traslation.y) inView:lattice.superview];     
+            }
+        }
+        
+        
+        [self organizeDrawerWithOrientation:self.interfaceOrientation];
+
+        
+    }
+    
 }
 
 - (void)setup {
@@ -902,6 +935,11 @@
     [pan setMinimumNumberOfTouches:1];
     [pan setMaximumNumberOfTouches:1];
     
+    panDrawer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDrawer:)];
+    [panDrawer setMinimumNumberOfTouches:1];
+    [panDrawer setMaximumNumberOfTouches:1];
+    [drawerView addGestureRecognizer:panDrawer];
+    
     
     UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
     [longPressure setMinimumPressDuration:1.1];
@@ -919,6 +957,8 @@
     [self.view addGestureRecognizer:swipeL];
     
 }
+
+#define ORG_TIME 0.4
 
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
@@ -948,7 +988,7 @@
     }
     
 
-    [UIView animateWithDuration:0.5 animations:^{
+    //[UIView animateWithDuration:ORG_TIME animations:^{
         
         for (int i=0; i<[temp count]; i++) {
             
@@ -989,9 +1029,11 @@
             
             p.frame = rect;
             
+            p.isLifted = NO;
+            
 
         }
-    }];
+    //}];
     
     
     
@@ -1051,8 +1093,9 @@
                 swiping = YES;
                 
                 drawerFirstPoint.y += sgn*(traslation);
-                [self organizeDrawerWithOrientation:self.interfaceOrientation];
-                //NSLog(@"first point = %.1f", drawerFirstPoint.x);
+                [UIView animateWithDuration:0.5 animations:^{
+                    [self organizeDrawerWithOrientation:self.interfaceOrientation];
+                }];                //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
                 
             }completion:^(BOOL finished){
@@ -1081,7 +1124,10 @@
                 swiping = YES;
                 
                 drawerFirstPoint.x += sgn*traslation;
-                [self organizeDrawerWithOrientation:self.interfaceOrientation];
+                [UIView animateWithDuration:0.5 animations:^{
+                    [self organizeDrawerWithOrientation:self.interfaceOrientation];
+                }];
+                
                 //NSLog(@"first point = %.1f", drawerFirstPoint.x);
                 
                 
@@ -1383,8 +1429,9 @@ return f - floor(f/m)*m;
     }];
     
     
-    [self organizeDrawerWithOrientation:toInterfaceOrientation];
-    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self organizeDrawerWithOrientation:toInterfaceOrientation];
+    }];    
     //NSLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
 
     
