@@ -110,8 +110,12 @@
         imageViewLattice.alpha = 1;
 
     }];
+
+    if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
     
-    //[completedSound play];
+        [completedSound play];
+
+    }
 }
 
 - (void)computePieceSize {
@@ -286,7 +290,10 @@
             piece.userInteractionEnabled = NO;
             if (![self isPuzzleComplete]) {
                 [piece pulse];
-                [positionedSound play];
+                
+                if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
+                    [positionedSound play];
+                }
             }
         }
         
@@ -866,7 +873,7 @@
     
 }
 - (void)loadSounds {
-    
+            
     NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"wav"];
     NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
     positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
@@ -879,9 +886,7 @@
     
     soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"wav"];
     soundURL = [NSURL fileURLWithPath:soundPath];
-    self.completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    
-    
+    completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     
 }
 

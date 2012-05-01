@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVAudioPlayer.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 #import "PieceView.h"
 #import "MenuController.h"

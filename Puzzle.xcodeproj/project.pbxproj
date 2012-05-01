@@ -44,6 +44,7 @@
 		B8DFA69D15497ED300256385 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69715497ED300256385 /* Default@2x.png */; };
 		B8E18155154FF75300A8B450 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = B8E18153154FF75300A8B450 /* bg.png */; };
 		B8E18156154FF75300A8B450 /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8E18154154FF75300A8B450 /* bg@2x.png */; };
+		B8E18159155000C200A8B450 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E18158155000C200A8B450 /* MediaPlayer.framework */; };
 		B8E4AC7F154AA22300D0A75D /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E4AC7D154AA22300D0A75D /* MenuController.m */; };
 		B8E4AC80154AA22300D0A75D /* MenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8E4AC7E154AA22300D0A75D /* MenuController.xib */; };
 /* End PBXBuildFile section */
@@ -96,6 +97,7 @@
 		B8DFA69715497ED300256385 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B8E18153154FF75300A8B450 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		B8E18154154FF75300A8B450 /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
+		B8E18158155000C200A8B450 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B8E4AC7C154AA22300D0A75D /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuController.h; path = Controllers/MenuController.h; sourceTree = "<group>"; };
 		B8E4AC7D154AA22300D0A75D /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuController.m; path = Controllers/MenuController.m; sourceTree = "<group>"; };
 		B8E4AC7E154AA22300D0A75D /* MenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MenuController.xib; path = Controllers/MenuController.xib; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8E18159155000C200A8B450 /* MediaPlayer.framework in Frameworks */,
 				B85381101548D91B00F3BFA5 /* AVFoundation.framework in Frameworks */,
 				B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */,
 				B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */,
@@ -121,6 +124,7 @@
 		B87C5CB615400B2A00AF69BC = {
 			isa = PBXGroup;
 			children = (
+				B8E18158155000C200A8B450 /* MediaPlayer.framework */,
 				B85381081548D83D00F3BFA5 /* PiecePositioned.wav */,
 				B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */,
 				B84014F01540DFBD0075734A /* Cover.png */,
