@@ -1416,7 +1416,7 @@ return f - floor(f/m)*m;
         rect.size.height = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height - stepperFrame.size.height-30;
         stepperFrame.origin.x = rect.size.width;
-        
+                
     } else {
         
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
@@ -1428,6 +1428,8 @@ return f - floor(f/m)*m;
         stepperFrame.origin.x = rect.size.width - stepperFrame.size.width-10;
     }
     
+    lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
+    [self refreshPositions];
     
     
     if (!receivedFirstTouch) {
