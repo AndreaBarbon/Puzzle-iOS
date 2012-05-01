@@ -59,5 +59,6 @@
 - (void)setNeighborNumber:(int)i forEdge:(int)edge;
 - (NSArray*)allTheNeighborsBut:(NSMutableArray*)excluded;
 - (CGPoint)realCenter;
+- (void)pulse;
 
 @end

@@ -276,7 +276,7 @@
 }
 
 - (BOOL)isPositioned:(PieceView*)piece  {
-    
+        
     if (piece.isFree && piece.number == piece.position && ABS(piece.angle) < 1) {
         
         //NSLog(@"Piece #%d positioned!", piece.number);
@@ -285,6 +285,7 @@
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
             if (![self isPuzzleComplete]) {
+                [piece pulse];
                 [positionedSound play];
             }
         }
@@ -302,25 +303,29 @@
     if (animated) {
         
         [UIView animateWithDuration:0.5 animations:^{
+        
             piece.frame = [self frameOfLatticePiece:i];
+        
+        }completion:^(BOOL finished) {
+            
+            if (!piece.isPositioned) {
+                [self isPositioned:piece];
+            }
+            [self checkNeighborsOfPieceNumber:piece];
+            
         }];
         
     } else {
         
         piece.frame = [self frameOfLatticePiece:i];
-        
+        if (!piece.isPositioned) {
+            [self isPositioned:piece];
+        }
     }
     
     
     piece.position = i;
     piece.oldPosition = [piece realCenter];
-    
-    
-    if (!piece.isPositioned) {
-        [self isPositioned:piece];
-    }
-    
-    [self checkNeighborsOfPieceNumber:piece];
     
     
 }
@@ -363,9 +368,10 @@
             
         } else {
             piece.isFree = NO;
-            [UIView animateWithDuration:0.4 animations:^{
+            [UIView animateWithDuration:0.5 animations:^{
                 
-                piece.transform = CGAffineTransformScale(piece.transform, piceSize/piece.bounds.size.width, piceSize/piece.bounds.size.height);
+                CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
+                piece.frame = rect;
                 
             }];
         }
@@ -380,7 +386,7 @@
         if ( [self pieceIsOut:piece] ) 
         {
             
-            [UIView animateWithDuration:0.4 animations:^{
+            [UIView animateWithDuration:0.5 animations:^{
                 
                 for (PieceView *p in [piece allTheNeighborsBut:nil]) {
                     CGRect rect = p.frame;
@@ -422,13 +428,16 @@
     [UIView animateWithDuration:0.5 animations:^{
         [self organizeDrawerWithOrientation:self.interfaceOrientation];
     }];
+    
     [self bringDrawerToTop];
     
     piece.oldPosition = [piece realCenter];
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
 
     
-    [self isPositioned:piece];
+    
+    
+    //[self isPositioned:piece];
 
     
 }
@@ -729,6 +738,8 @@
         
         for (PieceView *p in pieces) {
             p.isFree = YES;
+            p.isPositioned = YES;
+            p.userInteractionEnabled = NO;
             [self movePiece:p toLatticePoint:p.number animated:NO];
         }
         [imageViewLattice removeFromSuperview];
@@ -780,10 +791,6 @@
     imageViewLattice.frame = CGRectMake(0 ,0, pieceNumber*lattice.scale*(piceSize-2*self.padding), pieceNumber*lattice.scale*(piceSize-2*self.padding));
     imageViewLattice.alpha = 0;
     [lattice addSubview:imageViewLattice];
-    
-    
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
-    [lattice addGestureRecognizer:pinch];
 
     
     NSLog(@"Lattice created");
@@ -821,7 +828,11 @@
 
 - (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        
         UIView *piece = gestureRecognizer.view;
+        //Change this!!!
+        piece = lattice;
+        
         CGPoint locationInView = [gestureRecognizer locationInView:piece];
         CGPoint locationInSuperview = [gestureRecognizer locationInView:piece.superview];
         
@@ -878,7 +889,8 @@
 {
     [super viewDidLoad];
     
-    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg"]];
+
     CGRect rect = [[UIScreen mainScreen] bounds];
     self.view.frame = rect;
     
@@ -931,6 +943,11 @@
     [self.view addSubview:menu.view];
 
     
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    [self.view addGestureRecognizer:pinch];
+    
+    
     pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
     [pan setMinimumNumberOfTouches:1];
     [pan setMaximumNumberOfTouches:1];
@@ -958,7 +975,7 @@
     
 }
 
-#define ORG_TIME 0.4
+#define ORG_TIME 0.5
 
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     

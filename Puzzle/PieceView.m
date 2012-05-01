@@ -15,6 +15,7 @@
 
 
 - (void)setup {
+    
             
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
     [pan setMinimumNumberOfTouches:1];
@@ -41,6 +42,22 @@
     [self addSubview:centerView];
         
         
+}
+
+- (void)pulse {
+    
+	CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
+    trasform = CATransform3DRotate(trasform, angle, 0, 0, 0);
+    //self.layer.transform = trasform;
+    
+	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+	animation.toValue = [NSValue valueWithCATransform3D:trasform];
+	animation.autoreverses = YES;
+	animation.duration = 0.3;
+	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	animation.repeatCount = 2;
+	[self.layer addAnimation:animation forKey:@"pulseAnimation"];
+    
 }
 
 
