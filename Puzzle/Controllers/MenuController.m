@@ -16,7 +16,7 @@
 
 @implementation MenuController
 
-@synthesize delegate, duringGame, game;
+@synthesize delegate, duringGame, game, obscuringView;
 
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -28,13 +28,15 @@
     
     
     resumeButton.hidden = !duringGame;
-    showThePictureButton.hidden = !duringGame;    
+    showThePictureButton.hidden = !duringGame;  
+
+
     
     float obscuring;
     
     if (duringGame) {
         
-        obscuring = 0.5;
+        obscuring = 1;
         
     } else {
         obscuring = 1;
@@ -44,7 +46,7 @@
     if (self.view.alpha==0) {
         
         [delegate.view removeGestureRecognizer:delegate.pan];
-        
+
         [UIView animateWithDuration:0.5 animations:^{
             
             obscuringView.alpha = obscuring;
@@ -55,7 +57,7 @@
      
         [delegate.view addGestureRecognizer:delegate.pan];
         
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             
             NSLog(@"Animation started");
             [delegate print_free_memory];
@@ -64,9 +66,12 @@
             self.view.alpha = 0;
             
         } completion:^(BOOL finished) {
-            NSLog(@"Animation completed");
+
             [delegate print_free_memory];
             NSLog(@"\n\n\n\n");
+
+            game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
+
         }];
     }
     
@@ -77,12 +82,11 @@
     @autoreleasepool {
         
         [delegate startNewGame];
-        
-        game.view.transform = CGAffineTransformIdentity;
-        
+                
         [self toggleMenu];
 
     }
+    
             
 }
 
@@ -98,7 +102,7 @@
     
     [UIView animateWithDuration:0.5 animations:^{
         
-        game.view.transform = CGAffineTransformMakeTranslation(-self.view.frame.size.width,0);
+        game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
         
     }];
     
@@ -130,13 +134,18 @@
 {
     [super viewDidLoad];
 
-    self.view.layer.masksToBounds = YES;
-    self.view.layer.cornerRadius = 20;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+     
+        self.view.layer.masksToBounds = YES;
+        self.view.layer.cornerRadius = 20;
+        
+    }
 
     CGRect screen = [[UIScreen mainScreen] bounds];
     CGRect rect = CGRectMake(0, 0, screen.size.height, screen.size.height);
     obscuringView = [[UIView alloc] initWithFrame:rect];
-    obscuringView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    obscuringView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     
     [delegate.view addSubview:obscuringView];
     [delegate.view bringSubviewToFront:self.view];

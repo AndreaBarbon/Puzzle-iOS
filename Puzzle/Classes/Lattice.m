@@ -8,6 +8,7 @@
 
 #import "Lattice.h"
 #import "PuzzleController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation Lattice
 
@@ -30,8 +31,10 @@
                 
                 //CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+2*self.padding+20, w-1, w-1);
                 //CGRect rect = CGRectMake(i*w+frame.origin.x, (j)*w+frame.origin.y, w-1, w-1);
-                CGRect rect = CGRectMake(i*w, (j)*w, w-1, w-1);
+                CGRect rect = CGRectMake(i*w-1, (j)*w-1, w-2, w-2);
                 UIView *v = [[UIView alloc] initWithFrame:rect];
+                //v.layer.cornerRadius = w/15;
+                //v.layer.masksToBounds = YES;
                 v.backgroundColor = [UIColor whiteColor];
                 v.alpha = .1;
                 [a addObject:v];
@@ -42,7 +45,7 @@
         pieces = [NSArray arrayWithArray:a];
         
     }
-    
+        
     //[self addSubview:[[UIImageView alloc] initWithImage:[(PuzzleController*)delegate image]]];
     
 }

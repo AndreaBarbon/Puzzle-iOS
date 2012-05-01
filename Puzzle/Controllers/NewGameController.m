@@ -9,6 +9,7 @@
 #import "NewGameController.h"
 #import "MenuController.h"
 #import "PuzzleController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface NewGameController ()
 
@@ -22,6 +23,9 @@
 {
     [super viewDidLoad];
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];
+    
+    loadingView.layer.cornerRadius = 10;
+    loadingView.layer.masksToBounds = YES;
 
 
 }
@@ -43,7 +47,8 @@
     //rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     
-
+    tapToSelectView.hidden = YES;
+    startButton.enabled = YES;    
     
     image.image = [delegate.delegate clipImage:temp toRect:rect];
     
@@ -63,8 +68,7 @@
         
         popover = [[UIPopoverController alloc] initWithContentViewController:c];
         popover.delegate = self;
-        CGRectMake(imageButton.center.x, imageButton.center.y, 1, 1);
-        [popover presentPopoverFromRect:imageButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        [popover presentPopoverFromRect:loadingView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
         
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
@@ -77,14 +81,19 @@
     
     NSLog(@"Started");
     
-    startButton.hidden = YES;    
+    startButton.enabled = NO;    
     progressView.hidden = NO;
-    indicator.hidden = NO;
+    loadingView.hidden = NO;
 
     timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
 
     
-    delegate.delegate.image = image.image;
+    if (image.image == nil) {
+        delegate.delegate.image = [UIImage imageNamed:@"Cover"];
+        
+    } else {
+        delegate.delegate.image = image.image;
+    }
     delegate.delegate.imageView.image = delegate.delegate.image;
     delegate.delegate.imageViewLattice.image = delegate.delegate.image;
     delegate.delegate.pieceNumber = (int)slider.value;
@@ -107,9 +116,10 @@
     [timer invalidate];
     progressView.progress = 0.001;
     delegate.delegate.loadedPieces = 0;
-    startButton.hidden = NO;    
     progressView.hidden = YES;  
-    indicator.hidden = YES;
+    loadingView.hidden = YES;
+    tapToSelectView.hidden = NO;
+
 
     NSLog(@"Game effectively started");
 

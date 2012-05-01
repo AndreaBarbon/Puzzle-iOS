@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Puzzle iPhone.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>Puzzle.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -13,6 +18,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>B87C5CC015400B2A00AF69BC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B8E181601550402800A8B450</key>
 		<dict>
 			<key>primary</key>
 			<true/>

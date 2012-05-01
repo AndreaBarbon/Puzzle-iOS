@@ -24,6 +24,8 @@
     IBOutlet UIButton *imageButton;
     IBOutlet UIProgressView *progressView;
     IBOutlet UIActivityIndicatorView *indicator;
+    IBOutlet UIView *loadingView;
+    IBOutlet UIView *tapToSelectView;
     NSTimer *timer;
     
     int times;

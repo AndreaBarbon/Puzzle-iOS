@@ -27,13 +27,12 @@
     IBOutlet UIButton *newGameButton;
     IBOutlet UIButton *showThePictureButton;
     
-    UIView *obscuringView;
-    
 }
 
 @property (nonatomic, assign) PuzzleController *delegate;
 @property (nonatomic) BOOL duringGame;
 @property (nonatomic, retain) NewGameController *game;
+@property (nonatomic, retain) UIView *obscuringView;
 
 
 - (IBAction)startNewGame:(id)sender;

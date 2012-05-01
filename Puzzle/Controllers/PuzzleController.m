@@ -131,7 +131,11 @@
     
     self.padding = piceSize*0.15;
     
-    drawerSize = piceSize+1.8*self.padding;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        drawerSize = piceSize+1.8*self.padding-15;   
+    else   
+        drawerSize = piceSize+1.8*self.padding+5;
+    
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
     int n = screenWidth/(piceSize+1);
@@ -341,8 +345,6 @@
     
     [self.view bringSubviewToFront:drawerView];
     [self.view bringSubviewToFront:stepperDrawer];
-    [self.view bringSubviewToFront:menuButtonView];
-    //[self.view bringSubviewToFront:stepper];
     
     for (PieceView *p in pieces) {
         if (!p.isFree) {
@@ -894,8 +896,9 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg"]];
-
+    drawerView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    
     CGRect rect = [[UIScreen mainScreen] bounds];
     self.view.frame = rect;
     
@@ -906,7 +909,7 @@
     image = [UIImage imageNamed:@"Cover.png"];
     
     imageView = [[UIImageView alloc] initWithImage:image];
-    rect = CGRectMake(0, (rect.size.height-rect.size.width)/2, rect.size.width, rect.size.width);
+    rect = CGRectMake(0, (rect.size.height-rect.size.width)/1, rect.size.width, rect.size.width);
     imageView.frame = rect;
     imageView.alpha = 0;
     [self.view addSubview:imageView];
@@ -1195,25 +1198,11 @@
 - (IBAction)toggleMenu:(id)sender {
 
     menu.duringGame = YES;
+    [self.view bringSubviewToFront:menu.obscuringView];
     [self.view bringSubviewToFront:menu.view];
+    [self.view bringSubviewToFront:menuButtonView];
+    
     [menu toggleMenu];
-    
-    
-//    UIImagePickerController *c = [[UIImagePickerController alloc] init];
-//    c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//    c.allowsEditing = YES;
-//    c.delegate = self;
-//    
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-//        
-//        popover = [[UIPopoverController alloc] initWithContentViewController:c];
-//        popover.delegate = self;
-//        [popover presentPopoverFromRect:menuButtonView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-//        
-//    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-//        
-//        [self presentModalViewController:c animated:YES];
-//    }
     
 }
 
@@ -1374,7 +1363,7 @@ return f - floor(f/m)*m;
         
     } else {  
         
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+        return (interfaceOrientation==UIInterfaceOrientationPortrait);
         
     }
     
@@ -1411,7 +1400,6 @@ return f - floor(f/m)*m;
         
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
-        drawerSize = piceSize+1.8*self.padding-20;
         rect.size.width = drawerSize;
         rect.size.height = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height - stepperFrame.size.height-30;
@@ -1421,7 +1409,6 @@ return f - floor(f/m)*m;
         
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
-        drawerSize = piceSize+1.8*self.padding-20;
         rect.size.height = drawerSize;
         rect.size.width = [[UIScreen mainScreen] bounds].size.width;
         stepperFrame.origin.y = rect.size.height;

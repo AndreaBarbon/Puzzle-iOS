@@ -596,7 +596,7 @@
 }
 
 
-#define LINE_WIDTH 2
+#define LINE_WIDTH 1
 
 - (void)drawRect:(CGRect)rect
 {
@@ -605,7 +605,7 @@
     
     
     
-    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.75);
+    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.5);
     CGContextSetLineWidth(ctx, LINE_WIDTH);
     CGContextSetLineJoin(ctx, kCGLineJoinRound);
  
