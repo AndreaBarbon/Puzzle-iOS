@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class PuzzleController;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic,retain) UIViewController *puzzle;
+@property (nonatomic,retain) PuzzleController *puzzle;
 
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

@@ -7,9 +7,12 @@
 //
 
 #define PIECE_NUMBER 4
+#define ORG_TIME 0.5
+
 
 #import "PuzzleController.h"
 #import "UIImage+CWAdditions.h"
+
 
 @interface PuzzleController ()
 
@@ -18,7 +21,20 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView, managedObjectContext, menuButtonView;
+
+
+- (BOOL)saveGame {
+    
+    puzzleDB.lastSaved = [NSDate date];
+    
+    if ([managedObjectContext save:nil]) {
+        NSLog(@"Puzzle saved");
+    }
+    return YES;
+    
+}
+
 
 - (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
     
@@ -142,7 +158,7 @@
     float unusedSpace = screenWidth - n*piceSize;
     drawerMargin = (float)(unusedSpace/(n+1));
     
-    NSLog(@"n = %d, %.1f", n, drawerMargin);
+    //NSLog(@"n = %d, %.1f", n, drawerMargin);
     
     
     
@@ -176,6 +192,16 @@
     
     } else {
         return (r==1 || r==2);
+    }
+    
+}
+
+- (void)checkNeighborsForAllThePieces {
+    
+    for (PieceView *p in pieces) {
+        if (p.isFree) {
+            [self checkNeighborsOfPieceNumber:p];
+        }
     }
     
 }
@@ -276,8 +302,8 @@
     UIView *v = [lattice objectAtIndex:i];
     
     return CGRectMake(
-                      lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding),
-                      lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding), 
+                      lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding)-1*lattice.scale,
+                      lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding)-1*lattice.scale, 
                       lattice.scale*piceSize, 
                       lattice.scale*piceSize);
     
@@ -292,7 +318,7 @@
         if (!piece.isPositioned) {
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
-            if (![self isPuzzleComplete]) {
+            if (![self isPuzzleComplete] && !loadingGame) {
                 [piece pulse];
                 
                 if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
@@ -345,6 +371,7 @@
     
     [self.view bringSubviewToFront:drawerView];
     [self.view bringSubviewToFront:stepperDrawer];
+    [self.view bringSubviewToFront:menuButtonView];
     
     for (PieceView *p in pieces) {
         if (!p.isFree) {
@@ -369,14 +396,16 @@
         
         if (outOfDrawer) {
             
+            
             if (!piece.isFree && ![self pieceIsOut:piece]) {
-                
+            
                 piece.isFree = YES;
                 
             }            
             
         } else {
             piece.isFree = NO;
+            piece.position = -1;
             [UIView animateWithDuration:0.5 animations:^{
                 
                 CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
@@ -444,10 +473,30 @@
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
 
     
+    [self updatePieceDB:piece];
+    
+    
     
     
     //[self isPositioned:piece];
 
+    
+}
+
+- (void)updatePieceDB:(PieceView*)piece {
+    
+    //Update piece in the DB
+    Piece *pieceDB = [self pieceOfCurrentPuzzleDB:piece.number];
+    pieceDB.position = [NSNumber numberWithInt:piece.position];
+    pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
+    pieceDB.isFree = (BOOL)piece.isFree;
+    
+    pieceDB.edge0 = [piece.edges objectAtIndex:0];
+    pieceDB.edge1 = [piece.edges objectAtIndex:1];
+    pieceDB.edge2 = [piece.edges objectAtIndex:2];
+    pieceDB.edge3 = [piece.edges objectAtIndex:3];
+        
+    [self saveGame];
     
 }
 
@@ -486,6 +535,9 @@
     [self isPositioned:piece];
     [self checkNeighborsOfPieceNumber:piece];
     
+    [self updatePieceDB:piece];
+
+    
 }
 
 - (void)refreshPositions {
@@ -510,6 +562,7 @@
             [gesture setTranslation:CGPointZero inView:lattice.superview];
         }
     }
+    
 }
 
 - (void)panDrawer:(UIPanGestureRecognizer*)gesture {
@@ -595,7 +648,7 @@
     
     //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
     
-    NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber*pieceNumber);
+    //NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber*pieceNumber);
     [self print_free_memory];
 
     
@@ -618,7 +671,7 @@
         }
     }
     
-    NSLog(@"All the images splitted");
+    //NSLog(@"All the images splitted");
     [self print_free_memory];
 
     
@@ -640,8 +693,52 @@
     
 }
 
-- (void)createPuzzleFromImage:(UIImage*)image_ {
+- (Piece*)pieceOfCurrentPuzzleDB:(int)n {
+            
+    for (Piece *p in puzzleDB.pieces) {
+        if ([p.number intValue]==n) {
+            return p;
+        }
+    }
+    
+    NSLog(@"------>  Piece #%d is NIL!", n);
+        
+    return nil;
+    
+}
 
+- (void)loadPuzzle {
+    
+    if (managedObjectContext!=nil) {
+        
+        NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext: managedObjectContext];
+        
+        [fetchRequest1 setEntity:entity];
+        
+        NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
+        [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+        dateSort = nil;
+        
+        [fetchRequest1 setFetchLimit:1];
+        
+        puzzleDB = [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
+        fetchRequest1 = nil;
+                
+        [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
+        [self createPuzzleFromSavedGame];
+        
+        [menu toggleMenu];
+        
+    }
+    
+}
+
+- (void)createPuzzleFromSavedGame {
+    
+    loadingGame =YES;
+    
     [self computePieceSize];
     [self createLattice];
     
@@ -653,6 +750,126 @@
     
     
     NSLog(@"Piece number %d, piece size %.1f, f = %.1f, padding = %.1f", pieceNumber, piceSize, f, self.padding);
+    
+    image = [UIImage imageWithData:puzzleDB.image.data];
+    imageView.image = image;
+    imageViewLattice.image = image;
+    
+    if (image==nil) {
+        return;
+    }
+    
+    UIImage *img = [[UIImage imageWithCGImage:[image CGImage] scale:image.size.width/f orientation:1] imageRotatedByDegrees:0];
+    
+    //UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
+    //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
+    
+    
+    
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:img]];
+    NSLog(@"Pieces:%d", [array count]);
+    
+    
+    
+    for (int i=0;i<pieceNumber;i++){
+        for (int j=0;j<pieceNumber;j++){
+            
+            CGRect portion = CGRectMake(
+                                        i * (piceSize-2*self.padding)-self.padding,
+                                        j * (piceSize-2*self.padding)-self.padding, 
+                                        piceSize, 
+                                        piceSize);
+            
+            
+            Piece *pieceDB = [self pieceOfCurrentPuzzleDB:j+pieceNumber*i];
+            
+            if (pieceDB!=nil) {
+                
+                PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
+                piece.delegate = self;
+                piece.image = [array objectAtIndex:j+pieceNumber*i];
+                piece.number = j+pieceNumber*i;
+                piece.size = piceSize;
+                piece.isFree = (BOOL)pieceDB.isFree;
+                piece.position = [pieceDB.position intValue];
+                piece.angle = [pieceDB.angle floatValue];
+                piece.transform = CGAffineTransformMakeRotation(piece.angle);
+                
+                NSNumber *n = [NSNumber numberWithInt:N];
+                piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
+                
+                
+                NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
+                [a addObject:pieceDB.edge0];
+                [a addObject:pieceDB.edge1];
+                [a addObject:pieceDB.edge2];
+                [a addObject:pieceDB.edge3];
+                
+                piece.edges = [NSArray arrayWithArray:a];
+                
+                for (int k=0; k<4; k++) {
+                    //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
+                }
+                
+                
+                [arrayPieces addObject:piece];
+                [piece setNeedsDisplay];
+                [self.view addSubview:piece];
+
+                
+            }
+            
+        }
+    }
+    
+    pieces = [[NSArray alloc] initWithArray:arrayPieces];
+    
+    
+    BOOL debugging = NO;
+    
+    if (debugging) {
+        
+        for (PieceView *p in pieces) {
+            p.isFree = YES;
+            p.isPositioned = YES;
+            p.userInteractionEnabled = NO;
+            [self movePiece:p toLatticePoint:p.number animated:NO];
+        }
+        [imageViewLattice removeFromSuperview];
+        
+    } else {
+        pieces = [self shuffleArray:pieces];
+        [self refreshPositions];
+        [self organizeDrawerWithOrientation:self.interfaceOrientation];
+        [self bringDrawerToTop];
+        [self checkNeighborsForAllThePieces];
+        loadingGame = NO;
+    }
+    
+}
+
+- (void)createPuzzleFromImage:(UIImage*)image_ {
+    
+    
+    puzzleDB = [self newPuzzle];
+    Image *imageDB = [self newImage];
+    imageDB.data = UIImageJPEGRepresentation(image, 1);
+    puzzleDB.image = imageDB;
+    puzzleDB.pieceNumber = [NSNumber numberWithInt:pieceNumber];
+    
+    
+
+    [self computePieceSize];
+    [self createLattice];
+    
+    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
+    
+    NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
+    
+    float f = (float)(pieceNumber*(piceSize-2*self.padding));
+    
+    
+    //NSLog(@"Piece number %d, piece size %.1f, f = %.1f, padding = %.1f", pieceNumber, piceSize, f, self.padding);
     
     UIImage *img = [[UIImage imageWithCGImage:[image_ CGImage] scale:image_.size.width/f orientation:1] imageRotatedByDegrees:0];
 
@@ -735,6 +952,21 @@
             [piece setNeedsDisplay];
             [self.view addSubview:piece];
             
+            
+            
+            //Creating the piece in the database
+            Piece *pieceDB = [self newPiece];
+            pieceDB.puzzle = puzzleDB;
+            pieceDB.number = [NSNumber numberWithInt:piece.number];
+            pieceDB.position = [NSNumber numberWithInt:piece.position];
+            pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
+            
+            pieceDB.edge0 = [a objectAtIndex:0];
+            pieceDB.edge1 = [a objectAtIndex:1];
+            pieceDB.edge2 = [a objectAtIndex:2];
+            pieceDB.edge3 = [a objectAtIndex:3];
+            
+            
         }
     }
     
@@ -757,6 +989,9 @@
         [self shuffle];
         [self organizeDrawerWithOrientation:self.interfaceOrientation];
     }
+    
+    
+    [self saveGame];
     
 }
 
@@ -802,7 +1037,7 @@
     [lattice addSubview:imageViewLattice];
 
     
-    NSLog(@"Lattice created");
+    //NSLog(@"Lattice created");
     
 }
 
@@ -981,9 +1216,8 @@
     [swipeL setNumberOfTouchesRequired:2];
     [self.view addGestureRecognizer:swipeL];
     
-}
 
-#define ORG_TIME 0.5
+}
 
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
@@ -1309,7 +1543,7 @@ return f - floor(f/m)*m;
             [p realCenter].x < frame1.origin.x ||
             [p realCenter].y < frame1.origin.y
             )        {
-            NSLog(@"Piece is #%d out, N= %.1f", piece.number, N);
+            NSLog(@"Piece is #%d out, N= %.1f (neighbor)", piece.number, N);
             return YES;
         }
     }
@@ -1337,7 +1571,7 @@ return f - floor(f/m)*m;
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
     
-    NSLog(@"Scaling Image to size %.1f", newSize.width);
+    //NSLog(@"Scaling Image to size %.1f", newSize.width);
     
     //UIGraphicsBeginImageContext(newSize);
     UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
@@ -1387,6 +1621,27 @@ return f - floor(f/m)*m;
     }
             
     return latticeRect;
+}
+
+-(Puzzle*)newPuzzle {
+    
+    return [NSEntityDescription
+            insertNewObjectForEntityForName:@"Puzzle" 
+            inManagedObjectContext:self.managedObjectContext];
+}
+
+-(Image*)newImage {
+    
+    return [NSEntityDescription
+            insertNewObjectForEntityForName:@"Image" 
+            inManagedObjectContext:self.managedObjectContext];
+}
+
+-(Piece*)newPiece {
+    
+    return [NSEntityDescription
+            insertNewObjectForEntityForName:@"Piece" 
+            inManagedObjectContext:self.managedObjectContext];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

@@ -14,6 +14,9 @@
 #import "PieceView.h"
 #import "MenuController.h"
 #import "Lattice.h"
+#import "Piece.h"
+#import "Puzzle.h"
+#import "Image.h"
 
 
 @interface PuzzleController : TopClass < UIScrollViewDelegate, PieceViewProtocol, MenuProtocol> {
@@ -21,15 +24,18 @@
     BOOL swiping;
     BOOL didRotate;
     BOOL receivedFirstTouch;
+    BOOL loadingGame;
     
     CGPoint drawerFirstPoint;
-    IBOutlet UIView *menuButtonView;
     IBOutlet UIStepper *stepper;
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
     int DrawerPosition;
     float drawerSize;
     float drawerMargin;
+    
+    Puzzle *puzzleDB;
+    
 }
 
 
@@ -42,9 +48,12 @@
 @property (nonatomic, strong) AVAudioPlayer *completedSound;
 
 
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 
 @property (nonatomic, retain) IBOutlet UIView *drawerView;
+@property (nonatomic, retain) IBOutlet UIView *menuButtonView;
+
 
 @property (nonatomic, retain) NSArray *pieces;
 @property (nonatomic, retain) Lattice *lattice;
@@ -73,6 +82,7 @@
 - (IBAction)scrollDrawerRight:(id)sender;
 - (IBAction)scrollDrawerLeft:(id)sender;
 
+- (void)loadPuzzle;
 
 - (CGRect)frameOfLatticePiece:(int)i;
 

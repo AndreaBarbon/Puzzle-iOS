@@ -225,7 +225,7 @@
                 } else {
                     [self translateWithVector:CGPointMake(0, traslation.y)];
                     [gesture setTranslation:CGPointZero inView:self.superview];
-                    self.isFree = YES;
+                    self.isLifted = YES;
                 }
             }
             
@@ -356,10 +356,10 @@
             
             
             CGAffineTransform transform = p.transform;
-            transform = CGAffineTransformTranslate(transform , -x, -y);
-            transform = CGAffineTransformRotate(transform,-M_PI_2);
-            transform = CGAffineTransformTranslate(transform, x,y);
-        transform = CGAffineTransformRotate(transform,M_PI);
+            transform = CGAffineTransformTranslate(transform , x, y);
+            transform = CGAffineTransformRotate(transform,M_PI_2);
+            transform = CGAffineTransformTranslate(transform, -x,-y);
+            //transform = CGAffineTransformRotate(transform,M_PI);
             
             //NSLog(@"New transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
             
