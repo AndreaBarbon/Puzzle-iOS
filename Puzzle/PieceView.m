@@ -645,6 +645,13 @@
         [delegate allPiecesLoaded];
     }
     
+//    UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
+//    label.text = [NSString stringWithFormat:@"%d", self.number];
+//    label.textColor = [UIColor whiteColor];
+//    label.textAlignment = UITextAlignmentCenter;
+//    label.backgroundColor = [UIColor clearColor];
+//    [self addSubview:label];
+    
 }
 
 

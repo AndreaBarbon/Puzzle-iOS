@@ -29,7 +29,13 @@
     
     loadingView.layer.cornerRadius = 10;
     loadingView.layer.masksToBounds = YES;
+
+    image.layer.cornerRadius = 20;
+    image.layer.masksToBounds = YES;
     
+    tapToSelectView.layer.cornerRadius = 20;
+    tapToSelectView.layer.masksToBounds = YES;
+
     imagePath = [[NSString alloc] initWithFormat:@""];
     
     //progressView.progressTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
@@ -40,6 +46,8 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
+    [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
+
     NSLog(@"After picking");
     [delegate.delegate print_free_memory];
     
@@ -68,15 +76,17 @@
     
     
     image.image = [delegate.delegate clipImage:temp toRect:rect];
+        
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
-    
+
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
-    [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
-
 }
 
 - (IBAction)selectImage:(id)sender {
@@ -110,6 +120,7 @@
     
     NSLog(@"Started");
     
+    delegate.delegate.loadingGame = NO;
     
     if (image.image == nil) {
         delegate.delegate.image = [UIImage imageNamed:@"Cover"];
@@ -183,7 +194,6 @@
     
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];    
 
-    
 }
 
 
@@ -192,7 +202,7 @@
     float a = (float)delegate.delegate.loadedPieces;
     float b = 2*(float)((int)slider.value*(int)slider.value);
     
-    if (!delegate.delegate.loadingGame) {
+    if (delegate.delegate.loadingGame) {
         
         b = delegate.delegate.N;
     }

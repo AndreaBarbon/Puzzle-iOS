@@ -53,6 +53,9 @@
             self.view.alpha = 1;
         }];
         
+        [delegate stopTimer];
+
+        
     } else {
      
         [delegate.view addGestureRecognizer:delegate.pan];
@@ -65,6 +68,7 @@
         } completion:^(BOOL finished) {
 
             game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
+            [delegate startTimer];
 
         }];
     }
@@ -88,6 +92,7 @@
     //[delegate startNewGame];
     
 
+    [delegate.view bringSubviewToFront:delegate.menuButtonView];
     
     [UIView animateWithDuration:0.5 animations:^{
         

@@ -23,7 +23,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete;
 
 
 
@@ -82,17 +82,24 @@
 
 - (BOOL)isPuzzleComplete {
         
-    for (PieceView *p in pieces) {
-        if (!p.isPositioned) {
-            //NSLog(@"Piece #%d is not positioned", p.number);
-            
-            return NO;
+    if (puzzleCompete) {
+        return YES;
+    } else {
+        
+        for (PieceView *p in pieces) {
+            if (!p.isPositioned) {
+                //NSLog(@"Piece #%d is not positioned", p.number);
+                
+                return NO;
+            }
         }
+        
+        [self puzzleCompleted];
+        
+        puzzleCompete = YES;
     }
     
-    [self puzzleCompleted];
-    
-    return YES;
+    return puzzleCompete;
     
 }
 
@@ -107,16 +114,17 @@
 - (void)toggleImageWithDuration:(float)duration {
     
     [UIView animateWithDuration:duration animations:^{
-        if (imageViewLattice.alpha==0) {
+        if (imageView.alpha==0) {
             
             menuButtonView.userInteractionEnabled = NO;
             [self.view bringSubviewToFront:imageView];
-            imageViewLattice.alpha = 1;
+            [self bringDrawerToTop];
+            imageView.alpha = 1;
             
-        } else if (imageViewLattice.alpha==1) {
+        } else if (imageView.alpha==1) {
             
             menuButtonView.userInteractionEnabled = YES;
-            imageViewLattice.alpha = 0;
+            imageView.alpha = 0;
         }
     }];
     
@@ -131,12 +139,16 @@
         v.alpha = 0;
     }
     
-    [UIView animateWithDuration:1 animations:^{
-        
-        imageViewLattice.alpha = 1;
+    [self stopTimer];
 
-    }];
+    
+//    [UIView animateWithDuration:2 animations:^{
+//        
+//        imageViewLattice.alpha = 1;
+//
+//    }];
 
+    
     if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
     
         [completedSound play];
@@ -281,7 +293,7 @@
                             otherPiece.hasNeighbors = YES;
                             
                         } else {
-                            //NSLog(@"0 Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
+                            //NSLog(@"0 -------> Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
                         }
                     } else {
                         //NSLog(@"-------> Wrong numbers. They are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d", piece.number+l, otherPiece.number, piece.number, otherPiece.number, direction, rotation, r);
@@ -346,6 +358,8 @@
     
     //NSLog(@"Moving piece #%d to position %d", piece.number, i);
     
+    piece.position = i;
+
     if (animated) {
         
         [UIView animateWithDuration:0.5 animations:^{
@@ -372,7 +386,6 @@
     }
     
     
-    piece.position = i;
     piece.oldPosition = [piece realCenter];
     
     
@@ -384,6 +397,7 @@
     [self.view bringSubviewToFront:stepperDrawer];
     [self.view bringSubviewToFront:menuButtonView];
     [self.view bringSubviewToFront:percentageLabel];
+    [self.view bringSubviewToFront:elapsedTimeLabel];
     
     for (PieceView *p in pieces) {
         if (!p.isFree) {
@@ -418,6 +432,7 @@
         } else {
             piece.isFree = NO;
             piece.position = -1;
+            [self updatePieceDB:piece];
             [UIView animateWithDuration:0.5 animations:^{
                 
                 CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
@@ -739,6 +754,12 @@
 
         if (pieceNumber>0) {
 
+            elapsedTime = [puzzleDB.elapsedTime floatValue];
+            percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
+            if ([puzzleDB.percentage intValue]==100) {
+                puzzleCompete = YES;
+            }
+            
             [self createPuzzleFromSavedGame];
         }
         
@@ -757,7 +778,7 @@
     
     missedPieces = 0;
     loadingGame =YES;
-    
+    self.view.userInteractionEnabled = NO;
     
     [self computePieceSize];
     [self createLattice];
@@ -861,6 +882,10 @@
 
     NSLog(@"Memory after creating:");
     [self print_free_memory];
+    
+    
+    self.view.userInteractionEnabled = YES;
+
 }
 
 
@@ -1710,6 +1735,8 @@ return f - floor(f/m)*m;
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
+    
+    
     //Rotate the drawer
     
     CGRect rect = drawerView.frame;
@@ -1765,21 +1792,11 @@ return f - floor(f/m)*m;
     //NSLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
 
     
-    //Center the board
+    //Rotate the image
     
-
+    rect = imageView.frame;
     
-    
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    
-    
-    didRotate = YES;
-    
-    CGRect rect = imageView.frame;
-    
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         
         float pad = ([[UIScreen mainScreen] bounds].size.height - rect.size.width)/1;
         rect.origin.x = pad;
@@ -1795,27 +1812,71 @@ return f - floor(f/m)*m;
     imageView.frame = rect;
     
 
+    
+    
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
+    
+    didRotate = YES;
+    
+
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     receivedFirstTouch = YES;
     
-    if(imageViewLattice.alpha == 1) {
+    [self.view bringSubviewToFront:menuButtonView];
+    
+    if(imageView.alpha == 1) {
         [self toggleImageWithDuration:0.5];
     }
 }
 
-- (void)startNewGame {
+- (void)oneSecondElapsed {
+    
+    elapsedTime += 0.1;
+    puzzleDB.elapsedTime = [NSNumber numberWithFloat:elapsedTime];
+    
+    
+    int seconds = (int)elapsedTime%60;
+    int minutes = (int)elapsedTime/60;
+    
             
+    if (elapsedTime - (int)elapsedTime < 0.1) {
+
+        elapsedTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds]; 
+    }    
+    
+    //NSLog(@"%d, %f", (int)elapsedTime, elapsedTime);
+    
+}
+
+- (void)startTimer {
+     
+    if (![self isPuzzleComplete]) {
+        
+        timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(oneSecondElapsed) userInfo:nil repeats:YES];
+    }
+}
+
+- (void)stopTimer {
+    
+    [timer invalidate];
+    
+}
+
+
+- (void)startNewGame {
+
+    elapsedTime = 0.0;
+    puzzleCompete = NO;
+
     [self createPuzzleFromImage:image];
     
-
-    
     receivedFirstTouch = NO;    
-    
-
-    
     
     [UIView animateWithDuration:0.2 animations:^{
         
@@ -1823,7 +1884,6 @@ return f - floor(f/m)*m;
         
     }];
     
-
 }
 
 - (void)setPieceNumber:(int)pieceNumber_ {

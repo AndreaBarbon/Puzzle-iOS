@@ -34,22 +34,28 @@
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
     IBOutlet UILabel *percentageLabel;
+    IBOutlet UILabel *elapsedTimeLabel;
     int DrawerPosition;
     float drawerSize;
     float drawerMargin;
 
     float biggerPieceSize;
     
+    NSTimer *timer;
+
+    
 }
 
 
 @property(nonatomic) float piceSize;
+@property(nonatomic) float elapsedTime;
 @property(nonatomic) float N;
 @property(nonatomic) int pieceNumber;
 @property(nonatomic) int loadedPieces;
 @property(nonatomic) int missedPieces;
 @property(nonatomic) float padding;
 @property(nonatomic) BOOL loadingGame;
+@property(nonatomic) BOOL puzzleCompete;
 
 
 @property (nonatomic, strong) AVAudioPlayer *positionedSound;
@@ -115,6 +121,9 @@
 
 - (void)allPiecesLoaded;
 - (Piece*)pieceOfCurrentPuzzleDB:(int)n;
+
+- (void)startTimer;
+- (void)stopTimer;
 
 
 @end
