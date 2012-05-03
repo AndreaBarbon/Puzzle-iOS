@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "PuzzleController.h"
+#import "CreatePuzzleOperation.h"
 
 @implementation AppDelegate
 
@@ -16,7 +17,10 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
-@synthesize puzzle;
+@synthesize puzzle, operationQueue, puzzleOperation;
+
+
+
 
 - (void)didReceiveMemoryWarning {
     
@@ -32,13 +36,29 @@
     
     application.applicationSupportsShakeToEdit = YES;
     
+
+
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
     puzzle = [[PuzzleController alloc] init];
     puzzle.managedObjectContext = self.managedObjectContext;
+    puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;
     [puzzle loadPuzzle];
 
+    
     [self.window addSubview:puzzle.view];
     
+    
+    
     return YES;
+}
+
+- (NSOperationQueue *)operationQueue {
+    if (operationQueue == nil) {
+        operationQueue = [[NSOperationQueue alloc] init];
+    }
+    return operationQueue;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

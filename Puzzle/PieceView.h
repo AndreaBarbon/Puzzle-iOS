@@ -48,7 +48,6 @@
 @property(nonatomic) float size;
 @property(nonatomic) float padding;
 @property(nonatomic) float tempAngle;
-@property(nonatomic) float boxHeight;
 
 
 

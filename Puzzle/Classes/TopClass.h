@@ -16,7 +16,4 @@
 
 @interface TopClass : UIViewController
 
-@property(nonatomic) float padding;
-
-
 @end

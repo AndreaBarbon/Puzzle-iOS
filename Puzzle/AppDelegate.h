@@ -8,17 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@class PuzzleController;
+@class PuzzleController, CreatePuzzleOperation;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic,retain) PuzzleController *puzzle;
+@property (nonatomic,retain) CreatePuzzleOperation *puzzleOperation;
 
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, retain, readonly) NSOperationQueue *operationQueue;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

@@ -8,103 +8,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734462.769505"
+         timestampString = "357767158.077377"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "718"
-         endingLineNumber = "718"
-         landmarkName = "-pieceOfCurrentPuzzleDB:"
-         landmarkType = "5">
+         startingLineNumber = "1385"
+         endingLineNumber = "1385"
+         landmarkName = "@implementation PuzzleController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734521.969039"
+         timestampString = "357764472.127189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "960"
-         endingLineNumber = "960"
-         landmarkName = "-createPuzzleFromImage:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734521.969039"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "933"
-         endingLineNumber = "933"
-         landmarkName = "-createPuzzleFromImage:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734521.969039"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1378"
-         endingLineNumber = "1378"
-         landmarkName = "-scrollDrawerRight:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734521.969039"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1047"
-         endingLineNumber = "1047"
-         landmarkName = "-createPuzzleFromImage:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734462.769505"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "686"
-         endingLineNumber = "686"
+         startingLineNumber = "671"
+         endingLineNumber = "671"
          landmarkName = "-splitImage:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734462.769505"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "799"
-         endingLineNumber = "799"
-         landmarkName = "-createPuzzleFromSavedGame"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Puzzle/Controllers/PuzzleController.m"
-         timestampString = "357734462.769505"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "802"
-         endingLineNumber = "802"
-         landmarkName = "-createPuzzleFromSavedGame"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

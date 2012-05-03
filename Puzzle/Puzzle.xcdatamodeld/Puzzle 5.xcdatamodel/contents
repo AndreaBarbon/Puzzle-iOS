@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50b" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Image" syncable="YES">
+    <entity name="Image" representedClassName="Image" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <relationship name="piece" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Piece" inverseName="image" inverseEntity="Piece" syncable="YES"/>
         <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="image" inverseEntity="Puzzle" syncable="YES"/>

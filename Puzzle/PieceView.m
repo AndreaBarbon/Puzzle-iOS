@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, boxHeight, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView, isRotating;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView, isRotating;
 
 
 - (void)setup {
@@ -35,11 +35,6 @@
     
     self.backgroundColor = [UIColor clearColor];
     
-    
-    centerView = [[UIView alloc] init];
-    centerView.backgroundColor = [UIColor blackColor];
-    centerView.alpha = 0.5;
-    [self addSubview:centerView];
         
         
 }
@@ -356,10 +351,10 @@
             
             
             CGAffineTransform transform = p.transform;
-            transform = CGAffineTransformTranslate(transform , x, y);
-            transform = CGAffineTransformRotate(transform,M_PI_2);
-            transform = CGAffineTransformTranslate(transform, -x,-y);
-            //transform = CGAffineTransformRotate(transform,M_PI);
+            transform = CGAffineTransformTranslate(transform , -x, -y);
+            transform = CGAffineTransformRotate(transform,-M_PI_2);
+            transform = CGAffineTransformTranslate(transform, x,y);
+            transform = CGAffineTransformRotate(transform,M_PI);
             
             //NSLog(@"New transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
             
@@ -636,6 +631,20 @@
     }
     CGContextClosePath(ctx);
     CGContextDrawPath(ctx, kCGPathStroke);
+    
+    
+    NSLog(@"Drawed");
+    delegate.loadedPieces++;
+    
+    int pieceNumber = (delegate.N-delegate.missedPieces);
+    if (!delegate.loadingGame) {
+        pieceNumber *= 2;
+    }
+    
+    if (delegate.loadedPieces == pieceNumber) {
+        [delegate allPiecesLoaded];
+    }
+    
 }
 
 
@@ -721,11 +730,11 @@
 {
     
     padding = p;
-    boxHeight = frame.size.height;
 
     self = [super initWithFrame:frame];
     if (self) {
         
+        self.frame = frame;
         [self setup];
         
     }
@@ -742,5 +751,8 @@
    
     return  CGPointMake(self.frame.origin.x + self.frame.size.width/2, self.frame.origin.y + self.frame.size.height/2);
 }
+
+
+
 
 @end

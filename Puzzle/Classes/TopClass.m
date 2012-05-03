@@ -10,9 +10,6 @@
 
 @implementation TopClass
 
-@synthesize padding;
-
-
 
 - (void)setup {
 

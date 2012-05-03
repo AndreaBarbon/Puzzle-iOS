@@ -17,9 +17,12 @@
 #import "Piece.h"
 #import "Puzzle.h"
 #import "Image.h"
+#import "CreatePuzzleOperation.h"
+
+#define QUALITY 1
 
 
-@interface PuzzleController : TopClass < UIScrollViewDelegate, PieceViewProtocol, MenuProtocol> {
+@interface PuzzleController : TopClass < UIScrollViewDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate> {
     
     BOOL swiping;
     BOOL didRotate;
@@ -36,8 +39,6 @@
     float drawerMargin;
 
     float biggerPieceSize;
-
-    Puzzle *puzzleDB;
     
 }
 
@@ -46,12 +47,23 @@
 @property(nonatomic) float N;
 @property(nonatomic) int pieceNumber;
 @property(nonatomic) int loadedPieces;
+@property(nonatomic) int missedPieces;
+@property(nonatomic) float padding;
+@property(nonatomic) BOOL loadingGame;
+
 
 @property (nonatomic, strong) AVAudioPlayer *positionedSound;
 @property (nonatomic, strong) AVAudioPlayer *completedSound;
 
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+
+@property (nonatomic, retain, readonly) NSOperationQueue *operationQueue;
+
+@property (nonatomic,retain) CreatePuzzleOperation *puzzleOperation;
+@property (nonatomic,retain)  Puzzle *puzzleDB;
 
 
 @property (nonatomic, retain) IBOutlet UIView *drawerView;
@@ -99,5 +111,10 @@
 - (void)print_free_memory;
 - (void)removeOldPieces;
 - (UIImage*)clipImage:(UIImage*)img toRect:(CGRect)rect;
+
+
+- (void)allPiecesLoaded;
+- (Piece*)pieceOfCurrentPuzzleDB:(int)n;
+
 
 @end
