@@ -8,10 +8,12 @@
 
 #define PIECE_NUMBER 4
 #define ORG_TIME 0.5
+#define QUALITY 1
 
 
 #import "PuzzleController.h"
 #import "UIImage+CWAdditions.h"
+#import "AppDelegate.h"
 
 
 @interface PuzzleController ()
@@ -26,11 +28,19 @@
 
 - (BOOL)saveGame {
     
+    
+    if (puzzleDB==nil) {
+        
+        [self createPuzzleIntDB];
+        
+    }
+    
     puzzleDB.lastSaved = [NSDate date];
     
     if ([managedObjectContext save:nil]) {
-        NSLog(@"Puzzle saved");
+        //NSLog(@"Puzzle saved");
     }
+    
     return YES;
     
 }
@@ -97,16 +107,16 @@
 - (void)toggleImageWithDuration:(float)duration {
     
     [UIView animateWithDuration:duration animations:^{
-        if (imageView.alpha==0) {
+        if (imageViewLattice.alpha==0) {
             
             menuButtonView.userInteractionEnabled = NO;
             [self.view bringSubviewToFront:imageView];
-            imageView.alpha = 1;
+            imageViewLattice.alpha = 1;
             
-        } else if (imageView.alpha==1) {
+        } else if (imageViewLattice.alpha==1) {
             
             menuButtonView.userInteractionEnabled = YES;
-            imageView.alpha = 0;
+            imageViewLattice.alpha = 0;
         }
     }];
     
@@ -139,10 +149,13 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
         piceSize = 180;
+        biggerPieceSize = 360;
         
     }else{  
         
         piceSize = 100;
+        biggerPieceSize = 200;
+        
     }
     
     self.padding = piceSize*0.15;
@@ -160,10 +173,6 @@
     
     //NSLog(@"n = %d, %.1f", n, drawerMargin);
     
-    
-    
-    
-    //    piceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
     
 }
 
@@ -349,7 +358,8 @@
                 [self isPositioned:piece];
             }
             [self checkNeighborsOfPieceNumber:piece];
-            
+            [self updatePercentage];
+            [self updatePieceDB:piece];
         }];
         
     } else {
@@ -358,6 +368,7 @@
         if (!piece.isPositioned) {
             [self isPositioned:piece];
         }
+
     }
     
     
@@ -372,6 +383,7 @@
     [self.view bringSubviewToFront:drawerView];
     [self.view bringSubviewToFront:stepperDrawer];
     [self.view bringSubviewToFront:menuButtonView];
+    [self.view bringSubviewToFront:percentageLabel];
     
     for (PieceView *p in pieces) {
         if (!p.isFree) {
@@ -473,14 +485,17 @@
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
 
     
-    [self updatePieceDB:piece];
-    
-    
     
     
     //[self isPositioned:piece];
 
     
+}
+
+- (void)updatePercentage {
+    
+    puzzleDB.percentage = [NSNumber numberWithFloat:[self completedPercentage]];
+    percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [self completedPercentage]];
 }
 
 - (void)updatePieceDB:(PieceView*)piece {
@@ -536,7 +551,7 @@
     [self checkNeighborsOfPieceNumber:piece];
     
     [self updatePieceDB:piece];
-
+    [self updatePercentage];
     
 }
 
@@ -635,27 +650,35 @@
 }
 
 
+- (UIImage*)resizeImage:(UIImage*)img toSize:(CGSize)size {
+    
+    CGRect rect = CGRectMake(0, 0, img.size.width, img.size.height);
+    CGImageRef drawImage = CGImageCreateWithImageInRect(img.CGImage, rect);
+    //drawImage = CreateCGImageFromUIImageScaled(img, size.width/img.size.width);
+    UIImage *newImage = [UIImage imageWithCGImage:drawImage];
+    CGImageRelease(drawImage);
+    return newImage;
+    
+}
+
+
 - (NSArray *)splitImage:(UIImage *)im{
     
     float x = pieceNumber;
     float y= pieceNumber;
     
     //CGSize size = [im size];
-    
-    float ww = self.padding;
-    float hh = self.padding;
-    
-    
     //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
-    
     //NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber*pieceNumber);
-    [self print_free_memory];
+
+    //float f = (float)(pieceNumber*QUALITY*(piceSize-2*self.padding));
+
+
+    float w = im.size.width/(pieceNumber*QUALITY*0.7);
+
+    float ww = w*0.15;
 
     
-    float w = piceSize;
-    float h = piceSize;
-    
-    //NSLog(@"w, h = %.1f, %.1f", w, h);
     
     loadedPieces = 0;
     
@@ -663,16 +686,15 @@
     for (int i=0;i<x;i++){
         for (int j=0;j<y;j++){
             
-            CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (h-2*hh)-hh, w, h);
-            
-            //[arr addObject:[self clipImage:im toRect:portion]];            
-            [arr addObject:[im subimageWithRect:portion]];            
-            loadedPieces++;
+            CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (w-2*ww)-ww, w, w);
+            //NSLog(@"Rect = %.1f, %.1f, %.1f, %.1f",i*(w-2*ww)-ww, j*(w-2*ww)-ww, w, w);
+
+            [arr addObject:[self clipImage:im toRect:portion]];            
+            //[arr addObject:[im subimageWithRect:portion]];            
         }
     }
     
     //NSLog(@"All the images splitted");
-    [self print_free_memory];
 
     
     return arr;
@@ -727,9 +749,12 @@
         fetchRequest1 = nil;
                 
         [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
-        [self createPuzzleFromSavedGame];
-        
-        [menu toggleMenu];
+
+        if (pieceNumber>0) {
+
+            [self createPuzzleFromSavedGame];
+            [menu toggleMenu];
+        }
         
     }
     
@@ -746,12 +771,19 @@
     
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
-    float f = (float)(pieceNumber*(piceSize-2*self.padding));
-    
+    float f = (float)(pieceNumber*QUALITY*(piceSize-2*self.padding));
+
     
     NSLog(@"Piece number %d, piece size %.1f, f = %.1f, padding = %.1f", pieceNumber, piceSize, f, self.padding);
     
     image = [UIImage imageWithData:puzzleDB.image.data];
+
+    float w = image.size.width;
+    
+    image = [[UIImage imageWithCGImage:[image CGImage] scale:w/f orientation:1] imageRotatedByDegrees:0];
+
+    NSLog(@"New size = %.1f, f=%.1f, w= %.1f", image.size.width, f, w);
+    
     imageView.image = image;
     imageViewLattice.image = image;
     
@@ -759,14 +791,13 @@
         return;
     }
     
-    UIImage *img = [[UIImage imageWithCGImage:[image CGImage] scale:image.size.width/f orientation:1] imageRotatedByDegrees:0];
     
     //UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
     
     
     
-    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:img]];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:image]];
     NSLog(@"Pieces:%d", [array count]);
     
     
@@ -775,10 +806,10 @@
         for (int j=0;j<pieceNumber;j++){
             
             CGRect portion = CGRectMake(
-                                        i * (piceSize-2*self.padding)-self.padding,
-                                        j * (piceSize-2*self.padding)-self.padding, 
-                                        piceSize, 
-                                        piceSize);
+                                        i * QUALITY*(piceSize-2*self.padding)-QUALITY*self.padding,
+                                        j * QUALITY*(piceSize-2*self.padding)-QUALITY*self.padding, 
+                                        QUALITY*piceSize, 
+                                        QUALITY*piceSize);
             
             
             Piece *pieceDB = [self pieceOfCurrentPuzzleDB:j+pieceNumber*i];
@@ -795,6 +826,9 @@
                 piece.angle = [pieceDB.angle floatValue];
                 piece.transform = CGAffineTransformMakeRotation(piece.angle);
                 
+                CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
+                piece.frame = rect;
+
                 NSNumber *n = [NSNumber numberWithInt:N];
                 piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
                 
@@ -843,21 +877,53 @@
         [self organizeDrawerWithOrientation:self.interfaceOrientation];
         [self bringDrawerToTop];
         [self checkNeighborsForAllThePieces];
+        [self updatePercentage];
         loadingGame = NO;
     }
+    
+}
+
+- (void)createPuzzleIntDB {
+    
+    NSLog(@"Starting creating puzzle in the DB");
+    
+    NSManagedObjectContext *tempContext = [(AppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    
+    puzzleDB = [self newPuzzleInCOntext:tempContext];
+    Image *imageDB = [self newImageInCOntext:tempContext];
+    imageDB.data = UIImageJPEGRepresentation(image, 1);
+    puzzleDB.image = imageDB;
+    puzzleDB.pieceNumber = [NSNumber numberWithInt:pieceNumber];
+    
+    for (PieceView *piece in pieces) {
+        
+        //Creating the piece in the database
+        Piece *pieceDB = [self newPieceInCOntext:tempContext];
+        pieceDB.puzzle = puzzleDB;
+        pieceDB.number = [NSNumber numberWithInt:piece.number];
+        pieceDB.position = [NSNumber numberWithInt:piece.position];
+        pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
+        
+        pieceDB.edge0 = [piece.edges objectAtIndex:0];
+        pieceDB.edge1 = [piece.edges objectAtIndex:1];
+        pieceDB.edge2 = [piece.edges objectAtIndex:2];
+        pieceDB.edge3 = [piece.edges objectAtIndex:3];
+        
+        loadedPieces++;
+
+    }
+    
     
 }
 
 - (void)createPuzzleFromImage:(UIImage*)image_ {
     
     
-    puzzleDB = [self newPuzzle];
-    Image *imageDB = [self newImage];
-    imageDB.data = UIImageJPEGRepresentation(image, 1);
-    puzzleDB.image = imageDB;
-    puzzleDB.pieceNumber = [NSNumber numberWithInt:pieceNumber];
+    puzzleDB = nil;
     
+    NSLog(@"Memory b4 creating:");
     
+    [self print_free_memory];
 
     [self computePieceSize];
     [self createLattice];
@@ -866,31 +932,46 @@
     
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
     
-    float f = (float)(pieceNumber*(piceSize-2*self.padding));
+    
     
     
     //NSLog(@"Piece number %d, piece size %.1f, f = %.1f, padding = %.1f", pieceNumber, piceSize, f, self.padding);
-    
-    UIImage *img = [[UIImage imageWithCGImage:[image_ CGImage] scale:image_.size.width/f orientation:1] imageRotatedByDegrees:0];
 
+    
+
+    
+    //This is fucking leaking!
+        
+    UIImage *img = image_;
+    //img = [image_ resizedImage:CGSizeMake(f, f) interpolationQuality:1];
+    
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:img]];
+    
+    //img = nil;
+
+    
+    //UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
+    
+    
+    //NSLog(@"\n\n\n DC \n\n\n");
+    //[self print_free_memory];
+    
     //UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
     //[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
     
-    
-    
-    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:img]];
-    NSLog(@"Pieces:%d", [array count]);
-    
+
     
     
     for (int i=0;i<pieceNumber;i++){
+    
+        
         for (int j=0;j<pieceNumber;j++){
             
             CGRect portion = CGRectMake(
-                                        i * (piceSize-2*self.padding)-self.padding,
-                                        j * (piceSize-2*self.padding)-self.padding, 
-                                        piceSize, 
-                                        piceSize);
+                                        i * QUALITY*(piceSize-2*self.padding)-QUALITY*self.padding,
+                                        j * QUALITY*(piceSize-2*self.padding)-QUALITY*self.padding, 
+                                        QUALITY*piceSize, 
+                                        QUALITY*piceSize);
             
                         
             PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
@@ -901,6 +982,10 @@
             piece.position = -1;
             NSNumber *n = [NSNumber numberWithInt:N];
             piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
+            
+            CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
+            piece.frame = rect;
+
             
             NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
             
@@ -951,21 +1036,8 @@
             [arrayPieces addObject:piece];
             [piece setNeedsDisplay];
             [self.view addSubview:piece];
-            
-            
-            
-            //Creating the piece in the database
-            Piece *pieceDB = [self newPiece];
-            pieceDB.puzzle = puzzleDB;
-            pieceDB.number = [NSNumber numberWithInt:piece.number];
-            pieceDB.position = [NSNumber numberWithInt:piece.position];
-            pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
-            
-            pieceDB.edge0 = [a objectAtIndex:0];
-            pieceDB.edge1 = [a objectAtIndex:1];
-            pieceDB.edge2 = [a objectAtIndex:2];
-            pieceDB.edge3 = [a objectAtIndex:3];
-            
+            loadedPieces++;
+
             
         }
     }
@@ -987,12 +1059,14 @@
         
     } else {
         [self shuffle];
+        [self updatePercentage];
         [self organizeDrawerWithOrientation:self.interfaceOrientation];
+        [self createPuzzleIntDB];
     }
     
-    
-    [self saveGame];
-    
+    NSLog(@"Memory after creating:");
+    [self print_free_memory];
+        
 }
 
 - (void)createLattice {
@@ -1623,25 +1697,25 @@ return f - floor(f/m)*m;
     return latticeRect;
 }
 
--(Puzzle*)newPuzzle {
+-(Puzzle*)newPuzzleInCOntext:(NSManagedObjectContext*)context {
     
     return [NSEntityDescription
             insertNewObjectForEntityForName:@"Puzzle" 
-            inManagedObjectContext:self.managedObjectContext];
+            inManagedObjectContext:context];
 }
 
--(Image*)newImage {
+-(Image*)newImageInCOntext:(NSManagedObjectContext*)context {
     
     return [NSEntityDescription
             insertNewObjectForEntityForName:@"Image" 
-            inManagedObjectContext:self.managedObjectContext];
+            inManagedObjectContext:context];
 }
 
--(Piece*)newPiece {
+-(Piece*)newPieceInCOntext:(NSManagedObjectContext*)context {
     
     return [NSEntityDescription
             insertNewObjectForEntityForName:@"Piece" 
-            inManagedObjectContext:self.managedObjectContext];
+            inManagedObjectContext:context];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -1737,7 +1811,7 @@ return f - floor(f/m)*m;
     
     receivedFirstTouch = YES;
     
-    if(imageView.alpha == 1) {
+    if(imageViewLattice.alpha == 1) {
         [self toggleImageWithDuration:0.5];
     }
 }
@@ -1775,6 +1849,180 @@ return f - floor(f/m)*m;
     pieceNumber = pieceNumber_;
     N = pieceNumber*pieceNumber;
 
+}
+
+- (float)completedPercentage {
+        
+    float positioned = 0.0;
+    
+    for (PieceView *p in pieces) {
+        if (p.isFree && p.isPositioned) {
+            positioned += 1.0;
+        }
+    }
+    
+    return (positioned/N*100);
+    
+}
+
+
+
+
+
+const double		kRadPerDeg	= 0.0174532925199433;	// pi / 180
+
+const CGBitmapInfo kDefaultCGBitmapInfo	= (kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host);
+const CGBitmapInfo kDefaultCGBitmapInfoNoAlpha	= (kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host);
+
+CGColorSpaceRef	GetDeviceRGBColorSpace() {
+	static CGColorSpaceRef	deviceRGBSpace	= NULL;
+	if( deviceRGBSpace == NULL )
+		deviceRGBSpace	= CGColorSpaceCreateDeviceRGB();
+	return deviceRGBSpace;
+}
+
+float GetScaleForProportionalResize( CGSize theSize, CGSize intoSize, bool onlyScaleDown, bool maximize )
+{
+	float	sx = theSize.width;
+	float	sy = theSize.height;
+	float	dx = intoSize.width;
+	float	dy = intoSize.height;
+	float	scale	= 1;
+	
+	if( sx != 0 && sy != 0 )
+	{
+		dx	= dx / sx;
+		dy	= dy / sy;
+		
+		// if maximize is true, take LARGER of the scales, else smaller
+		if( maximize )		scale	= (dx > dy)	? dx : dy;
+		else				scale	= (dx < dy)	? dx : dy;
+		
+		if( scale > 1 && onlyScaleDown )	// reset scale
+			scale	= 1;
+	}
+	else
+	{
+		scale	 = 0;
+	}
+	return scale;
+}
+
+CGContextRef CreateCGBitmapContextForWidthAndHeight( unsigned int width, unsigned int height, 
+													CGColorSpaceRef optionalColorSpace, CGBitmapInfo optionalInfo )
+{
+	CGColorSpaceRef	colorSpace	= (optionalColorSpace == NULL) ? GetDeviceRGBColorSpace() : optionalColorSpace;
+	CGBitmapInfo	alphaInfo	= ( (int32_t)optionalInfo < 0 ) ? kDefaultCGBitmapInfo : optionalInfo;
+	return CGBitmapContextCreate( NULL, width, height, 8, 0, colorSpace, alphaInfo );
+}
+
+CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor )
+{
+	CGImageRef			newImage		= NULL;
+	CGContextRef		bmContext		= NULL;
+	BOOL				mustTransform	= YES;
+	CGAffineTransform	transform		= CGAffineTransformIdentity;
+	UIImageOrientation	orientation		= image.imageOrientation;
+	
+	CGImageRef			srcCGImage		= CGImageRetain( image.CGImage );
+	
+	size_t width	= CGImageGetWidth(srcCGImage) * scaleFactor;
+	size_t height	= CGImageGetHeight(srcCGImage) * scaleFactor;
+	
+	// These Orientations are rotated 0 or 180 degrees, so they retain the width/height of the image
+	if( (orientation == UIImageOrientationUp) || (orientation == UIImageOrientationDown) || (orientation == UIImageOrientationUpMirrored) || (orientation == UIImageOrientationDownMirrored)  )
+	{	
+		bmContext	= CreateCGBitmapContextForWidthAndHeight( width, height, NULL, kDefaultCGBitmapInfo );
+	}
+	else	// The other Orientations are rotated ±90 degrees, so they swap width & height.
+	{	
+		bmContext	= CreateCGBitmapContextForWidthAndHeight( height, width, NULL, kDefaultCGBitmapInfo );
+	}
+	
+	//CGContextSetInterpolationQuality( bmContext, kCGInterpolationLow );
+	CGContextSetBlendMode( bmContext, kCGBlendModeCopy );	// we just want to copy the data
+	
+	switch(orientation)
+	{
+		case UIImageOrientationDown:		// 0th row is at the bottom, and 0th column is on the right - Rotate 180 degrees
+			transform	= CGAffineTransformMake(-1.0, 0.0, 0.0, -1.0, width, height);
+			break;
+			
+		case UIImageOrientationLeft:		// 0th row is on the left, and 0th column is the bottom - Rotate -90 degrees
+			transform	= CGAffineTransformMake(0.0, 1.0, -1.0, 0.0, height, 0.0);
+			break;
+			
+		case UIImageOrientationRight:		// 0th row is on the right, and 0th column is the top - Rotate 90 degrees
+			transform	= CGAffineTransformMake(0.0, -1.0, 1.0, 0.0, 0.0, width);
+			break;
+			
+		case UIImageOrientationUpMirrored:	// 0th row is at the top, and 0th column is on the right - Flip Horizontal
+			transform	= CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
+			break;
+			
+		case UIImageOrientationDownMirrored:	// 0th row is at the bottom, and 0th column is on the left - Flip Vertical
+			transform	= CGAffineTransformMake(1.0, 0.0, 0, -1.0, 0.0, height);
+			break;
+			
+		case UIImageOrientationLeftMirrored:	// 0th row is on the left, and 0th column is the top - Rotate -90 degrees and Flip Vertical
+			transform	= CGAffineTransformMake(0.0, -1.0, -1.0, 0.0, height, width);
+			break;
+			
+		case UIImageOrientationRightMirrored:	// 0th row is on the right, and 0th column is the bottom - Rotate 90 degrees and Flip Vertical
+			transform	= CGAffineTransformMake(0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
+			break;
+			
+		default:
+			mustTransform	= NO;
+			break;
+	}
+	
+	if( mustTransform )	CGContextConcatCTM( bmContext, transform );
+	
+	CGContextDrawImage( bmContext, CGRectMake(0.0, 0.0, width, height), srcCGImage );
+	CGImageRelease( srcCGImage );
+	newImage = CGBitmapContextCreateImage( bmContext );
+	CFRelease( bmContext );
+	
+	return newImage;
+}
+
+UIImage* UImageFromPathScaledToSize(NSString* path, CGSize toSize)
+{
+	UIImage	*scaledImg	= nil;
+	UIImage	*img = [[UIImage alloc] initWithContentsOfFile:path];	// get the image
+	
+	if( img )
+	{
+		float	scale	= GetScaleForProportionalResize( img.size, toSize, false, false );
+		
+		CGImageRef cgImage	= CreateCGImageFromUIImageScaled( img, scale );
+				
+		if( cgImage )
+		{
+			scaledImg	= [UIImage imageWithCGImage:cgImage];	// autoreleased
+			CGImageRelease( cgImage );
+		}
+	}
+	return scaledImg;	// autoreleased
+}
+
+@end
+
+@implementation UIImage (scale)
+
+-(UIImage*) scaleToSize:(CGSize)toSize
+{
+UIImage	*scaledImg	= nil;
+float	scale		= GetScaleForProportionalResize( self.size, toSize, false, false );
+CGImageRef cgImage	= CreateCGImageFromUIImageScaled( self, scale );
+
+if( cgImage )
+{
+    scaledImg	= [UIImage imageWithCGImage:cgImage];	// autoreleased
+    CGImageRelease( cgImage );
+}
+return scaledImg;
 }
 
 

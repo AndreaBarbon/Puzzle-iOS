@@ -30,10 +30,13 @@
     IBOutlet UIStepper *stepper;
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
+    IBOutlet UILabel *percentageLabel;
     int DrawerPosition;
     float drawerSize;
     float drawerMargin;
-    
+
+    float biggerPieceSize;
+
     Puzzle *puzzleDB;
     
 }
