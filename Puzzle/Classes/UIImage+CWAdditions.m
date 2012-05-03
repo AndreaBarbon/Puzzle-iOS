@@ -28,6 +28,10 @@
 //  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+
+
+
+
 #import "UIImage+CWAdditions.h"
 
 
@@ -211,13 +215,10 @@
 -(UIImage*)subimageWithRect:(CGRect)rect;
 {
 
-    //NSLog(@"Getting DC");
-	UIGraphicsBeginImageContextWithOptions(rect.size, NO, self.scale);
+	UIGraphicsBeginImageContextWithOptions(rect.size, YES, self.scale);
     [self drawAtPoint:CGPointMake(-rect.origin.x, -rect.origin.y)];
-    //NSLog(@"Getting graphic");
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    //NSLog(@"Got graphic");
     
     CGContextRelease(UIGraphicsGetCurrentContext());
     

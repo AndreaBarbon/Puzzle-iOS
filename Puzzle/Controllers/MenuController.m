@@ -24,7 +24,7 @@
     
 }
 
-- (void)toggleMenu {
+- (void)toggleMenuWithDuration:(float)duration {
     
     
     resumeButton.hidden = !duringGame;
@@ -47,7 +47,7 @@
         
         [delegate.view removeGestureRecognizer:delegate.pan];
 
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:duration animations:^{
             
             obscuringView.alpha = obscuring;
             self.view.alpha = 1;
@@ -57,18 +57,12 @@
      
         [delegate.view addGestureRecognizer:delegate.pan];
         
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:duration animations:^{
             
-            NSLog(@"Animation started");
-            [delegate print_free_memory];
-
             obscuringView.alpha = 0;
             self.view.alpha = 0;
             
         } completion:^(BOOL finished) {
-
-            [delegate print_free_memory];
-            NSLog(@"\n\n\n\n");
 
             game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
 
@@ -79,14 +73,9 @@
 
 - (void)createNewGame {
     
-    @autoreleasepool {
         
-        [delegate startNewGame];
-                
-        [self toggleMenu];
-
-    }
-    
+    [delegate startNewGame];
+        
             
 }
 
@@ -111,7 +100,7 @@
 
 - (IBAction)resumeGame:(id)sender {
     
-    [self toggleMenu];
+    [self toggleMenuWithDuration:0.5];
 
 }
 
@@ -133,7 +122,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      

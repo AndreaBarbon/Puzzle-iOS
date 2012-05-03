@@ -11,13 +11,16 @@
 #import "PuzzleController.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define IMAGE_QUALITY 0.5
+
+
 @interface NewGameController ()
 
 @end
 
 @implementation NewGameController
 
-@synthesize popover, delegate;
+@synthesize popover, delegate, imagePath;
 
 - (void)viewDidLoad
 {
@@ -26,11 +29,23 @@
     
     loadingView.layer.cornerRadius = 10;
     loadingView.layer.masksToBounds = YES;
+    
+    imagePath = [[NSString alloc] initWithFormat:@""];
+    
+    //progressView.progressTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    //slider.minimumTrackTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
 
 
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    NSLog(@"After picking");
+    [delegate.delegate print_free_memory];
+    
+    NSData *dataJPG = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], IMAGE_QUALITY);
+    
+    NSLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
@@ -41,19 +56,27 @@
         [self dismissModalViewControllerAnimated:YES];
     }
         
-    UIImage *temp = [info objectForKey:UIImagePickerControllerOriginalImage];    
+    UIImage *temp = [UIImage imageWithData:dataJPG];    
     CGRect rect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
+    imagePath = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
     
-    //rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    
+    rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.width);
+    NSLog(@"Original Rect = %.1f, %.1f, %.1f, %.1f",rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     tapToSelectView.hidden = YES;
     startButton.enabled = YES;    
     
+    
     image.image = [delegate.delegate clipImage:temp toRect:rect];
     
+    [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
     
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
+    [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
+
 }
 
 - (IBAction)selectImage:(id)sender {
@@ -62,6 +85,9 @@
     c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     c.allowsEditing = YES;
     c.delegate = self;
+    
+    NSLog(@"B4 picking");
+    [delegate.delegate print_free_memory];
     
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
@@ -74,6 +100,9 @@
         
         [self presentModalViewController:c animated:YES];
     }
+    
+    [delegate.delegate.view sendSubviewToBack:delegate.delegate.menuButtonView];
+
 
 }
 
@@ -81,12 +110,6 @@
     
     NSLog(@"Started");
     
-    startButton.enabled = NO;    
-    progressView.hidden = NO;
-    loadingView.hidden = NO;
-
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
-
     
     if (image.image == nil) {
         delegate.delegate.image = [UIImage imageNamed:@"Cover"];
@@ -99,9 +122,12 @@
     delegate.delegate.pieceNumber = (int)slider.value;
     
     
+    [self startLoading];
+
     [delegate.delegate removeOldPieces];
 
-    [NSThread detachNewThreadSelector:@selector(createNewGame) toTarget:delegate withObject:nil];
+    
+    [delegate createNewGame];
 
 
 
@@ -109,30 +135,70 @@
     
 }
 
-- (void)gameStarted {
+- (void)startLoading {
+    
+    startButton.hidden = YES;
+    
+    if (delegate.delegate.loadingGame) {
+        
+        int n = [delegate.delegate.puzzleDB.pieceNumber intValue]*[delegate.delegate.puzzleDB.pieceNumber intValue];
+        pieceNumberLabel.text = [NSString stringWithFormat:@"%d", n];    
+        slider.hidden = YES;    
+        tapToSelectView.hidden = YES;
+        image.image = delegate.delegate.image;
 
-    NSLog(@"Game effectively starting");
+    } else {
+
+        image.image = delegate.delegate.image;
+
+    }
+    
+    progressView.hidden = NO;
+    loadingView.hidden = NO;
+    progressView.progress = 0.01;
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
+    
+
+}
+
+
+- (void)gameStarted {
+    
+    NSLog(@"Game is started");
     
     [timer invalidate];
+
+    [delegate toggleMenuWithDuration:0];
+    
     progressView.progress = 0.001;
     delegate.delegate.loadedPieces = 0;
     progressView.hidden = YES;  
     loadingView.hidden = YES;
+    startButton.hidden = NO;
+    pieceNumberLabel.hidden = NO;    
+    slider.hidden = NO;    
+    piecesLabel.hidden = NO;
     tapToSelectView.hidden = NO;
+    
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];    
 
-
-    NSLog(@"Game effectively started");
-
+    
 }
 
 
 - (void)moveBar {
     
     float a = (float)delegate.delegate.loadedPieces;
-    float b = (float)((int)slider.value*(int)slider.value);
+    float b = 2*(float)((int)slider.value*(int)slider.value);
+    
+    if (!delegate.delegate.loadingGame) {
+        
+        b = delegate.delegate.N;
+    }
     
     progressView.progress = a/b;
-    
+
 }
 
 

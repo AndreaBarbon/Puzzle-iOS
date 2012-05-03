@@ -48,6 +48,7 @@
 //  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -80,7 +81,6 @@
 @interface UIImage (CWStretchable)
 
 -(UIImage*)subimageWithRect:(CGRect)rect;
-
 -(UIImage*)stretchableImageFromLeftCapOfImage;
 -(UIImage*)stretchableImageFromMiddleOfImage;
 -(UIImage*)stretchableImageFromRightCapOfImage;

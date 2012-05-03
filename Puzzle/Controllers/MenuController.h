@@ -27,6 +27,11 @@
     IBOutlet UIButton *newGameButton;
     IBOutlet UIButton *showThePictureButton;
     
+    IBOutlet UIImageView *image;
+    IBOutlet UIProgressView *progressView;
+    IBOutlet UIActivityIndicatorView *indicator;
+    IBOutlet UIView *loadingView;
+    
 }
 
 @property (nonatomic, assign) PuzzleController *delegate;
@@ -39,7 +44,7 @@
 - (IBAction)resumeGame:(id)sender;
 - (IBAction)showThePicture:(id)sender;
 
-- (void)toggleMenu;
+- (void)toggleMenuWithDuration:(float)duration;
 
 - (void)createNewGame;
 

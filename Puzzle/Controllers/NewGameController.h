@@ -19,6 +19,7 @@
     
     IBOutlet UIImageView *image;
     IBOutlet UILabel *pieceNumberLabel;
+    IBOutlet UIButton *piecesLabel;
     IBOutlet UISlider *slider;
     IBOutlet UIButton *startButton;
     IBOutlet UIButton *imageButton;
@@ -32,6 +33,7 @@
 }
 
 @property (nonatomic, retain) UIPopoverController *popover;
+@property (nonatomic, retain) NSString *imagePath;
 @property (nonatomic, assign) MenuController *delegate;
 
 
@@ -40,6 +42,7 @@
 - (IBAction)selectImage:(id)sender;
 - (void)gameStarted;
 - (void)moveBar;
+- (void)startLoading;
 
 
 
