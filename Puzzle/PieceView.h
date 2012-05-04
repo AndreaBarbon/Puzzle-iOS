@@ -23,6 +23,7 @@
 @interface PieceView : UIView {
         
     float tr;
+    UILabel *label;
 }
 
 //@property (nonatomic, assign) id<PieceViewProtocol> delegate;

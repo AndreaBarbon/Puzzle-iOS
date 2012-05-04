@@ -203,7 +203,7 @@
             
             if (UIInterfaceOrientationIsLandscape(self.delegate.interfaceOrientation)) {
                 
-                if (ABS(traslation.x)<delegate.piceSize/4 || ABS(tr)>delegate.piceSize/4) {
+                if (ABS(traslation.x)<delegate.piceSize/10 || ABS(tr)>delegate.piceSize/3) {
                     tr += ABS(traslation.y);
                     [delegate panDrawer:gesture];
                 } else {
@@ -214,7 +214,7 @@
                 
             } else {
                 
-                if (ABS(traslation.y)<delegate.piceSize/4 || ABS(tr)>delegate.piceSize/4 ) {
+                if (ABS(traslation.y)<delegate.piceSize/1 || ABS(tr)>delegate.piceSize/3 ) {
                     tr += ABS(traslation.x);
                     [delegate panDrawer:gesture];
                 } else {
@@ -273,6 +273,9 @@
                 angle = 0.0;
             }
             
+            [self setAngle:angle];
+
+            
             //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             tempAngle = 0;
             
@@ -303,7 +306,8 @@
     
     angle += M_PI_2;
     angle = [PuzzleController float:angle modulo:2*M_PI];
-    
+    [self setAngle:angle];
+
     centerView.frame = CGRectZero;
     
     [UIView animateWithDuration:0.2 animations:^{
@@ -359,7 +363,8 @@
             //NSLog(@"New transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
             
             p.angle = angle;
-            
+            [p setAngle:angle];
+
             [UIView animateWithDuration:0.2 animations:^{
                 
                 p.transform = transform;
@@ -645,13 +650,22 @@
         [delegate allPiecesLoaded];
     }
     
-//    UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
-//    label.text = [NSString stringWithFormat:@"%d", self.number];
-//    label.textColor = [UIColor whiteColor];
-//    label.textAlignment = UITextAlignmentCenter;
-//    label.backgroundColor = [UIColor clearColor];
-//    [self addSubview:label];
+    label = [[UILabel alloc] initWithFrame:self.bounds];
+    label.text = [NSString stringWithFormat:@"", self.number];
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = UITextAlignmentCenter;
+    label.backgroundColor = [UIColor clearColor];
+    [self addSubview:label];
     
+}
+
+- (void)setAngle:(float)angle_ {
+    
+    NSLog(@"Angle = %.1f", angle_);
+    
+    angle = angle_;
+    label.text = [NSString stringWithFormat:@"%.1f", angle_];
+
 }
 
 
