@@ -29,6 +29,8 @@
     BOOL receivedFirstTouch;
     BOOL loadingGame;
     
+    BOOL panningDrawerUP;
+    
     CGPoint drawerFirstPoint;
     IBOutlet UIStepper *stepper;
     IBOutlet UIView *stepperDrawer;
@@ -43,6 +45,7 @@
     
     NSTimer *timer;
 
+    NSMutableArray *piecesInDrawer;
     
 }
 
@@ -76,7 +79,7 @@
 @property (nonatomic, retain) IBOutlet UIView *menuButtonView;
 
 
-@property (nonatomic, retain) NSArray *pieces;
+@property (nonatomic, retain) NSMutableArray *pieces;
 @property (nonatomic, retain) Lattice *lattice;
 @property (nonatomic, retain) UIPanGestureRecognizer *pan;
 @property (nonatomic, retain) UIPanGestureRecognizer *panDrawer;

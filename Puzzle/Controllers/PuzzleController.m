@@ -600,37 +600,6 @@
     
 }
 
-- (void)panDrawer:(UIPanGestureRecognizer*)gesture {
-    
-    if (menu.view.alpha == 0) {
-        
-        CGPoint traslation = [gesture translationInView:lattice.superview];
-        
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            
-            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
-                
-                drawerFirstPoint.y += [gesture velocityInView:self.view].y/25;
-                [gesture setTranslation:CGPointMake(traslation.x, 0) inView:lattice.superview];                
-            }
-            
-        } else {
-            
-            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
-                
-                drawerFirstPoint.x += [gesture velocityInView:self.view].x/25;
-                [gesture setTranslation:CGPointMake(0, traslation.y) inView:lattice.superview];     
-            }
-        }
-        
-        
-        [self organizeDrawerWithOrientation:self.interfaceOrientation];
-
-        
-    }
-    
-}
-
 - (void)setup {
     
     
@@ -1034,6 +1003,9 @@
 {
     [super viewDidLoad];
     
+    piecesInDrawer = [[NSMutableArray alloc] init];
+
+    
     drawerView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     
@@ -1121,6 +1093,12 @@
 
 }
 
+
+
+
+#pragma mark Drawer stuffs
+
+
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
     NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:pieces];
@@ -1172,6 +1150,7 @@
                 
             } else {
                 
+                
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
                     rect.origin.y = drawerFirstPoint.y+drawerMargin;
                     rect.origin.x = (self.padding*0.75)/2;
@@ -1196,6 +1175,189 @@
     
     
 }
+
+- (void)panDrawer:(UIPanGestureRecognizer*)gesture {
+    
+    if (menu.view.alpha == 0) {
+        
+        CGPoint traslation = [gesture translationInView:lattice.superview];
+        
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            
+            if ([gesture velocityInView:self.view].y<0) {
+            
+                [self moveNegativePieces];
+
+            } else {
+                
+                [self movePositivePieces];
+
+            }
+            
+            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
+                
+                for (PieceView *p in pieces) {
+                    if (!p.isFree) {
+                        
+                        CGRect frame = p.frame;
+                        frame.origin.y += [gesture velocityInView:self.view].y/25;
+                        p.frame = frame;
+                    }
+                }                
+                drawerFirstPoint.y += [gesture velocityInView:self.view].y/25;
+                [gesture setTranslation:CGPointMake(traslation.x, 0) inView:lattice.superview];                
+            }
+            
+            
+        } else {
+            
+            if ([gesture velocityInView:self.view].x<0) {
+                
+                [self moveNegativePieces];
+                
+            } else {
+                
+                [self movePositivePieces];
+                
+            }
+            
+            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
+                
+                for (PieceView *p in pieces) {
+                    if (!p.isFree) {
+                        
+                        CGRect frame = p.frame;
+                        frame.origin.x += [gesture velocityInView:self.view].x/25;
+                        p.frame = frame;
+                    }
+                }    
+                drawerFirstPoint.x += [gesture velocityInView:self.view].x/25;
+                [gesture setTranslation:CGPointMake(0, traslation.y) inView:lattice.superview];     
+            }
+        }
+        
+        
+        //[self organizeDrawerWithOrientation:self.interfaceOrientation];
+        
+        
+    }
+    
+}
+
+- (PieceView*)firstPieceInDrawer {
+    
+    for (int i=0; i<[pieces count]; i++) {
+        PieceView *p = [pieces objectAtIndex:i];
+        if (!p.isFree) {
+            return p;
+        }
+    }
+
+    return nil;
+    
+}
+
+- (PieceView*)lastPieceInDrawer {
+    
+    for (int i=[pieces count]-1; i>-1; i--) {
+        PieceView *p = [pieces objectAtIndex:i];
+        if (!p.isFree) {
+            return p;
+        }
+    }
+    
+    return nil;
+    
+}
+
+- (CGRect)frameUnderPiece:(PieceView*)piece {
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        return CGRectMake((self.padding*0.75)/2, 
+                          piece.frame.origin.y+piceSize+drawerMargin, 
+                          piece.frame.size.width, 
+                          piece.frame.size.height);
+    } else {
+        
+        return CGRectMake(piece.frame.origin.x+piceSize+drawerMargin,
+                          (self.padding*0.75)/2,
+                          piece.frame.size.width, 
+                          piece.frame.size.height);
+    }    
+}
+
+- (CGRect)frameOverPiece:(PieceView*)piece {
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        return CGRectMake((self.padding*0.75)/2, 
+                          piece.frame.origin.y-piceSize-drawerMargin, 
+                          piece.frame.size.width, 
+                          piece.frame.size.height);
+    } else {
+        
+        return CGRectMake(piece.frame.origin.x-piceSize-drawerMargin,
+                          (self.padding*0.75)/2,
+                          piece.frame.size.width, 
+                          piece.frame.size.height);
+    }
+}
+
+- (void)moveNegativePieces {
+    
+    for (int i=0; i<[pieces count]; i++) {
+        
+        PieceView *piece = [pieces objectAtIndex:i];
+        
+        float originPoint = 0;
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            originPoint = piece.frame.origin.y;
+        } else {
+            originPoint = piece.frame.origin.x;
+        }
+        
+        
+        if (originPoint+piece.bounds.size.height<0 && !piece.isFree) {
+            
+            [pieces removeObject:piece];
+            drawerFirstPoint = [self frameUnderPiece:piece].origin;
+            piece.frame = [self frameUnderPiece:[self lastPieceInDrawer]];
+            
+            [pieces addObject:piece];
+                                    
+        }
+    }
+}
+
+- (void)movePositivePieces {
+    
+    CGRect screen = [[UIScreen mainScreen] bounds];
+    
+    for (int i=[pieces count]-1; i>-1; i--) {
+        
+        PieceView *piece = [pieces objectAtIndex:i];
+        
+        float originPoint = 0;
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            originPoint = piece.frame.origin.y;
+        } else {
+            originPoint = piece.frame.origin.x;
+        }
+        
+        if (originPoint > screen.size.width && !piece.isFree) {
+            
+            [pieces removeObject:piece];
+            drawerFirstPoint = [self frameOverPiece:[self firstPieceInDrawer]].origin;
+            piece.frame = [self frameOverPiece:[self firstPieceInDrawer]];
+            
+            [pieces insertObject:piece atIndex:0];
+            
+        }
+    }
+}
+
+
 
 - (IBAction)scrollDrawerRight:(id)sender {
     
@@ -1316,16 +1478,20 @@
     }
 }
 
-- (NSArray*)shuffleArray:(NSArray*)array {
-    
-    NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:array];
-    
+- (NSMutableArray*)shuffleArray:(NSMutableArray*)array {
+        
     for(NSUInteger i = [array count]; i > 1; i--) {
         NSUInteger j = arc4random_uniform(i);
-        [temp exchangeObjectAtIndex:i-1 withObjectAtIndex:j];
+        [array exchangeObjectAtIndex:i-1 withObjectAtIndex:j];
     }
     
-    return [NSArray arrayWithArray:temp];
+    for (int i=0; i<[array count]; i++) {
+        
+        [[array objectAtIndex:i] setPositionInDrawer:i];
+        
+    }
+    
+    return array;
 }
 
 - (IBAction)toggleMenu:(id)sender {
@@ -1532,8 +1698,8 @@ return f - floor(f/m)*m;
     CGRect stepperFrame = stepperDrawer.frame;
     CGRect imageFrame = imageView.frame;
  
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+                
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
         rect.size.width = drawerSize;
@@ -1543,8 +1709,11 @@ return f - floor(f/m)*m;
         float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.width)/1;
         imageFrame.origin.x = pad;
         imageFrame.origin.y = 0;
+        
+        lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
+
                 
-    } else {
+    } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
         
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
@@ -1556,11 +1725,13 @@ return f - floor(f/m)*m;
         imageFrame.origin.y = pad;
         imageFrame.origin.x = 0;
         
+        lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
+
     }
     
-    lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
-    [self refreshPositions];
     
+    [self refreshPositions];
+
     
     if (!receivedFirstTouch) {
         

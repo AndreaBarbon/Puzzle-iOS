@@ -11,7 +11,7 @@
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView, isRotating;
+@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView, isRotating, positionInDrawer;
 
 
 - (void)setup {
@@ -214,7 +214,7 @@
                 
             } else {
                 
-                if (ABS(traslation.y)<delegate.piceSize/1 || ABS(tr)>delegate.piceSize/3 ) {
+                if (ABS(traslation.y)<delegate.piceSize/10 || ABS(tr)>delegate.piceSize/3 ) {
                     tr += ABS(traslation.x);
                     [delegate panDrawer:gesture];
                 } else {
@@ -353,12 +353,47 @@
             //p.centerView.frame = CGRectMake(x, y, 10, 10);
             
             
+        CGAffineTransform transform = p.transform;
             
-            CGAffineTransform transform = p.transform;
-            transform = CGAffineTransformTranslate(transform , -x, -y);
-            transform = CGAffineTransformRotate(transform,-M_PI_2);
-            transform = CGAffineTransformTranslate(transform, x,y);
-            transform = CGAffineTransformRotate(transform,M_PI);
+        if (self.delegate.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+
+
+        
+        }
+        
+        switch (self.delegate.interfaceOrientation) {
+
+            case UIInterfaceOrientationLandscapeLeft:
+                transform = CGAffineTransformTranslate(transform , -x, -y);
+                transform = CGAffineTransformRotate(transform,-M_PI_2);
+                transform = CGAffineTransformTranslate(transform, x,y);
+                transform = CGAffineTransformRotate(transform,M_PI);
+                break;
+                
+            case UIInterfaceOrientationLandscapeRight:
+                transform = CGAffineTransformTranslate(transform , x, y);
+                transform = CGAffineTransformRotate(transform,-M_PI_2);
+                transform = CGAffineTransformTranslate(transform, -x,-y);
+                transform = CGAffineTransformRotate(transform,M_PI);
+                break;
+             
+            case UIInterfaceOrientationPortrait:
+                transform = CGAffineTransformTranslate(transform , x, y);
+                transform = CGAffineTransformRotate(transform,M_PI_2);
+                transform = CGAffineTransformTranslate(transform, -x,-y);
+                break;
+                
+            case UIInterfaceOrientationPortraitUpsideDown:
+                transform = CGAffineTransformTranslate(transform , -x, -y);
+                transform = CGAffineTransformRotate(transform,M_PI_2);
+                transform = CGAffineTransformTranslate(transform, x,y);
+                break;
+                
+            default:
+                break;
+        }
+        
+        
             
             //NSLog(@"New transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
             
@@ -650,21 +685,21 @@
         [delegate allPiecesLoaded];
     }
     
-    label = [[UILabel alloc] initWithFrame:self.bounds];
-    label.text = [NSString stringWithFormat:@"", self.number];
-    label.textColor = [UIColor whiteColor];
-    label.textAlignment = UITextAlignmentCenter;
-    label.backgroundColor = [UIColor clearColor];
-    [self addSubview:label];
+//    label = [[UILabel alloc] initWithFrame:self.bounds];
+//    label.text = [NSString stringWithFormat:@"", self.number];
+//    label.textColor = [UIColor whiteColor];
+//    label.textAlignment = UITextAlignmentCenter;
+//    label.backgroundColor = [UIColor clearColor];
+//    [self addSubview:label];
     
 }
 
 - (void)setAngle:(float)angle_ {
     
-    NSLog(@"Angle = %.1f", angle_);
-    
     angle = angle_;
-    label.text = [NSString stringWithFormat:@"%.1f", angle_];
+
+    //NSLog(@"Angle = %.1f", angle_);    
+    //label.text = [NSString stringWithFormat:@"%.1f", angle_];
 
 }
 
@@ -743,6 +778,10 @@
     return [NSArray arrayWithArray:temp];
 }
 
+-(void)setPositionInDrawer:(int)positionInDrawer_ {
+    
+    positionInDrawer = positionInDrawer_;
+}
 
 #pragma mark
 #pragma UNUSEFUL

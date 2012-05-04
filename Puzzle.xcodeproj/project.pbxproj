@@ -44,6 +44,7 @@
 		B8BA98971552FF6E00F7225B /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8BA98951552FF6E00F7225B /* Image.m */; };
 		B8BA989A1552FF6F00F7225B /* Piece.m in Sources */ = {isa = PBXBuildFile; fileRef = B8BA98991552FF6F00F7225B /* Piece.m */; };
 		B8BA989B1552FF6F00F7225B /* Piece.m in Sources */ = {isa = PBXBuildFile; fileRef = B8BA98991552FF6F00F7225B /* Piece.m */; };
+		B8BA98A115542BEE00F7225B /* CreatePuzzleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B883613D15529D0A00330531 /* CreatePuzzleOperation.m */; };
 		B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
 		B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
 		B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
@@ -525,6 +526,7 @@
 				B8BA98931552FF6C00F7225B /* Puzzle.m in Sources */,
 				B8BA98971552FF6E00F7225B /* Image.m in Sources */,
 				B8BA989B1552FF6F00F7225B /* Piece.m in Sources */,
+				B8BA98A115542BEE00F7225B /* CreatePuzzleOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
