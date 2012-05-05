@@ -44,8 +44,8 @@
     float biggerPieceSize;
     
     NSTimer *timer;
-
-    NSMutableArray *piecesInDrawer;
+    
+    PieceView *movingPiece;
     
 }
 
@@ -80,6 +80,7 @@
 
 
 @property (nonatomic, retain) NSMutableArray *pieces;
+@property (nonatomic, retain) NSMutableArray *groups;
 @property (nonatomic, retain) Lattice *lattice;
 @property (nonatomic, retain) UIPanGestureRecognizer *pan;
 @property (nonatomic, retain) UIPanGestureRecognizer *panDrawer;
@@ -115,6 +116,8 @@
 
 - (BOOL)pieceIsOut:(PieceView*)piece;
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated;
+- (void)groupMoved:(GroupView*)group;
+
 
 - (void)startNewGame;
 - (void)print_free_memory;

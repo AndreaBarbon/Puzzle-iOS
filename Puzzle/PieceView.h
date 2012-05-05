@@ -10,6 +10,7 @@
 
 @class PieceView;
 @class PuzzleController;
+@class GroupView;
 
 
 @protocol PieceViewProtocol
@@ -35,11 +36,15 @@
 @property(nonatomic, retain) UIImage *image;
 @property(nonatomic, retain) UIView *centerView;
 
+@property(nonatomic, retain) GroupView *group;
+
 @property(nonatomic) BOOL isPositioned;
 @property(nonatomic) BOOL isLifted;
 @property(nonatomic) BOOL isFree;
 @property(nonatomic) BOOL isRotating;
+@property(nonatomic) BOOL isBoss;
 @property(nonatomic) BOOL hasNeighbors;
+
 @property(nonatomic) CGPoint oldPosition;
 
 @property(nonatomic) int number;
@@ -55,11 +60,14 @@
 
 - (void)move:(UIPanGestureRecognizer*)gesture;
 - (void)rotate:(UIRotationGestureRecognizer*)gesture;
+- (void)rotateTap:(UITapGestureRecognizer*)gesture;
+
 - (id)initWithFrame:(CGRect)frame padding:(float)p;
 - (int)edgeNumber:(int)i;
 - (void)setNeighborNumber:(int)i forEdge:(int)edge;
 - (NSArray*)allTheNeighborsBut:(NSMutableArray*)excluded;
 - (CGPoint)realCenter;
 - (void)pulse;
+- (BOOL)isCompleted;
 
 @end

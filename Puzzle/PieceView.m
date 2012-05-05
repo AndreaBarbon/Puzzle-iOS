@@ -8,10 +8,14 @@
 
 #import "PieceView.h"
 #import "PuzzleController.h"
+#import "GroupView.h"
 
 @implementation PieceView
 
-@synthesize image, number, isLifted, isPositioned, isFree, edges, position, angle, size, tempAngle, padding, delegate, neighbors, hasNeighbors, oldPosition, centerView, isRotating, positionInDrawer;
+@synthesize image, number, edges, position, angle, size, tempAngle, padding, delegate, neighbors, oldPosition, centerView, positionInDrawer, group;
+
+@synthesize isBoss, isLifted, isPositioned, isFree, hasNeighbors, isRotating;
+
 
 
 - (void)setup {
@@ -181,21 +185,42 @@
             
         }
         
-        if (isFree || isLifted) {
+        if (isFree || isLifted) { //In the board
             
             NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
             
-            [self translateWithVector:traslation];
-            [self translateNeighborhoodExcluding:excluded WithVector:traslation];
+            if (self.group==nil) {
+
+                [self translateWithVector:traslation];
+                [self translateNeighborhoodExcluding:excluded WithVector:traslation];
+
+            } else {
+                
+                //traslation = [gesture translationInView:self.superview.superview];
+                [self.group translateWithVector:traslation];
+                //NSLog(@"%s", __FUNCTION__);
+                
+            }
+            
             
             [gesture setTranslation:CGPointZero inView:self.superview];
             
             
             if (gesture.state == UIGestureRecognizerStateEnded) {
                 
-                NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
-                [self movedNeighborhoodExcludingPieces:excluded];
-                [delegate pieceMoved:self];
+                
+                if (self.group==nil) {
+                    
+                    NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
+                    [self movedNeighborhoodExcludingPieces:excluded];
+                    [delegate pieceMoved:self];                    
+
+                } else {
+                    
+                    [delegate groupMoved:self.group];                    
+                    
+                }
+
                 
             }
             
@@ -203,7 +228,7 @@
             
             if (UIInterfaceOrientationIsLandscape(self.delegate.interfaceOrientation)) {
                 
-                if (ABS(traslation.x)<delegate.piceSize/10 || ABS(tr)>delegate.piceSize/3) {
+                if (ABS(traslation.x)<delegate.piceSize/8 || ABS(tr)>delegate.piceSize/3) {
                     tr += ABS(traslation.y);
                     [delegate panDrawer:gesture];
                 } else {
@@ -214,7 +239,7 @@
                 
             } else {
                 
-                if (ABS(traslation.y)<delegate.piceSize/10 || ABS(tr)>delegate.piceSize/3 ) {
+                if (ABS(traslation.y)<delegate.piceSize/8 || ABS(tr)>delegate.piceSize/3 ) {
                     tr += ABS(traslation.x);
                     [delegate panDrawer:gesture];
                 } else {
@@ -301,6 +326,26 @@
     
 }
 
+-(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
+{
+    CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
+    CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
+    
+    newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
+    oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+    
+    CGPoint pos = view.layer.position;
+    
+    pos.x -= oldPoint.x;
+    pos.x += newPoint.x;
+    
+    pos.y -= oldPoint.y;
+    pos.y += newPoint.y;
+    
+    view.layer.position = pos;
+    view.layer.anchorPoint = anchorPoint;
+}
+
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
         
     
@@ -310,11 +355,35 @@
 
     centerView.frame = CGRectZero;
     
-    [UIView animateWithDuration:0.2 animations:^{
+    
+    if (self.group==nil) {
         
-        self.transform = CGAffineTransformMakeRotation(angle);
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            self.transform = CGAffineTransformMakeRotation(angle);
+            
+        }];
         
-    }];
+    } else {
+        
+        CGPoint point = self.center; 
+
+        [self setAnchorPoint:CGPointMake(point.x / self.group.bounds.size.width, point.y / self.group.bounds.size.height) forView:self.group];
+        
+        
+        CGAffineTransform transform = self.group.transform;
+        transform = CGAffineTransformRotate(transform,M_PI_2);
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            self.group.transform = transform;
+            
+        }];
+                
+    }
+    
+    
+    return;
     
     
     //Rotate the neighborhood
@@ -426,12 +495,12 @@
     }
 
     BOOL areOut = NO;
-    for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
-        if ([delegate pieceIsOut:p]) {
-            areOut = YES;
-            break;
-        }
-    }
+//    for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
+//        if ([delegate pieceIsOut:p]) {
+//            areOut = YES;
+//            break;
+//        }
+//    }
 
     
     if (!areOut) {
@@ -729,6 +798,18 @@
     //NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
     
     hasNeighbors = YES;
+    
+}
+
+- (BOOL)isCompleted {
+        
+    for (NSNumber *n in neighbors) {
+        if (n.intValue == delegate.N) {
+            return NO;
+        }
+    }
+    
+    return YES;
     
 }
 

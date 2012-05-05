@@ -12,8 +12,8 @@
 
 #import "PuzzleController.h"
 #import "UIImage+CWAdditions.h"
-#import "NSObject+Que.h"
 #import "AppDelegate.h"
+#import "GroupView.h"
 
 
 @interface PuzzleController ()
@@ -23,7 +23,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups;
 
 
 
@@ -45,12 +45,6 @@
     
 }
 
-
-- (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
-    
-    return frame.origin.x<[piece realCenter].x && frame.origin.y<[piece realCenter].y;
-    
-}
 
 #import <mach/mach.h>
 #import <mach/mach_host.h>
@@ -111,6 +105,7 @@
     }
     
 }
+
 - (void)toggleImageWithDuration:(float)duration {
     
     [UIView animateWithDuration:duration animations:^{
@@ -188,208 +183,7 @@
     
 }
 
-- (PieceView*)pieceAtPosition:(int)j {
-    
-    for (PieceView *p in pieces) {
-        
-        if (p.position == j) {
-            
-            //NSLog(@"Piece at position %d is #%d", j, p.number);
-            return p;
-        }
-    }
-    
-    return nil;
-}
 
-- (BOOL)shouldCheckNeighborsOfPiece:(PieceView*)piece inDirection:(int)r {
-    
-    if (piece.position!=0) {
-        
-        return (!( r==2 && (piece.position+1)%pieceNumber==0 )             //bottom piece checking down
-        && !( r==0 && (piece.position)%pieceNumber==0 )               //top piece checking up
-        && !( r==1 && pieceNumber%(piece.position+1)==0 )             //right piece checking right
-        && !( r==3 && pieceNumber%(piece.position)==pieceNumber-1 ));   //left piece checking left
-    
-    } else {
-        return (r==1 || r==2);
-    }
-    
-}
-
-- (void)checkNeighborsForAllThePieces {
-    
-    for (PieceView *p in pieces) {
-        if (p.isFree) {
-            [self checkNeighborsOfPieceNumber:p];
-        }
-    }
-    
-}
-
-
-- (void)checkNeighborsOfPieceNumber:(PieceView*)piece {
-    
-    
-    
-    int rotation = floor(piece.angle/(M_PI/2));
-    rotation = rotation%4;    
-    
-    NSArray *a = [NSArray arrayWithObjects:
-                  [NSNumber numberWithInt:-1],              //up = 0
-                  [NSNumber numberWithInt:+pieceNumber],    //right = 1
-                  [NSNumber numberWithInt:1],               //down = 2
-                  [NSNumber numberWithInt:-pieceNumber],    //left = 3
-                  nil];
-    
-    PieceView *otherPiece;
-    int j = piece.position;
-    
-    if (j==-1) {
-        return;
-    }
-    
-    
-    for (int direction=0; direction<4; direction++) {
-        
-        int r = (direction+rotation)%4;
-        
-        int i = [[a objectAtIndex:r] intValue];
-        int l = [[a objectAtIndex:direction] intValue];
-        
-        //NSLog(@"r=%d, rotation = %d", r, rotation);
-        
-        
-        //Looks for neighbors
-        
-        
-        
-        
-        if (j+i>=0 && j+i<N && [self shouldCheckNeighborsOfPiece:piece inDirection:r] ){
-            
-            
-            otherPiece = [self pieceAtPosition:j+i];
-            
-            //NSLog(@"j+i = %d ; numbers are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d",j+i, piece.number+l, otherPiece.number,  piece.number, otherPiece.number, direction, rotation, r);    
-            
-            //NSLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", piece.number+i, piece.number+l, otherPiece.number);
-            
-            if (otherPiece != nil) {
-                
-                if (piece.isFree && otherPiece.isFree) {
-                    
-                    //NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
-                    
-                    
-                    if (piece.number+l==otherPiece.number) {
-                        
-                        
-                        if ((ABS(piece.angle-otherPiece.angle)<M_PI/4)) {
-                            
-                            [otherPiece setNeighborNumber:piece.number forEdge:(direction+2)%4];
-                            [piece setNeighborNumber:otherPiece.number forEdge:direction%4];
-                            
-                            piece.hasNeighbors = YES;
-                            otherPiece.hasNeighbors = YES;
-                            
-                        } else {
-                            //NSLog(@"0 -------> Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
-                        }
-                    } else {
-                        //NSLog(@"-------> Wrong numbers. They are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d", piece.number+l, otherPiece.number, piece.number, otherPiece.number, direction, rotation, r);
-                        
-                    }
-                    
-                }
-                
-            }else {
-                
-                //NSLog(@"NIL");
-                
-            }
-            
-            
-        }
-        
-    }
-    
-    //NSLog(@"\n");
-    
-}
-
-- (CGRect)frameOfLatticePiece:(int)i {
-    
-    
-    UIView *v = [lattice objectAtIndex:i];
-    
-    return CGRectMake(
-                      lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding)-1*lattice.scale,
-                      lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding)-1*lattice.scale, 
-                      lattice.scale*piceSize, 
-                      lattice.scale*piceSize);
-    
-}
-
-- (BOOL)isPositioned:(PieceView*)piece  {
-        
-    if (piece.isFree && piece.number == piece.position && ABS(piece.angle) < 1) {
-        
-        //NSLog(@"Piece #%d positioned!", piece.number);
-        //Flashes and block the piece
-        if (!piece.isPositioned) {
-            piece.isPositioned = YES;
-            piece.userInteractionEnabled = NO;
-            if (![self isPuzzleComplete] && !loadingGame) {
-                [piece pulse];
-                
-                if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
-                    [positionedSound play];
-                }
-            }
-        }
-        
-        return YES;
-    }
-    
-    return NO;
-}
-
-- (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated {
-    
-    //NSLog(@"Moving piece #%d to position %d", piece.number, i);
-    
-    piece.position = i;
-
-    if (animated) {
-        
-        [UIView animateWithDuration:0.5 animations:^{
-        
-            piece.frame = [self frameOfLatticePiece:i];
-        
-        }completion:^(BOOL finished) {
-            
-            if (!piece.isPositioned) {
-                [self isPositioned:piece];
-            }
-            [self checkNeighborsOfPieceNumber:piece];
-            [self updatePercentage];
-            [self updatePieceDB:piece];
-        }];
-        
-    } else {
-        
-        piece.frame = [self frameOfLatticePiece:i];
-        if (!piece.isPositioned) {
-            [self isPositioned:piece];
-        }
-
-    }
-    
-    
-    piece.oldPosition = [piece realCenter];
-    
-    
-}
 
 - (void)bringDrawerToTop {
     
@@ -407,198 +201,26 @@
     
 }
 
-- (void)pieceMoved:(PieceView *)piece {
-    
-    CGPoint point = piece.frame.origin;   
-    
-    if (!piece.hasNeighbors) {
-        
-        BOOL outOfDrawer;
-        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            outOfDrawer = point.y>drawerSize-self.padding;
-        } else {
-            outOfDrawer = point.x>drawerSize-self.padding;
-        }
-        
-        if (outOfDrawer) {
-            
-            
-            if (!piece.isFree && ![self pieceIsOut:piece]) {
-            
-                piece.isFree = YES;
-                
-            }            
-            
-        } else {
-            piece.isFree = NO;
-            piece.position = -1;
-            [self updatePieceDB:piece];
-            [UIView animateWithDuration:0.5 animations:^{
-                
-                CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
-                piece.frame = rect;
-                
-            }];
-        }
-        
-    } else {
-        piece.isFree = YES;
-    }
-    
-    
-    if (piece.isFree) {
-        
-        if ( [self pieceIsOut:piece] ) 
-        {
-            
-            [UIView animateWithDuration:0.5 animations:^{
-                
-                for (PieceView *p in [piece allTheNeighborsBut:nil]) {
-                    CGRect rect = p.frame;
-                    rect.origin.x = p.oldPosition.x-p.frame.size.width/2;
-                    rect.origin.y = p.oldPosition.y-p.frame.size.height/2;
-                    p.frame = rect;
-                    //NSLog(@"Reset the old position (%.1f, %.1f) for piece #%d", p.oldPosition.x, p.oldPosition.y, p.number);
-                    p.position = [self positionOfPiece:p];
-                }
-                CGRect rect = piece.frame;
-                rect.origin.x = piece.oldPosition.x-piece.frame.size.width/2;
-                rect.origin.y = piece.oldPosition.y-piece.frame.size.height/2;
-                piece.frame = rect;                
-                //NSLog(@"BOSS - Reset the old position (%.1f, %.1f) for piece #%d", piece.oldPosition.x, piece.oldPosition.y, piece.number);
-                piece.position = [self positionOfPiece:piece]; 
-            }];
-            
-        } else {
-            
-            for (int i=N-1; i>-1; i--) {
-                
-                
-                //NSLog(@"v origin = %.1f, %.1f - [piece realCenter] = %.1f, %.1f", frame.origin.x, frame.origin.y, [piece realCenter].x, [piece realCenter].y);
-                
-                CGRect frame = [self frameOfLatticePiece:i];
-                if ([self piece:piece isInFrame:frame]) {
-                    
-                    [self movePiece:piece toLatticePoint:i animated:YES];
-                    
-                    break;
-                }
-            }
-        }
-        
-        
-        
-    }
-    
-    piece.isLifted = NO;
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        [self organizeDrawerWithOrientation:self.interfaceOrientation];
-    }];
-    
-    [self bringDrawerToTop];
-    
-    piece.oldPosition = [piece realCenter];
-
-    
-    
-    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
-
-    
-    
-    
-    //[self isPositioned:piece];
-
-    
-}
-
 - (void)updatePercentage {
     
     puzzleDB.percentage = [NSNumber numberWithFloat:[self completedPercentage]];
     percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [self completedPercentage]];
 }
 
-- (void)updatePieceDB:(PieceView*)piece {
-    
-    //Update piece in the DB
-    Piece *pieceDB = [self pieceOfCurrentPuzzleDB:piece.number];
-    pieceDB.position = [NSNumber numberWithInt:piece.position];
-    pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
-    pieceDB.isFree = (BOOL)piece.isFree;
-    
-    pieceDB.edge0 = [piece.edges objectAtIndex:0];
-    pieceDB.edge1 = [piece.edges objectAtIndex:1];
-    pieceDB.edge2 = [piece.edges objectAtIndex:2];
-    pieceDB.edge3 = [piece.edges objectAtIndex:3];
-        
-    [self saveGame];
-    
-}
-
-- (int)positionOfPiece:(PieceView*)piece {
-    
-    
-    for (int i=N-1; i>-1; i--) {
-        
-        CGRect frame = [self frameOfLatticePiece:i];
-        
-        if ([self piece:piece isInFrame:frame]) {
-            
-            //NSLog(@"-> Returning position %d",i);
-            return i;
-        }
-    }
-    
-    //NSLog(@"-> \nReturning position -1");    
-    return -1;
-}
-
-- (void)pieceRotated:(PieceView *)piece {
-    
-    for (PieceView *p in [piece allTheNeighborsBut:nil]) {
-        p.oldPosition = [p realCenter];
-        p.position = [self positionOfPiece:p];
-    }
-    piece.oldPosition = [piece realCenter];
-    piece.position = [self positionOfPiece:piece]; 
-    
-    
-    //NSLog(@"Position for piece #%d is %d", piece.number, piece.position);
-    
-    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
-    
-    [self isPositioned:piece];
-    [self checkNeighborsOfPieceNumber:piece];
-    
-    [self updatePieceDB:piece];
-    [self updatePercentage];
-    
-}
-
 - (void)refreshPositions {
     
     for (PieceView *p in pieces) {
-        if (p.isFree && p.position>-1) {
+        if (p.isFree && p.position>-1 && p.group==nil) {
             [self movePiece:p toLatticePoint:p.position animated:NO];
         }
     }
-}
-
-- (void)pan:(UIPanGestureRecognizer*)gesture {
-
-    if (menu.view.alpha == 0) {
-        
-        CGPoint traslation = [gesture translationInView:lattice.superview];
-        
-        if (ABS(traslation.x>0.03) || ABS(traslation.y) > 0.03) {
-            
-            lattice.center = CGPointMake(lattice.center.x - traslation.x, lattice.center.y - traslation.y);            
-            [self refreshPositions];
-            [gesture setTranslation:CGPointZero inView:lattice.superview];
-        }
-    }
     
+    for (GroupView *g in groups) {
+        [self moveGroup:g toLatticePoint:g.boss.position animated:NO];
+    }
 }
+
+
 
 - (void)setup {
     
@@ -724,12 +346,18 @@
         puzzleDB = [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
         fetchRequest1 = nil;
                 
-        [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
 
-        if (pieceNumber>0) {
+        if (puzzleDB!=nil) {
 
+            [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
+            for (UIView *v in groups) {
+                [v removeFromSuperview];
+            }
+            groups = [[NSMutableArray alloc] initWithCapacity:N/2];
             elapsedTime = [puzzleDB.elapsedTime floatValue];
             percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
+            
+            
             if ([puzzleDB.percentage intValue]==100) {
                 puzzleCompete = YES;
             }
@@ -865,122 +493,7 @@
 
 
 
-- (void)createLattice {
-    
-    [lattice removeFromSuperview];
-    
-    
-    float w = (piceSize-2*self.padding)*pieceNumber;
-    
-    CGRect rect = [[UIScreen mainScreen] bounds];
-    
-    //Center the lattice
 
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-    
-        rect = CGRectMake((rect.size.height-w)/2+drawerSize/2, (rect.size.width-w)/2, w, w);
-    
-    } else {
-        
-        rect = CGRectMake((rect.size.width-w)/2, (rect.size.height-w)/2+drawerSize/2, w, w);
-    
-    }
-    
-    lattice = [[Lattice alloc] init];
-    [lattice initWithFrame:rect withNumber:pieceNumber withDelegate:self];
-    lattice.frame = [self frameForLatticeWithOrientation:self.interfaceOrientation];
-    
-    //float optimalPiceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
-    lattice.scale = 1; //optimalPiceSize/piceSize;
-    //[self resizeLattice];
-    
-    [self.view addSubview:lattice];
-    
-    [self.view bringSubviewToFront:menuButtonView];
-    [self.view bringSubviewToFront:drawerView];
-    [self.view bringSubviewToFront:menu.obscuringView];
-    [self.view bringSubviewToFront:menu.view];
-    
-    
-    //Add the image to lattice
-    imageViewLattice.image = image;
-    imageViewLattice.frame = CGRectMake(0 ,0, pieceNumber*lattice.scale*(piceSize-2*self.padding), pieceNumber*lattice.scale*(piceSize-2*self.padding));
-    imageViewLattice.alpha = 0;
-    [lattice addSubview:imageViewLattice];
-
-    
-    //NSLog(@"Lattice created");
-    
-}
-
-- (void)resizeLatticeWithCenter:(CGPoint)center {
-    
-    float z = lattice.scale;
-    lattice.contentScaleFactor = z;
-    
-    float w = (piceSize-2*self.padding)*pieceNumber*lattice.scale;
-    
-    CGPoint latticeCenter = CGPointMake(lattice.frame.origin.x+0.5*w, 
-                                        lattice.frame.origin.y+0.5*w);
-    
-    NSLog(@"Lattice center = %.1f, %.1f", latticeCenter.x, latticeCenter.y);
-    
-    CGPoint translation = CGPointMake(latticeCenter.x-center.x, latticeCenter.y-center.y);
-    
-    CGAffineTransform transform = CGAffineTransformMakeTranslation(translation.x, translation.y);
-    transform = CGAffineTransformScale(transform, z, z);
-    transform = CGAffineTransformTranslate(transform, -translation.x, -translation.y);
-    
-    lattice.transform = transform;
-    
-    UIView *centerView = [[UIView alloc] initWithFrame:CGRectMake(center.x, center.y, 10, 10)];
-    UIView *originView = [[UIView alloc] initWithFrame:CGRectMake(lattice.center.x, lattice.center.y, 10, 10)];
-    centerView.backgroundColor = [UIColor blueColor];
-    originView.backgroundColor = [UIColor redColor];
-    [lattice addSubview:centerView];
-    [self.view addSubview:originView];
-    
-}
-
-- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        
-        UIView *piece = gestureRecognizer.view;
-        //Change this!!!
-        piece = lattice;
-        
-        CGPoint locationInView = [gestureRecognizer locationInView:piece];
-        CGPoint locationInSuperview = [gestureRecognizer locationInView:piece.superview];
-        
-        piece.layer.anchorPoint = CGPointMake(locationInView.x / piece.bounds.size.width, locationInView.y / piece.bounds.size.height);
-        piece.center = locationInSuperview;
-    }
-}
-
-- (void)pinch:(UIPinchGestureRecognizer*)gesture {
-
-    float z = [gesture scale];
-
-    if (z>1.03 || z < 0.97) {
-        
-        [self adjustAnchorPointForGestureRecognizer:gesture];
-        
-        
-        CGSize screen = [[UIScreen mainScreen] bounds].size;
-        
-        if (lattice.scale*z*pieceNumber*piceSize>piceSize && lattice.scale*z*piceSize<screen.width) {
-            
-            lattice.scale *= z;
-            lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
-        }
-        
-        [self refreshPositions];        
-        
-        [gesture setScale:1];
-    }
-    
-    
-}
 - (void)loadSounds {
             
     NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"wav"];
@@ -999,12 +512,8 @@
     
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-    piecesInDrawer = [[NSMutableArray alloc] init];
-
     
     drawerView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
@@ -1075,6 +584,11 @@
     [drawerView addGestureRecognizer:panDrawer];
     
     
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rotateTap:)];
+    tap.numberOfTapsRequired = 2;
+    [self.view addGestureRecognizer:tap];
+    
     UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
     [longPressure setMinimumPressDuration:1.1];
     [self.view addGestureRecognizer:longPressure];
@@ -1090,14 +604,811 @@
     [swipeL setNumberOfTouchesRequired:2];
     [self.view addGestureRecognizer:swipeL];
     
+    
+    
 
+}
+
+#pragma mark Gesture handling
+
+- (void)rotateTap:(UITapGestureRecognizer*)gesture {
+    
+    CGPoint point = [gesture locationInView:lattice];
+
+    movingPiece = nil;
+    
+    for (int i= 0; i<N; i++) {
+        
+        CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
+        
+        if ([self point:point isInFrame:rect]) {
+            movingPiece = [self pieceWithPosition:i];
+        }
+        
+    }
+    
+    if (movingPiece!=nil) {
+        [movingPiece rotateTap:gesture];
+    }
+}
+
+- (void)pan:(UIPanGestureRecognizer*)gesture {
+    
+    CGPoint point = [gesture locationInView:lattice];
+    
+    if (gesture.state==UIGestureRecognizerStateBegan) {
+        
+        movingPiece = nil;
+        
+        for (int i= 0; i<N; i++) {
+            
+            CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
+            
+            if ([self point:point isInFrame:rect]) {
+                movingPiece = [self pieceWithPosition:i];
+            }
+            
+        }
+    }
+    
+    if (movingPiece!=nil) {
+        [movingPiece move:gesture];
+    }
+    
+    
+    if (menu.view.alpha == 0) {
+        
+        CGPoint traslation = [gesture translationInView:lattice.superview];
+        
+        if (ABS(traslation.x>0.03) || ABS(traslation.y) > 0.03) {
+            
+            lattice.center = CGPointMake(lattice.center.x + traslation.x, lattice.center.y + traslation.y);            
+            [self refreshPositions];
+            [gesture setTranslation:CGPointZero inView:lattice.superview];
+        }
+    }
+    
+}
+
+- (void)pinch:(UIPinchGestureRecognizer*)gesture {
+    
+    float z = [gesture scale];
+    
+    if (z>1.03 || z < 0.97) {
+        
+        CGPoint point = CGPointMake([gesture locationInView:lattice].x, [gesture locationInView:lattice].y);
+        [self setAnchorPoint:point forView:lattice];
+        
+        
+        CGSize screen = [[UIScreen mainScreen] bounds].size;
+        
+        if (lattice.scale*z*pieceNumber*piceSize>piceSize && lattice.scale*z*piceSize<screen.width) {
+            
+            lattice.scale *= z;
+            lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
+            
+            for (GroupView *g in groups) {
+//                point = CGPointMake([gesture locationInView:g].x, [gesture locationInView:g].y);
+//                [self setAnchorPoint:point forView:g];
+                g.transform = CGAffineTransformScale(g.transform, z, z);
+            }
+        }
+        
+        [self refreshPositions];        
+        
+        [gesture setScale:1];
+    }
+    
+    
+}
+
+
+#pragma mark Groups stuffs
+
+- (void)groupMoved:(GroupView*)group {
+    
+    CGRect frame;
+    
+    for (int i=N-1; i>-1; i--) {
+        
+        frame = [self frameOfLatticePiece:i];
+        if ([self group:group isInFrame:frame]) {
+            
+            //NSLog(@"Group is in lattice piece #%d", i);
+            [self moveGroup:group toLatticePoint:i animated:YES];
+            
+            break;
+        }
+        
+    }
+    
+    [self bringDrawerToTop];
+    
+}
+
+- (void)createNewGroupForPiece:(PieceView*)piece {
+        
+    GroupView *newGroup = nil;
+    
+    //Checks if a group already exists in the neighborhood
+    for (PieceView *p in [piece allTheNeighborsBut:nil]) {
+        if (p.group!=nil) {
+            newGroup = p.group;
+        }
+    }
+    
+    if (newGroup==nil) {
+        
+        float w = 0.5*[[UIScreen mainScreen] bounds].size.height;
+        
+        newGroup = [[GroupView alloc] initWithFrame:CGRectMake(0, 0, w, w)];
+        newGroup.boss = piece;
+        piece.isBoss = YES;
+        [self addPiece:piece toGroup:newGroup];
+        
+        for (PieceView *p in [piece allTheNeighborsBut:nil]) {
+            p.isBoss = NO;
+            [self addPiece:p toGroup:newGroup];
+        }
+        
+        [groups addObject:newGroup];
+        [self.view addSubview:newGroup];
+        
+        NSLog(@"New group created. Groups count %d", [groups count]);
+        
+    } else {
+        
+        piece.isBoss = NO;
+        [self addPiece:piece toGroup:newGroup];
+        NSLog(@"Piece added to existing group");
+        
+    }
+    
+    for (PieceView *p in pieces) {
+        if (p.isFree && p.group==nil) {
+            [self.view bringSubviewToFront:p];
+        }
+    }
+
+    [self bringDrawerToTop];
+    
+}
+
+- (void)addPiece:(PieceView*)piece toGroup:(GroupView*)group {
+
+    piece.group = group;
+    [piece removeFromSuperview];
+    [group addSubview:piece];
+    [group.pieces addObject:piece];
+    
+    piece.transform = CGAffineTransformMake(piece.transform.a, piece.transform.b, piece.transform.c, piece.transform.d, -group.transform.tx, -group.transform.ty);
+
+}
+
+- (void)moveGroup:(GroupView*)group toLatticePoint:(int)i animated:(BOOL)animated {
+    
+    PieceView *piece = group.boss;
+    piece.position = i;
+    CGPoint centerLattice = [self centerOfLatticePiece:i];
+    CGPoint centerPiece = [group.superview convertPoint:piece.center fromView:group];
+    
+    CGPoint translation = CGPointMake(-centerPiece.x+centerLattice.x, -centerPiece.y+centerLattice.y);
+    
+    if (animated) {
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            NSLog(@"Animated");
+            
+            group.transform = CGAffineTransformTranslate(group.transform, translation.x, translation.y);
+            
+        }completion:^(BOOL finished) {
+            
+            [self checkNeighborsForAllThePieces];
+            [self updatePositionsInGroup:group];
+            [self updateGroupDB:group];
+            
+            if ([self isPositioned:piece]) {
+                
+                for (PieceView *p in group.pieces) {
+                    p.isPositioned = YES;
+                }
+                
+                group.userInteractionEnabled = NO;
+                
+            }
+            
+        }];
+        
+    } else {
+        
+//        group.transform = CGAffineTransformTranslate(group.transform, translation.x, translation.y);
+
+        
+        CGPoint centerGroup = group.center;
+        centerGroup = [group convertPoint:centerGroup fromView:self.view];
+        centerPiece = piece.center;
+        CGPoint difference = CGPointMake(centerPiece.x-centerGroup.x, centerPiece.y-centerGroup.y);
+        
+        group.center = CGPointMake((centerLattice.x-lattice.scale*difference.x), (centerLattice.y-lattice.scale*difference.y));
+        
+
+        NSLog(@"Difference = (%.0f, %.0f)", difference.x, difference.y);
+        
+        
+//        CGPoint newCenter = CGPointMake(-centerGroup.x+centerPiece.x+centerLattice.x, -centerGroup.y+centerPiece.y+centerLattice.y);
+//        
+//        group.center = centerLattice;
+//        
+//        NSLog(@"centerLattice = (%.0f, %.0f)", centerLattice.x, centerLattice.y);
+//        NSLog(@"centerGroup =   (%.0f, %.0f)", centerGroup.x, centerGroup.y);
+//        NSLog(@"centerPiece =   (%.0f, %.0f)\n\n\n", centerPiece.x, centerPiece.y);
+        
+    }
+    
+}
+
+- (BOOL)group:(GroupView*)group isInFrame:(CGRect)frame {
+    
+    PieceView *piece = group.boss;
+    CGPoint center = [group.superview convertPoint:piece.center fromView:group];
+    return frame.origin.x<center.x && frame.origin.y<center.y;
+    
+}
+
+- (CGPoint)applyMatrix:(CGAffineTransform)matrix toVector:(CGPoint)vector {
+    
+    return CGPointMake(matrix.a*vector.x+matrix.b*vector.y, matrix.c*vector.x+matrix.d*vector.y);
+}
+
+- (void)updatePositionsInGroup:(GroupView*)group {
+    
+    PieceView *boss = group.boss;
+
+    CGAffineTransform matrix = CGAffineTransformMakeRotation(boss.angle); 
+
+    
+    for (PieceView *p in group.pieces) {
+        
+        if (!p.isBoss) {
+            
+            CGPoint relativePosition = CGPointMake((p.number-boss.number)%pieceNumber, pieceNumber%(p.number-boss.number));
+            //NSLog(@"Relative Position = %.1f, %.1f", relativePosition.x, relativePosition.y);
+            
+            relativePosition = [self applyMatrix:matrix toVector:relativePosition];
+
+            p.position = boss.position + relativePosition.x + pieceNumber*relativePosition.y;
+
+            //NSLog(@"NewPosition = %d, boss position = %d", p.position, boss.position);
+            
+        }
+    }
+
+    
+}
+
+- (void)updateGroupDB:(GroupView*)group{
+        
+    for (PieceView *piece in group.pieces) {
+        
+        //Update piece in the DB
+        Piece *pieceDB = [self pieceOfCurrentPuzzleDB:piece.number];
+        pieceDB.position = [NSNumber numberWithInt:piece.position];
+        pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
+        
+        //NSLog(@"Position of piece #%d is %d", pieceDB.number.intValue, pieceDB.position.intValue);
+    }
+
+    [self saveGame];
+    
 }
 
 
 
+#pragma mark Pieces stuffs
+
+- (void)pieceMoved:(PieceView *)piece {
+    
+    //NSLog(@"%s", __FUNCTION__);
+    
+    CGPoint point = piece.frame.origin;   
+    
+    
+    if (!piece.hasNeighbors) {
+        
+        BOOL outOfDrawer;
+        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            outOfDrawer = point.y>drawerSize-self.padding;
+        } else {
+            outOfDrawer = point.x>drawerSize-self.padding;
+        }
+        
+        if (outOfDrawer) {
+            
+            
+            if (!piece.isFree && ![self pieceIsOut:piece]) {
+                
+                piece.isFree = YES;
+                
+            }            
+            
+        } else {
+            piece.isFree = NO;
+            piece.position = -1;
+            [self updatePieceDB:piece];
+            [UIView animateWithDuration:0.5 animations:^{
+                
+                CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
+                piece.frame = rect;
+                
+            }];
+        }
+        
+    } else {
+        piece.isFree = YES;
+    }
+    
+    
+    if (piece.isFree) {
+        
+        if ( [self pieceIsOut:piece] ) 
+        {
+            
+            [UIView animateWithDuration:0.5 animations:^{
+                
+                for (PieceView *p in [piece allTheNeighborsBut:nil]) {
+                    CGRect rect = p.frame;
+                    rect.origin.x = p.oldPosition.x-p.frame.size.width/2;
+                    rect.origin.y = p.oldPosition.y-p.frame.size.height/2;
+                    p.frame = rect;
+                    //NSLog(@"Reset the old position (%.1f, %.1f) for piece #%d", p.oldPosition.x, p.oldPosition.y, p.number);
+                    p.position = [self positionOfPiece:p];
+                }
+                CGRect rect = piece.frame;
+                rect.origin.x = piece.oldPosition.x-piece.frame.size.width/2;
+                rect.origin.y = piece.oldPosition.y-piece.frame.size.height/2;
+                piece.frame = rect;                
+                //NSLog(@"BOSS - Reset the old position (%.1f, %.1f) for piece #%d", piece.oldPosition.x, piece.oldPosition.y, piece.number);
+                piece.position = [self positionOfPiece:piece]; 
+            }];
+            
+        } else {
+            
+            for (int i=N-1; i>-1; i--) {
+                
+                
+                //NSLog(@"v origin = %.1f, %.1f - [piece realCenter] = %.1f, %.1f", frame.origin.x, frame.origin.y, [piece realCenter].x, [piece realCenter].y);
+                
+                CGRect frame = [self frameOfLatticePiece:i];
+                if ([self piece:piece isInFrame:frame]) {
+                    
+                    [self movePiece:piece toLatticePoint:i animated:YES];
+                    
+                    break;
+                }
+            }
+        }
+        
+        
+        
+    }
+    
+    piece.isLifted = NO;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self organizeDrawerWithOrientation:self.interfaceOrientation];
+    }];
+    
+    [self bringDrawerToTop];
+    
+    piece.oldPosition = [piece realCenter];
+    
+    
+    
+    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+    
+    
+    
+    
+    //[self isPositioned:piece];
+    
+}
+
+- (int)positionOfPiece:(PieceView*)piece {
+    
+    
+    for (int i=N-1; i>-1; i--) {
+        
+        CGRect frame = [self frameOfLatticePiece:i];
+        
+        if ([self piece:piece isInFrame:frame]) {
+            
+            //NSLog(@"-> Returning position %d",i);
+            return i;
+        }
+    }
+    
+    //NSLog(@"-> \nReturning position -1");    
+    return -1;
+}
+
+- (void)pieceRotated:(PieceView *)piece {
+    
+    for (PieceView *p in [piece allTheNeighborsBut:nil]) {
+        p.oldPosition = [p realCenter];
+        p.position = [self positionOfPiece:p];
+    }
+    piece.oldPosition = [piece realCenter];
+    piece.position = [self positionOfPiece:piece]; 
+    
+    
+    //NSLog(@"Position for piece #%d is %d", piece.number, piece.position);
+    
+    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+    
+    [self isPositioned:piece];
+    [self checkNeighborsOfPieceNumber:piece];
+    
+    [self updatePieceDB:piece];
+    [self updatePercentage];
+    
+}
+
+- (PieceView*)pieceAtPosition:(int)j {
+    
+    for (PieceView *p in pieces) {
+        
+        if (p.position == j) {
+            
+            //NSLog(@"Piece at position %d is #%d", j, p.number);
+            return p;
+        }
+    }
+    
+    return nil;
+}
+
+- (BOOL)shouldCheckNeighborsOfPiece:(PieceView*)piece inDirection:(int)r {
+    
+    if (piece.position!=0) {
+        
+        if (r==2 && (piece.position+1)%pieceNumber==0) {
+            NSLog(@"bottom piece checking down");
+            return NO;
+        }
+        if ( r==0 && (piece.position)%pieceNumber==0) {
+            NSLog(@"top piece checking up");
+            return NO;
+        }
+        if (r==1 && pieceNumber%(piece.position+1)==0) {
+            NSLog(@"right piece checking right");
+            return NO;
+        }
+        if (r==3 && pieceNumber%(piece.position)==pieceNumber-1) {
+            NSLog(@"left piece checking left");
+            return NO;
+        }
+        
+        return (
+                    !( r==2 && (piece.position+1)%pieceNumber==0 )             //bottom piece checking down
+                &&  !( r==0 && (piece.position)%pieceNumber==0 )               //top piece checking up
+                &&  !( r==1 && pieceNumber%(piece.position+1)==0 )             //right piece checking right
+                &&  !( r==3 && pieceNumber%(piece.position)==pieceNumber-1 ));   //left piece checking left
+        
+    } else {
+        return (r==1 || r==2);
+    }
+    
+}
+
+- (void)checkNeighborsForAllThePieces {
+    
+    for (PieceView *p in pieces) {
+        if (p.isFree && !p.isCompleted) {
+            [self checkNeighborsOfPieceNumber:p];
+        }
+    }
+    
+    //NSLog(@"%s", __FUNCTION__);
+    
+    //Add lonely pieces to groups (create one if it doesn't exist)
+    for (PieceView *p in pieces) {
+        if (p.isFree && p.hasNeighbors && p.group==nil) {
+            
+            [self createNewGroupForPiece:p];
+        }
+    }
+    
+    //Join different groups
+    
+}
+
+- (void)checkNeighborsOfPieceNumber:(PieceView*)piece {
+    
+    int rotation = floor(piece.angle/(M_PI/2));
+    rotation = rotation%4;    
+    
+    NSArray *a = [NSArray arrayWithObjects:
+                  [NSNumber numberWithInt:-1],              //up = 0
+                  [NSNumber numberWithInt:+pieceNumber],    //right = 1
+                  [NSNumber numberWithInt:1],               //down = 2
+                  [NSNumber numberWithInt:-pieceNumber],    //left = 3
+                  nil];
+    
+    PieceView *otherPiece;
+    int j = piece.position;
+    
+    if (j==-1) {
+        return;
+    }
+    
+    
+    for (int direction=0; direction<4; direction++) {
+        
+        int r = (direction+rotation)%4;
+        
+        int i = [[a objectAtIndex:r] intValue];
+        int l = [[a objectAtIndex:direction] intValue];
+        
+        //NSLog(@"r=%d, rotation = %d", r, rotation);
+        
+        
+        //Looks for neighbors       
+        
+        if (j+i>=0 && j+i<N )//&& [self shouldCheckNeighborsOfPiece:piece inDirection:r] ){
+        {
+            
+            otherPiece = [self pieceAtPosition:j+i];
+            
+            //NSLog(@"j+i = %d ; numbers are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d",j+i, piece.number+l, otherPiece.number,  piece.number, otherPiece.number, direction, rotation, r);    
+            
+            //NSLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", piece.number+i, piece.number+l, otherPiece.number);
+            
+            if (otherPiece != nil) {
+                
+                if (piece.isFree && otherPiece.isFree) {
+                    
+                    //NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
+                    
+                    
+                    if (piece.number+l==otherPiece.number) {
+                        
+                        
+                        if ((ABS(piece.angle-otherPiece.angle)<M_PI/4)) {
+                            
+                            [otherPiece setNeighborNumber:piece.number forEdge:(direction+2)%4];
+                            [piece setNeighborNumber:otherPiece.number forEdge:direction%4];
+                            
+                            piece.hasNeighbors = YES;
+                            otherPiece.hasNeighbors = YES;
+                            
+                        } else {
+                            //NSLog(@"0 -------> Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
+                        }
+                    } else {
+                        //NSLog(@"-------> Wrong numbers. They are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d", piece.number+l, otherPiece.number, piece.number, otherPiece.number, direction, rotation, r);
+                        
+                    }
+                }
+                
+            }else {
+                
+                //NSLog(@"NIL");
+                
+            }
+            
+        } else {
+            //NSLog(@"Shouldn't check");
+        }
+        
+    }
+    
+    //NSLog(@"\n");
+    
+}
+
+- (BOOL)isPositioned:(PieceView*)piece  {
+    
+    if (piece.isFree && piece.number == piece.position && ABS(piece.angle) < 1) {
+        
+        //NSLog(@"Piece #%d positioned!", piece.number);
+        //Flashes and block the piece
+        if (!piece.isPositioned) {
+            piece.isPositioned = YES;
+            piece.userInteractionEnabled = NO;
+            if (![self isPuzzleComplete] && !loadingGame) {
+                [piece pulse];
+                
+                if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
+                    [positionedSound play];
+                }
+            }
+        }
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated {
+    
+    //NSLog(@"Moving piece #%d to position %d", piece.number, i);
+    
+    piece.position = i;
+    
+    if (animated) {
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            piece.frame = [self frameOfLatticePiece:i];
+            
+        }completion:^(BOOL finished) {
+            
+            if (!piece.isPositioned) {
+                [self isPositioned:piece];
+            }
+            [self checkNeighborsForAllThePieces];
+            [self updatePercentage];
+            [self updatePieceDB:piece];
+        }];
+        
+    } else {
+        
+        piece.frame = [self frameOfLatticePiece:i];
+        if (!piece.isPositioned) {
+            [self isPositioned:piece];
+        }
+        
+    }
+        
+    piece.oldPosition = [piece realCenter];
+    
+}
+
+- (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
+    
+    return frame.origin.x<[piece realCenter].x && frame.origin.y<[piece realCenter].y;
+}
+
+- (BOOL)point:(CGPoint)point isInFrame:(CGRect)frame {
+    
+    //NSLog(@"Point = %.1f, %.1f", point.x, point.y);
+    
+    return (frame.origin.x<point.x && 
+            frame.origin.y<point.y &&
+            frame.origin.x+frame.size.width>point.x &&
+            frame.origin.y+frame.size.height>point.y
+            );
+}
+
+- (void)updatePieceDB:(PieceView*)piece {
+    
+    //Update piece in the DB
+    Piece *pieceDB = [self pieceOfCurrentPuzzleDB:piece.number];
+    pieceDB.position = [NSNumber numberWithInt:piece.position];
+    pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
+    pieceDB.isFree = (BOOL)piece.isFree;
+    
+    pieceDB.edge0 = [piece.edges objectAtIndex:0];
+    pieceDB.edge1 = [piece.edges objectAtIndex:1];
+    pieceDB.edge2 = [piece.edges objectAtIndex:2];
+    pieceDB.edge3 = [piece.edges objectAtIndex:3];
+    
+    [self saveGame];
+    
+}
+
+
+#pragma mark Lattice stuffs
+
+- (void)createLattice {
+    
+    [lattice removeFromSuperview];
+    
+    
+    float w = (piceSize-2*self.padding)*pieceNumber;
+    
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    
+    //Center the lattice
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        rect = CGRectMake((rect.size.height-w)/2+drawerSize/2, (rect.size.width-w)/2, w, w);
+        
+    } else {
+        
+        rect = CGRectMake((rect.size.width-w)/2, (rect.size.height-w)/2+drawerSize/2, w, w);
+        
+    }
+    
+    lattice = [[Lattice alloc] init];
+    [lattice initWithFrame:rect withNumber:pieceNumber withDelegate:self];
+    lattice.frame = [self frameForLatticeWithOrientation:self.interfaceOrientation];
+    
+    //float optimalPiceSize = PUZZLE_SIZE*rect.size.width/(pieceNumber)+2*self.padding;
+    lattice.scale = 1; //optimalPiceSize/piceSize;
+    //[self resizeLattice];
+    
+    [self.view addSubview:lattice];
+    
+    [self.view bringSubviewToFront:menuButtonView];
+    [self.view bringSubviewToFront:drawerView];
+    [self.view bringSubviewToFront:menu.obscuringView];
+    [self.view bringSubviewToFront:menu.view];
+    
+    
+    //Add the image to lattice
+    imageViewLattice.image = image;
+    imageViewLattice.frame = CGRectMake(0 ,0, pieceNumber*lattice.scale*(piceSize-2*self.padding), pieceNumber*lattice.scale*(piceSize-2*self.padding));
+    imageViewLattice.alpha = 0;
+    [lattice addSubview:imageViewLattice];
+    
+    
+    //NSLog(@"Lattice created");
+    
+}
+
+- (void)resizeLatticeWithCenter:(CGPoint)center {
+    
+    float z = lattice.scale;
+    lattice.contentScaleFactor = z;
+    
+    float w = (piceSize-2*self.padding)*pieceNumber*lattice.scale;
+    
+    CGPoint latticeCenter = CGPointMake(lattice.frame.origin.x+0.5*w, 
+                                        lattice.frame.origin.y+0.5*w);
+    
+    NSLog(@"Lattice center = %.1f, %.1f", latticeCenter.x, latticeCenter.y);
+    
+    CGPoint translation = CGPointMake(latticeCenter.x-center.x, latticeCenter.y-center.y);
+    
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(translation.x, translation.y);
+    transform = CGAffineTransformScale(transform, z, z);
+    transform = CGAffineTransformTranslate(transform, -translation.x, -translation.y);
+    
+    lattice.transform = transform;
+    
+    UIView *centerView = [[UIView alloc] initWithFrame:CGRectMake(center.x, center.y, 10, 10)];
+    UIView *originView = [[UIView alloc] initWithFrame:CGRectMake(lattice.center.x, lattice.center.y, 10, 10)];
+    centerView.backgroundColor = [UIColor blueColor];
+    originView.backgroundColor = [UIColor redColor];
+    [lattice addSubview:centerView];
+    [self.view addSubview:originView];
+    
+}
+
+- (CGRect)frameOfLatticePiece:(int)i {
+    
+    if (0<=i && i<N) {
+        UIView *v = [lattice objectAtIndex:i];
+        return CGRectMake(
+                          lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding)-1*lattice.scale,
+                          lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding)-1*lattice.scale, 
+                          lattice.scale*piceSize, 
+                          lattice.scale*piceSize);
+    } else {
+        
+        return CGRectZero;
+    }
+    
+}
+
+- (CGPoint)centerOfLatticePiece:(int)i {
+    
+//    UIView *v = [lattice objectAtIndex:i];
+//    return [lattice.superview convertPoint:v.center fromView:lattice];
+
+
+    CGRect rect = [self frameOfLatticePiece:i];
+    return CGPointMake(rect.origin.x+lattice.scale*piceSize/2.0, rect.origin.y+lattice.scale*piceSize/2.0);
+    
+}
+
+
 
 #pragma mark Drawer stuffs
-
 
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
@@ -1357,8 +1668,6 @@
     }
 }
 
-
-
 - (IBAction)scrollDrawerRight:(id)sender {
     
     [self swipeInDirection:UISwipeGestureRecognizerDirectionRight];
@@ -1470,12 +1779,71 @@
     
 }
 
-
 - (void)swipeL:(UISwipeGestureRecognizer*)swipe {
 
     if (menu.view.alpha == 0) {
         [self swipeInDirection:UISwipeGestureRecognizerDirectionLeft];
     }
+}
+
+
+
+#pragma mark Tools
+
+-(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
+{
+    anchorPoint = CGPointMake(anchorPoint.x / lattice.bounds.size.width, anchorPoint.y / lattice.bounds.size.height);
+    CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
+    CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
+    
+    newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
+    oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+    
+    CGPoint pos = view.layer.position;
+    
+    pos.x -= oldPoint.x;
+    pos.x += newPoint.x;
+    
+    pos.y -= oldPoint.y;
+    pos.y += newPoint.y;
+    
+    view.layer.position = pos;
+    view.layer.anchorPoint = anchorPoint;
+}
+
+- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        
+        UIView *piece = gestureRecognizer.view;
+        //Change this!!!
+        piece = lattice;
+        
+        CGPoint locationInView = [gestureRecognizer locationInView:piece];
+        CGPoint locationInSuperview = [gestureRecognizer locationInView:piece.superview];
+        
+        piece.layer.anchorPoint = CGPointMake(locationInView.x / piece.bounds.size.width, locationInView.y / piece.bounds.size.height);
+        piece.center = locationInSuperview;
+    }
+}
+
+- (void)shuffle {
+    
+    pieces = [self shuffleArray:pieces];
+    
+    
+    for (int i=0; i<N; i++) {          
+        PieceView *p = [pieces objectAtIndex:i];            
+        CGRect rect = p.frame;
+        rect.origin.x = piceSize*i+drawerMargin;
+        rect.origin.y = 5;
+        p.frame = rect;
+        
+        int r = arc4random_uniform(4);
+        p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
+        p.angle = r*M_PI/2;
+        //NSLog(@"angle=%.1f", p.angle);
+    }
+    
 }
 
 - (NSMutableArray*)shuffleArray:(NSMutableArray*)array {
@@ -1505,27 +1873,13 @@
     
 }
 
++ (float)float:(float)f modulo:(float)m {
 
+return f - floor(f/m)*m;
 
-- (void)shuffle {
-    
-    pieces = [self shuffleArray:pieces];
-    
-    
-    for (int i=0; i<N; i++) {          
-        PieceView *p = [pieces objectAtIndex:i];            
-        CGRect rect = p.frame;
-        rect.origin.x = piceSize*i+drawerMargin;
-        rect.origin.y = 5;
-        p.frame = rect;
-        
-        int r = arc4random_uniform(4);
-        p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
-        p.angle = r*M_PI/2;
-        //NSLog(@"angle=%.1f", p.angle);
-    }
-    
 }
+
+
 
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
@@ -1541,11 +1895,11 @@
     }
 }
 
--(BOOL)canBecomeFirstResponder {
+- (BOOL)canBecomeFirstResponder {
     return YES;
 }
 
--(void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self becomeFirstResponder];
 }
@@ -1553,14 +1907,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [self resignFirstResponder];
     [super viewWillDisappear:animated];
-}
-
-
-
-+ (float)float:(float)f modulo:(float)m {
-
-return f - floor(f/m)*m;
-
 }
 
 - (PieceView*)pieceWithNumber:(int)j {
@@ -1616,16 +1962,6 @@ return f - floor(f/m)*m;
     //NSLog(@"IN");
     
     return NO;
-}
-
-- (IBAction)pieceNumberChanged:(UIStepper*)sender {
-    
-    pieceNumber = floorf(sender.value);
-    N = pieceNumber*pieceNumber;
-    
-    NSLog(@"Piece number=%d", pieceNumber);
-    NSLog(@"N = %.1f", N);
-    
 }
 
 - (IBAction)restartPuzzle:(id)sender {
@@ -1821,6 +2157,10 @@ return f - floor(f/m)*m;
 
     elapsedTime = 0.0;
     puzzleCompete = NO;
+    for (UIView *v in groups) {
+        [v removeFromSuperview];
+    }
+    groups = [[NSMutableArray alloc] initWithCapacity:N/2];
 
     [self createPuzzleFromImage:image];
     
