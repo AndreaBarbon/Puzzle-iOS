@@ -175,6 +175,10 @@
 
 - (void)move:(UIPanGestureRecognizer*)gesture {
     
+    if (!self.userInteractionEnabled) {
+        return;
+    }
+    
     CGPoint traslation = [gesture translationInView:self.superview];
                 
         if (gesture.state == UIGestureRecognizerStateBegan) {
@@ -348,6 +352,10 @@
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
         
+    if (!self.userInteractionEnabled) {
+        return;
+    }
+    
     
     angle += M_PI_2;
     angle = [PuzzleController float:angle modulo:2*M_PI];
@@ -705,6 +713,8 @@
 - (void)drawRect:(CGRect)rect
 {
     
+    padding = self.bounds.size.width*0.15;
+        
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     
@@ -867,10 +877,8 @@
 #pragma mark
 #pragma UNUSEFUL
 
-- (id)initWithFrame:(CGRect)frame padding:(float)p
+- (id)initWithFrame:(CGRect)frame
 {
-    
-    padding = p;
 
     self = [super initWithFrame:frame];
     if (self) {

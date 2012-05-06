@@ -62,7 +62,7 @@
 - (void)rotate:(UIRotationGestureRecognizer*)gesture;
 - (void)rotateTap:(UITapGestureRecognizer*)gesture;
 
-- (id)initWithFrame:(CGRect)frame padding:(float)p;
+- (id)initWithFrame:(CGRect)frame;
 - (int)edgeNumber:(int)i;
 - (void)setNeighborNumber:(int)i forEdge:(int)edge;
 - (NSArray*)allTheNeighborsBut:(NSMutableArray*)excluded;

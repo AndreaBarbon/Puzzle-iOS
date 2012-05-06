@@ -15,6 +15,9 @@
 #import "AppDelegate.h"
 #import "GroupView.h"
 
+#import <mach/mach.h>
+#import <mach/mach_host.h>
+
 
 @interface PuzzleController ()
 
@@ -27,490 +30,7 @@
 
 
 
-- (BOOL)saveGame {
-    
-    if (puzzleDB==nil) {
-        
-        NSLog(@"PuzzleDB is nil");
-        [self createPuzzleInDB];
-    }
-    
-    puzzleDB.lastSaved = [NSDate date];
-    
-    if ([managedObjectContext save:nil]) {
-        //NSLog(@"Puzzle saved");
-    }
-    
-    return YES;
-    
-}
-
-
-#import <mach/mach.h>
-#import <mach/mach_host.h>
-
--(void)print_free_memory {
-    
-    mach_port_t host_port;
-    mach_msg_type_number_t host_size;
-    vm_size_t pagesize;
-    
-    host_port = mach_host_self();
-    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
-    host_page_size(host_port, &pagesize);        
-    
-    vm_statistics_data_t vm_stat;
-    
-    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS)
-        NSLog(@"Failed to fetch vm statistics");
-    
-    /* Stats in bytes */ 
-    natural_t mem_used = (vm_stat.active_count +
-                          vm_stat.inactive_count +
-                          vm_stat.wire_count) * pagesize;
-    natural_t mem_free = vm_stat.free_count * pagesize;
-    natural_t mem_total = mem_used + mem_free;
-    NSLog(@"used: %u free: %u total: %u", mem_used/ 100000, mem_free/ 100000, mem_total/ 100000);
-}
-
-
-- (BOOL)isPuzzleComplete {
-        
-    if (puzzleCompete) {
-        return YES;
-    } else {
-        
-        for (PieceView *p in pieces) {
-            if (!p.isPositioned) {
-                //NSLog(@"Piece #%d is not positioned", p.number);
-                
-                return NO;
-            }
-        }
-        
-        [self puzzleCompleted];
-        
-        puzzleCompete = YES;
-    }
-    
-    return puzzleCompete;
-    
-}
-
-- (void)toggleImage:(UILongPressGestureRecognizer*)gesture {
-    
-    if (gesture.state == UIGestureRecognizerStateBegan && menu.view.alpha == 0) {
-        
-        [self toggleImageWithDuration:0.5];
-    }
-    
-}
-
-- (void)toggleImageWithDuration:(float)duration {
-    
-    [UIView animateWithDuration:duration animations:^{
-        if (imageView.alpha==0) {
-            
-            menuButtonView.userInteractionEnabled = NO;
-            [self.view bringSubviewToFront:imageView];
-            [self bringDrawerToTop];
-            imageView.alpha = 1;
-            
-        } else if (imageView.alpha==1) {
-            
-            menuButtonView.userInteractionEnabled = YES;
-            imageView.alpha = 0;
-        }
-    }];
-    
-}
-
-- (void)puzzleCompleted {
-    
-    //imageView.frame = lattice.bounds;
-    
-    [self.view bringSubviewToFront:lattice];
-    for (UIView *v in lattice.pieces) {
-        v.alpha = 0;
-    }
-    
-    [self stopTimer];
-
-    
-//    [UIView animateWithDuration:2 animations:^{
-//        
-//        imageViewLattice.alpha = 1;
-//
-//    }];
-
-    
-    if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
-    
-        [completedSound play];
-
-    }
-}
-
-- (void)computePieceSize {
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        
-        piceSize = 180;
-        biggerPieceSize = 360;
-        
-    }else{  
-        
-        piceSize = 100;
-        biggerPieceSize = 200;
-        
-    }
-    
-    self.padding = piceSize*0.15;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        drawerSize = piceSize+1.8*self.padding-15;   
-    else   
-        drawerSize = piceSize+1.8*self.padding+5;
-    
-    
-    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    int n = screenWidth/(piceSize+1);
-    float unusedSpace = screenWidth - n*piceSize;
-    drawerMargin = (float)(unusedSpace/(n+1));
-    
-    //NSLog(@"n = %d, %.1f", n, drawerMargin);
-    
-    
-}
-
-
-
-- (void)bringDrawerToTop {
-    
-    [self.view bringSubviewToFront:drawerView];
-    [self.view bringSubviewToFront:stepperDrawer];
-    [self.view bringSubviewToFront:menuButtonView];
-    [self.view bringSubviewToFront:percentageLabel];
-    [self.view bringSubviewToFront:elapsedTimeLabel];
-    
-    for (PieceView *p in pieces) {
-        if (!p.isFree) {
-            [self.view bringSubviewToFront:p];
-        }
-    }
-    
-}
-
-- (void)updatePercentage {
-    
-    puzzleDB.percentage = [NSNumber numberWithFloat:[self completedPercentage]];
-    percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [self completedPercentage]];
-}
-
-- (void)refreshPositions {
-    
-    for (PieceView *p in pieces) {
-        if (p.isFree && p.position>-1 && p.group==nil) {
-            [self movePiece:p toLatticePoint:p.position animated:NO];
-        }
-    }
-    
-    for (GroupView *g in groups) {
-        [self moveGroup:g toLatticePoint:g.boss.position animated:NO];
-    }
-}
-
-
-
-- (void)setup {
-    
-    
-    pieceNumber = PIECE_NUMBER;
-    N = pieceNumber*pieceNumber;
-    
-    //[self computePieceSize];
-    
-    CGRect rect = [[UIScreen mainScreen] bounds];
-    self.view.frame = rect;
-    
-    
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        [self setup];
-    }
-    return self;
-}
-
-- (void)awakeFromNib {
-    
-    [super awakeFromNib];
-    [self setup];
-}
-
-- (UIImage*)clipImage:(UIImage*)img toRect:(CGRect)rect {
-    
-    CGImageRef drawImage = CGImageCreateWithImageInRect(img.CGImage, rect);
-    UIImage *newImage = [UIImage imageWithCGImage:drawImage];
-    CGImageRelease(drawImage);
-    return newImage;
-    
-}
-
-
-- (NSArray *)splitImage:(UIImage *)im{
-    
-    float x = pieceNumber;
-    float y= pieceNumber;
-    
-    //CGSize size = [im size];
-    //NSLog(@"Size = %.1f, %.1f", size.width, size.height);
-    //NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber*pieceNumber);
-
-    //float f = (float)(pieceNumber*QUALITY*(piceSize-2*self.padding));
-
-
-    float w = im.size.width/(pieceNumber*QUALITY*0.7);
-
-    float ww = w*0.15;
-
-
-    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:N];
-    for (int i=0;i<x;i++){
-        for (int j=0;j<y;j++){
-            
-            CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (w-2*ww)-ww, w, w);
-            //NSLog(@"Rect = %.1f, %.1f, %.1f, %.1f",i*(w-2*ww)-ww, j*(w-2*ww)-ww, w, w);
-
-            [arr addObject:[self clipImage:im toRect:portion]];            
-            //[arr addObject:[im subimageWithRect:portion]];            
-        }
-    }
-    
-    //NSLog(@"All the images splitted");
-
-    
-    return arr;
-    
-}
-
-- (void)removeOldPieces {
-        
-    for (int i = 0; i<[pieces count]; i++) {
-        
-        PieceView *p = [pieces objectAtIndex:i];
-        [p removeFromSuperview];    
-        p = nil;
-    }
-    
-
-    //pieces = nil;
-    
-}
-
-- (Piece*)pieceOfCurrentPuzzleDB:(int)n {
-            
-    for (Piece *p in puzzleDB.pieces) {
-        if ([p.number intValue]==n) {
-            return p;
-        }
-    }
-    
-    NSLog(@"------>  Piece #%d is NIL!", n);
-    
-    missedPieces++;
-        
-    return nil;
-    
-}
-
-- (void)loadPuzzle {
-        
-    if (managedObjectContext!=nil) {
-        
-        NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
-        
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext: managedObjectContext];
-        
-        [fetchRequest1 setEntity:entity];
-        
-        NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
-        [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
-        dateSort = nil;
-        
-        [fetchRequest1 setFetchLimit:1];
-        
-        puzzleDB = [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
-        fetchRequest1 = nil;
-                
-
-        if (puzzleDB!=nil) {
-
-            [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
-            for (UIView *v in groups) {
-                [v removeFromSuperview];
-            }
-            groups = [[NSMutableArray alloc] initWithCapacity:N/2];
-            elapsedTime = [puzzleDB.elapsedTime floatValue];
-            percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
-            
-            
-            if ([puzzleDB.percentage intValue]==100) {
-                puzzleCompete = YES;
-            }
-            
-            [self createPuzzleFromSavedGame];
-        }
-        
-    }
-    
-}
-
-- (NSOperationQueue *)operationQueue {
-    if (operationQueue == nil) {
-        operationQueue = [[NSOperationQueue alloc] init];
-    }
-    return operationQueue;
-}
-
-- (void)createPuzzleFromSavedGame {
-    
-    missedPieces = 0;
-    loadingGame =YES;
-    self.view.userInteractionEnabled = NO;
-    
-    [self computePieceSize];
-    [self createLattice];
-    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
-
-    // add the importer to an operation queue for background processing (works on a separate thread)
-    puzzleOperation = [[CreatePuzzleOperation alloc] init];
-    puzzleOperation.insertionContext = self.managedObjectContext;
-    puzzleOperation.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    puzzleOperation.delegate = self;
-    puzzleOperation.loadingGame = YES;
-    
-    menu.game.view.frame = CGRectMake(0, 0, menu.game.view.frame.size.width, menu.game.view.frame.size.height);
-    
-    image = [UIImage imageWithData:puzzleDB.image.data];
-    imageView.image = image;
-    imageViewLattice.image = image;
-    
-    [menu.game startLoading];
-
-    [self.operationQueue addOperation:puzzleOperation];
-
-    
-}
-
-- (void)createPuzzleFromImage:(UIImage*)image_ {
-    
-    missedPieces = 0;
-    loadingGame = NO;
-    
-    
-    [self computePieceSize];
-    [self createLattice];
-    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
-    
-    // add the importer to an operation queue for background processing (works on a separate thread)
-    puzzleOperation = [[CreatePuzzleOperation alloc] init];
-    puzzleOperation.insertionContext = self.managedObjectContext;
-    puzzleOperation.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    puzzleOperation.delegate = self;
-    puzzleOperation.loadingGame = NO;
-    
-    [self.operationQueue addOperation:puzzleOperation];
-    
-    
-}
-
-- (void)allPiecesLoaded {
-    
-    [self computePieceSize];
-    [self bringDrawerToTop];
-    
-    for (PieceView *p in pieces) {
-        if (!p.isFree) {
-            p.frame = CGRectMake(0, 0, piceSize, piceSize);
-        }
-    }
-
-    
-    
-    BOOL debugging = NO;
-    
-    if (debugging) {
-        
-        for (PieceView *p in pieces) {
-            p.isFree = YES;
-            p.isPositioned = YES;
-            p.userInteractionEnabled = NO;
-            [self movePiece:p toLatticePoint:p.number animated:NO];
-        }
-        [imageViewLattice removeFromSuperview];
-        
-    } else {
-        
-        
-        if (loadingGame) {
-            
-            pieces = [self shuffleArray:pieces];
-            [self refreshPositions];
-            [self organizeDrawerWithOrientation:self.interfaceOrientation];
-            [self bringDrawerToTop];
-            [self checkNeighborsForAllThePieces];
-            [self updatePercentage];
-            loadingGame = NO;
-            NSLog(@"-----------> All pieces Loaded");
-
-        } else {
-            
-            [self shuffle];
-            [self updatePercentage];
-            [self organizeDrawerWithOrientation:self.interfaceOrientation];
-            NSLog(@"-----------> All pieces created");
-
-        }
-        
-    }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-    [menu.game gameStarted];
-
-    NSLog(@"Memory after creating:");
-    [self print_free_memory];
-    
-    
-    self.view.userInteractionEnabled = YES;
-
-}
-
-
-
-
-
-- (void)loadSounds {
-            
-    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"wav"];
-    NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
-    positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    positionedSound.volume = 0.3;
-    
-    if ([positionedSound respondsToSelector:@selector(setEnableRate:)]) {
-        positionedSound.enableRate = YES;
-        positionedSound.rate = 1.5; 
-    }
-    
-    soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"wav"];
-    soundURL = [NSURL fileURLWithPath:soundPath];
-    completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    
-}
+#pragma mark fractal View Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -535,7 +55,7 @@
     
     imageViewLattice = [[UIImageView alloc] initWithImage:image];
     
-
+    
     
     //Resize the drawer
     CGRect drawerFrame = drawerView.frame;
@@ -606,10 +126,289 @@
     
     
     
-
+    
 }
 
-#pragma mark Gesture handling
+- (void)setup {
+    
+    
+    pieceNumber = PIECE_NUMBER;
+    N = pieceNumber*pieceNumber;
+    
+    //[self computePieceSize];
+    
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    self.view.frame = rect;
+    
+    
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    
+    [super awakeFromNib];
+    [self setup];
+}
+
+
+
+#pragma mark fractal Puzzle
+
+- (void)loadPuzzle {
+    
+    if (managedObjectContext!=nil) {
+        
+        NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext: managedObjectContext];
+        
+        [fetchRequest1 setEntity:entity];
+        
+        NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
+        [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+        dateSort = nil;
+        
+        [fetchRequest1 setFetchLimit:1];
+        
+        puzzleDB = [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
+        fetchRequest1 = nil;
+        
+        
+        if (puzzleDB!=nil) {
+            
+            [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
+            for (UIView *v in groups) {
+                [v removeFromSuperview];
+            }
+            groups = [[NSMutableArray alloc] initWithCapacity:N/2];
+            elapsedTime = [puzzleDB.elapsedTime floatValue];
+            percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
+            
+            
+            if ([puzzleDB.percentage intValue]==100) {
+                puzzleCompete = YES;
+            }
+            
+            [self createPuzzleFromSavedGame];
+        }
+        
+    }
+    
+}
+
+- (IBAction)toggleMenu:(id)sender {
+    
+    menu.duringGame = YES;
+    [self.view bringSubviewToFront:menu.obscuringView];
+    [self.view bringSubviewToFront:menu.view];
+    [self.view bringSubviewToFront:menuButtonView];
+    
+    [menu toggleMenuWithDuration:0.5];
+    
+}
+
+- (void)allPiecesLoaded {
+    
+    [self computePieceSize];
+    [self bringDrawerToTop];
+    
+    for (PieceView *p in pieces) {
+        if (!p.isFree) {
+            p.frame = CGRectMake(0, 0, piceSize, piceSize);
+        }
+    }
+    
+    
+    
+    BOOL debugging = NO;
+    
+    if (debugging) {
+        
+        for (PieceView *p in pieces) {
+            p.isFree = YES;
+            p.isPositioned = YES;
+            p.userInteractionEnabled = NO;
+            [self movePiece:p toLatticePoint:p.number animated:NO];
+        }
+        [imageViewLattice removeFromSuperview];
+        
+    } else {
+        
+        
+        if (loadingGame) {
+            
+            pieces = [self shuffleArray:pieces];
+            [self refreshPositions];
+            [self organizeDrawerWithOrientation:self.interfaceOrientation];
+            [self bringDrawerToTop];
+            [self checkNeighborsForAllThePieces];
+            [self updatePercentage];
+            loadingGame = NO;
+            NSLog(@"-----------> All pieces Loaded");
+            
+        } else {
+            
+            [self shuffle];
+            [self updatePercentage];
+            [self organizeDrawerWithOrientation:self.interfaceOrientation];
+            NSLog(@"-----------> All pieces created");
+            
+        }
+        
+    }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    [menu.game gameStarted];
+    
+    NSLog(@"Memory after creating:");
+    [self print_free_memory];
+    
+    
+    self.view.userInteractionEnabled = YES;
+    
+}
+
+- (void)createPuzzleFromSavedGame {
+    
+    missedPieces = 0;
+    loadingGame =YES;
+    self.view.userInteractionEnabled = NO;
+    
+    [self computePieceSize];
+    [self createLattice];
+    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
+    
+    // add the importer to an operation queue for background processing (works on a separate thread)
+    puzzleOperation = [[CreatePuzzleOperation alloc] init];
+    puzzleOperation.insertionContext = self.managedObjectContext;
+    puzzleOperation.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    puzzleOperation.delegate = self;
+    puzzleOperation.loadingGame = YES;
+    
+    menu.game.view.frame = CGRectMake(0, 0, menu.game.view.frame.size.width, menu.game.view.frame.size.height);
+    
+    image = [UIImage imageWithData:puzzleDB.image.data];
+    imageView.image = image;
+    imageViewLattice.image = image;
+    
+    [menu.game startLoading];
+    
+    [self.operationQueue addOperation:puzzleOperation];
+    
+    
+}
+
+- (void)createPuzzleFromImage:(UIImage*)image_ {
+    
+    missedPieces = 0;
+    loadingGame = NO;
+    
+    
+    [self computePieceSize];
+    [self createLattice];
+    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
+    
+    // add the importer to an operation queue for background processing (works on a separate thread)
+    puzzleOperation = [[CreatePuzzleOperation alloc] init];
+    puzzleOperation.insertionContext = self.managedObjectContext;
+    puzzleOperation.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    puzzleOperation.delegate = self;
+    puzzleOperation.loadingGame = NO;
+    
+    [self.operationQueue addOperation:puzzleOperation];
+    
+    
+}
+
+- (BOOL)isPuzzleComplete {
+    
+    if (puzzleCompete) {
+        return YES;
+    } else {
+        
+        for (PieceView *p in pieces) {
+            if (!p.isPositioned) {
+                //NSLog(@"Piece #%d is not positioned", p.number);
+                
+                return NO;
+            }
+        }
+        
+        [self puzzleCompleted];
+        
+        puzzleCompete = YES;
+    }
+    
+    return puzzleCompete;
+    
+}
+
+- (void)toggleImage:(UILongPressGestureRecognizer*)gesture {
+    
+    if (gesture.state == UIGestureRecognizerStateBegan && menu.view.alpha == 0) {
+        
+        [self toggleImageWithDuration:0.5];
+    }
+    
+}
+
+- (void)toggleImageWithDuration:(float)duration {
+    
+    [UIView animateWithDuration:duration animations:^{
+        if (imageView.alpha==0) {
+            
+            menuButtonView.userInteractionEnabled = NO;
+            [self.view bringSubviewToFront:imageView];
+            [self bringDrawerToTop];
+            imageView.alpha = 1;
+            
+        } else if (imageView.alpha==1) {
+            
+            menuButtonView.userInteractionEnabled = YES;
+            imageView.alpha = 0;
+        }
+    }];
+    
+}
+
+- (void)puzzleCompleted {
+    
+    //imageView.frame = lattice.bounds;
+    
+    [self.view bringSubviewToFront:lattice];
+    for (UIView *v in lattice.pieces) {
+        v.alpha = 0;
+    }
+    
+    [self stopTimer];
+    
+    
+    //    [UIView animateWithDuration:2 animations:^{
+    //        
+    //        imageViewLattice.alpha = 1;
+    //
+    //    }];
+    
+    
+    if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
+        
+        [completedSound play];
+        
+    }
+}
+
+
+
+#pragma mark fractal Gesture handling
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
     
@@ -662,7 +461,8 @@
         
         if (ABS(traslation.x>0.03) || ABS(traslation.y) > 0.03) {
             
-            lattice.center = CGPointMake(lattice.center.x + traslation.x, lattice.center.y + traslation.y);            
+            lattice.transform = CGAffineTransformTranslate(lattice.transform, traslation.x, traslation.y);
+            //lattice.center = CGPointMake(lattice.center.x + traslation.x, lattice.center.y + traslation.y);            
             [self refreshPositions];
             [gesture setTranslation:CGPointZero inView:lattice.superview];
         }
@@ -703,7 +503,8 @@
 }
 
 
-#pragma mark Groups stuffs
+
+#pragma mark fractal Groups
 
 - (void)groupMoved:(GroupView*)group {
     
@@ -743,6 +544,7 @@
         
         newGroup = [[GroupView alloc] initWithFrame:CGRectMake(0, 0, w, w)];
         newGroup.boss = piece;
+        piece.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.1];
         piece.isBoss = YES;
         [self addPiece:piece toGroup:newGroup];
         
@@ -780,8 +582,11 @@
     [piece removeFromSuperview];
     [group addSubview:piece];
     [group.pieces addObject:piece];
-    
-    piece.transform = CGAffineTransformMake(piece.transform.a, piece.transform.b, piece.transform.c, piece.transform.d, -group.transform.tx, -group.transform.ty);
+
+    piece.transform = CGAffineTransformMakeRotation(group.boss.angle);    
+    piece.transform = CGAffineTransformMake(piece.transform.a, piece.transform.b, piece.transform.c, piece.transform.d, 
+                                            -group.transform.tx, 
+                                            -group.transform.ty);
 
 }
 
@@ -789,10 +594,15 @@
     
     PieceView *piece = group.boss;
     piece.position = i;
+
     CGPoint centerLattice = [self centerOfLatticePiece:i];
-    CGPoint centerPiece = [group.superview convertPoint:piece.center fromView:group];
+    CGPoint centerGroup = group.center;
+    CGPoint centerPiece = piece.center;
+            centerPiece = [self.view convertPoint:centerPiece fromView:group];
+    CGPoint difference = CGPointMake(-centerPiece.x+centerGroup.x, -centerPiece.y+centerGroup.y);
     
-    CGPoint translation = CGPointMake(-centerPiece.x+centerLattice.x, -centerPiece.y+centerLattice.y);
+    
+    CGPoint newCenter = CGPointMake((centerLattice.x+difference.x), (centerLattice.y+difference.y));
     
     if (animated) {
         
@@ -800,8 +610,8 @@
             
             NSLog(@"Animated");
             
-            group.transform = CGAffineTransformTranslate(group.transform, translation.x, translation.y);
-            
+            group.center = newCenter;
+
         }completion:^(BOOL finished) {
             
             [self checkNeighborsForAllThePieces];
@@ -812,6 +622,7 @@
                 
                 for (PieceView *p in group.pieces) {
                     p.isPositioned = YES;
+                    p.userInteractionEnabled = NO;
                 }
                 
                 group.userInteractionEnabled = NO;
@@ -821,28 +632,8 @@
         }];
         
     } else {
-        
-//        group.transform = CGAffineTransformTranslate(group.transform, translation.x, translation.y);
 
-        
-        CGPoint centerGroup = group.center;
-        centerGroup = [group convertPoint:centerGroup fromView:self.view];
-        centerPiece = piece.center;
-        CGPoint difference = CGPointMake(centerPiece.x-centerGroup.x, centerPiece.y-centerGroup.y);
-        
-        group.center = CGPointMake((centerLattice.x-lattice.scale*difference.x), (centerLattice.y-lattice.scale*difference.y));
-        
-
-        NSLog(@"Difference = (%.0f, %.0f)", difference.x, difference.y);
-        
-        
-//        CGPoint newCenter = CGPointMake(-centerGroup.x+centerPiece.x+centerLattice.x, -centerGroup.y+centerPiece.y+centerLattice.y);
-//        
-//        group.center = centerLattice;
-//        
-//        NSLog(@"centerLattice = (%.0f, %.0f)", centerLattice.x, centerLattice.y);
-//        NSLog(@"centerGroup =   (%.0f, %.0f)", centerGroup.x, centerGroup.y);
-//        NSLog(@"centerPiece =   (%.0f, %.0f)\n\n\n", centerPiece.x, centerPiece.y);
+        group.center = newCenter;
         
     }
     
@@ -856,11 +647,6 @@
     
 }
 
-- (CGPoint)applyMatrix:(CGAffineTransform)matrix toVector:(CGPoint)vector {
-    
-    return CGPointMake(matrix.a*vector.x+matrix.b*vector.y, matrix.c*vector.x+matrix.d*vector.y);
-}
-
 - (void)updatePositionsInGroup:(GroupView*)group {
     
     PieceView *boss = group.boss;
@@ -872,14 +658,16 @@
         
         if (!p.isBoss) {
             
-            CGPoint relativePosition = CGPointMake((p.number-boss.number)%pieceNumber, pieceNumber%(p.number-boss.number));
-            //NSLog(@"Relative Position = %.1f, %.1f", relativePosition.x, relativePosition.y);
+            p.angle = boss.angle;
+            
+            CGPoint relativePosition = [self coordinatesOfPiece:p relativeToPiece:boss];
+            NSLog(@"Relative Position = %.1f, %.1f, p.number-boss.number = %d", relativePosition.x, relativePosition.y, p.number-boss.number);
             
             relativePosition = [self applyMatrix:matrix toVector:relativePosition];
 
             p.position = boss.position + relativePosition.x + pieceNumber*relativePosition.y;
 
-            //NSLog(@"NewPosition = %d, boss position = %d", p.position, boss.position);
+            NSLog(@"NewPosition = %d, boss position = %d", p.position, boss.position);
             
         }
     }
@@ -905,7 +693,7 @@
 
 
 
-#pragma mark Pieces stuffs
+#pragma mark fractal Pieces
 
 - (void)pieceMoved:(PieceView *)piece {
     
@@ -1149,13 +937,11 @@
         
         int i = [[a objectAtIndex:r] intValue];
         int l = [[a objectAtIndex:direction] intValue];
-        
-        //NSLog(@"r=%d, rotation = %d", r, rotation);
-        
+                
         
         //Looks for neighbors       
         
-        if (j+i>=0 && j+i<N )//&& [self shouldCheckNeighborsOfPiece:piece inDirection:r] ){
+        if (j+i>=0 && j+i<N && [self shouldCheckNeighborsOfPiece:piece inDirection:r] )
         {
             
             otherPiece = [self pieceAtPosition:j+i];
@@ -1217,7 +1003,7 @@
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
             if (![self isPuzzleComplete] && !loadingGame) {
-                [piece pulse];
+                //[piece pulse];
                 
                 if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
                     [positionedSound play];
@@ -1299,8 +1085,18 @@
     
 }
 
+- (CGPoint)coordinatesOfPiece:(PieceView*)piece relativeToPiece:(PieceView*)boss {
+    
+    return CGPointMake(
+                       (float)((piece.number%pieceNumber-boss.number%pieceNumber)%pieceNumber), 
+                       (float)((piece.number-boss.number)/pieceNumber)
+                       );
+    
+}
 
-#pragma mark Lattice stuffs
+
+
+#pragma mark fractal Lattice
 
 - (void)createLattice {
     
@@ -1408,7 +1204,7 @@
 
 
 
-#pragma mark Drawer stuffs
+#pragma mark fractal Drawer
 
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
@@ -1788,7 +1584,62 @@
 
 
 
-#pragma mark Tools
+
+#pragma mark fractal Tools
+
+- (void)refreshPositions {
+    
+    for (PieceView *p in pieces) {
+        if (p.isFree && p.position>-1 && p.group==nil) {
+            [self movePiece:p toLatticePoint:p.position animated:NO];
+        }
+    }
+    
+    for (GroupView *g in groups) {
+        [self moveGroup:g toLatticePoint:g.boss.position animated:NO];
+    }
+}
+
+- (void)loadSounds {
+    
+    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"wav"];
+    NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
+    positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
+    positionedSound.volume = 0.3;
+    
+    if ([positionedSound respondsToSelector:@selector(setEnableRate:)]) {
+        positionedSound.enableRate = YES;
+        positionedSound.rate = 1.5; 
+    }
+    
+    soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"wav"];
+    soundURL = [NSURL fileURLWithPath:soundPath];
+    completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
+    
+}
+
+- (BOOL)saveGame {
+    
+    if (puzzleDB==nil) {
+        
+        NSLog(@"PuzzleDB is nil");
+        [self createPuzzleInDB];
+    }
+    
+    puzzleDB.lastSaved = [NSDate date];
+    
+    if ([managedObjectContext save:nil]) {
+        //NSLog(@"Puzzle saved");
+    }
+    
+    return YES;
+    
+}
+
+- (CGPoint)applyMatrix:(CGAffineTransform)matrix toVector:(CGPoint)vector {
+    
+    return CGPointMake(matrix.a*vector.x+matrix.b*vector.y, matrix.c*vector.x+matrix.d*vector.y);
+}
 
 -(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
 {
@@ -1846,6 +1697,61 @@
     
 }
 
+- (void)computePieceSize {
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        piceSize = 180;
+        biggerPieceSize = 360;
+        
+    }else{  
+        
+        piceSize = 100;
+        biggerPieceSize = 200;
+        
+    }
+    
+    self.padding = piceSize*0.15;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        drawerSize = piceSize+1.8*self.padding-15;   
+    else   
+        drawerSize = piceSize+1.8*self.padding+5;
+    
+    
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    int n = screenWidth/(piceSize+1);
+    float unusedSpace = screenWidth - n*piceSize;
+    drawerMargin = (float)(unusedSpace/(n+1));
+    
+    //NSLog(@"n = %d, %.1f", n, drawerMargin);
+    
+    
+}
+
+
+- (void)bringDrawerToTop {
+    
+    [self.view bringSubviewToFront:drawerView];
+    [self.view bringSubviewToFront:stepperDrawer];
+    [self.view bringSubviewToFront:menuButtonView];
+    [self.view bringSubviewToFront:percentageLabel];
+    [self.view bringSubviewToFront:elapsedTimeLabel];
+    
+    for (PieceView *p in pieces) {
+        if (!p.isFree) {
+            [self.view bringSubviewToFront:p];
+        }
+    }
+    
+}
+
+- (void)updatePercentage {
+    
+    puzzleDB.percentage = [NSNumber numberWithFloat:[self completedPercentage]];
+    percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [self completedPercentage]];
+}
+
 - (NSMutableArray*)shuffleArray:(NSMutableArray*)array {
         
     for(NSUInteger i = [array count]; i > 1; i--) {
@@ -1862,15 +1768,66 @@
     return array;
 }
 
-- (IBAction)toggleMenu:(id)sender {
+- (Piece*)pieceOfCurrentPuzzleDB:(int)n {
+    
+    for (Piece *p in puzzleDB.pieces) {
+        if ([p.number intValue]==n) {
+            return p;
+        }
+    }
+    
+    NSLog(@"------>  Piece #%d is NIL!", n);
+    
+    missedPieces++;
+    
+    return nil;
+    
+}
 
-    menu.duringGame = YES;
-    [self.view bringSubviewToFront:menu.obscuringView];
-    [self.view bringSubviewToFront:menu.view];
-    [self.view bringSubviewToFront:menuButtonView];
+- (void)removeOldPieces {
     
-    [menu toggleMenuWithDuration:0.5];
+    for (int i = 0; i<[pieces count]; i++) {
+        
+        PieceView *p = [pieces objectAtIndex:i];
+        [p removeFromSuperview];    
+        p = nil;
+    }
     
+    
+    //pieces = nil;
+    
+}
+
+- (NSOperationQueue *)operationQueue {
+    if (operationQueue == nil) {
+        operationQueue = [[NSOperationQueue alloc] init];
+    }
+    return operationQueue;
+}
+
+
+-(void)print_free_memory {
+    
+    mach_port_t host_port;
+    mach_msg_type_number_t host_size;
+    vm_size_t pagesize;
+    
+    host_port = mach_host_self();
+    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
+    host_page_size(host_port, &pagesize);        
+    
+    vm_statistics_data_t vm_stat;
+    
+    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS)
+        NSLog(@"Failed to fetch vm statistics");
+    
+    /* Stats in bytes */ 
+    natural_t mem_used = (vm_stat.active_count +
+                          vm_stat.inactive_count +
+                          vm_stat.wire_count) * pagesize;
+    natural_t mem_free = vm_stat.free_count * pagesize;
+    natural_t mem_total = mem_used + mem_free;
+    NSLog(@"used: %u free: %u total: %u", mem_used/ 100000, mem_free/ 100000, mem_total/ 100000);
 }
 
 + (float)float:(float)f modulo:(float)m {
@@ -1879,6 +1836,9 @@ return f - floor(f/m)*m;
 
 }
 
+
+
+#pragma mark fractal Rest
 
 
 
@@ -2330,7 +2290,7 @@ return f - floor(f/m)*m;
 //        
 //        if (pieceDB!=nil) {
 //            
-//            PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:padding];
+//            PieceView *piece = [[PieceView alloc] initWithFrame:portion];
 //            piece.delegate = self;
 //            piece.image = [array objectAtIndex:j+pieceNumber*i];
 //            piece.number = j+pieceNumber*i;
@@ -2480,5 +2440,51 @@ return f - floor(f/m)*m;
 //}
 //
 //pieces = [[NSArray alloc] initWithArray:arrayPieces];
+//
+//}
+
+
+//- (UIImage*)clipImage:(UIImage*)img toRect:(CGRect)rect {
+//
+//CGImageRef drawImage = CGImageCreateWithImageInRect(img.CGImage, rect);
+//UIImage *newImage = [UIImage imageWithCGImage:drawImage];
+//CGImageRelease(drawImage);
+//return newImage;
+//
+//}
+//
+//- (NSArray *)splitImage:(UIImage *)im{
+//
+//float x = pieceNumber;
+//float y= pieceNumber;
+//
+////CGSize size = [im size];
+////NSLog(@"Size = %.1f, %.1f", size.width, size.height);
+////NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber*pieceNumber);
+//
+////float f = (float)(pieceNumber*QUALITY*(piceSize-2*self.padding));
+//
+//
+//float w = im.size.width/(pieceNumber*QUALITY*0.7);
+//
+//float ww = w*0.15;
+//
+//
+//NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:N];
+//for (int i=0;i<x;i++){
+//    for (int j=0;j<y;j++){
+//        
+//        CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (w-2*ww)-ww, w, w);
+//        //NSLog(@"Rect = %.1f, %.1f, %.1f, %.1f",i*(w-2*ww)-ww, j*(w-2*ww)-ww, w, w);
+//        
+//        [arr addObject:[self clipImage:im toRect:portion]];            
+//        //[arr addObject:[im subimageWithRect:portion]];            
+//    }
+//}
+//
+////NSLog(@"All the images splitted");
+//
+//
+//return arr;
 //
 //}
