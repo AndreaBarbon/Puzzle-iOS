@@ -27,6 +27,7 @@
     IBOutlet UIActivityIndicatorView *indicator;
     IBOutlet UIView *loadingView;
     IBOutlet UIView *tapToSelectView;
+    IBOutlet UIView *tapToSelectLabel;
     NSTimer *timer;
     
     int times;
@@ -43,7 +44,7 @@
 - (void)gameStarted;
 - (void)moveBar;
 - (void)startLoading;
-
+- (void)loadingFailed;
 
 
 @end

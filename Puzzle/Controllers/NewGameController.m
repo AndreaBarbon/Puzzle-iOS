@@ -71,7 +71,7 @@
     rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.width);
     NSLog(@"Original Rect = %.1f, %.1f, %.1f, %.1f",rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
-    tapToSelectView.hidden = YES;
+    tapToSelectLabel.hidden = YES;
     startButton.enabled = YES;    
     
     
@@ -119,6 +119,8 @@
 - (IBAction)startNewGame:(id)sender {
     
     NSLog(@"Started");
+    
+    tapToSelectView.hidden = YES;
     
     delegate.delegate.loadingGame = NO;
     
@@ -191,8 +193,35 @@
     slider.hidden = NO;    
     piecesLabel.hidden = NO;
     tapToSelectView.hidden = NO;
+    tapToSelectLabel.hidden = NO;
+
     
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];    
+
+}
+
+- (void)loadingFailed {
+    
+    NSLog(@"Game failed");
+    
+    [timer invalidate];
+    
+    [delegate toggleMenuWithDuration:0];
+        
+    progressView.progress = 0.001;
+    delegate.delegate.loadedPieces = 0;
+    progressView.hidden = YES;  
+    loadingView.hidden = YES;
+    startButton.hidden = NO;
+    pieceNumberLabel.hidden = NO;    
+    slider.hidden = NO;    
+    piecesLabel.hidden = NO;
+    tapToSelectView.hidden = NO;
+    tapToSelectLabel.hidden = NO ;
+    
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];    
+    
+    self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
 
 }
 

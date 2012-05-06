@@ -30,6 +30,7 @@
     BOOL loadingGame;
     
     BOOL panningDrawerUP;
+    BOOL loadingFailed;
     
     CGPoint drawerFirstPoint;
     IBOutlet UIStepper *stepper;
@@ -130,6 +131,8 @@
 
 - (void)startTimer;
 - (void)stopTimer;
+
+- (void)loadingFailed;
 
 
 @end

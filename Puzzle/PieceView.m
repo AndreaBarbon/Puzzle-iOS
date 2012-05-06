@@ -44,10 +44,9 @@
 }
 
 - (void)pulse {
-    
+
 	CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
-    trasform = CATransform3DRotate(trasform, angle, 0, 0, 0);
-    //self.layer.transform = trasform;
+    //trasform = CATransform3DRotate(trasform, angle, 0, 0, 0);
     
 	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
 	animation.toValue = [NSValue valueWithCATransform3D:trasform];
@@ -283,11 +282,17 @@
                 t= (t+1)/2;
             }
             
-            rotation = angle + tempAngle/ABS(tempAngle) * t*M_PI/2;
+            rotation = tempAngle/ABS(tempAngle) * t*M_PI/2 - tempAngle;
+            
+            angle += rotation;
+            angle = [PuzzleController float:angle modulo:2*M_PI];
+            [self setAngle:angle];
+            
+            //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             
             [UIView animateWithDuration:0.2 animations:^{
                 
-                self.transform = CGAffineTransformMakeRotation(rotation);
+                self.transform = CGAffineTransformRotate(self.transform, rotation);
                 
             }completion:^(BOOL finished) {
 
@@ -296,16 +301,8 @@
 
             }];
             
-            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
-            angle = [PuzzleController float:angle modulo:2*M_PI];
-            if (angle>6.1) {
-                angle = 0.0;
-            }
+//            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
             
-            [self setAngle:angle];
-
-            
-            //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             tempAngle = 0;
             
             [delegate pieceRotated:self];
@@ -318,6 +315,8 @@
             self.isRotating = YES;
             self.transform = CGAffineTransformRotate(self.transform, rotation);
             tempAngle += rotation;
+            angle += rotation;
+
         }
         
         //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
@@ -355,29 +354,30 @@
     if (!self.userInteractionEnabled) {
         return;
     }
-    
-    
+        
     angle += M_PI_2;
     angle = [PuzzleController float:angle modulo:2*M_PI];
     [self setAngle:angle];
-
-    centerView.frame = CGRectZero;
-    
     
     if (self.group==nil) {
         
         [UIView animateWithDuration:0.2 animations:^{
             
-            self.transform = CGAffineTransformMakeRotation(angle);
+            self.transform = CGAffineTransformRotate(self.transform, M_PI_2);
             
         }];
         
     } else {
         
         CGPoint point = self.center; 
+        group.boss.isBoss = NO;
+        group.boss = self;
+        self.isBoss = YES;
 
         [self setAnchorPoint:CGPointMake(point.x / self.group.bounds.size.width, point.y / self.group.bounds.size.height) forView:self.group];
         
+        group.angle += M_PI_2;
+        group.angle = [PuzzleController float:group.angle modulo:2*M_PI];
         
         CGAffineTransform transform = self.group.transform;
         transform = CGAffineTransformRotate(transform,M_PI_2);
@@ -390,8 +390,12 @@
                 
     }
     
+    [delegate pieceRotated:self];
+    
     
     return;
+    
+    
     
     
     //Rotate the neighborhood
@@ -752,7 +756,7 @@
     CGContextDrawPath(ctx, kCGPathStroke);
     
     
-    NSLog(@"Drawed");
+    //NSLog(@"Drawed");
     delegate.loadedPieces++;
     
     int pieceNumber = (delegate.N-delegate.missedPieces);
@@ -873,6 +877,19 @@
     
     positionInDrawer = positionInDrawer_;
 }
+
+-(void)setIsPositioned:(BOOL)isPositioned_ {
+    
+    if (isPositioned_ && !isPositioned) {
+        
+        [self pulse];
+    }
+        
+    isPositioned = isPositioned_;
+    self.userInteractionEnabled = !isPositioned;
+
+}
+
 
 #pragma mark
 #pragma UNUSEFUL
