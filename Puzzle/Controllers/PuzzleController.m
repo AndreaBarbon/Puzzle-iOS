@@ -31,7 +31,8 @@
 @synthesize pan, panDrawer;
 
 
-#pragma mark fractal View Lifecycle
+#pragma mark -
+#pragma mark ••••••  View Lifecycle
 
 - (void)viewDidLoad {
     
@@ -180,8 +181,8 @@
 }
 
 
-
-#pragma mark fractal Puzzle
+#pragma mark -
+#pragma mark ••••••  Puzzle
 
 - (void)loadPuzzle {
     
@@ -449,7 +450,8 @@
 
 
 
-#pragma mark fractal Gesture handling
+#pragma mark -
+#pragma mark ••••••  Gesture handling
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
     
@@ -544,7 +546,8 @@
 
 
 
-#pragma mark fractal Groups
+#pragma mark -
+#pragma mark ••••••  Groups
 
 - (void)groupMoved:(GroupView*)group {
     
@@ -770,7 +773,8 @@
 
 
 
-#pragma mark fractal Pieces
+#pragma mark -
+#pragma mark ••••••  Pieces
 
 - (void)pieceMoved:(PieceView *)piece {
     
@@ -872,11 +876,6 @@
     
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
-    
-    
-    
-    //[self isPositioned:piece];
-    
 }
 
 - (int)positionOfPiece:(PieceView*)piece {
@@ -925,7 +924,6 @@
     
     
     //NSLog(@"Position for piece #%d is %d", piece.number, piece.position);
-    
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
     [self checkNeighborsOfPieceNumber:piece];
@@ -1213,7 +1211,8 @@
 
 
 
-#pragma mark fractal Lattice
+#pragma mark -
+#pragma mark ••••••  Lattice
 
 - (void)createLattice {
     
@@ -1321,7 +1320,8 @@
 
 
 
-#pragma mark fractal Drawer
+#pragma mark -
+#pragma mark ••••••  Drawer
 
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
@@ -1713,7 +1713,8 @@
 
 
 
-#pragma mark fractal Tools
+#pragma mark -
+#pragma mark ••••••  Tools
 
 - (IBAction)togglePanningMode:(id)sender {
     
@@ -2011,12 +2012,11 @@
 
 
 
-#pragma mark fractal Rest
+#pragma mark -
+#pragma mark ••••••  Rest
 
 
-
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
-{
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake)
     {
         [UIView animateWithDuration:0.5 animations:^{
@@ -2115,16 +2115,13 @@
     return newImage;
 }
 
-
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{       
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {       
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
         return YES;
@@ -2285,7 +2282,6 @@
     
 }
 
-
 - (void)startNewGame {
 
     elapsedTime = 0.0;
@@ -2328,7 +2324,6 @@
     
 }
 
-
 - (void)createPuzzleInDB {
     
     self.view.userInteractionEnabled = NO;
@@ -2365,7 +2360,6 @@
     
 }
 
-
 -(Puzzle*)newPuzzleInCOntext:(NSManagedObjectContext*)context {
     
     return [NSEntityDescription
@@ -2392,272 +2386,3 @@
 
 
 @end
-
-
-
-
-
-
-
-
-//
-//- (void)loadPuzzleInBackground {
-//
-//NSLog(@"Loading in background");
-//
-//[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//
-//
-//
-//loadingGame =YES;
-//
-//[self computePieceSize];
-//[self createLattice];
-//
-//drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
-//
-//
-//
-//NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
-//
-//float f = (float)(pieceNumber*QUALITY*(piceSize-2*padding));
-//
-//
-//NSLog(@"Piece number %d, piece size %.1f, f = %.1f, padding = %.1f", pieceNumber, piceSize, f, padding);
-//
-//image = [UIImage imageWithData:((Image*)puzzleDB.image).data];
-//
-//float w = image.size.width;
-//
-//NSLog(@"New size = %.1f, f=%.1f, w= %.1f", image.size.width, f, w);
-//
-//imageView.image = image;
-//imageViewLattice.image = image;
-//
-//if (image==nil) {
-//    return;
-//}
-//
-//
-////UIImage *img = [[self class] imageWithImage:image_ scaledToSize:CGSizeMake(f, f)];
-////[self.view addSubview:[[UIImageView alloc] initWithImage:img]];
-//
-//
-//
-//NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:image]];
-//NSLog(@"Pieces:%d", [array count]);
-//
-//
-//
-//for (int i=0;i<pieceNumber;i++){
-//    for (int j=0;j<pieceNumber;j++){
-//        
-//        CGRect portion = CGRectMake(
-//                                    i * QUALITY*(piceSize-2*padding)-QUALITY*padding,
-//                                    j * QUALITY*(piceSize-2*padding)-QUALITY*padding, 
-//                                    QUALITY*piceSize, 
-//                                    QUALITY*piceSize);
-//        
-//        
-//        Piece *pieceDB = [self pieceOfCurrentPuzzleDB:j+pieceNumber*i];
-//        
-//        if (pieceDB!=nil) {
-//            
-//            PieceView *piece = [[PieceView alloc] initWithFrame:portion];
-//            piece.delegate = self;
-//            piece.image = [array objectAtIndex:j+pieceNumber*i];
-//            piece.number = j+pieceNumber*i;
-//            piece.size = piceSize;
-//            piece.isFree = (BOOL)pieceDB.isFree;
-//            piece.position = [pieceDB.position intValue];
-//            piece.angle = [pieceDB.angle floatValue];
-//            piece.transform = CGAffineTransformMakeRotation(piece.angle);
-//            
-//            CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
-//            piece.frame = rect;
-//            
-//            NSNumber *n = [NSNumber numberWithInt:N];
-//            piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
-//            
-//            
-//            NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
-//            [a addObject:pieceDB.edge0];
-//            [a addObject:pieceDB.edge1];
-//            [a addObject:pieceDB.edge2];
-//            [a addObject:pieceDB.edge3];
-//            
-//            piece.edges = [NSArray arrayWithArray:a];
-//            
-//            for (int k=0; k<4; k++) {
-//                //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
-//            }
-//            
-//            
-//            [arrayPieces addObject:piece];
-//            [piece setNeedsDisplay];
-//            [self.view addSubview:piece];
-//            
-//            
-//        }
-//        
-//    }
-//}
-//
-//pieces = [[NSArray alloc] initWithArray:arrayPieces];
-//
-//}
-//
-//- (void)createPuzzleInBackground {
-//
-//
-//puzzleDB = nil;
-//
-//NSLog(@"Memory b4 creating:");
-//
-//[self print_free_memory];
-//
-//[self computePieceSize];
-//[self createLattice];
-//
-//drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
-//
-//NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
-//
-//
-//
-////This was fucking leaking!
-//
-//UIImage *img = image;
-//
-//NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self splitImage:img]];
-//
-//
-//
-//
-//for (int i=0;i<pieceNumber;i++){
-//    
-//    
-//    for (int j=0;j<pieceNumber;j++){
-//        
-//        CGRect portion = CGRectMake(
-//                                    i * QUALITY*(piceSize-2*self.padding)-QUALITY*self.padding,
-//                                    j * QUALITY*(piceSize-2*self.padding)-QUALITY*self.padding, 
-//                                    QUALITY*piceSize, 
-//                                    QUALITY*piceSize);
-//        
-//        
-//        PieceView *piece = [[PieceView alloc] initWithFrame:portion padding:self.padding];
-//        piece.delegate = self;
-//        piece.image = [array objectAtIndex:j+pieceNumber*i];
-//        piece.number = j+pieceNumber*i;
-//        piece.size = piceSize;
-//        piece.position = -1;
-//        NSNumber *n = [NSNumber numberWithInt:N];
-//        piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
-//        
-//        CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
-//        piece.frame = rect;
-//        
-//        
-//        NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
-//        
-//        for (int k=0; k<4; k++) {
-//            int e = arc4random_uniform(3)+1;
-//            
-//            if (arc4random_uniform(2)>0) {
-//                e *= -1;
-//            }
-//            
-//            [a addObject:[NSNumber numberWithInt:e]];
-//        }
-//        
-//        if (i>0) {
-//            int l = [arrayPieces count]-pieceNumber;
-//            int e = [[[[arrayPieces objectAtIndex:l] edges] objectAtIndex:1] intValue];
-//            [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:-e]];
-//            //NSLog(@"e = %d", e);
-//        }
-//        
-//        if (j>0) {
-//            int e = [[[[arrayPieces lastObject] edges] objectAtIndex:2] intValue];
-//            [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:-e]];
-//            //NSLog(@"e = %d", e);
-//        }
-//        
-//        if (i==0) {
-//            [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:0]];
-//        }
-//        if (i==pieceNumber-1) {
-//            [a replaceObjectAtIndex:1 withObject:[NSNumber numberWithInt:0]];
-//        }
-//        if (j==0) {
-//            [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:0]];
-//        }
-//        if (j==pieceNumber-1) {
-//            [a replaceObjectAtIndex:2 withObject:[NSNumber numberWithInt:0]];
-//        }
-//        
-//        
-//        piece.edges = [NSArray arrayWithArray:a];
-//        
-//        for (int k=0; k<4; k++) {
-//            //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
-//        }
-//        
-//        
-//        [arrayPieces addObject:piece];
-//        [piece setNeedsDisplay];
-//        [self.view addSubview:piece];
-//        
-//    }
-//}
-//
-//pieces = [[NSArray alloc] initWithArray:arrayPieces];
-//
-//}
-
-
-//- (UIImage*)clipImage:(UIImage*)img toRect:(CGRect)rect {
-//
-//CGImageRef drawImage = CGImageCreateWithImageInRect(img.CGImage, rect);
-//UIImage *newImage = [UIImage imageWithCGImage:drawImage];
-//CGImageRelease(drawImage);
-//return newImage;
-//
-//}
-//
-//- (NSArray *)splitImage:(UIImage *)im{
-//
-//float x = pieceNumber;
-//float y= pieceNumber;
-//
-////CGSize size = [im size];
-////NSLog(@"Size = %.1f, %.1f", size.width, size.height);
-////NSLog(@"Splitting image, Piece size = %.1f, number of pieces = %d", piceSize, pieceNumber*pieceNumber);
-//
-////float f = (float)(pieceNumber*QUALITY*(piceSize-2*self.padding));
-//
-//
-//float w = im.size.width/(pieceNumber*QUALITY*0.7);
-//
-//float ww = w*0.15;
-//
-//
-//NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:N];
-//for (int i=0;i<x;i++){
-//    for (int j=0;j<y;j++){
-//        
-//        CGRect portion = CGRectMake(i * (w-2*ww)-ww, j * (w-2*ww)-ww, w, w);
-//        //NSLog(@"Rect = %.1f, %.1f, %.1f, %.1f",i*(w-2*ww)-ww, j*(w-2*ww)-ww, w, w);
-//        
-//        [arr addObject:[self clipImage:im toRect:portion]];            
-//        //[arr addObject:[im subimageWithRect:portion]];            
-//    }
-//}
-//
-////NSLog(@"All the images splitted");
-//
-//
-//return arr;
-//
-//}
