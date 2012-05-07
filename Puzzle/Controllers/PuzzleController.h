@@ -41,6 +41,7 @@
     IBOutlet UILabel *elapsedTimeLabel;
     
     IBOutlet UIView *HUDView;
+    IBOutlet UIView *firstPointView;
 
     
     
@@ -116,6 +117,7 @@
 - (IBAction)restartPuzzle:(id)sender;
 - (IBAction)scrollDrawerRight:(id)sender;
 - (IBAction)scrollDrawerLeft:(id)sender;
+- (IBAction)togglePanningMode:(id)sender;
 
 - (void)loadPuzzle;
 

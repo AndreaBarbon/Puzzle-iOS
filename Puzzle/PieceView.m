@@ -237,9 +237,12 @@
             
         } else { //Inside the drawer
             
+#define X_BOUND 5
+#define Y_BOUND 3
+            
             if (UIInterfaceOrientationIsLandscape(self.delegate.interfaceOrientation)) {
                 
-                if (ABS(traslation.x)<delegate.piceSize/8 || ABS(tr)>delegate.piceSize/3) {
+                if (ABS(traslation.x)<delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND) {
                     tr += ABS(traslation.y);
                     [delegate panDrawer:gesture];
                 } else {
@@ -250,7 +253,7 @@
                 
             } else {
                 
-                if (ABS(traslation.y)<delegate.piceSize/8 || ABS(tr)>delegate.piceSize/3 ) {
+                if (ABS(traslation.y)<delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND ) {
                     tr += ABS(traslation.x);
                     [delegate panDrawer:gesture];
                 } else {

@@ -35,7 +35,7 @@
 
 - (void)viewDidLoad {
     
-    [super viewDidLoad];
+    [super viewDidLoad];    
         
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
      
@@ -1403,11 +1403,17 @@
             
             if ([gesture velocityInView:self.view].y<0) {
             
-                [self moveNegativePieces];
+                if ([self lastPieceInDrawer].frame.origin.y<[[UIScreen mainScreen] bounds].size.width-piceSize) {
+
+                    [self moveNegativePieces];
+                }
 
             } else {
                 
-                [self movePositivePieces];
+                if ([self firstPieceInDrawer].frame.origin.y>0) {
+
+                    [self movePositivePieces];
+                }
 
             }
             
@@ -1456,7 +1462,9 @@
         
         //[self organizeDrawerWithOrientation:self.interfaceOrientation];
         
-        
+        PieceView *first = [self firstPieceInDrawer];
+        drawerFirstPoint = first.center;
+                
     }
     
 }
@@ -1523,6 +1531,15 @@
 
 - (void)moveNegativePieces {
     
+    PieceView *swap = [self firstPieceInDrawer];
+    [pieces removeObject:swap];
+    swap.frame = [self frameUnderPiece:[self lastPieceInDrawer]];
+    [pieces addObject:swap];
+    
+    return;
+    
+    
+    
     for (int i=0; i<[pieces count]; i++) {
         
         PieceView *piece = [pieces objectAtIndex:i];
@@ -1538,16 +1555,24 @@
         if (originPoint+piece.bounds.size.height<0 && !piece.isFree) {
             
             [pieces removeObject:piece];
-            drawerFirstPoint = [self frameUnderPiece:piece].origin;
+            //drawerFirstPoint = [self frameUnderPiece:piece].origin;
             piece.frame = [self frameUnderPiece:[self lastPieceInDrawer]];
             
-            [pieces addObject:piece];
+            [pieces insertObject:piece atIndex:N-1];
                                     
         }
     }
 }
 
 - (void)movePositivePieces {
+        
+    PieceView *swap = [self lastPieceInDrawer];
+    [pieces removeObject:swap];
+    swap.frame = [self frameOverPiece:[self firstPieceInDrawer]];
+    [pieces insertObject:swap atIndex:0];
+    
+    return;
+    
     
     CGRect screen = [[UIScreen mainScreen] bounds];
     
@@ -1565,7 +1590,7 @@
         if (originPoint > screen.size.width && !piece.isFree) {
             
             [pieces removeObject:piece];
-            drawerFirstPoint = [self frameOverPiece:[self firstPieceInDrawer]].origin;
+            //drawerFirstPoint = [self frameOverPiece:[self firstPieceInDrawer]].origin;
             piece.frame = [self frameOverPiece:[self firstPieceInDrawer]];
             
             [pieces insertObject:piece atIndex:0];
@@ -1696,6 +1721,25 @@
 
 
 #pragma mark fractal Tools
+
+- (IBAction)togglePanningMode:(id)sender {
+    
+    if (panningSwitch.isOn) {
+        for (PieceView *p in pieces) {
+            if (p.isFree) {
+                p.userInteractionEnabled = NO;
+            }
+        }
+        
+    } else {
+        
+        for (PieceView *p in pieces) {
+            if (p.isFree && !p.isPositioned) {
+                p.userInteractionEnabled = YES;
+            }
+        }
+    }    
+}
 
 - (void)refreshPositions {
     
@@ -1865,13 +1909,15 @@
     
     [self.view bringSubviewToFront:drawerView];
     [self.view bringSubviewToFront:stepperDrawer];
-    [self.view bringSubviewToFront:HUDView];
 
     for (PieceView *p in pieces) {
         if (!p.isFree) {
             [self.view bringSubviewToFront:p];
         }
     }
+    [self.view bringSubviewToFront:HUDView];
+    //[self.view bringSubviewToFront:firstPointView];
+
     
 }
 
