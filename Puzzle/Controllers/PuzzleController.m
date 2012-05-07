@@ -873,6 +873,11 @@
     piece.oldPosition = [piece realCenter];
     
     
+    if (panningSwitch.isOn && piece.isFree) {
+        piece.userInteractionEnabled = NO;
+    }
+    
+    
     
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
@@ -1433,17 +1438,19 @@
 
             }
             
+#define PANNING_SPEED 0.06
+            
             if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
                 
                 for (PieceView *p in pieces) {
                     if (!p.isFree) {
                         
                         CGRect frame = p.frame;
-                        frame.origin.y += [gesture velocityInView:self.view].y/25;
+                        frame.origin.y += [gesture velocityInView:self.view].y*PANNING_SPEED;
                         p.frame = frame;
                     }
                 }                
-                drawerFirstPoint.y += [gesture velocityInView:self.view].y/25;
+                drawerFirstPoint.y += [gesture velocityInView:self.view].y*PANNING_SPEED;
                 [gesture setTranslation:CGPointMake(traslation.x, 0) inView:lattice.superview];                
             }
             
@@ -1472,11 +1479,11 @@
                     if (!p.isFree) {
                         
                         CGRect frame = p.frame;
-                        frame.origin.x += [gesture velocityInView:self.view].x/25;
+                        frame.origin.x += [gesture velocityInView:self.view].x*PANNING_SPEED;
                         p.frame = frame;
                     }
                 }    
-                drawerFirstPoint.x += [gesture velocityInView:self.view].x/25;
+                drawerFirstPoint.x += [gesture velocityInView:self.view].x*PANNING_SPEED;
                 [gesture setTranslation:CGPointMake(0, traslation.y) inView:lattice.superview];     
             }
         }

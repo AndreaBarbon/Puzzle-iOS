@@ -172,14 +172,7 @@
     
 }
 
-- (void)move:(UIPanGestureRecognizer*)gesture {
-    
-    if (delegate.panningSwitch.isOn) {
-        
-        [delegate pan:gesture];
-        return;
-    }
-    
+- (void)move:(UIPanGestureRecognizer*)gesture {    
     
     
     if (!self.userInteractionEnabled) {
