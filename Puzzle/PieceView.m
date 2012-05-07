@@ -174,6 +174,14 @@
 
 - (void)move:(UIPanGestureRecognizer*)gesture {
     
+    if (delegate.panningSwitch.isOn) {
+
+        [delegate pan:gesture];
+        return;
+    }
+    
+    
+    
     if (!self.userInteractionEnabled) {
         return;
     }
@@ -880,7 +888,7 @@
 
 -(void)setIsPositioned:(BOOL)isPositioned_ {
     
-    if (isPositioned_ && !isPositioned) {
+    if (isPositioned_ && !isPositioned && !delegate.loadingGame) {
         
         [self pulse];
     }

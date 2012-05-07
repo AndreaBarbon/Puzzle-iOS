@@ -26,16 +26,30 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, pan, panDrawer, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups, panningSwitch;
 
+@synthesize pan, panDrawer;
 
 
 #pragma mark fractal View Lifecycle
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
     
-    drawerView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    [super viewDidLoad];
+        
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+     
+        percentageLabel.font = [UIFont boldSystemFontOfSize:20.0];
+        percentageLabel.transform = CGAffineTransformMakeTranslation(10, 10);
+        
+        elapsedTimeLabel.font = [UIFont boldSystemFontOfSize:20.0];
+        elapsedTimeLabel.transform = CGAffineTransformMakeTranslation(35, 10);
+
+        menuButtonView.transform = CGAffineTransformMakeTranslation(5, 10);
+        panningSwitch.transform = CGAffineTransformMakeTranslation(-8, 8);
+                
+    }
+    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     
     CGRect rect = [[UIScreen mainScreen] bounds];
@@ -97,6 +111,7 @@
     pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
     [pan setMinimumNumberOfTouches:1];
     [pan setMaximumNumberOfTouches:1];
+    
     
     panDrawer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDrawer:)];
     [panDrawer setMinimumNumberOfTouches:1];
@@ -470,7 +485,7 @@
         }
     }
     
-    if (movingPiece!=nil) {
+    if (movingPiece!=nil && !panningSwitch.isOn) {
         [movingPiece move:gesture];
     }
     
@@ -481,7 +496,7 @@
         
         if (ABS(traslation.x>0.03) || ABS(traslation.y) > 0.03) {
             
-            lattice.transform = CGAffineTransformTranslate(lattice.transform, traslation.x, traslation.y);
+            lattice.transform = CGAffineTransformTranslate(lattice.transform, traslation.x/lattice.scale, traslation.y/lattice.scale);
             [self refreshPositions];
             [gesture setTranslation:CGPointZero inView:lattice.superview];
         }
@@ -1365,7 +1380,7 @@
 
             }
 
-            if (!didRotate) {
+            if (!didRotate && UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad) {
                 rect.origin.y += 20;
             }
             
@@ -1833,7 +1848,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         drawerSize = piceSize+1.8*self.padding-15;   
     else   
-        drawerSize = piceSize+1.8*self.padding+5;
+        drawerSize = piceSize+1.8*self.padding-15;
     
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
@@ -1850,10 +1865,8 @@
     
     [self.view bringSubviewToFront:drawerView];
     [self.view bringSubviewToFront:stepperDrawer];
-    [self.view bringSubviewToFront:menuButtonView];
-    [self.view bringSubviewToFront:percentageLabel];
-    [self.view bringSubviewToFront:elapsedTimeLabel];
-    
+    [self.view bringSubviewToFront:HUDView];
+
     for (PieceView *p in pieces) {
         if (!p.isFree) {
             [self.view bringSubviewToFront:p];

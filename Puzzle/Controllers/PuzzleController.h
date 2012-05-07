@@ -33,11 +33,17 @@
     BOOL loadingFailed;
     
     CGPoint drawerFirstPoint;
+    
     IBOutlet UIStepper *stepper;
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
     IBOutlet UILabel *percentageLabel;
     IBOutlet UILabel *elapsedTimeLabel;
+    
+    IBOutlet UIView *HUDView;
+
+    
+    
     int DrawerPosition;
     float drawerSize;
     float drawerMargin;
@@ -60,6 +66,9 @@
 @property(nonatomic) float padding;
 @property(nonatomic) BOOL loadingGame;
 @property(nonatomic) BOOL puzzleCompete;
+
+
+@property (nonatomic, retain) IBOutlet UISwitch *panningSwitch;
 
 
 @property (nonatomic, strong) AVAudioPlayer *positionedSound;
@@ -114,6 +123,7 @@
 
 
 - (void)panDrawer:(UIPanGestureRecognizer*)gesture;
+- (void)pan:(UIPanGestureRecognizer*)gesture;
 
 - (BOOL)pieceIsOut:(PieceView*)piece;
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated;
