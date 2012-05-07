@@ -723,18 +723,17 @@
 }
 
 
-#define LINE_WIDTH 1
-
 - (void)drawRect:(CGRect)rect
 {
     
     padding = self.bounds.size.width*0.15;
+    float LINE_WIDTH = self.bounds.size.width*0.002;
         
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     
     
-    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.5);
+    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.1);
     CGContextSetLineWidth(ctx, LINE_WIDTH);
     CGContextSetLineJoin(ctx, kCGLineJoinRound);
  
@@ -765,6 +764,7 @@
     }
     CGContextClosePath(ctx);
     CGContextDrawPath(ctx, kCGPathStroke);
+    
     
     
     //NSLog(@"Drawed");

@@ -44,6 +44,7 @@
     IBOutlet UIView *firstPointView;
 
     
+    int numberOfPiecesInDrawer;
     
     int DrawerPosition;
     float drawerSize;

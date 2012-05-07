@@ -35,7 +35,12 @@
 
 - (void)viewDidLoad {
     
-    [super viewDidLoad];    
+    [super viewDidLoad];
+    
+//    firstPointView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+//    firstPointView.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:firstPointView];
+    
         
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
      
@@ -51,6 +56,7 @@
     }
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    drawerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     
     CGRect rect = [[UIScreen mainScreen] bounds];
     self.view.frame = rect;
@@ -797,8 +803,8 @@
             [self updatePieceDB:piece];
             [UIView animateWithDuration:0.5 animations:^{
                 
-                CGRect rect = CGRectMake(piece.frame.origin.x, piece.frame.origin.y, piceSize, piceSize);
-                piece.frame = rect;
+                float scale = piceSize/piece.frame.size.width;
+                piece.transform = CGAffineTransformScale(piece.transform, scale, scale);
                 
             }];
         }
@@ -1396,6 +1402,15 @@
 - (void)panDrawer:(UIPanGestureRecognizer*)gesture {
     
     if (menu.view.alpha == 0) {
+
+        if ([self numberOfPiecesInDrawerAtTheMoment]<=numberOfPiecesInDrawer) {
+            
+            drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
+            [UIView animateWithDuration:0.5 animations:^{
+                [self organizeDrawerWithOrientation:self.interfaceOrientation];
+            }];
+            return;
+        }
         
         CGPoint traslation = [gesture translationInView:lattice.superview];
         
@@ -1436,11 +1451,17 @@
             
             if ([gesture velocityInView:self.view].x<0) {
                 
-                [self moveNegativePieces];
+                if ([self lastPieceInDrawer].frame.origin.x<[[UIScreen mainScreen] bounds].size.width-piceSize) {
+                    
+                    [self moveNegativePieces];
+                }
                 
             } else {
                 
-                [self movePositivePieces];
+                if ([self firstPieceInDrawer].frame.origin.x>0) {
+                    
+                    [self movePositivePieces];
+                }
                 
             }
             
@@ -1464,8 +1485,23 @@
         
         PieceView *first = [self firstPieceInDrawer];
         drawerFirstPoint = first.center;
+        firstPointView.center = drawerFirstPoint;
                 
     }
+    
+}
+
+- (int)numberOfPiecesInDrawerAtTheMoment {
+    
+    int i = 0;
+    
+    for (PieceView *p in pieces) {
+        if (!p.isFree) {
+            i++;
+        }
+    }
+    
+    return i;
     
 }
 
@@ -1538,33 +1574,13 @@
     
     return;
     
-    
-    
-    for (int i=0; i<[pieces count]; i++) {
-        
-        PieceView *piece = [pieces objectAtIndex:i];
-        
-        float originPoint = 0;
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            originPoint = piece.frame.origin.y;
-        } else {
-            originPoint = piece.frame.origin.x;
-        }
-        
-        
-        if (originPoint+piece.bounds.size.height<0 && !piece.isFree) {
-            
-            [pieces removeObject:piece];
-            //drawerFirstPoint = [self frameUnderPiece:piece].origin;
-            piece.frame = [self frameUnderPiece:[self lastPieceInDrawer]];
-            
-            [pieces insertObject:piece atIndex:N-1];
-                                    
-        }
-    }
 }
 
 - (void)movePositivePieces {
+    
+    if ([self numberOfPiecesInDrawerAtTheMoment]<numberOfPiecesInDrawer) {
+        return;
+    }
         
     PieceView *swap = [self lastPieceInDrawer];
     [pieces removeObject:swap];
@@ -1573,30 +1589,6 @@
     
     return;
     
-    
-    CGRect screen = [[UIScreen mainScreen] bounds];
-    
-    for (int i=[pieces count]-1; i>-1; i--) {
-        
-        PieceView *piece = [pieces objectAtIndex:i];
-        
-        float originPoint = 0;
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            originPoint = piece.frame.origin.y;
-        } else {
-            originPoint = piece.frame.origin.x;
-        }
-        
-        if (originPoint > screen.size.width && !piece.isFree) {
-            
-            [pieces removeObject:piece];
-            //drawerFirstPoint = [self frameOverPiece:[self firstPieceInDrawer]].origin;
-            piece.frame = [self frameOverPiece:[self firstPieceInDrawer]];
-            
-            [pieces insertObject:piece atIndex:0];
-            
-        }
-    }
 }
 
 - (IBAction)scrollDrawerRight:(id)sender {
@@ -1896,9 +1888,9 @@
     
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    int n = screenWidth/(piceSize+1);
-    float unusedSpace = screenWidth - n*piceSize;
-    drawerMargin = (float)(unusedSpace/(n+1));
+    numberOfPiecesInDrawer = screenWidth/(piceSize+1);
+    float unusedSpace = screenWidth - numberOfPiecesInDrawer*piceSize;
+    drawerMargin = (float)(unusedSpace/(numberOfPiecesInDrawer+1));
     
     //NSLog(@"n = %d, %.1f", n, drawerMargin);
     
@@ -1916,7 +1908,7 @@
         }
     }
     [self.view bringSubviewToFront:HUDView];
-    //[self.view bringSubviewToFront:firstPointView];
+    [self.view bringSubviewToFront:firstPointView];
 
     
 }
