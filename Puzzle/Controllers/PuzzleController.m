@@ -321,8 +321,9 @@
 - (void)createPuzzleFromSavedGame {
     
     missedPieces = 0;
-    loadingGame =YES;
+    loadingGame = YES;
     self.view.userInteractionEnabled = NO;
+    drawerView.hidden = NO;
     
     [self computePieceSize];
     [self createLattice];
@@ -352,7 +353,8 @@
     
     missedPieces = 0;
     loadingGame = NO;
-    
+    drawerView.hidden = NO;
+
     
     [self computePieceSize];
     [self createLattice];
@@ -433,11 +435,9 @@
     [self stopTimer];
     
     
-    //    [UIView animateWithDuration:2 animations:^{
-    //        
-    //        imageViewLattice.alpha = 1;
-    //
-    //    }];
+    [UIView animateWithDuration:1 animations:^{
+        drawerView.hidden = YES;
+    }];
     
     
     if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
@@ -931,6 +931,7 @@
     [self checkNeighborsOfPieceNumber:piece];
     [self updatePieceDB:piece];
     [self updatePercentage];
+    [self bringDrawerToTop];
     
 }
 

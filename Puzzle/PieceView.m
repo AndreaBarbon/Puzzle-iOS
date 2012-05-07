@@ -46,7 +46,7 @@
 - (void)pulse {
 
 	CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
-    //trasform = CATransform3DRotate(trasform, angle, 0, 0, 0);
+    trasform = CATransform3DRotate(trasform, angle, 0, 0, 0);
     
 	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
 	animation.toValue = [NSValue valueWithCATransform3D:trasform];
