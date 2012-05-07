@@ -412,7 +412,7 @@
             
             menuButtonView.userInteractionEnabled = NO;
             [self.view bringSubviewToFront:imageView];
-            [self bringDrawerToTop];
+            //[self bringDrawerToTop];
             imageView.alpha = 1;
             
         } else if (imageView.alpha==1) {
@@ -2241,9 +2241,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     receivedFirstTouch = YES;
-    
-    [self.view bringSubviewToFront:menuButtonView];
-    
+        
     if(imageView.alpha == 1) {
         [self toggleImageWithDuration:0.5];
     }

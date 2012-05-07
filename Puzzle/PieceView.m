@@ -175,7 +175,7 @@
 - (void)move:(UIPanGestureRecognizer*)gesture {
     
     if (delegate.panningSwitch.isOn) {
-
+        
         [delegate pan:gesture];
         return;
     }
@@ -187,88 +187,93 @@
     }
     
     CGPoint traslation = [gesture translationInView:self.superview];
-                
-        if (gesture.state == UIGestureRecognizerStateBegan) {
+    
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        
+        [self.superview bringSubviewToFront:self];
+        oldPosition = [self realCenter];
+        tr = 0;
+        
+    }
+    
+    if (isFree || isLifted) { //In the board
+        
+        NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
+        
+        if (self.group==nil) {
             
-            [self.superview bringSubviewToFront:self];
-            oldPosition = [self realCenter];
-            tr = 0;
+            [self translateWithVector:traslation];
+            [self translateNeighborhoodExcluding:excluded WithVector:traslation];
+            
+        } else {
+            
+            //traslation = [gesture translationInView:self.superview.superview];
+            [self.group translateWithVector:traslation];
+            //NSLog(@"%s", __FUNCTION__);
             
         }
         
-        if (isFree || isLifted) { //In the board
+        
+        [gesture setTranslation:CGPointZero inView:self.superview];
+        
+        
+        if (gesture.state == UIGestureRecognizerStateEnded) {
             
-            NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
             
             if (self.group==nil) {
-
-                [self translateWithVector:traslation];
-                [self translateNeighborhoodExcluding:excluded WithVector:traslation];
-
-            } else {
                 
-                //traslation = [gesture translationInView:self.superview.superview];
-                [self.group translateWithVector:traslation];
-                //NSLog(@"%s", __FUNCTION__);
-                
-            }
-            
-            
-            [gesture setTranslation:CGPointZero inView:self.superview];
-            
-            
-            if (gesture.state == UIGestureRecognizerStateEnded) {
-                
-                
-                if (self.group==nil) {
-                    
-                    NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
-                    [self movedNeighborhoodExcludingPieces:excluded];
-                    [delegate pieceMoved:self];                    
-
-                } else {
-                    
-                    [delegate groupMoved:self.group];                    
-                    
-                }
-
-                
-            }
-            
-        } else { //Inside the drawer
-            
-#define X_BOUND 5
-#define Y_BOUND 3
-            
-            if (UIInterfaceOrientationIsLandscape(self.delegate.interfaceOrientation)) {
-                
-                if (ABS(traslation.x)<delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND) {
-                    tr += ABS(traslation.y);
-                    [delegate panDrawer:gesture];
-                } else {
-                    [self translateWithVector:CGPointMake(traslation.x, 0)];
-                    [gesture setTranslation:CGPointZero inView:self.superview];
-                    self.isLifted = YES;
-                }
+                NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
+                [self movedNeighborhoodExcludingPieces:excluded];
+                [delegate pieceMoved:self];                    
                 
             } else {
                 
-                if (ABS(traslation.y)<delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND ) {
-                    tr += ABS(traslation.x);
-                    [delegate panDrawer:gesture];
-                } else {
-                    [self translateWithVector:CGPointMake(0, traslation.y)];
-                    [gesture setTranslation:CGPointZero inView:self.superview];
-                    self.isLifted = YES;
-                }
+                [delegate groupMoved:self.group];                    
+                
             }
+            
             
         }
         
-    
+    } else { //Inside the drawer
+        
+#define X_BOUND 5
+#define Y_BOUND 3
+        
+        if (UIInterfaceOrientationIsLandscape(self.delegate.interfaceOrientation)) {
+            
+            if (ABS(traslation.x)<delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND) {
+                tr += ABS(traslation.y);
+                [delegate panDrawer:gesture];
+            } else {
+                [self translateWithVector:CGPointMake(traslation.x, 0)];
+                [gesture setTranslation:CGPointZero inView:self.superview];
+                self.isLifted = YES;
+                if(delegate.imageView.alpha == 1) {
+                    [delegate toggleImageWithDuration:0.5];
+                }
+            }
+            
+        } else {
+            
+            if (ABS(traslation.y)<delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND ) {
+                tr += ABS(traslation.x);
+                [delegate panDrawer:gesture];
+            } else {
+                [self translateWithVector:CGPointMake(0, traslation.y)];
+                [gesture setTranslation:CGPointZero inView:self.superview];
+                self.isLifted = YES;
+                if(delegate.imageView.alpha == 1) {
+                    [delegate toggleImageWithDuration:0.5];
+                }
+            }
+        }
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    [delegate touchesBegan:touches withEvent:event];
     
 }
 
@@ -900,7 +905,6 @@
     self.userInteractionEnabled = !isPositioned;
 
 }
-
 
 #pragma mark
 #pragma UNUSEFUL
