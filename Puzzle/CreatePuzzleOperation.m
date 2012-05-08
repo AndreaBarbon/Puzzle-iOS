@@ -10,19 +10,34 @@
 #import "PuzzleController.h"
 #import "UIImage+CWAdditions.h"
 
+#define IMAGE_SIZE_BOUND_IPAD 180*2
+#define IMAGE_SIZE_BOUND_IPHONE 100*2
+
+#define JPG_QUALITY 1
+#define SHAPE_QUALITY 1
+
+
 @implementation CreatePuzzleOperation
 
 @synthesize insertionContext, persistentStoreCoordinator, delegate, loadingGame;
 
 - (void)main {
     
-    if (delegate && [delegate respondsToSelector:@selector(puzzleDidSave:)]) {
-        [[NSNotificationCenter defaultCenter] addObserver:delegate selector:@selector(puzzleDidSave:) name:NSManagedObjectContextDidSaveNotification object:self.insertionContext];
+    
+    // Create context on background thread
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    insertionContext = [[NSManagedObjectContext alloc] init];
+    [insertionContext setUndoManager:nil];
+    [insertionContext setPersistentStoreCoordinator: [appDelegate persistentStoreCoordinator]];
+    
+    
+    if (delegate && [delegate respondsToSelector:@selector(puzzleSaved:)]) {
+        [[NSNotificationCenter defaultCenter] addObserver:delegate selector:@selector(puzzleSaved:) name:NSManagedObjectContextDidSaveNotification object:self.insertionContext];
     }
 
     
-    float piceSize = delegate.piceSize;
-    float padding = delegate.padding;
+    float piceSize = SHAPE_QUALITY*delegate.piceSize;
     float pieceNumber = delegate.pieceNumber;
     float N = delegate.N;
     
@@ -40,14 +55,26 @@
         
     } else {
         
-        array = [[NSMutableArray alloc] initWithArray:[self splitImage:delegate.image]];
+        //Compute the optimal part size
+        
+        float partSize = delegate.image.size.width/(delegate.pieceNumber*0.7);
+        
+        if (partSize>IMAGE_SIZE_BOUND_IPAD) {
+            
+            partSize = IMAGE_SIZE_BOUND_IPAD;
+        }
+        
+        //and split the big image using computed size
+        
+        float f = (float)(pieceNumber*partSize*0.7);
+        NSLog(@"f = %.1f", f);
+        image = [[UIImage alloc] init];
+        image = [delegate.image imageByScalingToSize:CGSizeMake(f,f)];
+        array = [[NSMutableArray alloc] initWithArray:[self splitImage:image partSize:partSize]];
 
     }
-
     
-
-    piceSize = delegate.image.size.width/(delegate.pieceNumber*QUALITY*0.7);
-    padding = piceSize*0.15;
+    
     
     BOOL errors = YES;
     
@@ -95,8 +122,8 @@
                         
                         
                         [arrayPieces addObject:piece];
-                        [piece setNeedsDisplay];
                         [delegate.view addSubview:piece];
+                        //piece.transform = CGAffineTransformMakeScale(0.5, 0.5);
                         
                         
                     }
@@ -104,12 +131,24 @@
                 }
             }
             
+            NSLog(@"Pieces created");     
+
+            
             errors = NO;
             
         } else {
             
+            //NSLog(@"Starting creating puzzle in the DB");
             
-            delegate.puzzleDB = nil;
+            Puzzle *puzzleDB = [self newPuzzleInCOntext:insertionContext];
+            Image *imageDB = [self newImageInCOntext:insertionContext];
+            imageDB.data = UIImageJPEGRepresentation(delegate.image, JPG_QUALITY);
+            puzzleDB.lastSaved = [NSDate date];
+            puzzleDB.image = imageDB;
+            puzzleDB.pieceNumber = [NSNumber numberWithInt:delegate.pieceNumber];
+            puzzleDB.name = @"007";
+            
+            
             NSLog(@"Memory b4 creating:");        
             [delegate print_free_memory];
             
@@ -122,7 +161,7 @@
                     
                     PieceView *piece = [[PieceView alloc] initWithFrame:rect];
                     piece.delegate = delegate;
-                    piece.image = [array objectAtIndex:j+pieceNumber*i];
+                    piece.image = [array objectAtIndex:0]; //j+pieceNumber*i];
                     piece.number = j+pieceNumber*i;
                     piece.size = piceSize;
                     piece.position = -1;
@@ -177,15 +216,34 @@
                         //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
                     }
                     
+                    //Creating the piece in the database
+                    Piece *pieceDB = [self newPieceInCOntext:insertionContext];
+                    pieceDB.puzzle = puzzleDB;
+                    pieceDB.number = [NSNumber numberWithInt:j+pieceNumber*i];
+                    pieceDB.position = [NSNumber numberWithInt:-1];
+                    Image *imagePieceDB = [self newImageInCOntext:insertionContext];
+                    imagePieceDB.data = UIImageJPEGRepresentation([array objectAtIndex:0], JPG_QUALITY);
+                    pieceDB.image = imagePieceDB;
+                    
+                    [array removeObjectAtIndex:0];
+
+                    
+                    pieceDB.edge0 = [piece.edges objectAtIndex:0];
+                    pieceDB.edge1 = [piece.edges objectAtIndex:1];
+                    pieceDB.edge2 = [piece.edges objectAtIndex:2];
+                    pieceDB.edge3 = [piece.edges objectAtIndex:3];
+                    
                     
                     [arrayPieces addObject:piece];
-                    [piece setNeedsDisplay];
                     [delegate.view addSubview:piece];
+
+                    //piece.transform = CGAffineTransformMakeScale(0.5, 0.5);
                     
                 }
             }
             
-            
+            [insertionContext save:nil];
+
         }
         
         delegate.pieces = [[NSMutableArray alloc] initWithArray:arrayPieces];
@@ -195,13 +253,23 @@
         
     }
     @catch (NSException *exception) {
-        //Handler
+        
+        NSLog(@"%@", [exception description]);
+        
     }
     @finally {
         
         if (!errors) {
             
-            NSLog(@"Finally loaded");
+            if (delegate && [delegate respondsToSelector:@selector(puzzleSaved:)]) {
+                [[NSNotificationCenter defaultCenter] removeObserver:delegate name:NSManagedObjectContextDidSaveNotification object:self.insertionContext];
+            }
+            if (delegate && [self.delegate respondsToSelector:@selector(addPiecesToView)]) {
+                //[delegate addPiecesToView];
+            }
+            
+                        
+            NSLog(@"loading \"finally\"");
         
         } else {
             
@@ -212,44 +280,8 @@
         }
 
     }
-        
-    //[self createPuzzleInDB];
 
 
-
-}
-
-
-- (void)createPuzzleInDB {
-    
-    //NSLog(@"Starting creating puzzle in the DB");
-    
-    delegate.puzzleDB = [self newPuzzleInCOntext:insertionContext];
-    Image *imageDB = [self newImageInCOntext:insertionContext];
-    imageDB.data = UIImageJPEGRepresentation(delegate.image, 0.5);
-    delegate.puzzleDB.image = imageDB;
-    delegate.puzzleDB.pieceNumber = [NSNumber numberWithInt:delegate.pieceNumber];
-    
-    for (PieceView *piece in delegate.pieces) {
-        
-        //Creating the piece in the database
-        Piece *pieceDB = [self newPieceInCOntext:insertionContext];
-        pieceDB.puzzle = delegate.puzzleDB;
-        pieceDB.number = [NSNumber numberWithInt:piece.number];
-        pieceDB.position = [NSNumber numberWithInt:piece.position];
-        pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
-        Image *imagePieceDB = [self newImageInCOntext:insertionContext];
-        imagePieceDB.data = UIImageJPEGRepresentation(piece.image, 0.5);
-        pieceDB.image = imagePieceDB;
-        
-        pieceDB.edge0 = [piece.edges objectAtIndex:0];
-        pieceDB.edge1 = [piece.edges objectAtIndex:1];
-        pieceDB.edge2 = [piece.edges objectAtIndex:2];
-        pieceDB.edge3 = [piece.edges objectAtIndex:3];
-        
-    }
-    
-    
 }
 
 
@@ -285,16 +317,47 @@
     
 }
 
+- (NSArray *)splitImage:(UIImage *)im partSize:(float)partSize {
+    
+    float x = delegate.pieceNumber;
+    float y= delegate.pieceNumber;
+        
+    float padding = partSize*0.15;
+    
+    NSLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", partSize, padding, im.size.width);
+    
+    delegate.loadedPieces = 0;
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:delegate.N];
+    for (int i=0;i<x;i++){
+        for (int j=0;j<y;j++){
+            
+            CGRect rect = CGRectMake(i * (partSize-2*padding)-padding, 
+                                     j * (partSize-2*padding)-padding, 
+                                     partSize, partSize);
+            
+            [arr addObject:[im subimageWithRect:rect]]; 
+
+            delegate.loadedPieces++;
+            
+            //[arr addObject:[self clipImage:im toRect:rect]];          
+        }
+    }
+    
+    return arr;
+    
+}
+
 - (NSArray *)splitImage:(UIImage *)im{
     
     float x = delegate.pieceNumber;
     float y= delegate.pieceNumber;
     
-    float w = im.size.width/(delegate.pieceNumber*QUALITY*0.7);
+    float w = QUALITY*delegate.piceSize;
     
     float ww = w*0.15;
     
-    NSLog(@"w=%.1f, ww=%.1f, imageSize=%.1f", w, ww, im.size.width);
+    NSLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", w, ww, im.size.width);
     
     delegate.loadedPieces = 0;
     

@@ -10,8 +10,6 @@
 		B82AC5C7154411B500208887 /* Lattice.m in Sources */ = {isa = PBXBuildFile; fileRef = B82AC5C6154411B500208887 /* Lattice.m */; };
 		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
 		B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
-		B853810A1548D83D00F3BFA5 /* PiecePositioned.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381081548D83D00F3BFA5 /* PiecePositioned.wav */; };
-		B853810B1548D83D00F3BFA5 /* PuzzleCompleted.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */; };
 		B85381101548D91B00F3BFA5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B853810F1548D91B00F3BFA5 /* AVFoundation.framework */; };
 		B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC515400B2A00AF69BC /* UIKit.framework */; };
 		B87C5CC815400B2A00AF69BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC715400B2A00AF69BC /* Foundation.framework */; };
@@ -35,6 +33,10 @@
 		B8AA19C1154B502900750458 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B9154B502900750458 /* icon@2x.png */; };
 		B8AA19CE154B565400750458 /* NewGameController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AA19CC154B565400750458 /* NewGameController.m */; };
 		B8AA19CF154B565400750458 /* NewGameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19CD154B565400750458 /* NewGameController.xib */; };
+		B8AE120015598EAD00742256 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8AE11FE15598EAD00742256 /* PiecePositioned.mp3 */; };
+		B8AE120115598EAD00742256 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8AE11FE15598EAD00742256 /* PiecePositioned.mp3 */; };
+		B8AE120215598EAD00742256 /* PuzzleCompleted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8AE11FF15598EAD00742256 /* PuzzleCompleted.mp3 */; };
+		B8AE120315598EAD00742256 /* PuzzleCompleted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8AE11FF15598EAD00742256 /* PuzzleCompleted.mp3 */; };
 		B8BA98921552FF6C00F7225B /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8BA98911552FF6C00F7225B /* Puzzle.m */; };
 		B8BA98931552FF6C00F7225B /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8BA98911552FF6C00F7225B /* Puzzle.m */; };
 		B8BA98961552FF6E00F7225B /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8BA98951552FF6E00F7225B /* Image.m */; };
@@ -71,8 +73,6 @@
 		B8E181731550402800A8B450 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CCB15400B2A00AF69BC /* CoreData.framework */; };
 		B8E181751550402800A8B450 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CD015400B2A00AF69BC /* InfoPlist.strings */; };
 		B8E181761550402800A8B450 /* PuzzleController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CF01540174400AF69BC /* PuzzleController.xib */; };
-		B8E181781550402800A8B450 /* PiecePositioned.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381081548D83D00F3BFA5 /* PiecePositioned.wav */; };
-		B8E181791550402800A8B450 /* PuzzleCompleted.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */; };
 		B8E1817A1550402800A8B450 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
 		B8E1817B1550402800A8B450 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
 		B8E1817C1550402800A8B450 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
@@ -104,8 +104,6 @@
 		B84014EB1540D0880075734A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B84014F21540E57D0075734A /* UIImage+CWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CWAdditions.h"; path = "Classes/UIImage+CWAdditions.h"; sourceTree = "<group>"; };
 		B84014F31540E57D0075734A /* UIImage+CWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CWAdditions.m"; path = "Classes/UIImage+CWAdditions.m"; sourceTree = "<group>"; };
-		B85381081548D83D00F3BFA5 /* PiecePositioned.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = PiecePositioned.wav; path = ../PiecePositioned.wav; sourceTree = "<group>"; };
-		B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = PuzzleCompleted.wav; sourceTree = SOURCE_ROOT; };
 		B853810F1548D91B00F3BFA5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B87C5CC115400B2A00AF69BC /* YourPuzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourPuzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B87C5CC515400B2A00AF69BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -138,6 +136,8 @@
 		B8AA19CB154B565400750458 /* NewGameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewGameController.h; path = Controllers/NewGameController.h; sourceTree = "<group>"; };
 		B8AA19CC154B565400750458 /* NewGameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewGameController.m; path = Controllers/NewGameController.m; sourceTree = "<group>"; };
 		B8AA19CD154B565400750458 /* NewGameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewGameController.xib; path = Controllers/NewGameController.xib; sourceTree = "<group>"; };
+		B8AE11FE15598EAD00742256 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = PiecePositioned.mp3; sourceTree = "<group>"; };
+		B8AE11FF15598EAD00742256 /* PuzzleCompleted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = PuzzleCompleted.mp3; sourceTree = "<group>"; };
 		B8BA988F1552FEDF00F7225B /* Puzzle 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 5.xcdatamodel"; sourceTree = "<group>"; };
 		B8BA98901552FF6C00F7225B /* Puzzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puzzle.h; sourceTree = "<group>"; };
 		B8BA98911552FF6C00F7225B /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
@@ -343,8 +343,8 @@
 		B8E1815F15503B0900A8B450 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				B85381081548D83D00F3BFA5 /* PiecePositioned.wav */,
-				B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */,
+				B8AE11FE15598EAD00742256 /* PiecePositioned.mp3 */,
+				B8AE11FF15598EAD00742256 /* PuzzleCompleted.mp3 */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
@@ -420,8 +420,6 @@
 			files = (
 				B87C5CD215400B2A00AF69BC /* InfoPlist.strings in Resources */,
 				B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */,
-				B853810A1548D83D00F3BFA5 /* PiecePositioned.wav in Resources */,
-				B853810B1548D83D00F3BFA5 /* PuzzleCompleted.wav in Resources */,
 				B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */,
 				B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */,
 				B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */,
@@ -441,6 +439,8 @@
 				B8E1815B15500D3700A8B450 /* Wood.jpg in Resources */,
 				B8E1815D15500E2900A8B450 /* Wood@2x.jpg in Resources */,
 				B8E18193155040CE00A8B450 /* Puzzle iPhone-Info.plist in Resources */,
+				B8AE120015598EAD00742256 /* PiecePositioned.mp3 in Resources */,
+				B8AE120215598EAD00742256 /* PuzzleCompleted.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,8 +450,6 @@
 			files = (
 				B8E181751550402800A8B450 /* InfoPlist.strings in Resources */,
 				B8E181761550402800A8B450 /* PuzzleController.xib in Resources */,
-				B8E181781550402800A8B450 /* PiecePositioned.wav in Resources */,
-				B8E181791550402800A8B450 /* PuzzleCompleted.wav in Resources */,
 				B8E1817A1550402800A8B450 /* Default-Landscape@2x~ipad.png in Resources */,
 				B8E1817B1550402800A8B450 /* Default-Landscape~ipad.png in Resources */,
 				B8E1817C1550402800A8B450 /* Default-Portrait@2x~ipad.png in Resources */,
@@ -470,6 +468,8 @@
 				B8E181891550402800A8B450 /* NewGameController.xib in Resources */,
 				B8E1818A1550402800A8B450 /* Wood.jpg in Resources */,
 				B8E1818B1550402800A8B450 /* Wood@2x.jpg in Resources */,
+				B8AE120115598EAD00742256 /* PiecePositioned.mp3 in Resources */,
+				B8AE120315598EAD00742256 /* PuzzleCompleted.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

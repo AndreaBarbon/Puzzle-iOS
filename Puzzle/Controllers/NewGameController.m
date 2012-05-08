@@ -10,6 +10,7 @@
 #import "MenuController.h"
 #import "PuzzleController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImage+CWAdditions.h"
 
 #define IMAGE_QUALITY 0.5
 
@@ -35,12 +36,14 @@
     
     tapToSelectView.layer.cornerRadius = 20;
     tapToSelectView.layer.masksToBounds = YES;
+    
+    containerView.layer.cornerRadius = 20;
+    containerView.layer.masksToBounds = YES;
 
     imagePath = [[NSString alloc] initWithFormat:@""];
     
     //progressView.progressTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     //slider.minimumTrackTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
-
 
 }
 
@@ -74,7 +77,7 @@
     tapToSelectLabel.hidden = YES;
     startButton.enabled = YES;    
     
-    
+
     image.image = [delegate.delegate clipImage:temp toRect:rect];
         
 }
@@ -104,7 +107,8 @@
         
         popover = [[UIPopoverController alloc] initWithContentViewController:c];
         popover.delegate = self;
-        [popover presentPopoverFromRect:loadingView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        CGRect rect = CGRectMake(self.view.center.x, -20, 1, 1);
+        [popover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
         
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
@@ -125,11 +129,14 @@
     delegate.delegate.loadingGame = NO;
     
     if (image.image == nil) {
-        delegate.delegate.image = [UIImage imageNamed:@"Cover"];
+        delegate.delegate.image = [UIImage imageNamed:@"Wood.jpg"];
         
     } else {
+
         delegate.delegate.image = image.image;
     }
+
+    
     delegate.delegate.imageView.image = delegate.delegate.image;
     delegate.delegate.imageViewLattice.image = delegate.delegate.image;
     delegate.delegate.pieceNumber = (int)slider.value;
@@ -141,16 +148,23 @@
 
     
     [delegate createNewGame];
+    
+}
 
-
-
-
+- (IBAction)back:(id)sender {
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        delegate.mainView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    }];
     
 }
 
 - (void)startLoading {
     
     startButton.hidden = YES;
+    backButton.hidden = YES;
+
     
     if (delegate.delegate.loadingGame) {
         
@@ -189,6 +203,7 @@
     progressView.hidden = YES;  
     loadingView.hidden = YES;
     startButton.hidden = NO;
+    backButton.hidden = NO;
     pieceNumberLabel.hidden = NO;    
     slider.hidden = NO;    
     piecesLabel.hidden = NO;
@@ -212,7 +227,10 @@
     delegate.delegate.loadedPieces = 0;
     progressView.hidden = YES;  
     loadingView.hidden = YES;
+    
     startButton.hidden = NO;
+    backButton.hidden = NO;
+    
     pieceNumberLabel.hidden = NO;    
     slider.hidden = NO;    
     piecesLabel.hidden = NO;

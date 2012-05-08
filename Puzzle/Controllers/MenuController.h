@@ -38,6 +38,7 @@
 @property (nonatomic) BOOL duringGame;
 @property (nonatomic, retain) NewGameController *game;
 @property (nonatomic, retain) UIView *obscuringView;
+@property (nonatomic, retain) IBOutlet UIView *mainView;
 
 
 - (IBAction)startNewGame:(id)sender;

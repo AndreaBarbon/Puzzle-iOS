@@ -214,14 +214,13 @@
 
 -(UIImage*)subimageWithRect:(CGRect)rect;
 {
-
+    
 	UIGraphicsBeginImageContextWithOptions(rect.size, YES, self.scale);
     [self drawAtPoint:CGPointMake(-rect.origin.x, -rect.origin.y)];
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
     CGContextRelease(UIGraphicsGetCurrentContext());
-    
+
     return image;
         
 }

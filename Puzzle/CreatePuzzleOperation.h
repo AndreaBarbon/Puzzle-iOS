@@ -23,7 +23,10 @@
 @end
 
 
-@interface CreatePuzzleOperation : NSOperation
+@interface CreatePuzzleOperation : NSOperation {
+    
+    UIImage *image;
+}
 
 @property (strong, nonatomic) NSManagedObjectContext *insertionContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;

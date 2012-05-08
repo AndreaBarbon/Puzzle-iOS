@@ -16,7 +16,7 @@
 
 @implementation MenuController
 
-@synthesize delegate, duringGame, game, obscuringView;
+@synthesize delegate, duringGame, game, obscuringView, mainView;
 
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -68,6 +68,7 @@
         } completion:^(BOOL finished) {
 
             game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
+            mainView.frame = CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height);
             [delegate startTimer];
 
         }];
@@ -94,10 +95,11 @@
 
     [delegate.view bringSubviewToFront:delegate.menuButtonView];
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         
         game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
-        
+        mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+ 
     }];
     
     
@@ -149,6 +151,8 @@
     
     game = [[NewGameController alloc] init];    
     game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
+    mainView.frame = CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height);
+
     game.delegate = self;
 
     [self.view addSubview:game.view];

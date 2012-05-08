@@ -22,12 +22,14 @@
     IBOutlet UIButton *piecesLabel;
     IBOutlet UISlider *slider;
     IBOutlet UIButton *startButton;
+    IBOutlet UIButton *backButton;
     IBOutlet UIButton *imageButton;
     IBOutlet UIProgressView *progressView;
     IBOutlet UIActivityIndicatorView *indicator;
     IBOutlet UIView *loadingView;
     IBOutlet UIView *tapToSelectView;
     IBOutlet UIView *tapToSelectLabel;
+    IBOutlet UIView *containerView;
     NSTimer *timer;
     
     int times;

@@ -1820,7 +1820,7 @@
 
 - (void)loadSounds {
     
-    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"wav"];
+    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"mp3"];
     NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
     positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     positionedSound.volume = 0.3;
@@ -1830,7 +1830,7 @@
         positionedSound.rate = 1.5; 
     }
     
-    soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"wav"];
+    soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"mp3"];
     soundURL = [NSURL fileURLWithPath:soundPath];
     completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     
