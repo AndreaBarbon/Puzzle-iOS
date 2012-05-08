@@ -54,10 +54,11 @@
         percentageLabel.transform = CGAffineTransformMakeTranslation(10, 10);
         
         elapsedTimeLabel.font = [UIFont boldSystemFontOfSize:20.0];
-        elapsedTimeLabel.transform = CGAffineTransformMakeTranslation(35, 10);
+        elapsedTimeLabel.transform = CGAffineTransformMakeTranslation(10, 10);
 
         menuButtonView.transform = CGAffineTransformMakeTranslation(5, 10);
-        panningSwitch.transform = CGAffineTransformMakeTranslation(-8, 8);
+        panningSwitch.transform = CGAffineTransformMakeTranslation(-8, 10);
+        panningSwitch.transform = CGAffineTransformScale(panningSwitch.transform, 0.8, 0.8);
                 
     }
     
@@ -71,7 +72,7 @@
     [self computePieceSize];
     
     //Add the image;
-    image = [UIImage imageNamed:@"Cover.png"];
+    image = [UIImage imageNamed:@"Wood.jpg"];
     
     imageView = [[UIImageView alloc] initWithImage:image];
     rect = CGRectMake(0, (rect.size.height-rect.size.width)/1, rect.size.width, rect.size.width);
@@ -87,21 +88,25 @@
     CGRect drawerFrame = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     
+    float width = [[UIScreen mainScreen] bounds].size.width;
+    float height = [[UIScreen mainScreen] bounds].size.height;
+    
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
         NSLog(@"Landscape!");
         
         drawerFrame.size.width = drawerSize;
-        drawerFrame.size.height = [[UIScreen mainScreen] bounds].size.width;
+        drawerFrame.size.height = width;
         stepperFrame.origin.y = 10;
         stepperFrame.origin.x = drawerFrame.size.width;
         
     } else {
         
         drawerFrame.size.height = drawerSize;
-        drawerFrame.size.width = [[UIScreen mainScreen] bounds].size.height;
+        drawerFrame.size.width = height;
         stepperFrame.origin.y = drawerFrame.size.height;
         stepperFrame.origin.x = 10;
+        
     }
     
     drawerView.frame = drawerFrame;
@@ -137,7 +142,7 @@
     [self.view addGestureRecognizer:tap];
     
     UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
-    [longPressure setMinimumPressDuration:0.8];
+    [longPressure setMinimumPressDuration:0.5];
     [self.view addGestureRecognizer:longPressure];
     
     
@@ -373,6 +378,7 @@
     puzzleOperation = [[CreatePuzzleOperation alloc] init];
     puzzleOperation.delegate = self;
     puzzleOperation.loadingGame = YES;
+    puzzleOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
     
     menu.game.view.frame = CGRectMake(0, 0, menu.game.view.frame.size.width, menu.game.view.frame.size.height);
     
@@ -404,7 +410,8 @@
     puzzleOperation = [[CreatePuzzleOperation alloc] init];
     puzzleOperation.delegate = self;
     puzzleOperation.loadingGame = NO;
-    
+    puzzleOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
+
     [self.operationQueue addOperation:puzzleOperation];
     
     
@@ -1171,7 +1178,7 @@
     
     if (animated) {
         
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             
             piece.center = [self centerOfLatticePiece:i];
             CGAffineTransform trans = CGAffineTransformMakeScale(lattice.scale, lattice.scale);
@@ -2205,33 +2212,39 @@
     CGRect rect = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     CGRect imageFrame = imageView.frame;
+    
+    float width = [[UIScreen mainScreen] bounds].size.width;
+    
  
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
                 
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
         rect.size.width = drawerSize;
-        rect.size.height = [[UIScreen mainScreen] bounds].size.width;
+        rect.size.height = width;
         stepperFrame.origin.y = rect.size.height - stepperFrame.size.height-30;
         stepperFrame.origin.x = rect.size.width;
         float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.width)/1;
         imageFrame.origin.x = pad;
         imageFrame.origin.y = 0;
         
+        panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
+        
         lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
-
                 
     } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
         
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
         rect.size.height = drawerSize;
-        rect.size.width = [[UIScreen mainScreen] bounds].size.width;
+        rect.size.width = width;
         stepperFrame.origin.y = rect.size.height;
         stepperFrame.origin.x = rect.size.width - stepperFrame.size.width-10;
         float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.height)/1;
         imageFrame.origin.y = pad;
         imageFrame.origin.x = 0;
+        
+        panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
         
         lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
 
@@ -2326,11 +2339,19 @@
 
     elapsedTime = 0.0;
     puzzleCompete = NO;
+
     for (UIView *v in groups) {
         [v removeFromSuperview];
     }
+    
+    for (PieceView *p in pieces) {
+        [p removeFromSuperview];
+    }
+    
     groups = [[NSMutableArray alloc] initWithCapacity:N/2];
-
+    pieces = [[NSMutableArray alloc] initWithCapacity:N];
+    
+    
     [self createPuzzleFromImage:image];
     
     receivedFirstTouch = NO;    

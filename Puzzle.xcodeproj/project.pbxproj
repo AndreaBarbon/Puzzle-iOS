@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B82AC5C7154411B500208887 /* Lattice.m in Sources */ = {isa = PBXBuildFile; fileRef = B82AC5C6154411B500208887 /* Lattice.m */; };
 		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
-		B84014F11540DFBD0075734A /* Cover.png in Resources */ = {isa = PBXBuildFile; fileRef = B84014F01540DFBD0075734A /* Cover.png */; };
 		B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
 		B853810A1548D83D00F3BFA5 /* PiecePositioned.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381081548D83D00F3BFA5 /* PiecePositioned.wav */; };
 		B853810B1548D83D00F3BFA5 /* PuzzleCompleted.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */; };
@@ -74,7 +73,6 @@
 		B8E181731550402800A8B450 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CCB15400B2A00AF69BC /* CoreData.framework */; };
 		B8E181751550402800A8B450 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CD015400B2A00AF69BC /* InfoPlist.strings */; };
 		B8E181761550402800A8B450 /* PuzzleController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CF01540174400AF69BC /* PuzzleController.xib */; };
-		B8E181771550402800A8B450 /* Cover.png in Resources */ = {isa = PBXBuildFile; fileRef = B84014F01540DFBD0075734A /* Cover.png */; };
 		B8E181781550402800A8B450 /* PiecePositioned.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381081548D83D00F3BFA5 /* PiecePositioned.wav */; };
 		B8E181791550402800A8B450 /* PuzzleCompleted.wav in Resources */ = {isa = PBXBuildFile; fileRef = B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */; };
 		B8E1817A1550402800A8B450 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
@@ -106,13 +104,12 @@
 		B82AC5C5154411B500208887 /* Lattice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lattice.h; path = Classes/Lattice.h; sourceTree = "<group>"; };
 		B82AC5C6154411B500208887 /* Lattice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lattice.m; path = Classes/Lattice.m; sourceTree = "<group>"; };
 		B84014EB1540D0880075734A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		B84014F01540DFBD0075734A /* Cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cover.png; sourceTree = "<group>"; };
 		B84014F21540E57D0075734A /* UIImage+CWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CWAdditions.h"; path = "Classes/UIImage+CWAdditions.h"; sourceTree = "<group>"; };
 		B84014F31540E57D0075734A /* UIImage+CWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CWAdditions.m"; path = "Classes/UIImage+CWAdditions.m"; sourceTree = "<group>"; };
 		B85381081548D83D00F3BFA5 /* PiecePositioned.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = PiecePositioned.wav; path = ../PiecePositioned.wav; sourceTree = "<group>"; };
 		B85381091548D83D00F3BFA5 /* PuzzleCompleted.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = PuzzleCompleted.wav; sourceTree = SOURCE_ROOT; };
 		B853810F1548D91B00F3BFA5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		B87C5CC115400B2A00AF69BC /* Puzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Puzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B87C5CC115400B2A00AF69BC /* MyPuzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPuzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B87C5CC515400B2A00AF69BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B87C5CC715400B2A00AF69BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B87C5CC915400B2A00AF69BC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -163,7 +160,7 @@
 		B8E18158155000C200A8B450 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B8E1815A15500D3700A8B450 /* Wood.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Wood.jpg; path = ../Wood.jpg; sourceTree = "<group>"; };
 		B8E1815C15500E2900A8B450 /* Wood@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Wood@2x.jpg"; path = "../Wood@2x.jpg"; sourceTree = "<group>"; };
-		B8E1818F1550402800A8B450 /* Puzzle iPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Puzzle iPhone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8E1818F1550402800A8B450 /* MyPuzzle iPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MyPuzzle iPhone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Puzzle iPhone-Info.plist"; sourceTree = "<group>"; };
 		B8E4AC7C154AA22300D0A75D /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuController.h; path = Controllers/MenuController.h; sourceTree = "<group>"; };
 		B8E4AC7D154AA22300D0A75D /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuController.m; path = Controllers/MenuController.m; sourceTree = "<group>"; };
@@ -215,8 +212,8 @@
 		B87C5CC215400B2A00AF69BC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B87C5CC115400B2A00AF69BC /* Puzzle.app */,
-				B8E1818F1550402800A8B450 /* Puzzle iPhone.app */,
+				B87C5CC115400B2A00AF69BC /* MyPuzzle.app */,
+				B8E1818F1550402800A8B450 /* MyPuzzle iPhone.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -345,7 +342,6 @@
 			children = (
 				B8E1815A15500D3700A8B450 /* Wood.jpg */,
 				B8E1815C15500E2900A8B450 /* Wood@2x.jpg */,
-				B84014F01540DFBD0075734A /* Cover.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -376,7 +372,7 @@
 			);
 			name = Puzzle;
 			productName = Puzzle;
-			productReference = B87C5CC115400B2A00AF69BC /* Puzzle.app */;
+			productReference = B87C5CC115400B2A00AF69BC /* MyPuzzle.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B8E181601550402800A8B450 /* Puzzle iPhone */ = {
@@ -393,7 +389,7 @@
 			);
 			name = "Puzzle iPhone";
 			productName = Puzzle;
-			productReference = B8E1818F1550402800A8B450 /* Puzzle iPhone.app */;
+			productReference = B8E1818F1550402800A8B450 /* MyPuzzle iPhone.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -430,7 +426,6 @@
 			files = (
 				B87C5CD215400B2A00AF69BC /* InfoPlist.strings in Resources */,
 				B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */,
-				B84014F11540DFBD0075734A /* Cover.png in Resources */,
 				B853810A1548D83D00F3BFA5 /* PiecePositioned.wav in Resources */,
 				B853810B1548D83D00F3BFA5 /* PuzzleCompleted.wav in Resources */,
 				B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */,
@@ -461,7 +456,6 @@
 			files = (
 				B8E181751550402800A8B450 /* InfoPlist.strings in Resources */,
 				B8E181761550402800A8B450 /* PuzzleController.xib in Resources */,
-				B8E181771550402800A8B450 /* Cover.png in Resources */,
 				B8E181781550402800A8B450 /* PiecePositioned.wav in Resources */,
 				B8E181791550402800A8B450 /* PuzzleCompleted.wav in Resources */,
 				B8E1817A1550402800A8B450 /* Default-Landscape@2x~ipad.png in Resources */,
@@ -600,7 +594,7 @@
 				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
 				INFOPLIST_FILE = "Puzzle/Puzzle-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "My$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -613,7 +607,7 @@
 				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
 				INFOPLIST_FILE = "Puzzle/Puzzle-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "My$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -626,7 +620,7 @@
 				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
 				INFOPLIST_FILE = "Puzzle iPhone-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = "Puzzle iPhone";
+				PRODUCT_NAME = "MyPuzzle iPhone";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -639,7 +633,7 @@
 				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
 				INFOPLIST_FILE = "Puzzle iPhone-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = "Puzzle iPhone";
+				PRODUCT_NAME = "MyPuzzle iPhone";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
