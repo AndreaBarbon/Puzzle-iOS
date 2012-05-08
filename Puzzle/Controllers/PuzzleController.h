@@ -42,6 +42,8 @@
     
     IBOutlet UIView *HUDView;
     IBOutlet UIView *firstPointView;
+    
+    NSArray *directions;
 
     
     int numberOfPiecesInDrawer;
@@ -155,5 +157,6 @@
 - (void)resetSizeOfAllThePieces;
 - (void)refreshPieces;
 - (IBAction)rateGame;
+- (BOOL)saveGame;
 
 @end

@@ -38,6 +38,8 @@
     [super viewDidLoad];
     
     
+    directions = [[NSArray alloc] init];    
+    
     imageSize = QUALITY;
     
 //    firstPointView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
@@ -155,9 +157,17 @@
     [swipeL setNumberOfTouchesRequired:2];
     [self.view addGestureRecognizer:swipeL];
     
+}
+
+- (NSArray*)directionsUpdated {
     
-    
-    
+    return [NSArray arrayWithObjects:
+            [NSNumber numberWithInt:-1],              //up = 0
+            [NSNumber numberWithInt:+pieceNumber],    //right = 1
+            [NSNumber numberWithInt:1],               //down = 2
+            [NSNumber numberWithInt:-pieceNumber],    //left = 3
+            nil];
+
 }
 
 - (void)setup {
@@ -372,6 +382,8 @@
     self.view.userInteractionEnabled = NO;
     drawerView.hidden = NO;
     
+    directions = [NSArray arrayWithArray:[self directionsUpdated]];
+    
     [self computePieceSize];
     [self createLattice];
     drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
@@ -403,7 +415,7 @@
     loadingGame = NO;
     drawerView.hidden = NO;
 
-    
+    directions = [NSArray arrayWithArray:[self directionsUpdated]];
     [self computePieceSize];
     [self createLattice];
     drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
@@ -693,6 +705,7 @@
         piece.group = group;
     }
 
+    piece.isBoss = NO;
     [piece removeFromSuperview];
     [group.pieces addObject:piece];
 
@@ -740,7 +753,7 @@
 
         }completion:^(BOOL finished) {
             
-            [self checkNeighborsForAllThePieces];
+            [self checkNeighborsForGroup:group];
             [self updatePositionsInGroup:group withReferencePiece:group.boss];
             [self updatePercentage];
             [self updateGroupDB:group];
@@ -827,33 +840,35 @@
 
 - (void)checkNeighborsForAllThePieces {
     
+    NSLog(@"Starting %s", __FUNCTION__);
+
     for (PieceView *p in pieces) {
-        if (p.isFree && !p.isCompleted) {
-            [self checkNeighborsOfPieceNumber:p];
-        }
-    }
-        
-    //Add lonely pieces to groups (create one if it doesn't exist)
-    for (PieceView *p in pieces) {
-        if (p.isFree && p.hasNeighbors) {
-            
-            if (YES) {
-                
+        if (p.isFree) {
+            [self checkNeighborsOfPiece:p];
+            if (p.hasNeighbors) {
+                            
                 [self createNewGroupForPiece:p];
-                
-            } else {
-                
-                NSLog(@"Piece #%d was already grouped", p.number);
             }
         }
-    }
+    }    
     
-    
-    
-    //Join different groups
-    
+    NSLog(@"Finished %s", __FUNCTION__);
+
 }
 
+- (void)checkNeighborsForGroup:(GroupView*)group {
+    
+    NSLog(@"Starting %s", __FUNCTION__);
+
+    for (PieceView *p in group.pieces) {
+        if (!p.isCompleted) {
+            [self checkNeighborsOfPiece:p];
+
+        }
+    }
+    
+    NSLog(@"Finished %s", __FUNCTION__);
+}
 
 
 #pragma mark -
@@ -1014,13 +1029,13 @@
     //NSLog(@"Position for piece #%d is %d", piece.number, piece.position);
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
-    if (piece.group) {
+    if (piece.group!=nil) {
         
-        [self checkNeighborsForAllThePieces];
+        [self checkNeighborsForGroup:piece.group];
         
     } else {
         
-        [self checkNeighborsOfPieceNumber:piece];
+        [self checkNeighborsOfPiece:piece];
     }
     
     [self updatePieceDB:piece];
@@ -1072,17 +1087,10 @@
     
 }
 
-- (void)checkNeighborsOfPieceNumber:(PieceView*)piece {
+- (void)checkNeighborsOfPiece:(PieceView*)piece {
     
     int rotation = floor(piece.angle/(M_PI/2));
     rotation = rotation%4;    
-    
-    NSArray *a = [NSArray arrayWithObjects:
-                  [NSNumber numberWithInt:-1],              //up = 0
-                  [NSNumber numberWithInt:+pieceNumber],    //right = 1
-                  [NSNumber numberWithInt:1],               //down = 2
-                  [NSNumber numberWithInt:-pieceNumber],    //left = 3
-                  nil];
     
     PieceView *otherPiece;
     int j = piece.position;
@@ -1096,8 +1104,8 @@
         
         int r = (direction+rotation)%4;
         
-        int i = [[a objectAtIndex:r] intValue];
-        int l = [[a objectAtIndex:direction] intValue];
+        int i = [[directions objectAtIndex:r] intValue];
+        int l = [[directions objectAtIndex:direction] intValue];
                 
         
         //Looks for neighbors       
@@ -1113,7 +1121,7 @@
             
             if (otherPiece != nil) {
                 
-                if (piece.isFree && otherPiece.isFree) {
+                if (otherPiece.isFree) {
                     
                     //NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
                     
@@ -1130,6 +1138,28 @@
                                 
                                 piece.hasNeighbors = YES;
                                 otherPiece.hasNeighbors = YES;
+                                
+                                if (otherPiece.group!=nil) {
+                                    
+                                    if (piece.group!=nil) {
+                                        for (PieceView *p in piece.group.pieces) {
+                                            [self addPiece:p toGroup:otherPiece.group];
+                                        }
+                                    } else {
+                                        [self addPiece:piece toGroup:otherPiece.group];
+                                    }
+                                    
+                                } else if (piece.group!=nil) {
+                                    
+                                    if (otherPiece.group!=nil) {
+                                        for (PieceView *p in otherPiece.group.pieces) {
+                                            [self addPiece:p toGroup:piece.group];
+                                        }
+                                    } else {
+                                        [self addPiece:otherPiece toGroup:piece.group];
+                                    }
+
+                                }
                             }
                             
                         } else {
@@ -1208,7 +1238,12 @@
             if (!piece.isPositioned) {
                 [self isPositioned:piece];
             }
-            [self checkNeighborsForAllThePieces];
+            [self checkNeighborsOfPiece:piece];
+            
+            if (piece.hasNeighbors) {
+                [self createNewGroupForPiece:piece];
+            }
+            
             [self updatePercentage];
             [self updatePieceDB:piece];
         }];
@@ -1831,7 +1866,7 @@
     }
     
     soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"mp3"];
-    soundURL = [NSURL fileURLWithPath:soundPath];
+    soundURL = [NSURL fileURLWithPath:soundPath];   
     completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     
 }
