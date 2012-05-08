@@ -137,7 +137,7 @@
     [self.view addGestureRecognizer:tap];
     
     UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
-    [longPressure setMinimumPressDuration:1.1];
+    [longPressure setMinimumPressDuration:0.8];
     [self.view addGestureRecognizer:longPressure];
     
     
@@ -251,9 +251,7 @@
 
 // This method will be called on a secondary thread. Forward to the main thread for safe handling of UIKit objects.
 - (void)puzzleSaved:(NSNotification *)saveNotification {
-    
-    NSLog(@"%s", __FUNCTION__);
-    
+        
     if ([NSThread isMainThread]) {
         [self.managedObjectContext mergeChangesFromContextDidSaveNotification:saveNotification];
     } else {
@@ -262,9 +260,6 @@
 }
 
 - (void)addPiecesToView {
-    
-    NSLog(@"%s", __FUNCTION__);
-
     
     if ([NSThread isMainThread]) {
         

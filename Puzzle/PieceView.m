@@ -765,7 +765,7 @@
     
     
     
-    NSLog(@"Drawed");
+    //NSLog(@"Drawed");
     delegate.loadedPieces++;
 
     
