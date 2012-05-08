@@ -9,7 +9,6 @@
 #define PIECE_NUMBER 4
 #define ORG_TIME 0.5
 
-
 #import "PuzzleController.h"
 #import "UIImage+CWAdditions.h"
 #import "AppDelegate.h"
@@ -219,6 +218,9 @@
             }
             
             [self createPuzzleFromSavedGame];
+            
+        } else {
+            [menu startNewGame:nil];
         }
         
     }
@@ -558,6 +560,13 @@
 
 - (void)pinch:(UIPinchGestureRecognizer*)gesture {
     
+    
+    if (CGRectContainsPoint(drawerView.frame, [gesture locationInView:self.view])) {
+        
+        return;
+    }
+    
+    
     float z = [gesture scale];
     
     if (z>1.03 || z < 0.97) {
@@ -574,8 +583,7 @@
             lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
             
             for (GroupView *g in groups) {
-//                point = CGPointMake([gesture locationInView:g].x, [gesture locationInView:g].y);
-//                [self setAnchorPoint:point forView:g];
+
                 g.transform = CGAffineTransformScale(g.transform, z, z);
             }
         }
@@ -621,8 +629,9 @@
     
     //Checks if a group already exists in the neighborhood
     for (PieceView *p in [piece allTheNeighborsBut:nil]) {
-        if (p.group!=nil) {
+        if (p.group!=nil && p!=piece) {
             newGroup = p.group;
+            break;
         }
     }
     
@@ -650,11 +659,15 @@
         NSLog(@"New group created. Groups count %d", [groups count]);
         
     } else {
-        
+
         piece.isBoss = NO;
-        [self addPiece:piece toGroup:newGroup];
-        NSLog(@"Piece added to existing group");
-        
+
+        if (piece.group!=newGroup) {
+            
+            [self addPiece:piece toGroup:newGroup];
+            NSLog(@"Piece #%d added to existing group", piece.number);
+
+        }        
     }
     
     for (PieceView *p in pieces) {
@@ -662,20 +675,27 @@
             [self.view bringSubviewToFront:p];
         }
     }
-
+    
+    
+    [self moveGroup:newGroup toLatticePoint:newGroup.boss.position animated:NO];
     [self bringDrawerToTop];
     
 }
 
 - (void)addPiece:(PieceView*)piece toGroup:(GroupView*)group {
-
-    piece.group = group;
+    
+    if (piece.group==group) {
+       
+        return;
+        
+    } else {
+        
+        piece.group = group;
+    }
 
     [piece removeFromSuperview];
     [group.pieces addObject:piece];
 
-
-    [UIView animateWithDuration:0 animations:^{
         
         [group addSubview:piece];
         
@@ -692,20 +712,9 @@
         CGPoint trans = CGPointMake(relative.y*w, relative.x*w);
         
         piece.center = CGPointMake(group.boss.center.x+trans.x, group.boss.center.y+trans.y);
-    
-    }completion:^(BOOL finished) {
-        
+            
         [self refreshPositions];
         
-    }];
-
-
-    
-    
-//    piece.transform = CGAffineTransformMakeRotation(group.boss.angle);    
-//    piece.transform = CGAffineTransformMake(piece.transform.a, piece.transform.b, piece.transform.c, piece.transform.d, 
-//                                            -group.transform.tx, 
-//                                            -group.transform.ty);
 
 }
 
@@ -733,6 +742,7 @@
             
             [self checkNeighborsForAllThePieces];
             [self updatePositionsInGroup:group withReferencePiece:group.boss];
+            [self updatePercentage];
             [self updateGroupDB:group];
             
         }];
@@ -812,6 +822,35 @@
     }
 
     [self saveGame];
+    
+}
+
+- (void)checkNeighborsForAllThePieces {
+    
+    for (PieceView *p in pieces) {
+        if (p.isFree && !p.isCompleted) {
+            [self checkNeighborsOfPieceNumber:p];
+        }
+    }
+        
+    //Add lonely pieces to groups (create one if it doesn't exist)
+    for (PieceView *p in pieces) {
+        if (p.isFree && p.hasNeighbors) {
+            
+            if (YES) {
+                
+                [self createNewGroupForPiece:p];
+                
+            } else {
+                
+                NSLog(@"Piece #%d was already grouped", p.number);
+            }
+        }
+    }
+    
+    
+    
+    //Join different groups
     
 }
 
@@ -975,7 +1014,15 @@
     //NSLog(@"Position for piece #%d is %d", piece.number, piece.position);
     //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
-    [self checkNeighborsOfPieceNumber:piece];
+    if (piece.group) {
+        
+        [self checkNeighborsForAllThePieces];
+        
+    } else {
+        
+        [self checkNeighborsOfPieceNumber:piece];
+    }
+    
     [self updatePieceDB:piece];
     [self updatePercentage];
     [self bringDrawerToTop];
@@ -998,31 +1045,22 @@
 
 - (BOOL)shouldCheckNeighborsOfPiece:(PieceView*)piece inDirection:(int)r {
     
-    
-    
     if (piece.position!=0) {
         
-        
-        
-//        return YES;
-        
-        
-        
-        
         if (r==2 && (piece.position+1)%pieceNumber==0) {
-//            NSLog(@"bottom piece checking down");
+            //NSLog(@"bottom piece (#%d) checking down", piece.number);
             return NO;
         }
         if ( r==0 && (piece.position)%pieceNumber==0) {
-//            NSLog(@"top piece checking up");
+            //NSLog(@"top piece (#%d) checking up", piece.number);
             return NO;
         }
-        if (r==1 && pieceNumber%(piece.position+1)==0) {
-//            NSLog(@"right piece checking right");
+        if (r==3 && (piece.position)/pieceNumber==pieceNumber-1) {
+            //NSLog(@"right piece (#%d) checking right", piece.number);
             return NO;
         }
-        if (r==3 && pieceNumber%(piece.position)==pieceNumber-1) {
-//            NSLog(@"left piece checking left");
+        if (r==1 && (piece.position)/pieceNumber==0) {
+            //NSLog(@"left piece (#%d) checking left", piece.number);
             return NO;
         }
         
@@ -1031,28 +1069,6 @@
     } else {
         return (r==1 || r==2);
     }
-    
-}
-
-- (void)checkNeighborsForAllThePieces {
-    
-    for (PieceView *p in pieces) {
-        if (p.isFree && !p.isCompleted) {
-            [self checkNeighborsOfPieceNumber:p];
-        }
-    }
-    
-    //NSLog(@"%s", __FUNCTION__);
-    
-    //Add lonely pieces to groups (create one if it doesn't exist)
-    for (PieceView *p in pieces) {
-        if (p.isFree && p.hasNeighbors && p.group==nil) {
-            
-            [self createNewGroupForPiece:p];
-        }
-    }
-    
-    //Join different groups
     
 }
 
@@ -1107,11 +1123,14 @@
                         
                         if ((ABS(piece.angle-otherPiece.angle)<M_PI/4)) {
                             
-                            [otherPiece setNeighborNumber:piece.number forEdge:(direction+2)%4];
-                            [piece setNeighborNumber:otherPiece.number forEdge:direction%4];
-                            
-                            piece.hasNeighbors = YES;
-                            otherPiece.hasNeighbors = YES;
+                            if ([[piece.neighbors objectAtIndex:direction%4] intValue]!=otherPiece.number) {
+                                
+                                [otherPiece setNeighborNumber:piece.number forEdge:(direction+2)%4];
+                                [piece setNeighborNumber:otherPiece.number forEdge:direction%4];
+                                
+                                piece.hasNeighbors = YES;
+                                otherPiece.hasNeighbors = YES;
+                            }
                             
                         } else {
                             //NSLog(@"0 -------> Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
@@ -1895,7 +1914,11 @@
         rect.size.height = piceSize;
         p.frame = rect;
     }
+}
+
+- (void)refreshPieces {
     
+    NSLog(@"Pieces refreshed");
 }
 
 - (void)shuffle {
@@ -2443,6 +2466,40 @@
 }
 
 
+
+- (IBAction)rateGame {
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    
+    if (![prefs boolForKey:@"Reviewed"]) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion" message:@"Would you like to rate this game?" delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
+        [alertView show];
+        
+    } else {
+        
+        NSLog(@"Already rated");
+    }
+    
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    if (buttonIndex==1) {
+        
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs setBool:YES forKey:@"Reviewed"];
+        
+     
+        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+        
+        NSString* url = [NSString stringWithFormat: @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%d", APP_STORE_APP_ID];
+        [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
+        
+    }
+    
+}
 
 
 

@@ -8,9 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+
+#define APP_STORE_APP_ID 525717757
+#define TIMES_B4_ASKING_TO_REIEW 5
+
+
+
+
 @class PuzzleController, CreatePuzzleOperation;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    
+    BOOL wasOpened;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic,retain) PuzzleController *puzzle;

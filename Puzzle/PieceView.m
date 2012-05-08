@@ -819,7 +819,7 @@
     
     neighbors = [[NSArray alloc] initWithArray:temp];
     
-    //NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
+    NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
     
     hasNeighbors = YES;
     

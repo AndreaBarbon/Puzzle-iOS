@@ -22,7 +22,7 @@
 #define QUALITY 1.5
 
 
-@interface PuzzleController : TopClass < UIScrollViewDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate> {
+@interface PuzzleController : UIViewController <UIScrollViewDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
     
     BOOL swiping;
     BOOL didRotate;
@@ -152,6 +152,8 @@
 
 - (void)puzzleSaved:(NSNotification *)saveNotification;
 - (void)addPiecesToView;
-
+- (void)resetSizeOfAllThePieces;
+- (void)refreshPieces;
+- (IBAction)rateGame;
 
 @end
