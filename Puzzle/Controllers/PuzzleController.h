@@ -19,7 +19,7 @@
 #import "Image.h"
 #import "CreatePuzzleOperation.h"
 
-#define QUALITY 1
+#define QUALITY 1.5
 
 
 @interface PuzzleController : TopClass < UIScrollViewDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate> {
@@ -62,10 +62,13 @@
 @property(nonatomic) float piceSize;
 @property(nonatomic) float elapsedTime;
 @property(nonatomic) float N;
+@property(nonatomic) float padding;
+
 @property(nonatomic) int pieceNumber;
 @property(nonatomic) int loadedPieces;
 @property(nonatomic) int missedPieces;
-@property(nonatomic) float padding;
+@property(nonatomic) int imageSize;
+
 @property(nonatomic) BOOL loadingGame;
 @property(nonatomic) BOOL puzzleCompete;
 
@@ -146,6 +149,9 @@
 - (void)stopTimer;
 
 - (void)loadingFailed;
+
+- (void)puzzleSaved:(NSNotification *)saveNotification;
+- (void)addPiecesToView;
 
 
 @end

@@ -561,8 +561,8 @@
 
 
 
-#pragma mark
-#pragma DRAWING
+#pragma mark -
+#pragma mark DRAWING
 
 #define CO_PADDING 0
 
@@ -765,8 +765,9 @@
     
     
     
-    //NSLog(@"Drawed");
+    NSLog(@"Drawed");
     delegate.loadedPieces++;
+
     
     int pieceNumber = (delegate.N-delegate.missedPieces);
     if (!delegate.loadingGame) {

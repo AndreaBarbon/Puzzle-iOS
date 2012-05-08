@@ -26,7 +26,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups, panningSwitch;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups, panningSwitch, imageSize;
 
 @synthesize pan, panDrawer;
 
@@ -38,12 +38,17 @@
     
     [super viewDidLoad];
     
+    
+    imageSize = QUALITY;
+    
 //    firstPointView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
 //    firstPointView.backgroundColor = [UIColor whiteColor];
 //    [self.view addSubview:firstPointView];
     
         
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+        
+        imageSize *= 0.5;
      
         percentageLabel.font = [UIFont boldSystemFontOfSize:20.0];
         percentageLabel.transform = CGAffineTransformMakeTranslation(10, 10);
@@ -189,23 +194,9 @@
     loadingFailed = NO;
 
     
-    if (managedObjectContext!=nil) {
+    if (managedObjectContext) {
         
-        NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
-        
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext: managedObjectContext];
-        
-        [fetchRequest1 setEntity:entity];
-        
-        NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
-        [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
-        dateSort = nil;
-        
-        [fetchRequest1 setFetchLimit:1];
-        
-        puzzleDB = [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
-        fetchRequest1 = nil;
-        
+        puzzleDB = [self lastSavedPuzzle];
         
         if (puzzleDB!=nil) {
             
@@ -229,6 +220,24 @@
     
 }
 
+- (Puzzle*)lastSavedPuzzle {
+    
+    NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext: managedObjectContext];
+    
+    [fetchRequest1 setEntity:entity];
+    
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
+    [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+    dateSort = nil;
+    
+    [fetchRequest1 setFetchLimit:1];
+    
+    return [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
+
+}
+
 - (IBAction)toggleMenu:(id)sender {
     
     menu.duringGame = YES;
@@ -240,13 +249,43 @@
     
 }
 
+// This method will be called on a secondary thread. Forward to the main thread for safe handling of UIKit objects.
+- (void)puzzleSaved:(NSNotification *)saveNotification {
+    
+    NSLog(@"%s", __FUNCTION__);
+    
+    if ([NSThread isMainThread]) {
+        [self.managedObjectContext mergeChangesFromContextDidSaveNotification:saveNotification];
+    } else {
+        [self performSelectorOnMainThread:@selector(puzzleSaved:) withObject:saveNotification waitUntilDone:NO];
+    }
+}
+
+- (void)addPiecesToView {
+    
+    NSLog(@"%s", __FUNCTION__);
+
+    
+    if ([NSThread isMainThread]) {
+        
+        for (PieceView *p in pieces) {
+            
+            [self.view addSubview:p];
+            loadedPieces++;
+        }
+    
+    } else {
+    
+        [self performSelectorOnMainThread:@selector(addPiecesToView) withObject:nil waitUntilDone:NO];
+    }
+}
+
 - (void)allPiecesLoaded {
     
     if (loadingFailed) {
         return;
     }
     
-    [self computePieceSize];
     [self bringDrawerToTop];
     
     for (PieceView *p in pieces) {
@@ -274,6 +313,9 @@
         if (loadingGame) {
             
             pieces = [self shuffleArray:pieces];
+            
+            NSLog(@"Name: %@", puzzleDB.name);
+
             [self resetSizeOfAllThePieces];
             [self refreshPositions];
             [self organizeDrawerWithOrientation:self.interfaceOrientation];
@@ -285,6 +327,8 @@
             
         } else {
             
+            puzzleDB = [self lastSavedPuzzle];
+            NSLog(@"Name: %@", puzzleDB.name);
             [self resetSizeOfAllThePieces];
             [self shuffle];
             [self updatePercentage];
@@ -332,20 +376,20 @@
     
     // add the importer to an operation queue for background processing (works on a separate thread)
     puzzleOperation = [[CreatePuzzleOperation alloc] init];
-    puzzleOperation.insertionContext = self.managedObjectContext;
-    puzzleOperation.persistentStoreCoordinator = self.persistentStoreCoordinator;
     puzzleOperation.delegate = self;
     puzzleOperation.loadingGame = YES;
     
     menu.game.view.frame = CGRectMake(0, 0, menu.game.view.frame.size.width, menu.game.view.frame.size.height);
     
     image = [UIImage imageWithData:puzzleDB.image.data];
+    
+    
     imageView.image = image;
     imageViewLattice.image = image;
     
     [menu.game startLoading];
     
-    [self.operationQueue addOperation:puzzleOperation];
+    [self.operationQueue addOperations:[NSArray arrayWithObject:puzzleOperation] waitUntilFinished:NO];
     
     
 }
@@ -363,8 +407,6 @@
     
     // add the importer to an operation queue for background processing (works on a separate thread)
     puzzleOperation = [[CreatePuzzleOperation alloc] init];
-    puzzleOperation.insertionContext = self.managedObjectContext;
-    puzzleOperation.persistentStoreCoordinator = self.persistentStoreCoordinator;
     puzzleOperation.delegate = self;
     puzzleOperation.loadingGame = NO;
     
@@ -1879,12 +1921,10 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
         piceSize = 180;
-        biggerPieceSize = 360;
         
     }else{  
         
         piceSize = 100;
-        biggerPieceSize = 200;
         
     }
     
