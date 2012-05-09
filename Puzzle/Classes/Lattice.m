@@ -32,8 +32,9 @@
                 //CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+2*self.padding+20, w-1, w-1);
                 //CGRect rect = CGRectMake(i*w+frame.origin.x, (j)*w+frame.origin.y, w-1, w-1);
                 
+                float panning = 2.0;
                 
-                CGRect rect = CGRectMake(i*w-1, (j)*w-1, w-2, w-2);
+                CGRect rect = CGRectMake(i*w-panning, (j)*w-panning, w-2*panning, w-2*panning);
                 UIView *v = [[UIView alloc] initWithFrame:rect];
                 
                 

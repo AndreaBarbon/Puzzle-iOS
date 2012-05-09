@@ -27,11 +27,26 @@
 
 @synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups, panningSwitch, imageSize;
 
-@synthesize pan, panDrawer;
+@synthesize pan, panDrawer, pinch;
+
+@synthesize drawerStopped;
 
 
 #pragma mark -
-#pragma mark ••••••  View Lifecycle
+#pragma mark View Lifecycle
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    
+//    for (PieceView *p in pieces) {
+//        if ((p.pan==gestureRecognizer && pan==otherGestureRecognizer) || 
+//            (pan==gestureRecognizer && p.pan==otherGestureRecognizer)) {
+//            
+//        }
+//    }    
+    
+    return (    (gestureRecognizer==pan && otherGestureRecognizer==pinch)   ||
+                (gestureRecognizer==pinch && otherGestureRecognizer==pan)   );
+}
 
 - (void)viewDidLoad {
     
@@ -122,13 +137,15 @@
     [self.view addSubview:menu.view];
     
     
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    pinch.delegate = self;
     [self.view addGestureRecognizer:pinch];
     
     
     pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    pan.delegate = self;
     [pan setMinimumNumberOfTouches:1];
-    [pan setMaximumNumberOfTouches:1];
+    [pan setMaximumNumberOfTouches:2];
     
     
     panDrawer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDrawer:)];
@@ -147,15 +164,15 @@
     [self.view addGestureRecognizer:longPressure];
     
     
-    UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
-    [swipeR setDirection:UISwipeGestureRecognizerDirectionRight];
-    [swipeR setNumberOfTouchesRequired:2];
-    [self.view addGestureRecognizer:swipeR];
-    
-    UISwipeGestureRecognizer *swipeL = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeL:)];
-    [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [swipeL setNumberOfTouchesRequired:2];
-    [self.view addGestureRecognizer:swipeL];
+//    UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
+//    [swipeR setDirection:UISwipeGestureRecognizerDirectionRight];
+//    [swipeR setNumberOfTouchesRequired:2];
+//    [self.view addGestureRecognizer:swipeR];
+//    
+//    UISwipeGestureRecognizer *swipeL = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeL:)];
+//    [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
+//    [swipeL setNumberOfTouchesRequired:2];
+//    [self.view addGestureRecognizer:swipeL];
     
 }
 
@@ -201,7 +218,7 @@
 
 
 #pragma mark -
-#pragma mark ••••••  Puzzle
+#pragma mark Puzzle
 
 - (void)loadPuzzle {
     
@@ -314,7 +331,7 @@
         
         for (PieceView *p in pieces) {
             p.isFree = YES;
-            [p setIsPositioned:YES];
+            p.isPositioned = YES;
             [self movePiece:p toLatticePoint:p.number animated:NO];
         }
         [imageViewLattice removeFromSuperview];
@@ -327,6 +344,11 @@
             pieces = [self shuffleArray:pieces];
             
             NSLog(@"Name: %@", puzzleDB.name);
+            
+            for (PieceView *p in pieces) {
+                [self isPositioned:p];
+            }
+
 
             [self resetSizeOfAllThePieces];
             [self refreshPositions];
@@ -380,8 +402,10 @@
     missedPieces = 0;
     loadingGame = YES;
     self.view.userInteractionEnabled = NO;
-    drawerView.hidden = NO;
-    
+    drawerView.alpha = 1;
+    panningSwitch.alpha = 1;
+    drawerStopped = NO;
+
     directions = [NSArray arrayWithArray:[self directionsUpdated]];
     
     [self computePieceSize];
@@ -413,8 +437,10 @@
     
     missedPieces = 0;
     loadingGame = NO;
-    drawerView.hidden = NO;
-
+    drawerView.alpha = 1;
+    panningSwitch.alpha = 1;
+    drawerStopped = NO;
+    
     directions = [NSArray arrayWithArray:[self directionsUpdated]];
     [self computePieceSize];
     [self createLattice];
@@ -493,9 +519,11 @@
     
     [self stopTimer];
     
+
     
-    [UIView animateWithDuration:1 animations:^{
-        drawerView.hidden = YES;
+    [UIView animateWithDuration:2 animations:^{
+        drawerView.alpha = 0;
+        panningSwitch.alpha = 0;
     }];
     
     
@@ -509,7 +537,7 @@
 
 
 #pragma mark -
-#pragma mark ••••••  Gesture handling
+#pragma mark Gesture handling
 
 - (void)rotateTap:(UITapGestureRecognizer*)gesture {
     
@@ -533,7 +561,7 @@
 }
 
 - (void)pan:(UIPanGestureRecognizer*)gesture {
-    
+        
     CGPoint point = [gesture locationInView:lattice];
     
     if (gesture.state==UIGestureRecognizerStateBegan) {
@@ -544,7 +572,7 @@
             
             CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
             
-            if ([self point:point isInFrame:rect]) {
+            if ([self point:point isInFrame:rect] && [self pieceWithPosition:i].userInteractionEnabled) {
                 movingPiece = [self pieceWithPosition:i];
             }
             
@@ -552,6 +580,7 @@
     }
     
     if (movingPiece!=nil && !panningSwitch.isOn) {
+        NSLog(@"Moving the piece");
         [movingPiece move:gesture];
     }
     
@@ -573,10 +602,7 @@
 - (void)pinch:(UIPinchGestureRecognizer*)gesture {
     
     
-    if (CGRectContainsPoint(drawerView.frame, [gesture locationInView:self.view])) {
-        
-        return;
-    }
+    if (CGRectContainsPoint(drawerView.frame, [gesture locationInView:self.view])) return;
     
     
     float z = [gesture scale];
@@ -611,7 +637,7 @@
 
 
 #pragma mark -
-#pragma mark ••••••  Groups
+#pragma mark Groups
 
 - (void)groupMoved:(GroupView*)group {
     
@@ -720,7 +746,7 @@
         CGAffineTransform matrix = CGAffineTransformMakeRotation(group.boss.angle-group.angle);
         relative = [self applyMatrix:matrix toVector:relative];
         
-        float w = [[lattice objectAtIndex:0] bounds].size.width+2;
+        float w = [[lattice objectAtIndex:0] bounds].size.width+4;
         
         CGPoint trans = CGPointMake(relative.y*w, relative.x*w);
         
@@ -757,6 +783,7 @@
             [self updatePositionsInGroup:group withReferencePiece:group.boss];
             [self updatePercentage];
             [self updateGroupDB:group];
+            [self bringDrawerToTop];
             
         }];
         
@@ -806,7 +833,7 @@
             
             if (p.group==group) {
                 
-                [p setIsPositioned:YES];
+                [self isPositioned:p];
                 
             } else if (p.userInteractionEnabled) {
                 
@@ -840,8 +867,6 @@
 
 - (void)checkNeighborsForAllThePieces {
     
-    NSLog(@"Starting %s", __FUNCTION__);
-
     for (PieceView *p in pieces) {
         if (p.isFree) {
             [self checkNeighborsOfPiece:p];
@@ -852,27 +877,29 @@
         }
     }    
     
-    NSLog(@"Finished %s", __FUNCTION__);
 
 }
 
 - (void)checkNeighborsForGroup:(GroupView*)group {
     
-    NSLog(@"Starting %s", __FUNCTION__);
+    //NSLog(@"Starting %s", __FUNCTION__);
 
-    for (PieceView *p in group.pieces) {
+    for (int i=0; i<[group.pieces count]; i++) {
+        
+        PieceView *p = [group.pieces objectAtIndex:i];
+        
         if (!p.isCompleted) {
             [self checkNeighborsOfPiece:p];
 
         }
     }
     
-    NSLog(@"Finished %s", __FUNCTION__);
+    //NSLog(@"Finished %s", __FUNCTION__);
 }
 
 
 #pragma mark -
-#pragma mark ••••••  Pieces
+#pragma mark Pieces
 
 - (void)pieceMoved:(PieceView *)piece {
     
@@ -1194,7 +1221,9 @@
         //NSLog(@"Piece #%d positioned!", piece.number);
         //Flashes and block the piece
         if (!piece.isPositioned) {
-            [piece setIsPositioned:YES];
+            
+            piece.isPositioned = YES;
+            piece.userInteractionEnabled = NO;
             
             for (PieceView *p in pieces) {
                 if (p.isFree && p!=piece && !p.isPositioned) {
@@ -1203,12 +1232,12 @@
                     [self.view bringSubviewToFront:p.group];
                 }
             }
+            
+            [piece pulse];
 
             
             if (![self isPuzzleComplete] && !loadingGame) {
-               
-                [piece pulse];
-                
+                               
                 if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
                     [positionedSound play];
                 }
@@ -1235,13 +1264,14 @@
             
         }completion:^(BOOL finished) {
             
-            if (!piece.isPositioned) {
-                [self isPositioned:piece];
-            }
             [self checkNeighborsOfPiece:piece];
-            
+
             if (piece.hasNeighbors) {
                 [self createNewGroupForPiece:piece];
+            }
+            
+            if (!piece.isPositioned) {
+                [self isPositioned:piece];
             }
             
             [self updatePercentage];
@@ -1253,14 +1283,12 @@
         piece.center = [self centerOfLatticePiece:i];
         CGAffineTransform trans = CGAffineTransformMakeScale(lattice.scale, lattice.scale);
         piece.transform = CGAffineTransformRotate(trans, piece.angle);
-
-        if (!piece.isPositioned) {
-            [self isPositioned:piece];
-        }
         
     }
         
     piece.oldPosition = [piece realCenter];
+    
+    [self bringDrawerToTop];
     
 }
 
@@ -1315,7 +1343,7 @@
 
 
 #pragma mark -
-#pragma mark ••••••  Lattice
+#pragma mark Lattice
 
 - (void)createLattice {
     
@@ -1399,8 +1427,8 @@
     if (0<=i && i<N) {
         UIView *v = [lattice objectAtIndex:i];
         return CGRectMake(
-                          lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding)-1*lattice.scale,
-                          lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding)-1*lattice.scale, 
+                          lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding)-2.0*lattice.scale,
+                          lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding)-2.0*lattice.scale, 
                           lattice.scale*piceSize, 
                           lattice.scale*piceSize);
     } else {
@@ -1419,12 +1447,13 @@
     CGRect rect = [self frameOfLatticePiece:i];
     return CGPointMake(rect.origin.x+lattice.scale*piceSize/2.0, rect.origin.y+lattice.scale*piceSize/2.0);
     
+    
 }
 
 
 
 #pragma mark -
-#pragma mark ••••••  Drawer
+#pragma mark Drawer
 
 - (void)organizeDrawerWithOrientation:(UIImageOrientation)orientation {
     
@@ -1447,8 +1476,9 @@
     
     if ((drawerFirstPoint.x==0 && drawerFirstPoint.y==0) ){//|| removed) {
         
-        drawerFirstPoint.x = [[temp objectAtIndex:0] frame].origin.x;
-        drawerFirstPoint.y = [[temp objectAtIndex:0] frame].origin.y;
+        PieceView *p = [temp objectAtIndex:0];
+        drawerFirstPoint.x = [p frame].origin.x+p.bounds.size.height/2;
+        drawerFirstPoint.y = [p frame].origin.y+p.bounds.size.height/2;
         //NSLog(@"FirstPoint = %.1f, %.1f", drawerView.frame.origin.x, drawerView.frame.origin.y);
 
     }
@@ -1460,30 +1490,30 @@
             
             PieceView *p = [temp objectAtIndex:i];
             
-            CGRect rect = p.frame;
+            CGPoint point = p.center;
             PieceView *p2;
             
             if (i>0) {
                 p2 = [temp objectAtIndex:i-1];
-                CGRect rect2 = p2.frame;
+                CGPoint point2 = p2.center;
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    rect.origin.y = rect2.origin.y+rect2.size.width+drawerMargin;
-                    rect.origin.x = (self.padding*0.75)/2;
+                    point.y = point2.y+p2.bounds.size.width+drawerMargin;
+                    point.x = (self.padding*0.75)/2+p.bounds.size.width/2;;
                 } else {
-                    rect.origin.x = rect2.origin.x+rect2.size.width+drawerMargin;
-                    rect.origin.y = (self.padding*0.75)/2;
+                    point.x = point2.x+p2.bounds.size.width+drawerMargin;
+                    point.y = (self.padding*0.75)/2+p.bounds.size.height/2;;
                 }
                 
             } else {
                 
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    rect.origin.y = drawerFirstPoint.y+drawerMargin;
-                    rect.origin.x = (self.padding*0.75)/2;
+                    point.y = drawerFirstPoint.y+p.bounds.size.height/2+drawerMargin;
+                    point.x = (self.padding*0.75)/2+p.bounds.size.width/2;
                 } else {
-                    rect.origin.x = drawerFirstPoint.x+drawerMargin;
-                    rect.origin.y = (self.padding*0.75)/2;
+                    point.x = drawerFirstPoint.x+p.bounds.size.width/2+drawerMargin;
+                    point.y = (self.padding*0.75)/2+p.bounds.size.height/2;
                 }
                 
                 //NSLog(@"FirstPoint was %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
@@ -1491,10 +1521,10 @@
             }
 
             if (!didRotate && UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad) {
-                rect.origin.y += 20;
+                point.y += 20;
             }
             
-            p.frame = rect;
+            p.center = point;
 
         }
     //}];
@@ -1503,24 +1533,50 @@
     
 }
 
-- (void)panDrawer:(UIPanGestureRecognizer*)gesture {
+- (BOOL)drawerStoppedShouldBeStopped {
     
-    if (menu.view.alpha == 0) {
-
-        if ([self numberOfPiecesInDrawerAtTheMoment]<=numberOfPiecesInDrawer) {
-            
+    if ([self numberOfPiecesInDrawerAtTheMoment]<=numberOfPiecesInDrawer) {
+        
+        if (!drawerStopped) {
+            drawerStopped = YES;
             drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
             [UIView animateWithDuration:0.5 animations:^{
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
             }];
-            return;
         }
+        return YES;
+    }
+    return NO;
+}
+
+- (void)panDrawer:(UIPanGestureRecognizer*)gesture {
+    
+    if (menu.view.alpha == 0) {
+
+        if ([self drawerStoppedShouldBeStopped]) return;
+        
+        drawerStopped = NO;
+        
+        
         
         CGPoint traslation = [gesture translationInView:lattice.superview];
         
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        
+#define PANNING_SPEED 0.07
+        
+#define VELOCITY_LIMIT 1000.0
+        
+#define PAN_DRAWER_ACCURACY 0.01
+
+        
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) { //Landscape
             
-            if ([gesture velocityInView:self.view].y<0) {
+            float velocity = [gesture velocityInView:self.view].y;
+            
+            if (velocity<0) {
+                
+                if (velocity < -VELOCITY_LIMIT) velocity = -VELOCITY_LIMIT;
             
                 if ([self lastPieceInDrawer].frame.origin.y<[[UIScreen mainScreen] bounds].size.width-piceSize) {
 
@@ -1529,33 +1585,37 @@
 
             } else {
                 
+                if (velocity>VELOCITY_LIMIT) velocity = VELOCITY_LIMIT;
+
                 if ([self firstPieceInDrawer].frame.origin.y>0) {
 
                     [self movePositivePieces];
                 }
 
             }
-            
-#define PANNING_SPEED 0.06
-            
-            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
+
+            if (ABS(traslation.x > PAN_DRAWER_ACCURACY) || ABS(traslation.y) > PAN_DRAWER_ACCURACY) {
                 
                 for (PieceView *p in pieces) {
                     if (!p.isFree) {
                         
-                        CGRect frame = p.frame;
-                        frame.origin.y += [gesture velocityInView:self.view].y*PANNING_SPEED;
-                        p.frame = frame;
+                        CGPoint point = p.center;
+                        point.y += velocity*PANNING_SPEED;
+                        p.center = point;
                     }
                 }                
-                drawerFirstPoint.y += [gesture velocityInView:self.view].y*PANNING_SPEED;
+                drawerFirstPoint.y += velocity*PANNING_SPEED;
                 [gesture setTranslation:CGPointMake(traslation.x, 0) inView:lattice.superview];                
             }
             
             
-        } else {
+        } else {    //Portrait
             
-            if ([gesture velocityInView:self.view].x<0) {
+            float velocity = [gesture velocityInView:self.view].x;
+            
+            if (velocity<0) {
+                
+                if (velocity < -VELOCITY_LIMIT) velocity = -VELOCITY_LIMIT;
                 
                 if ([self lastPieceInDrawer].frame.origin.x<[[UIScreen mainScreen] bounds].size.width-piceSize) {
                     
@@ -1563,7 +1623,9 @@
                 }
                 
             } else {
-                
+
+                if (velocity>VELOCITY_LIMIT) velocity = VELOCITY_LIMIT;
+
                 if ([self firstPieceInDrawer].frame.origin.x>0) {
                     
                     [self movePositivePieces];
@@ -1571,17 +1633,17 @@
                 
             }
             
-            if (ABS(traslation.x>0.01) || ABS(traslation.y) > 0.01) {
+            if (ABS(traslation.x > PAN_DRAWER_ACCURACY) || ABS(traslation.y) > PAN_DRAWER_ACCURACY) {
                 
                 for (PieceView *p in pieces) {
                     if (!p.isFree) {
                         
-                        CGRect frame = p.frame;
-                        frame.origin.x += [gesture velocityInView:self.view].x*PANNING_SPEED;
-                        p.frame = frame;
+                        CGPoint point = p.center;
+                        point.x += velocity*PANNING_SPEED;
+                        p.center = point;
                     }
                 }    
-                drawerFirstPoint.x += [gesture velocityInView:self.view].x*PANNING_SPEED;
+                drawerFirstPoint.x += velocity*PANNING_SPEED;
                 [gesture setTranslation:CGPointMake(0, traslation.y) inView:lattice.superview];     
             }
         }
@@ -1819,7 +1881,7 @@
 
 
 #pragma mark -
-#pragma mark ••••••  Tools
+#pragma mark Tools
 
 - (IBAction)togglePanningMode:(id)sender {
     
@@ -1980,11 +2042,11 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
-        piceSize = 180;
+        piceSize = PIECE_SIZE_IPAD;
         
     }else{  
         
-        piceSize = 100;
+        piceSize = PIECE_SIZE_IPHONE;
         
     }
     
@@ -1993,7 +2055,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         drawerSize = piceSize+1.8*self.padding-15;   
     else   
-        drawerSize = piceSize+1.8*self.padding-15;
+        drawerSize = piceSize+1.8*self.padding-10;
     
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
@@ -2007,17 +2069,26 @@
 }
 
 - (void)bringDrawerToTop {
-    
-    [self.view bringSubviewToFront:drawerView];
-    [self.view bringSubviewToFront:stepperDrawer];
 
     for (PieceView *p in pieces) {
-        if (!p.isFree) {
+        if (p.isFree && !p.isPositioned) {
+            
             [self.view bringSubviewToFront:p];
         }
     }
+    
     [self.view bringSubviewToFront:HUDView];
-    [self.view bringSubviewToFront:firstPointView];
+    [self.view bringSubviewToFront:drawerView];
+    
+    for (PieceView *p in pieces) {
+        if (!p.isFree) {
+
+            [self.view bringSubviewToFront:p];
+        }
+    }
+
+//    [self.view bringSubviewToFront:stepperDrawer];
+//    [self.view bringSubviewToFront:firstPointView];
 
     
 }
@@ -2120,7 +2191,7 @@
 
 
 #pragma mark -
-#pragma mark ••••••  Rest
+#pragma mark Rest
 
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -2447,8 +2518,6 @@
     
     self.view.userInteractionEnabled = NO;
     
-    NSLog(@"Starting creating puzzle in the DB");
-    
     puzzleDB = [self newPuzzleInCOntext:managedObjectContext];
     Image *imageDB = [self newImageInCOntext:managedObjectContext];
     imageDB.data = UIImageJPEGRepresentation(image, 1);
@@ -2508,7 +2577,7 @@
     
     if (![prefs boolForKey:@"Reviewed"]) {
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion" message:@"Would you like to rate this game?" delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
+        alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion!" message:@"Would you like to rate this game?" delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
         [alertView show];
         
     } else {
@@ -2519,7 +2588,7 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView_ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     if (buttonIndex==1) {
         
@@ -2527,7 +2596,7 @@
         [prefs setBool:YES forKey:@"Reviewed"];
         
      
-        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+        [alertView_ dismissWithClickedButtonIndex:buttonIndex animated:YES];
         
         NSString* url = [NSString stringWithFormat: @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%d", APP_STORE_APP_ID];
         [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];

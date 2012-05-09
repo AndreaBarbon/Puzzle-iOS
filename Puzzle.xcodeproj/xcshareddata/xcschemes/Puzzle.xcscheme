@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B87C5CC015400B2A00AF69BC"
-               BuildableName = "Puzzle.app"
+               BuildableName = "YourPuzzle.app"
                BlueprintName = "Puzzle"
                ReferencedContainer = "container:Puzzle.xcodeproj">
             </BuildableReference>
@@ -32,7 +32,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B87C5CC015400B2A00AF69BC"
-            BuildableName = "Puzzle.app"
+            BuildableName = "YourPuzzle.app"
             BlueprintName = "Puzzle"
             ReferencedContainer = "container:Puzzle.xcodeproj">
          </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B87C5CC015400B2A00AF69BC"
-            BuildableName = "Puzzle.app"
+            BuildableName = "YourPuzzle.app"
             BlueprintName = "Puzzle"
             ReferencedContainer = "container:Puzzle.xcodeproj">
          </BuildableReference>
@@ -81,7 +81,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B87C5CC015400B2A00AF69BC"
-            BuildableName = "Puzzle.app"
+            BuildableName = "YourPuzzle.app"
             BlueprintName = "Puzzle"
             ReferencedContainer = "container:Puzzle.xcodeproj">
          </BuildableReference>

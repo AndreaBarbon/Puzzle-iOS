@@ -21,8 +21,12 @@
 
 #define QUALITY 1.5
 
+#define PIECE_SIZE_IPAD 180
+#define PIECE_SIZE_IPHONE 75
 
-@interface PuzzleController : UIViewController <UIScrollViewDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
+
+
+@interface PuzzleController : UIViewController <UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
     
     BOOL swiping;
     BOOL didRotate;
@@ -44,6 +48,8 @@
     IBOutlet UIView *firstPointView;
     
     NSArray *directions;
+    
+    UIAlertView *alertView;
 
     
     int numberOfPiecesInDrawer;
@@ -73,6 +79,7 @@
 
 @property(nonatomic) BOOL loadingGame;
 @property(nonatomic) BOOL puzzleCompete;
+@property(nonatomic) BOOL drawerStopped;
 
 
 @property (nonatomic, retain) IBOutlet UISwitch *panningSwitch;
@@ -101,6 +108,7 @@
 @property (nonatomic, retain) Lattice *lattice;
 @property (nonatomic, retain) UIPanGestureRecognizer *pan;
 @property (nonatomic, retain) UIPanGestureRecognizer *panDrawer;
+@property (nonatomic, retain) UIPinchGestureRecognizer *pinch;
 
 @property (nonatomic, retain) MenuController *menu;
 
@@ -126,6 +134,7 @@
 - (IBAction)togglePanningMode:(id)sender;
 
 - (void)loadPuzzle;
+- (BOOL)drawerStoppedShouldBeStopped;
 
 - (CGRect)frameOfLatticePiece:(int)i;
 
@@ -158,5 +167,6 @@
 - (void)refreshPieces;
 - (IBAction)rateGame;
 - (BOOL)saveGame;
+- (BOOL)isPositioned:(PieceView*)piece;
 
 @end
