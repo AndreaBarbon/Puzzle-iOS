@@ -581,8 +581,9 @@
     }
     
     if (movingPiece!=nil && !panningSwitch.isOn) {
-        NSLog(@"Moving the piece");
+        //NSLog(@"Moving the piece");
         [movingPiece move:gesture];
+        return;
     }
     
     
@@ -590,7 +591,7 @@
         
         CGPoint traslation = [gesture translationInView:lattice.superview];
         
-        if (ABS(traslation.x>0.03) || ABS(traslation.y) > 0.03) {
+        if (YES) {//ABS(traslation.x>0.03) || ABS(traslation.y) > 0.03) {
             
             lattice.transform = CGAffineTransformTranslate(lattice.transform, traslation.x/lattice.scale, traslation.y/lattice.scale);
             [self refreshPositions];
@@ -608,7 +609,7 @@
     
     float z = [gesture scale];
     
-    if (z>1.03 || z < 0.97) {
+    if (YES) {//z>1.03 || z < 0.97) {
         
         CGPoint point = CGPointMake([gesture locationInView:lattice].x, [gesture locationInView:lattice].y);
         [self setAnchorPoint:point forView:lattice];
