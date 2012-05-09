@@ -240,8 +240,10 @@
             percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
             
             
-            if ([puzzleDB.percentage intValue]==100) {
+            if (puzzleDB.percentage.intValue==100) {
                 puzzleCompete = YES;
+                [menu startNewGame:nil];
+                return;
             }
             
             [self createPuzzleFromSavedGame];
@@ -314,9 +316,7 @@
     if (loadingFailed) {
         return;
     }
-    
-    [self bringDrawerToTop];
-    
+        
     for (PieceView *p in pieces) {
         if (!p.isFree) {
             p.frame = CGRectMake(0, 0, piceSize, piceSize);
@@ -353,7 +353,6 @@
             [self resetSizeOfAllThePieces];
             [self refreshPositions];
             [self organizeDrawerWithOrientation:self.interfaceOrientation];
-            [self bringDrawerToTop];
             [self checkNeighborsForAllThePieces];
             [self updatePercentage];
             loadingGame = NO;
@@ -370,6 +369,9 @@
             NSLog(@"-----------> All pieces created");
             
         }
+        
+        [self bringDrawerToTop];
+
         
     }
     
@@ -397,17 +399,18 @@
     
 }
 
-- (void)createPuzzleFromSavedGame {
+- (void)prepareForNewPuzzle {
+    
+    [self.view bringSubviewToFront:lattice];
+    [self.view bringSubviewToFront:drawerView];
+    [self.view bringSubviewToFront:HUDView];
     
     missedPieces = 0;
-    loadingGame = YES;
-    self.view.userInteractionEnabled = NO;
     drawerView.alpha = 1;
     panningSwitch.alpha = 1;
     drawerStopped = NO;
-
-    directions = [NSArray arrayWithArray:[self directionsUpdated]];
     
+    directions = [NSArray arrayWithArray:[self directionsUpdated]];
     [self computePieceSize];
     [self createLattice];
     drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
@@ -415,8 +418,19 @@
     // add the importer to an operation queue for background processing (works on a separate thread)
     puzzleOperation = [[CreatePuzzleOperation alloc] init];
     puzzleOperation.delegate = self;
-    puzzleOperation.loadingGame = YES;
+    puzzleOperation.loadingGame = loadingGame;
     puzzleOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
+    
+}
+
+- (void)createPuzzleFromSavedGame {
+
+    loadingGame = YES;
+    self.view.userInteractionEnabled = NO;
+
+
+    [self prepareForNewPuzzle];
+    
     
     menu.game.view.frame = CGRectMake(0, 0, menu.game.view.frame.size.width, menu.game.view.frame.size.height);
     
@@ -434,23 +448,10 @@
 }
 
 - (void)createPuzzleFromImage:(UIImage*)image_ {
-    
-    missedPieces = 0;
+
     loadingGame = NO;
-    drawerView.alpha = 1;
-    panningSwitch.alpha = 1;
-    drawerStopped = NO;
-    
-    directions = [NSArray arrayWithArray:[self directionsUpdated]];
-    [self computePieceSize];
-    [self createLattice];
-    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
-    
-    // add the importer to an operation queue for background processing (works on a separate thread)
-    puzzleOperation = [[CreatePuzzleOperation alloc] init];
-    puzzleOperation.delegate = self;
-    puzzleOperation.loadingGame = NO;
-    puzzleOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
+
+    [self prepareForNewPuzzle];
 
     [self.operationQueue addOperation:puzzleOperation];
     
@@ -496,7 +497,7 @@
             
             menuButtonView.userInteractionEnabled = NO;
             [self.view bringSubviewToFront:imageView];
-            //[self bringDrawerToTop];
+            //
             imageView.alpha = 1;
             
         } else if (imageView.alpha==1) {
@@ -657,7 +658,7 @@
     }
     
     [self.view bringSubviewToFront:group];    
-    [self bringDrawerToTop];
+    
     
 }
 
@@ -716,7 +717,7 @@
     
     
     [self moveGroup:newGroup toLatticePoint:newGroup.boss.position animated:NO];
-    [self bringDrawerToTop];
+    
     
 }
 
@@ -783,7 +784,7 @@
             [self updatePositionsInGroup:group withReferencePiece:group.boss];
             [self updatePercentage];
             [self updateGroupDB:group];
-            [self bringDrawerToTop];
+            
             
         }];
         
@@ -993,7 +994,7 @@
         [self organizeDrawerWithOrientation:self.interfaceOrientation];
     }];
     
-    [self bringDrawerToTop];
+    
     
     piece.oldPosition = [piece realCenter];
     
@@ -1067,7 +1068,7 @@
     
     [self updatePieceDB:piece];
     [self updatePercentage];
-    [self bringDrawerToTop];
+    
     
 }
 
@@ -1288,7 +1289,7 @@
         
     piece.oldPosition = [piece realCenter];
     
-    [self bringDrawerToTop];
+    
     
 }
 
@@ -2068,8 +2069,9 @@
     
 }
 
-- (void)bringDrawerToTop {
 
+- (void)bringDrawerToTop {
+    
     for (PieceView *p in pieces) {
         if (p.isFree && !p.isPositioned) {
             
@@ -2079,7 +2081,7 @@
     
     [self.view bringSubviewToFront:HUDView];
     [self.view bringSubviewToFront:drawerView];
-    
+        
     for (PieceView *p in pieces) {
         if (!p.isFree) {
 

@@ -236,12 +236,17 @@
                 
                 //NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
                 //[self movedNeighborhoodExcludingPieces:excluded];
-                [delegate pieceMoved:self];                    
+                [delegate pieceMoved:self];                   
+                if (isFree) {
+                    [self removeFromSuperview];
+                    [delegate.view insertSubview:self belowSubview:delegate.drawerView];
+                }
                 
             } else {
                 
                 [delegate groupMoved:self.group];                    
-                
+                [self.group removeFromSuperview];
+                [delegate.view insertSubview:self.group belowSubview:delegate.drawerView];  
             }
             
             
