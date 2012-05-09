@@ -1,0 +1,75 @@
+0000000000000000000000000000000000000000 2ea1ee4a1e134032f9d0fab8ab558775001509e2 AndreaBarbon <andrea.3arbon@gmail.com> 1334837334 +0200	commit (initial): Initial
+2ea1ee4a1e134032f9d0fab8ab558775001509e2 47bafd0388a542c11b03ddccaad2d11c64cb2d39 AndreaBarbon <andrea.3arbon@gmail.com> 1334845093 +0200	commit: 3 tipi di lato più liscio
+47bafd0388a542c11b03ddccaad2d11c64cb2d39 b11131e3a21b6b8009f0db2188b4cdc0d89efe4a AndreaBarbon <andrea.3arbon@gmail.com> 1334879820 +0200	commit: Molte cose
+b11131e3a21b6b8009f0db2188b4cdc0d89efe4a af10f93c9fb3f15ecf5f39bc07e78d76de5564d5 AndreaBarbon <andrea.3arbon@gmail.com> 1334919157 +0200	commit: Puzzle decomposition finally working
+af10f93c9fb3f15ecf5f39bc07e78d76de5564d5 29d977e72ebb17c8b6f1a6eb53c843517da6f84f AndreaBarbon <andrea.3arbon@gmail.com> 1334921448 +0200	commit: Edges are fit each other!
+29d977e72ebb17c8b6f1a6eb53c843517da6f84f 69f401cbf1beb4bd12a7a090fa8cb372b2809fb3 AndreaBarbon <andrea.3arbon@gmail.com> 1334922052 +0200	commit: Now the piece you translate is brought to the top
+69f401cbf1beb4bd12a7a090fa8cb372b2809fb3 68697e6ed5c21c3f3ba3ff2f73dd58e2062251d0 AndreaBarbon <andrea.3arbon@gmail.com> 1334922580 +0200	commit: Now the puzzle is orientated correctly
+68697e6ed5c21c3f3ba3ff2f73dd58e2062251d0 6834c74f0c867a83183b5b9713420a0483a82b1b AndreaBarbon <andrea.3arbon@gmail.com> 1334964947 +0200	commit: Cutom image & border
+6834c74f0c867a83183b5b9713420a0483a82b1b 46894bf3a7867f4740b25cb7542e012a0d01a2fa AndreaBarbon <andrea.3arbon@gmail.com> 1335007777 +0200	commit: Added pieces drawer
+46894bf3a7867f4740b25cb7542e012a0d01a2fa d5d12ecb0493a76ee14be1c8527f23fb7242fd01 AndreaBarbon <andrea.3arbon@gmail.com> 1335017891 +0200	commit: Drawer improvements
+d5d12ecb0493a76ee14be1c8527f23fb7242fd01 13da267cad32b1318e14b5201f17d36a3a4ebb93 AndreaBarbon <andrea.3arbon@gmail.com> 1335026265 +0200	commit: Piece size and padding computed automatically
+13da267cad32b1318e14b5201f17d36a3a4ebb93 ac5ed79a2c0a49d94ee8a4edc6ba0482a935b50d AndreaBarbon <andrea.3arbon@gmail.com> 1335031538 +0200	commit: Added lattice
+ac5ed79a2c0a49d94ee8a4edc6ba0482a935b50d d97e9be331e7931883f243188ab950cf03bc1674 AndreaBarbon <andrea.3arbon@gmail.com> 1335032155 +0200	commit: Lttle adjustment
+d97e9be331e7931883f243188ab950cf03bc1674 5e67e53b93e98f9b864ad5ceae16ea0b16db4430 AndreaBarbon <andrea.3arbon@gmail.com> 1335057141 +0200	commit: Double tap rotation
+5e67e53b93e98f9b864ad5ceae16ea0b16db4430 7007b2d1d87d6bc1a78b2507bd3d29adf37d6b23 AndreaBarbon <andrea.3arbon@gmail.com> 1335093209 +0200	commit: Moved Lattice to a separate class
+7007b2d1d87d6bc1a78b2507bd3d29adf37d6b23 c9d6b76778181b2687fb38358adcbb056146c779 AndreaBarbon <andrea.3arbon@gmail.com> 1335102666 +0200	commit: Now recognizes neighbor pieces
+c9d6b76778181b2687fb38358adcbb056146c779 700db3075533b1ee9fc8db4edda6cbe391b86f9b AndreaBarbon <andrea.3arbon@gmail.com> 1335138798 +0200	commit: • Now linked pieces rotate properly
+700db3075533b1ee9fc8db4edda6cbe391b86f9b e6c7f36f29dc9dd473adfaa4173b1cfdf83eecc0 AndreaBarbon <andrea.3arbon@gmail.com> 1335172236 +0200	commit: Bugs regarding rotation fixed
+e6c7f36f29dc9dd473adfaa4173b1cfdf83eecc0 60256da37e4877f8b0f44d2909e7629a11b506e0 AndreaBarbon <andrea.3arbon@gmail.com> 1335173546 +0200	commit: Full image appears when puzzle is completed
+60256da37e4877f8b0f44d2909e7629a11b506e0 ee0f2d55b02365539c3fbfb5a3f435e4d96dba72 AndreaBarbon <andrea.3arbon@gmail.com> 1335173830 +0200	commit: Removed
+ee0f2d55b02365539c3fbfb5a3f435e4d96dba72 d924be5312d91690cacdf54f5c55f7c3f56fe80a AndreaBarbon <andrea.3arbon@gmail.com> 1335177088 +0200	commit: Posirion of the board computed in a better way
+d924be5312d91690cacdf54f5c55f7c3f56fe80a 0e687efb8b0cf241d86f730a3c1871e8d9446b51 AndreaBarbon <andrea.3arbon@gmail.com> 1335225462 +0200	commit: Oh yeah!
+0e687efb8b0cf241d86f730a3c1871e8d9446b51 a9d7b2da64f5f64dd041da889fe7745b2ab804c8 AndreaBarbon <andrea.3arbon@gmail.com> 1335364691 +0200	commit: Rotation finally working (at least on 5.1!)
+a9d7b2da64f5f64dd041da889fe7745b2ab804c8 baa2458fb6a4b21e632d7eba83682c4814a77c2d AndreaBarbon <andrea.3arbon@gmail.com> 1335367349 +0200	commit: Remove the position checking while moving pieces
+baa2458fb6a4b21e632d7eba83682c4814a77c2d 82c9fc0d043ed30e01dc8ff8d829025b3f4e8ab8 AndreaBarbon <andrea.3arbon@gmail.com> 1335404695 +0200	commit: Blocked positioned pieces
+82c9fc0d043ed30e01dc8ff8d829025b3f4e8ab8 659cdaa16056909d155ac2aa3b49b84377deaa1b AndreaBarbon <andrea.3arbon@gmail.com> 1335443941 +0200	commit: Autorotate capability added
+659cdaa16056909d155ac2aa3b49b84377deaa1b 33130333eff5f132e66ce69dd34087fb2752fff6 AndreaBarbon <andrea.3arbon@gmail.com> 1335445915 +0200	commit: Added default screens
+33130333eff5f132e66ce69dd34087fb2752fff6 c7dee8a752baf4a1a01724866c3ebeb7f367a7dc AndreaBarbon <andrea.3arbon@gmail.com> 1335445946 +0200	commit: ...
+c7dee8a752baf4a1a01724866c3ebeb7f367a7dc 5c67caff3ca075fd2c07fdd4eb7ed968e9ce1780 AndreaBarbon <andrea.3arbon@gmail.com> 1335449029 +0200	commit: Minor drawer fixes
+5c67caff3ca075fd2c07fdd4eb7ed968e9ce1780 2e177ad18bb05a72786bad46fc16e66a0bedef67 AndreaBarbon <andrea.3arbon@gmail.com> 1335457889 +0200	commit: Drawer pixel issues fixed
+2e177ad18bb05a72786bad46fc16e66a0bedef67 f27f3306eb947c29dd2fdcdea981045cf4166922 AndreaBarbon <andrea.3arbon@gmail.com> 1335459562 +0200	commit: Ok again
+f27f3306eb947c29dd2fdcdea981045cf4166922 c29d67eb498a49eda4ec9056edf52b04519e3b02 AndreaBarbon <andrea.3arbon@gmail.com> 1335481287 +0200	commit: image appearing when puzzle is completed
+c29d67eb498a49eda4ec9056edf52b04519e3b02 102c3153541136106cc083df40cffb97f1298e1c AndreaBarbon <andrea.3arbon@gmail.com> 1335519694 +0200	commit: Lattice is centered in the beginning
+102c3153541136106cc083df40cffb97f1298e1c bb604572755997d8d7ea61640093d340a25d48ba AndreaBarbon <andrea.3arbon@gmail.com> 1335522067 +0200	commit: Lattice position fixed
+bb604572755997d8d7ea61640093d340a25d48ba 112cf9b23d564fbf25ebd370ebf1f711e61c4a9f AndreaBarbon <andrea.3arbon@gmail.com> 1335524447 +0200	commit: Now we have a basic menu
+112cf9b23d564fbf25ebd370ebf1f711e61c4a9f f6dd61a0b9d3b532b8cb2c6abfc979ddc4a8539a AndreaBarbon <andrea.3arbon@gmail.com> 1335532612 +0200	commit: New files added
+f6dd61a0b9d3b532b8cb2c6abfc979ddc4a8539a 8d512efae66bd9e9ee61c32f0ee24f435213992b AndreaBarbon <andrea.3arbon@gmail.com> 1335539223 +0200	commit: Board zooming correctly
+8d512efae66bd9e9ee61c32f0ee24f435213992b eb7eede604314400616b771848a1d21483172f31 AndreaBarbon <andrea.3arbon@gmail.com> 1335608976 +0200	commit: Zooming limits
+eb7eede604314400616b771848a1d21483172f31 73cb4cb66f3bf70634aeddef5e06eeaae3d631ca AndreaBarbon <andrea.3arbon@gmail.com> 1335614395 +0200	commit: Ok
+73cb4cb66f3bf70634aeddef5e06eeaae3d631ca c14022a9734dbdc32f90693de0688d6a645ca762 AndreaBarbon <andrea.3arbon@gmail.com> 1335614471 +0200	commit: New files added
+c14022a9734dbdc32f90693de0688d6a645ca762 bea5484b06d4a201f941fe6cf2e1000068c30d84 AndreaBarbon <andrea.3arbon@gmail.com> 1335705348 +0200	commit: We can have up to 400 pieces on iPad 3
+bea5484b06d4a201f941fe6cf2e1000068c30d84 c4a6d33e70f30b08632a699c3bc3b4f81d01ab97 AndreaBarbon <andrea.3arbon@gmail.com> 1335708299 +0200	commit: Now the edges are really random
+c4a6d33e70f30b08632a699c3bc3b4f81d01ab97 710e3b7251b120f233e51f9d9404f184c2e12332 AndreaBarbon <andrea.3arbon@gmail.com> 1335708323 +0200	commit: Pool debug disabled
+710e3b7251b120f233e51f9d9404f184c2e12332 b2b6b7ba819e49d8af9e13773bec961fcc7886fe AndreaBarbon <andrea.3arbon@gmail.com> 1335713264 +0200	commit: Pieces positioned in drawer in a better way
+b2b6b7ba819e49d8af9e13773bec961fcc7886fe 6faf03909fe0ebde270e7b2e72dbafd9caa99b86 AndreaBarbon <andrea.3arbon@gmail.com> 1335722543 +0200	commit: New cool icon
+6faf03909fe0ebde270e7b2e72dbafd9caa99b86 af57b4e2548fd7215bc7a27f10fb7ca8c08d4839 AndreaBarbon <andrea.3arbon@gmail.com> 1335722572 +0200	commit: New icon
+af57b4e2548fd7215bc7a27f10fb7ca8c08d4839 0cf4e772daa344b4b26455c091a1ca8bac33ed53 AndreaBarbon <andrea.3arbon@gmail.com> 1335829966 +0200	commit: Improved gameplay
+0cf4e772daa344b4b26455c091a1ca8bac33ed53 5c3d7a8f55aa1f969b2dfc187445f089ec329ba1 AndreaBarbon <andrea.3arbon@gmail.com> 1335871616 +0200	commit: Added pulsing
+5c3d7a8f55aa1f969b2dfc187445f089ec329ba1 05cb282f4d3804c2865cedc1f8c2f99f1d475a50 AndreaBarbon <andrea.3arbon@gmail.com> 1335872639 +0200	commit: Checks for playing music b4 playing a sound
+05cb282f4d3804c2865cedc1f8c2f99f1d475a50 11a63d7d5ece58cd704f1a3fcb314ae782c2266e AndreaBarbon <andrea.3arbon@gmail.com> 1335872915 +0200	commit: Lattice rotates
+11a63d7d5ece58cd704f1a3fcb314ae782c2266e 079fba63406d9a3b14c0a747ab4bb52f9ea6d9e8 AndreaBarbon <andrea.3arbon@gmail.com> 1335888816 +0200	commit: Wood
+079fba63406d9a3b14c0a747ab4bb52f9ea6d9e8 b3115be77091a1bac8eac5884bd0a4781de30b9d AndreaBarbon <andrea.3arbon@gmail.com> 1335982623 +0200	commit: Game saving and loading
+b3115be77091a1bac8eac5884bd0a4781de30b9d 06ad2d7f3236592cf6f7c5beec76da44ef9ed079 AndreaBarbon <andrea.3arbon@gmail.com> 1336042582 +0200	commit: Not leaking anymore
+06ad2d7f3236592cf6f7c5beec76da44ef9ed079 8b687e2b443aa667e020373fc490ed3de1012137 AndreaBarbon <andrea.3arbon@gmail.com> 1336075351 +0200	commit: Loads new game in the beginning
+8b687e2b443aa667e020373fc490ed3de1012137 79b77f9e88886d836507e96e0bdad2b1d6ee01bd AndreaBarbon <andrea.3arbon@gmail.com> 1336079679 +0200	commit: new files added
+79b77f9e88886d836507e96e0bdad2b1d6ee01bd 5499383f0210d6f43a162b145a20fd6ca10c2873 AndreaBarbon <andrea.3arbon@gmail.com> 1336088706 +0200	commit: elapsed time
+5499383f0210d6f43a162b145a20fd6ca10c2873 e4aa5fa52040699ccede51ede981720ea7e6323f AndreaBarbon <andrea.3arbon@gmail.com> 1336122806 +0200	commit: • Better drawer behavior
+e4aa5fa52040699ccede51ede981720ea7e6323f 4035a38d8cfeab0187376c78ba33e3a1d3728b6c AndreaBarbon <andrea.3arbon@gmail.com> 1336146124 +0200	commit: • Drawer looping
+4035a38d8cfeab0187376c78ba33e3a1d3728b6c 1cf308f191b72244f0df1339eaf76d65935001fd AndreaBarbon <andrea.3arbon@gmail.com> 1336252283 +0200	commit: Ciaoooo!!!!
+1cf308f191b72244f0df1339eaf76d65935001fd e9215dffa1e291d4770e30482e099471f1315fdf AndreaBarbon <andrea.3arbon@gmail.com> 1336264141 +0200	commit: More organized code in PuzzleViewController
+e9215dffa1e291d4770e30482e099471f1315fdf d7329bc278f381e991bc18d098645e4a176f79e3 AndreaBarbon <andrea.3arbon@gmail.com> 1336318234 +0200	commit: Groups
+d7329bc278f381e991bc18d098645e4a176f79e3 641bc41df7cb91ff687098c03f1cdbfcd428262b AndreaBarbon <andrea.3arbon@gmail.com> 1336351937 +0200	commit: panningSwitch
+641bc41df7cb91ff687098c03f1cdbfcd428262b a9b1fcadf0b291f8fd4ae5037c637bfb531e6cd4 AndreaBarbon <andrea.3arbon@gmail.com> 1336355486 +0200	commit: • Drawer panning fixed
+a9b1fcadf0b291f8fd4ae5037c637bfb531e6cd4 5c282e9064929cfb23cc300cdc9b1892be32cf6e AndreaBarbon <andrea.3arbon@gmail.com> 1336391280 +0200	commit: Drawer panning really working
+5c282e9064929cfb23cc300cdc9b1892be32cf6e abc20262ca48e58548a2d85dd7f8e3ebdfe5153a AndreaBarbon <andrea.3arbon@gmail.com> 1336392363 +0200	commit: Pulse works correctly
+abc20262ca48e58548a2d85dd7f8e3ebdfe5153a 21614cfc05d0a9897971d37b5083da817c5a0eb6 AndreaBarbon <andrea.3arbon@gmail.com> 1336392655 +0200	commit: Better pragma marks
+21614cfc05d0a9897971d37b5083da817c5a0eb6 c721faab560635cd8729c3748c76e3138b0a451f AndreaBarbon <andrea.3arbon@gmail.com> 1336393928 +0200	commit: Better image behaviour
+c721faab560635cd8729c3748c76e3138b0a451f 7df69c8bbe3b5d5a3c575e19a8f61b727f2647a3 AndreaBarbon <andrea.3arbon@gmail.com> 1336394631 +0200	commit: • Wooden icon
+7df69c8bbe3b5d5a3c575e19a8f61b727f2647a3 7a2cac89034dcabf742c6262c30c69e7dc6f8950 AndreaBarbon <andrea.3arbon@gmail.com> 1336443127 +0200	commit: Saving during the operation
+7a2cac89034dcabf742c6262c30c69e7dc6f8950 137eec78155977603f186ee6619f13b75b0a85e8 AndreaBarbon <andrea.3arbon@gmail.com> 1336444362 +0200	commit: Some leaks removed
+137eec78155977603f186ee6619f13b75b0a85e8 77613344eab2b270dbfb4748c4e47b308ec9bc1e AndreaBarbon <andrea.3arbon@gmail.com> 1336477625 +0200	commit: • New menu animation
+77613344eab2b270dbfb4748c4e47b308ec9bc1e 98929d858d33b8a549ae79f62722c76047a7de6f AndreaBarbon <andrea.3arbon@gmail.com> 1336497376 +0200	commit: shouldcheckneighbors finally working
+98929d858d33b8a549ae79f62722c76047a7de6f 605647ad500db7cf958ed337625d4a513b3a267c AndreaBarbon <andrea.3arbon@gmail.com> 1336497744 +0200	commit: Back to 4.3 dev target
+605647ad500db7cf958ed337625d4a513b3a267c 83f30d54f1130d3e725a52640824ec410378db9f AndreaBarbon <andrea.3arbon@gmail.com> 1336498220 +0200	commit: files added and removed
+83f30d54f1130d3e725a52640824ec410378db9f c4b6d07585cad92eee9552d4348dac5f8e60ffe5 AndreaBarbon <andrea.3arbon@gmail.com> 1336516636 +0200	commit: Check Neighbors and add to group optimized for better performances
