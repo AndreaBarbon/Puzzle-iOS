@@ -212,7 +212,7 @@
         
         NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
         
-        if (self.group==nil) {
+        if (group==nil) {
             
             [self translateWithVector:traslation];
             [self translateNeighborhoodExcluding:excluded WithVector:traslation];
@@ -220,7 +220,7 @@
         } else {
             
             //traslation = [gesture translationInView:self.superview.superview];
-            [self.group translateWithVector:traslation];
+            [group translateWithVector:traslation];
             //NSLog(@"%s", __FUNCTION__);
             
         }
@@ -232,7 +232,7 @@
         if (gesture.state == UIGestureRecognizerStateEnded) {
             
             
-            if (self.group==nil) {
+            if (group==nil) {
                 
                 //NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
                 //[self movedNeighborhoodExcludingPieces:excluded];
@@ -244,9 +244,9 @@
                 
             } else {
                 
-                [delegate groupMoved:self.group];                    
-                [self.group removeFromSuperview];
-                [delegate.view insertSubview:self.group belowSubview:delegate.drawerView];  
+                [delegate groupMoved:group];                    
+                [group removeFromSuperview];
+                [delegate.view insertSubview:group aboveSubview:[delegate upperGroupBut:group]];  
             }
             
             
@@ -392,12 +392,15 @@
     angle = [PuzzleController float:angle modulo:2*M_PI];
     [self setAngle:angle];
     
-    if (self.group==nil) {
+    if (group==nil) {
         
         [UIView animateWithDuration:0.2 animations:^{
             
             self.transform = CGAffineTransformRotate(self.transform, M_PI_2);
             
+        }completion:^(BOOL finished) {
+            
+            [delegate pieceRotated:self];
         }];
         
     } else {
@@ -407,17 +410,17 @@
         group.boss = self;
         self.isBoss = YES;
 
-        [self setAnchorPoint:CGPointMake(point.x / self.group.bounds.size.width, point.y / self.group.bounds.size.height) forView:self.group];
+        [self setAnchorPoint:CGPointMake(point.x / group.bounds.size.width, point.y / group.bounds.size.height) forView:group];
         
         group.angle += M_PI_2;
         group.angle = [PuzzleController float:group.angle modulo:2*M_PI];
         
-        CGAffineTransform transform = self.group.transform;
+        CGAffineTransform transform = group.transform;
         transform = CGAffineTransformRotate(transform,M_PI_2);
         
         [UIView animateWithDuration:0.2 animations:^{
             
-            self.group.transform = transform;
+            group.transform = transform;
             
         }completion:^(BOOL finished) {
             
@@ -594,13 +597,13 @@
 {
     
     padding = self.bounds.size.width*0.15;
-    float LINE_WIDTH = self.bounds.size.width*0.002;
+    float LINE_WIDTH = self.bounds.size.width*0.005;
         
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     
     
-    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.1);
+    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.2);
     CGContextSetLineWidth(ctx, LINE_WIDTH);
     CGContextSetLineJoin(ctx, kCGLineJoinRound);
  

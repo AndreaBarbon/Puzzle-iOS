@@ -530,7 +530,7 @@
     }];
     
     
-    if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
+    if (IS_DEVICE_PLAUYING_MUSIC) {
         
         [completedSound play];
         
@@ -575,19 +575,25 @@
             
             CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
             
-            if ([self point:point isInFrame:rect] && [self pieceWithPosition:i].userInteractionEnabled) {
-                movingPiece = [self pieceWithPosition:i];
+            if ([self point:point isInFrame:rect]) {
+                NSLog(@"Position %d ", i);
+                if ([self pieceWithPosition:i].userInteractionEnabled) {
+                    NSLog(@"Piece #%d is enabled", [self pieceWithPosition:i].number);
+                    movingPiece = [self pieceWithPosition:i];
+                }
+                
             }
             
         }
     }
     
     if (movingPiece!=nil && !panningSwitch.isOn) {
-        //NSLog(@"Moving the piece");
+        NSLog(@"Moving the piece");
         [movingPiece move:gesture];
         return;
     }
-    
+    NSLog(@"Not moving the piece");
+  
     
     if (menu.view.alpha == 0) {
         
@@ -662,6 +668,20 @@
     
 }
 
+- (UIView*)upperGroupBut:(GroupView*)group {
+    
+    for (int i =[self.view.subviews count]-1; i>-1; i--) {
+        
+        GroupView *g = [self.view.subviews objectAtIndex:i];
+        if ([g isKindOfClass:[GroupView class]] && g!=group) {
+            NSLog(@"%s", __func__);
+            return g;
+        }
+    }
+    
+    return lattice;
+}
+
 - (void)createNewGroupForPiece:(PieceView*)piece {
         
     GroupView *newGroup = nil;
@@ -693,7 +713,7 @@
         }
         
         [groups addObject:newGroup];
-        [self.view insertSubview:newGroup belowSubview:drawerView];
+        [self.view insertSubview:newGroup aboveSubview:[self upperGroupBut:newGroup]];
         
         NSLog(@"New group created. Groups count %d", [groups count]);
         
@@ -1167,7 +1187,7 @@
                                 otherPiece.hasNeighbors = YES;
                                 
                                 if (!loadingGame &&
-                                    [[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying &&
+                                    IS_DEVICE_PLAUYING_MUSIC &&
                                     !(piece.number == piece.position && ABS(piece.angle)<1)
                                     ) {
                                     
@@ -1245,7 +1265,7 @@
             
             if (![self isPuzzleComplete] && !loadingGame) {
                                
-                if ([[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying) {
+                if (IS_DEVICE_PLAUYING_MUSIC) {
                     [positionedSound play];
                 }
             }
@@ -1928,6 +1948,7 @@
     NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
     positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     positionedSound.volume = 0.3;
+    [positionedSound prepareToPlay];
     
     if ([positionedSound respondsToSelector:@selector(setEnableRate:)]) {
         positionedSound.enableRate = YES;
@@ -1937,11 +1958,13 @@
     soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"mp3"];
     soundURL = [NSURL fileURLWithPath:soundPath];   
     completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    
+    [completedSound prepareToPlay];
+
     soundPath =[[NSBundle mainBundle] pathForResource:@"NeighborFound" ofType:@"wav"];
     soundURL = [NSURL fileURLWithPath:soundPath];   
     neighborSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    
+    [neighborSound prepareToPlay];
+
 }
 
 - (BOOL)saveGame {
@@ -2246,7 +2269,8 @@
 - (PieceView*)pieceWithPosition:(int)j {
     
     for (PieceView *p in pieces) {
-        if (p.position==j) {
+        
+        if (p.position==j && p.userInteractionEnabled) {
             return p;
         }
     }

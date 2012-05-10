@@ -85,9 +85,9 @@
 @property (nonatomic, retain) IBOutlet UISwitch *panningSwitch;
 
 
-@property (nonatomic, strong) AVAudioPlayer *positionedSound;
-@property (nonatomic, strong) AVAudioPlayer *completedSound;
-@property (nonatomic, strong) AVAudioPlayer *neighborSound;
+@property (nonatomic, retain) AVAudioPlayer *positionedSound;
+@property (nonatomic, retain) AVAudioPlayer *completedSound;
+@property (nonatomic, retain) AVAudioPlayer *neighborSound;
 
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -169,5 +169,7 @@
 - (IBAction)rateGame;
 - (BOOL)saveGame;
 - (BOOL)isPositioned:(PieceView*)piece;
+
+- (UIView*)upperGroupBut:(GroupView*)group;
 
 @end
