@@ -25,11 +25,13 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, positionedSound, completedSound, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups, panningSwitch, imageSize;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups, panningSwitch, imageSize;
 
 @synthesize pan, panDrawer, pinch;
 
 @synthesize drawerStopped;
+
+@synthesize positionedSound, completedSound, neighborSound;
 
 
 #pragma mark -
@@ -658,9 +660,6 @@
         
     }
     
-    [self.view bringSubviewToFront:group];    
-    
-    
 }
 
 - (void)createNewGroupForPiece:(PieceView*)piece {
@@ -694,7 +693,7 @@
         }
         
         [groups addObject:newGroup];
-        [self.view addSubview:newGroup];
+        [self.view insertSubview:newGroup belowSubview:drawerView];
         
         NSLog(@"New group created. Groups count %d", [groups count]);
         
@@ -710,11 +709,11 @@
         }        
     }
     
-    for (PieceView *p in pieces) {
-        if (p.isFree && p.group==nil) {
-            [self.view bringSubviewToFront:p];
-        }
-    }
+//    for (PieceView *p in pieces) {
+//        if (p.isFree && p.group==nil) {
+//            [self.view bringSubviewToFront:p];
+//        }
+//    }
     
     
     [self moveGroup:newGroup toLatticePoint:newGroup.boss.position animated:NO];
@@ -840,7 +839,6 @@
             } else if (p.userInteractionEnabled) {
                 
                 [self.view bringSubviewToFront:p];
-                [self.view bringSubviewToFront:p.group];
             }
             
         }
@@ -1168,6 +1166,14 @@
                                 piece.hasNeighbors = YES;
                                 otherPiece.hasNeighbors = YES;
                                 
+                                if (!loadingGame &&
+                                    [[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying &&
+                                    !(piece.number == piece.position && ABS(piece.angle)<1)
+                                    ) {
+                                    
+                                    [neighborSound play];
+                                }
+                                
                                 if (otherPiece.group!=nil) {
                                     
                                     if (piece.group!=nil) {
@@ -1231,7 +1237,6 @@
                 if (p.isFree && p!=piece && !p.isPositioned) {
                     
                     [self.view bringSubviewToFront:p];
-                    [self.view bringSubviewToFront:p.group];
                 }
             }
             
@@ -1932,6 +1937,10 @@
     soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"mp3"];
     soundURL = [NSURL fileURLWithPath:soundPath];   
     completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
+    
+    soundPath =[[NSBundle mainBundle] pathForResource:@"NeighborFound" ofType:@"wav"];
+    soundURL = [NSURL fileURLWithPath:soundPath];   
+    neighborSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     
 }
 

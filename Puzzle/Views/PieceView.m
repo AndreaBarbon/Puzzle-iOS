@@ -81,7 +81,7 @@
 #pragma mark
 #pragma GESTURE HANDLING
 
--(BOOL)isNeighborOf:(PieceView*)piece {
+- (BOOL)isNeighborOf:(PieceView*)piece {
     
     for (PieceView *p in [self allTheNeighborsBut:nil]) {
         
@@ -94,13 +94,13 @@
     return NO;
 }
 
--(CGPoint)sum:(CGPoint)a plus:(CGPoint)b firstWeight:(float)f {
+- (CGPoint)sum:(CGPoint)a plus:(CGPoint)b firstWeight:(float)f {
     
     return CGPointMake(f*a.x+(1-f)*b.x, f*a.y+(1-f)*b.y);
     
 }
 
--(CGPoint)sum:(CGPoint)a plus:(CGPoint)b {
+- (CGPoint)sum:(CGPoint)a plus:(CGPoint)b {
     
     return CGPointMake(a.x+b.x, a.y+b.y);
     
@@ -331,14 +331,14 @@
 
                 self.isRotating = NO;
                 delegate.drawerView.userInteractionEnabled = YES;
-
+                [delegate pieceRotated:self];
             }];
             
 //            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
             
             tempAngle = 0;
             
-            [delegate pieceRotated:self];
+            
             
             
         } else if (gesture.state==UIGestureRecognizerStateBegan || gesture.state==UIGestureRecognizerStateChanged){
@@ -362,7 +362,7 @@
     
 }
 
--(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
+- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
 {
     CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
     CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
@@ -419,167 +419,12 @@
             
             self.group.transform = transform;
             
+        }completion:^(BOOL finished) {
+            
+            [delegate pieceRotated:self];
         }];
                 
     }
-    
-    [delegate pieceRotated:self];
-    
-    
-    return;
-    
-    
-    
-    
-    //Rotate the neighborhood
-    for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
-
-
-        
-            UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
-        
-            CGPoint selfOrigin = [mainWindow convertPoint:[self realCenter] fromWindow:nil];
-            CGPoint pOrigin = [mainWindow convertPoint:[p realCenter] fromWindow:nil];
-            
-            pOrigin = [p convertPoint:pOrigin fromView:mainWindow];
-            selfOrigin = [p convertPoint:selfOrigin fromView:mainWindow];
-            
-            
-            
-            float x = (selfOrigin.x-pOrigin.x);
-            float y = (selfOrigin.y-pOrigin.y);
-            
-            
-            //NSLog(@"Old transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
-            
-            CGAffineTransform matrix = CGAffineTransformIdentity;
-            matrix = CGAffineTransformRotate(matrix,0);
-            
-            //NSLog(@"Matrix \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
-            
-            float xx = x;
-            float yy = y;
-            
-            x = xx*matrix.a + yy*matrix.b;
-            y = xx*matrix.c + yy*matrix.d;
-            
-            //NSLog(@"(%.1f,%.1f)", x, y );
-            //p.centerView.frame = CGRectMake(x, y, 10, 10);
-            
-            
-        CGAffineTransform transform = p.transform;
-            
-        if (self.delegate.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-
-
-        
-        }
-        
-        switch (self.delegate.interfaceOrientation) {
-
-            case UIInterfaceOrientationLandscapeLeft:
-                transform = CGAffineTransformTranslate(transform , -x, -y);
-                transform = CGAffineTransformRotate(transform,-M_PI_2);
-                transform = CGAffineTransformTranslate(transform, x,y);
-                transform = CGAffineTransformRotate(transform,M_PI);
-                break;
-                
-            case UIInterfaceOrientationLandscapeRight:
-                transform = CGAffineTransformTranslate(transform , x, y);
-                transform = CGAffineTransformRotate(transform,-M_PI_2);
-                transform = CGAffineTransformTranslate(transform, -x,-y);
-                transform = CGAffineTransformRotate(transform,M_PI);
-                break;
-             
-            case UIInterfaceOrientationPortrait:
-                transform = CGAffineTransformTranslate(transform , x, y);
-                transform = CGAffineTransformRotate(transform,M_PI_2);
-                transform = CGAffineTransformTranslate(transform, -x,-y);
-                break;
-                
-            case UIInterfaceOrientationPortraitUpsideDown:
-                transform = CGAffineTransformTranslate(transform , -x, -y);
-                transform = CGAffineTransformRotate(transform,M_PI_2);
-                transform = CGAffineTransformTranslate(transform, x,y);
-                break;
-                
-            default:
-                break;
-        }
-        
-        
-            
-            //NSLog(@"New transform \n\n%.1f, %.1f, \n%.1f, %.1f    traslation (%.1f, %.1f)", transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty);
-            
-            p.angle = angle;
-            [p setAngle:angle];
-
-            [UIView animateWithDuration:0.2 animations:^{
-                
-                p.transform = transform;
-
-                
-            } completion:^(BOOL finished){
-                
-                CGPoint point = p.center;
-                point.x += transform.tx;
-                point.y += transform.ty;
-                p.transform = CGAffineTransformMakeRotation(p.angle);
-                p.center = point;
-                
-                //p.transform = originalTransform;
-                
-            }];
-        
-        
-            
-        
-        
-        
-        
-    }
-
-    BOOL areOut = NO;
-//    for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
-//        if ([delegate pieceIsOut:p]) {
-//            areOut = YES;
-//            break;
-//        }
-//    }
-
-    
-    if (!areOut) {
-        
-        for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
-            [delegate pieceRotated:p];
-        }
-        [delegate pieceRotated:self];
-
-    } else {
-    
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            for (PieceView *p in [self allTheNeighborsBut:[NSMutableArray arrayWithObject:self]]) {
-                CGRect rect = p.frame;
-                rect.origin.x = p.oldPosition.x-p.frame.size.width/2;
-                rect.origin.y = p.oldPosition.y-p.frame.size.height/2;
-                p.frame = rect;                
-                p.position = [delegate positionOfPiece:p];
-                p.transform = CGAffineTransformMakeRotation(p.angle-M_PI_2);
-                p.angle -= M_PI_2;
-            }
-            
-            self.transform = CGAffineTransformMakeRotation(self.angle-M_PI_2);
-            self.angle -= M_PI_2;
-            
-        }];
-
-    }
-    
-        
-
-    
 }
 
 

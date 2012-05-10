@@ -49,6 +49,8 @@
 		B8AE12261559912200742256 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121A1559912200742256 /* Puzzle.m */; };
 		B8AE12271559912200742256 /* Puzzle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121B1559912200742256 /* Puzzle.xcdatamodeld */; };
 		B8AE12281559912200742256 /* Puzzle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121B1559912200742256 /* Puzzle.xcdatamodeld */; };
+		B8DAFCBC155B3D4E00A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCBB155B3D4E00A901A3 /* NeighborFound.wav */; };
+		B8DAFCBD155B3D4E00A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCBB155B3D4E00A901A3 /* NeighborFound.wav */; };
 		B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
 		B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
 		B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
@@ -147,6 +149,7 @@
 		B8AE121E1559912200742256 /* Puzzle 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 4.xcdatamodel"; sourceTree = "<group>"; };
 		B8AE121F1559912200742256 /* Puzzle 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 5.xcdatamodel"; sourceTree = "<group>"; };
 		B8AE12201559912200742256 /* Puzzle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Puzzle.xcdatamodel; sourceTree = "<group>"; };
+		B8DAFCBB155B3D4E00A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = NeighborFound.wav; sourceTree = "<group>"; };
 		B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
@@ -351,6 +354,7 @@
 		B8E1815F15503B0900A8B450 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				B8DAFCBB155B3D4E00A901A3 /* NeighborFound.wav */,
 				B8AE11FE15598EAD00742256 /* PiecePositioned.mp3 */,
 				B8AE11FF15598EAD00742256 /* PuzzleCompleted.mp3 */,
 			);
@@ -449,6 +453,7 @@
 				B8E18193155040CE00A8B450 /* Puzzle iPhone-Info.plist in Resources */,
 				B8AE120015598EAD00742256 /* PiecePositioned.mp3 in Resources */,
 				B8AE120215598EAD00742256 /* PuzzleCompleted.mp3 in Resources */,
+				B8DAFCBC155B3D4E00A901A3 /* NeighborFound.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +483,7 @@
 				B8E1818B1550402800A8B450 /* Wood@2x.jpg in Resources */,
 				B8AE120115598EAD00742256 /* PiecePositioned.mp3 in Resources */,
 				B8AE120315598EAD00742256 /* PuzzleCompleted.mp3 in Resources */,
+				B8DAFCBD155B3D4E00A901A3 /* NeighborFound.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

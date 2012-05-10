@@ -87,6 +87,7 @@
 
 @property (nonatomic, strong) AVAudioPlayer *positionedSound;
 @property (nonatomic, strong) AVAudioPlayer *completedSound;
+@property (nonatomic, strong) AVAudioPlayer *neighborSound;
 
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
