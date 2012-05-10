@@ -25,13 +25,15 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, loadingGame, elapsedTime, puzzleCompete, groups, panningSwitch, imageSize;
+@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, elapsedTime, groups, panningSwitch, imageSize;
 
 @synthesize pan, panDrawer, pinch;
 
 @synthesize drawerStopped;
 
 @synthesize positionedSound, completedSound, neighborSound;
+
+@synthesize puzzleCompete, loadingGame;
 
 
 #pragma mark -
@@ -251,6 +253,7 @@
             [self createPuzzleFromSavedGame];
             
         } else {
+            
             [menu startNewGame:nil];
         }
         
@@ -2463,8 +2466,8 @@
         ) {
         
         [menu.game.popover dismissPopoverAnimated:NO];
-        CGRect rect = CGRectMake(menu.game.view.center.x, -20, 1, 1);
-        [menu.game.popover presentPopoverFromRect:rect inView:menu.game.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];        
+        CGRect rect = CGRectMake(menu.game.view.center.x+20, 0, 1, 1);
+        [menu.game.popover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];        
     }
     
     didRotate = YES;

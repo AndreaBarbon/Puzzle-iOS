@@ -139,6 +139,9 @@
         cell.photo.layer.cornerRadius = 20;
         cell.photo.layer.masksToBounds = YES;
         [cell addSubview:cell.photo];
+        UIView *v = [[UIView alloc] init];
+        v.backgroundColor = YELLOW;
+        cell.selectedBackgroundView = v;
     }
     
     //NSString *path = [content objectAtIndex:indexPath.row];

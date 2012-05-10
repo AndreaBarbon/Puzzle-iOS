@@ -12,6 +12,8 @@
 #define APP_STORE_APP_ID 525717757
 #define TIMES_B4_ASKING_TO_REIEW 5
 
+#define YELLOW [UIColor colorWithRed:1.0 green:200.0/255.0 blue:0.0 alpha:1.0]
+
 
 #define IS_DEVICE_PLAUYING_MUSIC [[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying
 

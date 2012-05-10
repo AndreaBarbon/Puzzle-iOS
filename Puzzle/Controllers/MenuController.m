@@ -86,16 +86,22 @@
     //[delegate startNewGame];
     
 
-    [self playMenuSound];
-    
-    [delegate.view bringSubviewToFront:delegate.menuButtonView];
-    
-    [UIView animateWithDuration:0.3 animations:^{
+    if (sender!=nil) {
+        
+        [self playMenuSound];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
+            mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+            
+        }];
+        
+    } else {
         
         game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
         mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
- 
-    }];
+    }
     
     
 }
