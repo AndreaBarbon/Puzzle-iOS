@@ -32,6 +32,13 @@
 		B86B28EA155BEF22007D122D /* Copia di Flower_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B86B28DC155BEF1D007D122D /* Copia di Flower_puzzle_thumb.JPG */; };
 		B86B28EB155BEF22007D122D /* Copia di Drops_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B86B28DD155BEF1D007D122D /* Copia di Drops_puzzle_thumb.JPG */; };
 		B86B28EC155BEF22007D122D /* Copia di Earth_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B86B28DE155BEF1D007D122D /* Copia di Earth_puzzle_thumb.JPG */; };
+		B86B28ED155BF462007D122D /* All seeing eye_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86B28C9155BEBBD007D122D /* All seeing eye_puzzle.jpg */; };
+		B86B28EE155BF462007D122D /* Bulldog_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86B28CA155BEBBD007D122D /* Bulldog_puzzle.jpg */; };
+		B86B28EF155BF462007D122D /* Drops_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B86B28CB155BEBBD007D122D /* Drops_puzzle.JPG */; };
+		B86B28F0155BF462007D122D /* Earth_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B86B28CC155BEBBD007D122D /* Earth_puzzle.JPG */; };
+		B86B28F1155BF462007D122D /* Flower_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B86B28CD155BEBBD007D122D /* Flower_puzzle.JPG */; };
+		B86B28F2155BF462007D122D /* Mountains_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B86B28CE155BEBBD007D122D /* Mountains_puzzle.JPG */; };
+		B86B28F3155BF462007D122D /* Yellow_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86B28CF155BEBBD007D122D /* Yellow_puzzle.jpg */; };
 		B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC515400B2A00AF69BC /* UIKit.framework */; };
 		B87C5CC815400B2A00AF69BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC715400B2A00AF69BC /* Foundation.framework */; };
 		B87C5CCA15400B2A00AF69BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC915400B2A00AF69BC /* CoreGraphics.framework */; };
@@ -595,6 +602,13 @@
 				B86B28EA155BEF22007D122D /* Copia di Flower_puzzle_thumb.JPG in Resources */,
 				B86B28EB155BEF22007D122D /* Copia di Drops_puzzle_thumb.JPG in Resources */,
 				B86B28EC155BEF22007D122D /* Copia di Earth_puzzle_thumb.JPG in Resources */,
+				B86B28ED155BF462007D122D /* All seeing eye_puzzle.jpg in Resources */,
+				B86B28EE155BF462007D122D /* Bulldog_puzzle.jpg in Resources */,
+				B86B28EF155BF462007D122D /* Drops_puzzle.JPG in Resources */,
+				B86B28F0155BF462007D122D /* Earth_puzzle.JPG in Resources */,
+				B86B28F1155BF462007D122D /* Flower_puzzle.JPG in Resources */,
+				B86B28F2155BF462007D122D /* Mountains_puzzle.JPG in Resources */,
+				B86B28F3155BF462007D122D /* Yellow_puzzle.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

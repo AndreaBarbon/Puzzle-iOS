@@ -236,6 +236,7 @@
             for (UIView *v in groups) {
                 [v removeFromSuperview];
             }
+            image = [UIImage imageWithData:puzzleDB.image.data];
             groups = [[NSMutableArray alloc] initWithCapacity:N/2];
             elapsedTime = [puzzleDB.elapsedTime floatValue];
             percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
