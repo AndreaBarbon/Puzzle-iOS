@@ -82,14 +82,7 @@
     
     NSLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        
-        [popover dismissPopoverAnimated:YES];
-        
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        
-        [self dismissModalViewControllerAnimated:YES];
-    }
+    [self dismissPicker];
         
     UIImage *temp = [UIImage imageWithData:dataJPG];    
     CGRect rect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
@@ -107,14 +100,26 @@
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    
-    [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
 
+    popover = nil;
+    
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+        
+    [self dismissPicker];
+}
+
+- (void)dismissPicker {
     
-    popover = nil;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        [popover dismissPopoverAnimated:YES];
+        
+    } else {  
+        
+        [self dismissModalViewControllerAnimated:YES];
+    }   
     
 }
 
@@ -147,6 +152,10 @@
     
     image.image = temp;    
 }
+
+
+
+
 
 - (IBAction)selectImageFromPuzzleLibrary:(id)sender {
     
@@ -247,15 +256,22 @@
     
     [delegate playMenuSound];
 
-    [UIView animateWithDuration:0.3 animations:^{
+    if (!typeOfImageView.hidden) {
         
-        self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-        delegate.mainView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+            delegate.mainView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            
+        }completion:^(BOOL finished) {
+            
+            typeOfImageView.hidden = YES;
+        }];
         
-    }completion:^(BOOL finished) {
+    } else {
         
         typeOfImageView.hidden = YES;
-    }];
+    }
     
 }
 
