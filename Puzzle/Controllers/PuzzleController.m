@@ -2646,7 +2646,7 @@
     
     if (![prefs boolForKey:@"Reviewed"]) {
         
-        alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion!" message:@"Would you like to rate this game?" delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
+        alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion!" message:@"Do you like this game?\nGive us 5 stars!\nDo you have any suggestions?\nWrite a review and we will try to improve the app to fulfill your desires." delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
         [alertView show];
         
     } else {
