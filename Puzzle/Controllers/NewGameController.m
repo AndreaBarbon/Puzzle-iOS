@@ -11,6 +11,7 @@
 #import "PuzzleController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+CWAdditions.h"
+#import "PuzzleLibraryController.h"
 
 #define IMAGE_QUALITY 0.5
 
@@ -28,6 +29,22 @@
     [super viewDidLoad];
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];
     
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        cameraButton.enabled = NO;
+    }
+    
+    if (image.image==nil) {
+        startButton.enabled = NO;
+    }
+    
+    
+    typeOfImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+     
+        slider.maximumValue = 15;
+    }
+    
     loadingView.layer.cornerRadius = 10;
     loadingView.layer.masksToBounds = YES;
 
@@ -39,6 +56,9 @@
     
     containerView.layer.cornerRadius = 20;
     containerView.layer.masksToBounds = YES;
+    
+    typeOfImageView.layer.cornerRadius = 20;
+    typeOfImageView.layer.masksToBounds = YES;
 
     imagePath = [[NSString alloc] initWithFormat:@""];
     
@@ -49,12 +69,14 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
+    typeOfImageView.hidden = YES;
+
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
 
     NSLog(@"After picking");
     [delegate.delegate print_free_memory];
     
-    NSData *dataJPG = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], IMAGE_QUALITY);
+    NSData *dataJPG = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], IMAGE_QUALITY);
     
     NSLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
     
@@ -78,8 +100,8 @@
     startButton.enabled = YES;    
     
 
-    image.image = [delegate.delegate clipImage:temp toRect:rect];
-        
+    //image.image = [delegate.delegate clipImage:temp toRect:rect];
+    image.image = temp;    
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
@@ -90,17 +112,46 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
+    popover = nil;
+    
 }
 
-- (IBAction)selectImage:(id)sender {
+- (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage {
     
-    UIImagePickerController *c = [[UIImagePickerController alloc] init];
-    c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    c.allowsEditing = YES;
-    c.delegate = self;
+    typeOfImageView.hidden = YES;
     
-    NSLog(@"B4 picking");
+    [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
+    
+    NSLog(@"After picking");
     [delegate.delegate print_free_memory];
+    
+    NSData *dataJPG = UIImageJPEGRepresentation(pickedImage, IMAGE_QUALITY);
+    
+    NSLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        [popover dismissPopoverAnimated:YES];
+        
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    
+    UIImage *temp = [UIImage imageWithData:dataJPG];
+    
+    tapToSelectLabel.hidden = YES;
+    startButton.enabled = YES;    
+    
+    image.image = temp;    
+}
+
+- (IBAction)selectImageFromPuzzleLibrary:(id)sender {
+    
+    [delegate playMenuSound];
+    
+    PuzzleLibraryController *c = [[PuzzleLibraryController alloc] init];
+    c.delegate = self;
     
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
@@ -114,28 +165,67 @@
         
         [self presentModalViewController:c animated:YES];
     }
-    
-    [delegate.delegate.view sendSubviewToBack:delegate.delegate.menuButtonView];
 
+}
+
+- (IBAction)selectImageFromPhotoLibrary:(UIButton*)sender {
+
+    [delegate playMenuSound];
+    
+    int direction;
+
+    UIImagePickerController *c = [[UIImagePickerController alloc] init];
+   
+    if ([sender.titleLabel.text isEqualToString:@"Camera"]) {
+        
+        c.sourceType = UIImagePickerControllerSourceTypeCamera;
+        direction = UIPopoverArrowDirectionUp;
+
+    } else {
+
+        c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        direction = UIPopoverArrowDirectionUp;
+    }
+    c.allowsEditing = YES;
+    c.delegate = self;
+    
+    NSLog(@"B4 picking");
+    [delegate.delegate print_free_memory];
+    
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        popover = [[UIPopoverController alloc] initWithContentViewController:c];
+        popover.delegate = self;
+        CGRect rect = CGRectMake(self.view.center.x, -20, 1, 1);
+        [popover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:direction animated:YES];
+        
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        [self presentModalViewController:c animated:YES];
+    }
+    
+}
+
+- (IBAction)selectImage:(id)sender {
+    
+    [delegate playMenuSound];
+
+    typeOfImageView.hidden = NO;
 
 }
 
 - (IBAction)startNewGame:(id)sender {
+    
+    [delegate playMenuSound];
     
     NSLog(@"Started");
     
     tapToSelectView.hidden = YES;
     
     delegate.delegate.loadingGame = NO;
-    
-    if (image.image == nil) {
-        delegate.delegate.image = [UIImage imageNamed:@"Wood.jpg"];
-        
-    } else {
 
-        delegate.delegate.image = image.image;
-    }
-
+    delegate.delegate.image = image.image;
     
     delegate.delegate.imageView.image = delegate.delegate.image;
     delegate.delegate.imageViewLattice.image = delegate.delegate.image;
@@ -153,9 +243,16 @@
 
 - (IBAction)back:(id)sender {
     
+    [delegate playMenuSound];
+
     [UIView animateWithDuration:0.3 animations:^{
+        
         self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
         delegate.mainView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        
+    }completion:^(BOOL finished) {
+        
+        typeOfImageView.hidden = YES;
     }];
     
 }
@@ -265,9 +362,6 @@
 
     
 }
-
-
-
 
 
 

@@ -13,6 +13,7 @@
 #define TIMES_B4_ASKING_TO_REIEW 5
 
 
+#define IS_DEVICE_PLAUYING_MUSIC [[MPMusicPlayerController iPodMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying
 
 
 @class PuzzleController, CreatePuzzleOperation;

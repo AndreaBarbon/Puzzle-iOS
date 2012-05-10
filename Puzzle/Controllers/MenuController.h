@@ -10,6 +10,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NewGameController.h"
 
+#import <AVFoundation/AVAudioPlayer.h>
+#import <MediaPlayer/MediaPlayer.h>
+
+
 @class PuzzleController;
 @class NewGameController;
 
@@ -40,6 +44,8 @@
 @property (nonatomic, retain) UIView *obscuringView;
 @property (nonatomic, retain) IBOutlet UIView *mainView;
 
+@property (nonatomic, retain) AVAudioPlayer *menuSound;
+
 
 - (IBAction)startNewGame:(id)sender;
 - (IBAction)resumeGame:(id)sender;
@@ -48,6 +54,6 @@
 - (void)toggleMenuWithDuration:(float)duration;
 
 - (void)createNewGame;
-
+- (void)playMenuSound;
 
 @end

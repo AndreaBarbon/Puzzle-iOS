@@ -16,21 +16,14 @@
 
 @implementation MenuController
 
-@synthesize delegate, duringGame, game, obscuringView, mainView;
+@synthesize delegate, duringGame, game, obscuringView, mainView, menuSound;
 
-- (void)viewWillAppear:(BOOL)animated {
-    
-
-    
-}
 
 - (void)toggleMenuWithDuration:(float)duration {
     
     
     resumeButton.hidden = !duringGame;
     showThePictureButton.hidden = !duringGame;  
-
-
     
     float obscuring;
     
@@ -93,6 +86,8 @@
     //[delegate startNewGame];
     
 
+    [self playMenuSound];
+    
     [delegate.view bringSubviewToFront:delegate.menuButtonView];
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -105,16 +100,35 @@
     
 }
 
+
+- (void)loadSounds {
+    
+    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"Scissors_Shears" ofType:@"wav"];
+    NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
+    menuSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
+    [menuSound prepareToPlay];
+
+}
+
+- (void)playMenuSound {
+    
+    if (!IS_DEVICE_PLAUYING_MUSIC) {
+        
+        [menuSound play];
+    }
+}
+
 - (IBAction)resumeGame:(id)sender {
     
     [self toggleMenuWithDuration:0.5];
-
+    [self playMenuSound];
 }
 
 - (IBAction)showThePicture:(id)sender {
 
     //[self toggleMenu];    
     [delegate toggleImageWithDuration:0.5];
+    [self playMenuSound];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -129,6 +143,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self loadSounds];
+    
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      

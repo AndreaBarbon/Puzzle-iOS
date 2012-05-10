@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class MenuController;
+@class MenuController, PuzzleLibraryController;
 
 @protocol NewGameDelegate
 
@@ -24,12 +24,14 @@
     IBOutlet UIButton *startButton;
     IBOutlet UIButton *backButton;
     IBOutlet UIButton *imageButton;
+    IBOutlet UIButton *cameraButton;
     IBOutlet UIProgressView *progressView;
     IBOutlet UIActivityIndicatorView *indicator;
     IBOutlet UIView *loadingView;
     IBOutlet UIView *tapToSelectView;
     IBOutlet UIView *tapToSelectLabel;
     IBOutlet UIView *containerView;
+    IBOutlet UIView *typeOfImageView;
     NSTimer *timer;
     
     int times;
@@ -47,6 +49,6 @@
 - (void)moveBar;
 - (void)startLoading;
 - (void)loadingFailed;
-
+- (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage;
 
 @end
