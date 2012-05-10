@@ -92,20 +92,25 @@
         
         [UIView animateWithDuration:0.3 animations:^{
             
-            game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
-            mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+            [self showNewGameView];
             
         }];
         
     } else {
         
-        game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
-        mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+        [self showNewGameView];
     }
     
     
 }
 
+- (void)showNewGameView {
+    
+    game.startButton.enabled = (game.image.image != nil);
+    game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
+    mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+    
+}
 
 - (void)loadSounds {
     

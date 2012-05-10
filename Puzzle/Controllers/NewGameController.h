@@ -17,11 +17,9 @@
 
 @interface NewGameController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate> {
     
-    IBOutlet UIImageView *image;
     IBOutlet UILabel *pieceNumberLabel;
     IBOutlet UIButton *piecesLabel;
     IBOutlet UISlider *slider;
-    IBOutlet UIButton *startButton;
     IBOutlet UIButton *backButton;
     IBOutlet UIButton *imageButton;
     IBOutlet UIButton *cameraButton;
@@ -40,6 +38,8 @@
 @property (nonatomic, retain) UIPopoverController *popover;
 @property (nonatomic, retain) NSString *imagePath;
 @property (nonatomic, assign) MenuController *delegate;
+@property (nonatomic, retain) IBOutlet UIButton *startButton;
+@property (nonatomic, retain) IBOutlet UIImageView *image;
 
 
 - (IBAction)startNewGame:(id)sender;

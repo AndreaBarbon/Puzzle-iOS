@@ -67,7 +67,6 @@
         //and split the big image using computed size
         
         float f = (float)(pieceNumber*partSize*0.7);
-        NSLog(@"f = %.1f", f);
         image = [[UIImage alloc] init];
         image = [delegate.image imageByScalingToSize:CGSizeMake(f,f)];
         array = [[NSMutableArray alloc] initWithArray:[self splitImage:image partSize:partSize]];
@@ -131,8 +130,6 @@
                 }
             }
             
-            NSLog(@"Pieces created");     
-
             
             errors = NO;
             

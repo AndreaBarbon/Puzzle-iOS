@@ -22,7 +22,7 @@
 
 @implementation NewGameController
 
-@synthesize popover, delegate, imagePath;
+@synthesize popover, delegate, imagePath, startButton, image;
 
 - (void)viewDidLoad
 {
@@ -256,7 +256,7 @@
     
     [delegate playMenuSound];
 
-    if (!typeOfImageView.hidden) {
+    if (typeOfImageView.hidden) {
         
         [UIView animateWithDuration:0.3 animations:^{
             

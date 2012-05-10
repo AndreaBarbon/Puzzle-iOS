@@ -358,6 +358,7 @@
 
 
             [self resetSizeOfAllThePieces];
+            [self shuffleAngles];
             [self refreshPositions];
             [self organizeDrawerWithOrientation:self.interfaceOrientation];
             [self checkNeighborsForAllThePieces];
@@ -543,6 +544,8 @@
     
     puzzleDB.percentage = [NSNumber numberWithInt:100];
     [self saveGame];
+    
+    [self.view bringSubviewToFront:HUDView];
 }
 
 
@@ -596,11 +599,10 @@
     }
     
     if (movingPiece!=nil && !panningSwitch.isOn) {
-        NSLog(@"Moving the piece");
+
         [movingPiece move:gesture];
         return;
     }
-    NSLog(@"Not moving the piece");
   
     
     if (menu.view.alpha == 0) {
@@ -808,11 +810,10 @@
 
         }completion:^(BOOL finished) {
             
-            [self checkNeighborsForGroup:group];
             [self updatePositionsInGroup:group withReferencePiece:group.boss];
+            [self checkNeighborsForGroup:group];
             [self updatePercentage];
             [self updateGroupDB:group];
-            
             
         }];
         
@@ -850,7 +851,7 @@
 
             p.position = boss.position + relativePosition.x + pieceNumber*relativePosition.y;
 
-            //NSLog(@"NewPosition = %d. %.1f, boss position = %d, %.1f", p.position, p.angle, boss.position, boss.angle);
+            NSLog(@"NewPosition = %d. %.1f, boss position = %d, %.1f", p.position, p.angle, boss.position, boss.angle);
             
         }
     }
@@ -1118,19 +1119,19 @@
     if (piece.position!=0) {
         
         if (r==2 && (piece.position+1)%pieceNumber==0) {
-            //NSLog(@"bottom piece (#%d) checking down", piece.number);
+            NSLog(@"bottom piece (#%d) checking down", piece.number);
             return NO;
         }
         if ( r==0 && (piece.position)%pieceNumber==0) {
-            //NSLog(@"top piece (#%d) checking up", piece.number);
+            NSLog(@"top piece (#%d) checking up", piece.number);
             return NO;
         }
         if (r==3 && (piece.position)/pieceNumber==pieceNumber-1) {
-            //NSLog(@"right piece (#%d) checking right", piece.number);
+            NSLog(@"right piece (#%d) checking right", piece.number);
             return NO;
         }
         if (r==1 && (piece.position)/pieceNumber==0) {
-            //NSLog(@"left piece (#%d) checking left", piece.number);
+            NSLog(@"left piece (#%d) checking left", piece.number);
             return NO;
         }
         
@@ -2076,6 +2077,21 @@
         p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
         p.angle = r*M_PI/2;
         //NSLog(@"angle=%.1f", p.angle);
+    }
+    
+}
+
+- (void)shuffleAngles {
+    
+    for (int i=0; i<N; i++) {          
+
+        PieceView *p = [pieces objectAtIndex:i];            
+        if (!p.isFree) {
+            
+            int r = arc4random_uniform(4);
+            p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
+            p.angle = r*M_PI/2;
+        }
     }
     
 }
