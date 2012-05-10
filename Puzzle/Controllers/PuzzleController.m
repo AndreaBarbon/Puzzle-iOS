@@ -54,7 +54,6 @@
     
     [super viewDidLoad];
     
-    
     directions = [[NSArray alloc] init];    
     
     imageSize = QUALITY;
@@ -241,7 +240,7 @@
             elapsedTime = [puzzleDB.elapsedTime floatValue];
             percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
             
-            
+            NSLog(@"Percentage = %d", puzzleDB.percentage.intValue);
             if (puzzleDB.percentage.intValue==100) {
                 puzzleCompete = YES;
                 [menu startNewGame:nil];
@@ -278,6 +277,8 @@
 
 - (IBAction)toggleMenu:(id)sender {
     
+    [menu playMenuSound];
+
     menu.duringGame = YES;
     [self.view bringSubviewToFront:menu.obscuringView];
     [self.view bringSubviewToFront:menu.view];
@@ -530,11 +531,14 @@
     }];
     
     
-    if (IS_DEVICE_PLAUYING_MUSIC) {
+    if (!IS_DEVICE_PLAUYING_MUSIC) {
         
         [completedSound play];
         
     }
+    
+    puzzleDB.percentage = [NSNumber numberWithInt:100];
+    [self saveGame];
 }
 
 
@@ -674,7 +678,6 @@
         
         GroupView *g = [self.view.subviews objectAtIndex:i];
         if ([g isKindOfClass:[GroupView class]] && g!=group) {
-            NSLog(@"%s", __func__);
             return g;
         }
     }
@@ -701,6 +704,7 @@
         newGroup = [[GroupView alloc] initWithFrame:CGRectMake(0, 0, w, w)];
         newGroup.boss = piece;
         newGroup.transform = lattice.transform;
+        newGroup.delegate = self;
         
         //piece.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.1];
         piece.isBoss = YES;
@@ -1187,7 +1191,7 @@
                                 otherPiece.hasNeighbors = YES;
                                 
                                 if (!loadingGame &&
-                                    IS_DEVICE_PLAUYING_MUSIC &&
+                                    !IS_DEVICE_PLAUYING_MUSIC &&
                                     !(piece.number == piece.position && ABS(piece.angle)<1)
                                     ) {
                                     
@@ -1265,7 +1269,7 @@
             
             if (![self isPuzzleComplete] && !loadingGame) {
                                
-                if (IS_DEVICE_PLAUYING_MUSIC) {
+                if (!IS_DEVICE_PLAUYING_MUSIC) {
                     [positionedSound play];
                 }
             }
@@ -2335,7 +2339,9 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {       
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
         return YES;
@@ -2344,9 +2350,7 @@
         
         return (interfaceOrientation==UIInterfaceOrientationPortrait);
         
-    }
-    
-    
+    }    
 }
 
 - (CGRect)frameForLatticeWithOrientation:(UIInterfaceOrientation)orientation {
@@ -2452,6 +2456,15 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && 
+        [menu.game.popover isPopoverVisible]
+        ) {
+        
+        [menu.game.popover dismissPopoverAnimated:NO];
+        CGRect rect = CGRectMake(menu.game.view.center.x, -20, 1, 1);
+        [menu.game.popover presentPopoverFromRect:rect inView:menu.game.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];        
+    }
     
     didRotate = YES;
     

@@ -51,8 +51,16 @@
 		B8DAFCC7155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */; };
 		B8DAFCC8155BA1C400A901A3 /* PuzzleCompleted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */; };
 		B8DAFCC9155BA1C400A901A3 /* PuzzleCompleted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */; };
-		B8DAFCCD155BA6D500A901A3 /* MenuSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCCC155BA6D500A901A3 /* MenuSound.mp3 */; };
-		B8DAFCCE155BA6D500A901A3 /* MenuSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCCC155BA6D500A901A3 /* MenuSound.mp3 */; };
+		B8DAFCD0155BB78A00A901A3 /* MenuSound.aif in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCCF155BB78A00A901A3 /* MenuSound.aif */; };
+		B8DAFCD1155BB78A00A901A3 /* MenuSound.aif in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCCF155BB78A00A901A3 /* MenuSound.aif */; };
+		B8DAFCD6155BB9E000A901A3 /* Scissors_Shears.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCD5155BB9E000A901A3 /* Scissors_Shears.wav */; };
+		B8DAFCD7155BB9E000A901A3 /* Scissors_Shears.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCD5155BB9E000A901A3 /* Scissors_Shears.wav */; };
+		B8DAFCE1155BBE4C00A901A3 /* Lampedusa_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE0155BBE4C00A901A3 /* Lampedusa_puzzle.jpg */; };
+		B8DAFCE2155BBE4C00A901A3 /* Lampedusa_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE0155BBE4C00A901A3 /* Lampedusa_puzzle.jpg */; };
+		B8DAFCE6155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */; };
+		B8DAFCE7155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */; };
+		B8DAFCE8155BDB0700A901A3 /* PuzzleLibraryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */; };
+		B8DAFCE9155BDB0700A901A3 /* PuzzleLibraryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */; };
 		B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
 		B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
 		B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
@@ -152,7 +160,12 @@
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
 		B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PuzzleCompleted.mp3; path = Audio/PuzzleCompleted.mp3; sourceTree = "<group>"; };
-		B8DAFCCC155BA6D500A901A3 /* MenuSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = MenuSound.mp3; path = Audio/MenuSound.mp3; sourceTree = "<group>"; };
+		B8DAFCCF155BB78A00A901A3 /* MenuSound.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = MenuSound.aif; path = Audio/MenuSound.aif; sourceTree = "<group>"; };
+		B8DAFCD5155BB9E000A901A3 /* Scissors_Shears.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Scissors_Shears.wav; path = Audio/Scissors_Shears.wav; sourceTree = "<group>"; };
+		B8DAFCE0155BBE4C00A901A3 /* Lampedusa_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Lampedusa_puzzle.jpg; sourceTree = "<group>"; };
+		B8DAFCE3155BDB0600A901A3 /* PuzzleLibraryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleLibraryController.h; path = Controllers/PuzzleLibraryController.h; sourceTree = "<group>"; };
+		B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleLibraryController.m; path = Controllers/PuzzleLibraryController.m; sourceTree = "<group>"; };
+		B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleLibraryController.xib; path = Controllers/PuzzleLibraryController.xib; sourceTree = "<group>"; };
 		B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
@@ -241,6 +254,7 @@
 				B87C5CED1540170E00AF69BC /* Views */,
 				B87C5CE9154014C300AF69BC /* Classes */,
 				B8E1815F15503B0900A8B450 /* Audio */,
+				B8DAFCDC155BBBB400A901A3 /* Puzzle images */,
 				B8E1815E15503AF800A8B450 /* Images */,
 				B8AA19B1154B502900750458 /* Icon */,
 				B8DFA69115497ED300256385 /* Default */,
@@ -279,10 +293,10 @@
 		B87C5CED1540170E00AF69BC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B8AE1204155990DB00742256 /* GroupView.m */,
+				B8AE1207155990DB00742256 /* PieceView.h */,
 				B8AE1205155990DB00742256 /* PieceView.m */,
 				B8AE1206155990DB00742256 /* GroupView.h */,
-				B8AE1207155990DB00742256 /* PieceView.h */,
+				B8AE1204155990DB00742256 /* GroupView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -299,6 +313,9 @@
 				B8AA19CB154B565400750458 /* NewGameController.h */,
 				B8AA19CC154B565400750458 /* NewGameController.m */,
 				B8AA19CD154B565400750458 /* NewGameController.xib */,
+				B8DAFCE3155BDB0600A901A3 /* PuzzleLibraryController.h */,
+				B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */,
+				B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -332,6 +349,15 @@
 			path = "Core Data models";
 			sourceTree = "<group>";
 		};
+		B8DAFCDC155BBBB400A901A3 /* Puzzle images */ = {
+			isa = PBXGroup;
+			children = (
+				B8DAFCE0155BBE4C00A901A3 /* Lampedusa_puzzle.jpg */,
+			);
+			name = "Puzzle images";
+			path = Puzzle_images;
+			sourceTree = "<group>";
+		};
 		B8DFA69115497ED300256385 /* Default */ = {
 			isa = PBXGroup;
 			children = (
@@ -357,10 +383,11 @@
 		B8E1815F15503B0900A8B450 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				B8DAFCD5155BB9E000A901A3 /* Scissors_Shears.wav */,
+				B8DAFCCF155BB78A00A901A3 /* MenuSound.aif */,
 				B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */,
 				B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */,
 				B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */,
-				B8DAFCCC155BA6D500A901A3 /* MenuSound.mp3 */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
@@ -458,7 +485,10 @@
 				B8DAFCC4155BA1C400A901A3 /* NeighborFound.wav in Resources */,
 				B8DAFCC6155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */,
 				B8DAFCC8155BA1C400A901A3 /* PuzzleCompleted.mp3 in Resources */,
-				B8DAFCCD155BA6D500A901A3 /* MenuSound.mp3 in Resources */,
+				B8DAFCD0155BB78A00A901A3 /* MenuSound.aif in Resources */,
+				B8DAFCD6155BB9E000A901A3 /* Scissors_Shears.wav in Resources */,
+				B8DAFCE1155BBE4C00A901A3 /* Lampedusa_puzzle.jpg in Resources */,
+				B8DAFCE8155BDB0700A901A3 /* PuzzleLibraryController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,7 +519,10 @@
 				B8DAFCC5155BA1C400A901A3 /* NeighborFound.wav in Resources */,
 				B8DAFCC7155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */,
 				B8DAFCC9155BA1C400A901A3 /* PuzzleCompleted.mp3 in Resources */,
-				B8DAFCCE155BA6D500A901A3 /* MenuSound.mp3 in Resources */,
+				B8DAFCD1155BB78A00A901A3 /* MenuSound.aif in Resources */,
+				B8DAFCD7155BB9E000A901A3 /* Scissors_Shears.wav in Resources */,
+				B8DAFCE2155BBE4C00A901A3 /* Lampedusa_puzzle.jpg in Resources */,
+				B8DAFCE9155BDB0700A901A3 /* PuzzleLibraryController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +547,7 @@
 				B8AE12231559912200742256 /* Piece.m in Sources */,
 				B8AE12251559912200742256 /* Puzzle.m in Sources */,
 				B8AE12271559912200742256 /* Puzzle.xcdatamodeld in Sources */,
+				B8DAFCE6155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +569,7 @@
 				B8AE12241559912200742256 /* Piece.m in Sources */,
 				B8AE12261559912200742256 /* Puzzle.m in Sources */,
 				B8AE12281559912200742256 /* Puzzle.xcdatamodeld in Sources */,
+				B8DAFCE7155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

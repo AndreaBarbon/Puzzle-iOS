@@ -761,9 +761,7 @@
 }
 
 -(void)setIsPositioned:(BOOL)isPositioned_ {
-    
-    NSLog(@"%s", __func__);
-    
+        
     if (isPositioned_ && !isPositioned && !delegate.loadingGame) {
         
         //[self pulse];
