@@ -56,6 +56,8 @@
     
     [super viewDidLoad];
     
+    screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
     directions = [[NSArray alloc] init];    
     
     imageSize = QUALITY;
@@ -105,7 +107,6 @@
     CGRect drawerFrame = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     
-    float width = [[UIScreen mainScreen] bounds].size.width;
     float height = [[UIScreen mainScreen] bounds].size.height;
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
@@ -113,7 +114,7 @@
         NSLog(@"Landscape!");
         
         drawerFrame.size.width = drawerSize;
-        drawerFrame.size.height = width;
+        drawerFrame.size.height = screenWidth;
         stepperFrame.origin.y = 10;
         stepperFrame.origin.x = drawerFrame.size.width;
         
@@ -154,9 +155,7 @@
     [panDrawer setMaximumNumberOfTouches:1];
     [drawerView addGestureRecognizer:panDrawer];
     
-    
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rotateTap:)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
     tap.numberOfTapsRequired = 2;
     [self.view addGestureRecognizer:tap];
     
@@ -377,6 +376,7 @@
         }
         
         [self bringDrawerToTop];
+        [self resetLatticePositionAndSizeWithDuration:0.0];
 
         
     }
@@ -426,7 +426,7 @@
     puzzleOperation.delegate = self;
     puzzleOperation.loadingGame = loadingGame;
     puzzleOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
-    
+        
 }
 
 - (void)createPuzzleFromSavedGame {
@@ -551,7 +551,7 @@
 #pragma mark -
 #pragma mark Gesture handling
 
-- (void)rotateTap:(UITapGestureRecognizer*)gesture {
+- (void)doubleTap:(UITapGestureRecognizer*)gesture {
     
     CGPoint point = [gesture locationInView:lattice];
 
@@ -569,6 +569,10 @@
     
     if (movingPiece!=nil) {
         [movingPiece rotateTap:gesture];
+        
+    } else {
+        
+        [self resetLatticePositionAndSizeWithDuration:0.5];
     }
 }
 
@@ -630,28 +634,31 @@
         CGPoint point = CGPointMake([gesture locationInView:lattice].x, [gesture locationInView:lattice].y);
         [self setAnchorPoint:point forView:lattice];
         
-        
-        CGSize screen = [[UIScreen mainScreen] bounds].size;
-        
-        if (lattice.scale*z*3*pieceNumber*(piceSize-2*padding)>screen.width && lattice.scale*z*piceSize<screen.width) {
-            
-            lattice.scale *= z;
-            lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
-            
-            for (GroupView *g in groups) {
-
-                g.transform = CGAffineTransformScale(g.transform, z, z);
-            }
-        }
-        
-        [self refreshPositions];        
+        [self resizeLatticeToScale:lattice.scale*z];
         
         [gesture setScale:1];
     }
-    
-    
 }
 
+- (void)resizeLatticeToScale:(float)newScale {
+
+    float z = newScale/lattice.scale;
+        
+    if (lattice.scale*z*3*pieceNumber*(piceSize-2*padding)>screenWidth && lattice.scale*z*piceSize<screenWidth) {
+    
+        lattice.scale = newScale;
+
+        lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
+        
+        for (GroupView *g in groups) {
+            
+            g.transform = CGAffineTransformScale(g.transform, z, z);
+        }
+        
+        [self refreshPositions];        
+    }
+    
+}
 
 
 #pragma mark -
@@ -1430,32 +1437,37 @@
     
 }
 
-- (void)resizeLatticeWithCenter:(CGPoint)center {
+- (void)resetLatticePositionAndSizeWithDuration:(float)duration {
     
-    float z = lattice.scale;
-    lattice.contentScaleFactor = z;
+    float f = screenWidth/(pieceNumber+1);
+    f = f/(piceSize-2*padding);
     
-    float w = (piceSize-2*self.padding)*pieceNumber*lattice.scale;
-    
-    CGPoint latticeCenter = CGPointMake(lattice.frame.origin.x+0.5*w, 
-                                        lattice.frame.origin.y+0.5*w);
-    
-    NSLog(@"Lattice center = %.1f, %.1f", latticeCenter.x, latticeCenter.y);
-    
-    CGPoint translation = CGPointMake(latticeCenter.x-center.x, latticeCenter.y-center.y);
-    
-    CGAffineTransform transform = CGAffineTransformMakeTranslation(translation.x, translation.y);
-    transform = CGAffineTransformScale(transform, z, z);
-    transform = CGAffineTransformTranslate(transform, -translation.x, -translation.y);
-    
-    lattice.transform = transform;
-    
-    UIView *centerView = [[UIView alloc] initWithFrame:CGRectMake(center.x, center.y, 10, 10)];
-    UIView *originView = [[UIView alloc] initWithFrame:CGRectMake(lattice.center.x, lattice.center.y, 10, 10)];
-    centerView.backgroundColor = [UIColor blueColor];
-    originView.backgroundColor = [UIColor redColor];
-    [lattice addSubview:centerView];
-    [self.view addSubview:originView];
+    [UIView animateWithDuration:duration animations:^{
+
+        [self resizeLatticeToScale:f];
+
+    }completion:^(BOOL finished) {
+        
+        [UIView animateWithDuration:duration animations:^{
+            
+            CGPoint center = [self.view convertPoint:[[lattice objectAtIndex:4*NumberSquare] center] fromView:lattice];
+            
+            if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+                
+                lattice.transform = CGAffineTransformTranslate(lattice.transform, 
+                                                               -center.x/lattice.scale+(piceSize-2*padding)+drawerSize, 
+                                                               -center.y/lattice.scale+(piceSize-2*padding));
+            } else {
+                
+                lattice.transform = CGAffineTransformTranslate(lattice.transform, 
+                                                               -center.x/lattice.scale+(piceSize-2*padding), 
+                                                               -center.y/lattice.scale+(piceSize-2*padding)+drawerSize);
+            }
+            
+            [self refreshPositions];
+            
+        }];
+    }];
     
 }
 
@@ -1472,14 +1484,9 @@
 }
 
 - (CGPoint)centerOfLatticePiece:(int)i {
-    
-//    UIView *v = [lattice objectAtIndex:i];
-//    return [lattice.superview convertPoint:v.center fromView:lattice];
-
 
     CGRect rect = [self frameOfLatticePiece:i];
     return CGPointMake(rect.origin.x+lattice.scale*piceSize/2.0, rect.origin.y+lattice.scale*piceSize/2.0);
-    
     
 }
 
@@ -1611,7 +1618,7 @@
                 
                 if (velocity < -VELOCITY_LIMIT) velocity = -VELOCITY_LIMIT;
             
-                if ([self lastPieceInDrawer].frame.origin.y<[[UIScreen mainScreen] bounds].size.width-piceSize) {
+                if ([self lastPieceInDrawer].frame.origin.y<screenWidth-piceSize) {
 
                     [self moveNegativePieces];
                 }
@@ -1650,7 +1657,7 @@
                 
                 if (velocity < -VELOCITY_LIMIT) velocity = -VELOCITY_LIMIT;
                 
-                if ([self lastPieceInDrawer].frame.origin.x<[[UIScreen mainScreen] bounds].size.width-piceSize) {
+                if ([self lastPieceInDrawer].frame.origin.x<screenWidth-piceSize) {
                     
                     [self moveNegativePieces];
                 }
@@ -1821,7 +1828,6 @@
         sgn *= -1;
     }
     
-    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
     float traslation = screenWidth-drawerMargin;
     
     
@@ -2112,7 +2118,6 @@
         drawerSize = piceSize+1.8*self.padding-10;
     
     
-    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
     numberOfPiecesInDrawer = screenWidth/(piceSize+1);
     float unusedSpace = screenWidth - numberOfPiecesInDrawer*piceSize;
     drawerMargin = (float)(unusedSpace/(numberOfPiecesInDrawer+1));
@@ -2396,16 +2401,14 @@
     CGRect rect = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     CGRect imageFrame = imageView.frame;
-    
-    float width = [[UIScreen mainScreen] bounds].size.width;
-    
+        
  
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
                 
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
         rect.size.width = drawerSize;
-        rect.size.height = width;
+        rect.size.height = screenWidth;
         stepperFrame.origin.y = rect.size.height - stepperFrame.size.height-30;
         stepperFrame.origin.x = rect.size.width;
         float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.width)/1;
@@ -2421,7 +2424,7 @@
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
         rect.size.height = drawerSize;
-        rect.size.width = width;
+        rect.size.width = screenWidth;
         stepperFrame.origin.y = rect.size.height;
         stepperFrame.origin.x = rect.size.width - stepperFrame.size.width-10;
         float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.height)/1;

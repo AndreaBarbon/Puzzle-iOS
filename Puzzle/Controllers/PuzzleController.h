@@ -59,6 +59,7 @@
     float drawerMargin;
 
     float biggerPieceSize;
+    float screenWidth;
     
     NSTimer *timer;
     
