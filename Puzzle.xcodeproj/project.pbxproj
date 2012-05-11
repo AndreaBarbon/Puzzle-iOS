@@ -461,10 +461,10 @@
 				B8AE120C155990F100742256 /* AppDelegate.m */,
 				B8AE120F155990F100742256 /* CreatePuzzleOperation.h */,
 				B8AE120D155990F100742256 /* CreatePuzzleOperation.m */,
-				B84014F21540E57D0075734A /* UIImage+CWAdditions.h */,
-				B84014F31540E57D0075734A /* UIImage+CWAdditions.m */,
 				B82AC5C5154411B500208887 /* Lattice.h */,
 				B82AC5C6154411B500208887 /* Lattice.m */,
+				B84014F21540E57D0075734A /* UIImage+CWAdditions.h */,
+				B84014F31540E57D0075734A /* UIImage+CWAdditions.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";

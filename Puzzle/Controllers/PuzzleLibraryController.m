@@ -11,6 +11,7 @@
 #import "MenuController.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define IMAGE_SIZE 240
 
 @implementation PhotoCell
 
@@ -102,7 +103,6 @@
             [string hasSuffix:@"_puzzle.PNG"]
             ) {
             
-            NSLog(@"Image path for puzzle: %@", string);
             [tempArray addObject:string];
         } 
     }
@@ -113,7 +113,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    return 320;
+    return self.view.bounds.size.width;
 }
 
 
@@ -134,8 +134,9 @@
     
     if (cell == nil) {
         
+        float w = self.view.bounds.size.width;
         cell = [[PhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.photo = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20, 280, 280)];
+        cell.photo = [[UIImageView alloc] initWithFrame:CGRectMake((w-IMAGE_SIZE)/2, (w-IMAGE_SIZE)/2, IMAGE_SIZE, IMAGE_SIZE)];
         cell.photo.layer.cornerRadius = 20;
         cell.photo.layer.masksToBounds = YES;
         [cell addSubview:cell.photo];

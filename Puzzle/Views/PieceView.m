@@ -119,7 +119,7 @@
         
         int i = [[neighbors objectAtIndex:j] intValue];
         
-        if (i<delegate.N) {
+        if (i<delegate.NumberSquare) {
             PieceView *piece = [delegate pieceWithNumber:i];
             
             BOOL present = NO;
@@ -148,7 +148,7 @@
         
         int i = [[neighbors objectAtIndex:j] intValue];
         
-        if (i<delegate.N) {
+        if (i<delegate.NumberSquare) {
             //NSLog(@"From piece #%d, translating the other, i=%d", self.number ,i);
             PieceView *piece = [delegate pieceWithNumber:i];
             
@@ -641,7 +641,7 @@
     delegate.loadedPieces++;
 
     
-    int pieceNumber = (delegate.N-delegate.missedPieces);
+    int pieceNumber = (delegate.NumberSquare-delegate.missedPieces);
     if (!delegate.loadingGame) {
         pieceNumber *= 2;
     }
@@ -691,7 +691,7 @@
     
     neighbors = [[NSArray alloc] initWithArray:temp];
     
-    //NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
+    NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
     
     hasNeighbors = YES;
     
@@ -700,7 +700,7 @@
 - (BOOL)isCompleted {
         
     for (NSNumber *n in neighbors) {
-        if (n.intValue == delegate.N) {
+        if (n.intValue == delegate.NumberSquare) {
             return NO;
         }
     }
@@ -717,14 +717,14 @@
     }
     [excluded addObject:self];
     
-    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:delegate.N-1];
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:delegate.NumberSquare-1];
             
         for (int j=0; j<[neighbors count]; j++) {
             
             int i = [[neighbors objectAtIndex:j] intValue];
             
             
-            if (i<delegate.N) {
+            if (i<delegate.NumberSquare) {
                 PieceView *otherPiece = [delegate pieceWithNumber:i];
                 
                 BOOL present = NO;

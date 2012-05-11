@@ -14,7 +14,7 @@
 
 @interface Lattice : UIView {
     
-    
+    int n;
 }
 
 @property (nonatomic, assign) UIViewController *delegate;

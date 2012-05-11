@@ -36,10 +36,9 @@
     if (image.image==nil) {
         
         startButton.enabled = NO;
-        image.image = [UIImage imageNamed:@"Wood.jpg"];
     }
     
-    typeOfImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    typeOfImageView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
@@ -63,9 +62,6 @@
     typeOfImageView.layer.masksToBounds = YES;
 
     imagePath = [[NSString alloc] initWithFormat:@""];
-    
-    //progressView.progressTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
-    //slider.minimumTrackTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
 
 }
 
@@ -370,7 +366,7 @@
     
     if (delegate.delegate.loadingGame) {
         
-        b = delegate.delegate.N;
+        b = delegate.delegate.NumberSquare;
     }
     
     progressView.progress = a/b;

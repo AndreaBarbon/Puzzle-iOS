@@ -69,7 +69,7 @@
 
 @property(nonatomic) float piceSize;
 @property(nonatomic) float elapsedTime;
-@property(nonatomic) float N;
+@property(nonatomic) float NumberSquare;
 @property(nonatomic) float padding;
 
 @property(nonatomic) int pieceNumber;

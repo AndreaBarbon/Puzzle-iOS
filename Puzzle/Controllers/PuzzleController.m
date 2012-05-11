@@ -25,7 +25,7 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, N, pieceNumber, imageView, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, elapsedTime, groups, panningSwitch, imageSize;
+@synthesize pieces, image, piceSize, lattice, NumberSquare, pieceNumber, imageView, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, elapsedTime, groups, panningSwitch, imageSize;
 
 @synthesize pan, panDrawer, pinch;
 
@@ -90,10 +90,8 @@
     [self loadSounds];
     [self computePieceSize];
     
-    //Add the image;
-    image = [UIImage imageNamed:@"Wood.jpg"];
-    
-    imageView = [[UIImageView alloc] initWithImage:image];
+    //Add the image;    
+    imageView = [[UIImageView alloc] init];
     rect = CGRectMake(0, (rect.size.height-rect.size.width)/1, rect.size.width, rect.size.width);
     imageView.frame = rect;
     imageView.alpha = 0;
@@ -194,7 +192,7 @@
     
     
     pieceNumber = PIECE_NUMBER;
-    N = pieceNumber*pieceNumber;
+    NumberSquare = pieceNumber*pieceNumber;
     
     //[self computePieceSize];
     
@@ -239,7 +237,7 @@
                 [v removeFromSuperview];
             }
             image = [UIImage imageWithData:puzzleDB.image.data];
-            groups = [[NSMutableArray alloc] initWithCapacity:N/2];
+            groups = [[NSMutableArray alloc] initWithCapacity:NumberSquare/2];
             elapsedTime = [puzzleDB.elapsedTime floatValue];
             percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
             
@@ -559,7 +557,7 @@
 
     movingPiece = nil;
     
-    for (int i= 0; i<N; i++) {
+    for (int i= 0; i<9*NumberSquare; i++) {
         
         CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
         
@@ -582,7 +580,7 @@
         
         movingPiece = nil;
         
-        for (int i= 0; i<N; i++) {
+        for (int i= 0; i<9*NumberSquare; i++) {
             
             CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
             
@@ -663,7 +661,7 @@
     
     CGRect frame;
     
-    for (int i=N-1; i>-1; i--) {
+    for (int i=9*NumberSquare-1; i>-1; i--) {
         
         frame = [self frameOfLatticePiece:i];
         if ([self group:group isInFrame:frame]) {
@@ -671,11 +669,12 @@
             //NSLog(@"Group is in lattice piece #%d", i);
             [self moveGroup:group toLatticePoint:i animated:YES];
             
-            break;
+            return;
         }
-        
     }
-    
+
+    [self moveGroup:group toLatticePoint:group.boss.position animated:YES];
+
 }
 
 - (UIView*)upperGroupBut:(GroupView*)group {
@@ -997,7 +996,7 @@
             
         } else {
             
-            for (int i=N-1; i>-1; i--) {
+            for (int i=9*NumberSquare-1; i>-1; i--) {
                 
                 
                 //NSLog(@"v origin = %.1f, %.1f - [piece realCenter] = %.1f, %.1f", frame.origin.x, frame.origin.y, [piece realCenter].x, [piece realCenter].y);
@@ -1040,7 +1039,7 @@
 - (int)positionOfPiece:(PieceView*)piece {
     
     
-    for (int i=N-1; i>-1; i--) {
+    for (int i=9*NumberSquare-1; i>-1; i--) {
         
         CGRect frame = [self frameOfLatticePiece:i];
         
@@ -1166,7 +1165,7 @@
         
         //Looks for neighbors       
         
-        if (j+i>=0 && j+i<N && [self shouldCheckNeighborsOfPiece:piece inDirection:r] )
+        if (j+i>=0 && j+i<9*NumberSquare && [self shouldCheckNeighborsOfPiece:piece inDirection:r] )
         {
             
             otherPiece = [self pieceAtPosition:j+i];
@@ -1197,7 +1196,7 @@
                                 
                                 if (!loadingGame &&
                                     !IS_DEVICE_PLAUYING_MUSIC &&
-                                    !(piece.number == piece.position && ABS(piece.angle)<1)
+                                    !(piece.number + 4*NumberSquare == piece.position && ABS(piece.angle)<1)
                                     ) {
                                     
                                     [neighborSound play];
@@ -1253,7 +1252,9 @@
 
 - (BOOL)isPositioned:(PieceView*)piece  {
     
-    if (piece.isFree && piece.number == piece.position && ABS(piece.angle) < 1) {
+    NSLog(@"Position %d, number %d", piece.position, piece.number);
+    
+    if (piece.isFree && piece.number + 4*NumberSquare == piece.position && ABS(piece.angle) < 1) {
         
         //NSLog(@"Piece #%d positioned!", piece.number);
         //Flashes and block the piece
@@ -1460,17 +1461,13 @@
 
 - (CGRect)frameOfLatticePiece:(int)i {
     
-    if (0<=i && i<N) {
-        UIView *v = [lattice objectAtIndex:i];
-        return CGRectMake(
-                          lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding)-2.0*lattice.scale,
-                          lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding)-2.0*lattice.scale, 
-                          lattice.scale*piceSize, 
-                          lattice.scale*piceSize);
-    } else {
-        
-        return CGRectZero;
-    }
+    UIView *v = [lattice objectAtIndex:i];
+    return CGRectMake(
+                      lattice.frame.origin.x + lattice.scale*(v.frame.origin.x-self.padding)-2.0*lattice.scale,
+                      lattice.frame.origin.y + lattice.scale*(v.frame.origin.y-self.padding)-2.0*lattice.scale, 
+                      lattice.scale*piceSize, 
+                      lattice.scale*piceSize
+                      );
     
 }
 
@@ -2065,8 +2062,7 @@
     
     pieces = [self shuffleArray:pieces];
     
-    
-    for (int i=0; i<N; i++) {          
+    for (int i=0; i<NumberSquare; i++) {          
         PieceView *p = [pieces objectAtIndex:i];            
         CGRect rect = p.frame;
         rect.origin.x = piceSize*i+drawerMargin;
@@ -2083,7 +2079,7 @@
 
 - (void)shuffleAngles {
     
-    for (int i=0; i<N; i++) {          
+    for (int i=0; i<NumberSquare; i++) {          
 
         PieceView *p = [pieces objectAtIndex:i];            
         if (!p.isFree) {
@@ -2303,10 +2299,9 @@
 }
 
 - (BOOL)pieceIsOut:(PieceView *)piece {
-    
+        
     CGRect frame1 = [self frameOfLatticePiece:0];
-    CGRect frame2 = [self frameOfLatticePiece:N-1];
-    
+    CGRect frame2 = [self frameOfLatticePiece:9*NumberSquare-1];
     
     if ([piece realCenter].x > frame2.origin.x+frame2.size.width ||
         [piece realCenter].y > frame2.origin.y+frame2.size.width ||
@@ -2314,7 +2309,7 @@
         [piece realCenter].y < frame1.origin.y
         )
     {
-        NSLog(@"Piece is #%d out, N= %.1f", piece.number, N);
+        NSLog(@"Piece #%d is out, N= %.1f", piece.number, NumberSquare);
         return YES;
     }
     
@@ -2325,7 +2320,7 @@
             [p realCenter].x < frame1.origin.x ||
             [p realCenter].y < frame1.origin.y
             )        {
-            NSLog(@"Piece is #%d out, N= %.1f (neighbor)", piece.number, N);
+            NSLog(@"Piece is #%d out, N= %.1f (neighbor)", piece.number, NumberSquare);
             return YES;
         }
     }
@@ -2546,8 +2541,8 @@
         [p removeFromSuperview];
     }
     
-    groups = [[NSMutableArray alloc] initWithCapacity:N/2];
-    pieces = [[NSMutableArray alloc] initWithCapacity:N];
+    groups = [[NSMutableArray alloc] initWithCapacity:NumberSquare/2];
+    pieces = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
     
     
     [self createPuzzleFromImage:image];
@@ -2565,7 +2560,7 @@
 - (void)setPieceNumber:(int)pieceNumber_ {
     
     pieceNumber = pieceNumber_;
-    N = pieceNumber*pieceNumber;
+    NumberSquare = pieceNumber*pieceNumber;
 
 }
 
@@ -2579,7 +2574,7 @@
         }
     }
     
-    return (positioned/N*100);
+    return (positioned/NumberSquare*100);
     
 }
 
@@ -2646,7 +2641,7 @@
     
     if (![prefs boolForKey:@"Reviewed"]) {
         
-        alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion!" message:@"Do you like this game?\nGive us 5 stars!\nDo you have any suggestions?\nWrite a review and we will try to improve the app to fulfill your desires." delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
+        alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion!" message:@"Do you like this game?\nGive us ★★★★★!\nDo you have any suggestions?\nWrite a review and we will try to improve the app to fulfill your desires." delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
         [alertView show];
         
     } else {

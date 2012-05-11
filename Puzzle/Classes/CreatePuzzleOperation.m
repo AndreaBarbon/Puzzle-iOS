@@ -39,12 +39,12 @@
     
     float piceSize = SHAPE_QUALITY*delegate.piceSize;
     float pieceNumber = delegate.pieceNumber;
-    float N = delegate.N;
+    float NumberSquare = delegate.NumberSquare;
     
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:N];
+    NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
     NSMutableArray *array;
     
     if (loadingGame) {
@@ -103,7 +103,7 @@
                         
                         piece.frame = rect;
                         
-                        NSNumber *n = [NSNumber numberWithInt:N];
+                        NSNumber *n = [NSNumber numberWithInt:NumberSquare];
                         piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
                         
                         
@@ -162,7 +162,7 @@
                     piece.number = j+pieceNumber*i;
                     piece.size = piceSize;
                     piece.position = -1;
-                    NSNumber *n = [NSNumber numberWithInt:N];
+                    NSNumber *n = [NSNumber numberWithInt:NumberSquare];
                     piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
                     
                     piece.frame = rect;
@@ -325,7 +325,7 @@
     
     delegate.loadedPieces = 0;
     
-    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:delegate.N];
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:delegate.NumberSquare];
     for (int i=0;i<x;i++){
         for (int j=0;j<y;j++){
             
@@ -358,7 +358,7 @@
     
     delegate.loadedPieces = 0;
     
-    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:delegate.N];
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:delegate.NumberSquare];
     for (int i=0;i<x;i++){
         for (int j=0;j<y;j++){
             
