@@ -11,10 +11,10 @@
 #import "UIImage+CWAdditions.h"
 
 #define IMAGE_SIZE_BOUND_IPAD 2*PIECE_SIZE_IPAD
-#define IMAGE_SIZE_BOUND_IPHONE 2*PIECE_SIZE_IPHONE
+#define IMAGE_SIZE_BOUND_IPHONE 3*PIECE_SIZE_IPHONE
 
 #define JPG_QUALITY 1
-#define SHAPE_QUALITY 1
+#define SHAPE_QUALITY 4
 
 
 @implementation CreatePuzzleOperation

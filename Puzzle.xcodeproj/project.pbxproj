@@ -17,22 +17,14 @@
 		B8731468155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144D155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg */; };
 		B8731469155C373D00FB77FC /* Amsterdam signs_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144E155C373D00FB77FC /* Amsterdam signs_puzzle.jpg */; };
 		B873146A155C373D00FB77FC /* Amsterdam signs_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144E155C373D00FB77FC /* Amsterdam signs_puzzle.jpg */; };
-		B873146B155C373D00FB77FC /* Bacon_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144F155C373D00FB77FC /* Bacon_puzzle.jpg */; };
-		B873146C155C373D00FB77FC /* Bacon_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144F155C373D00FB77FC /* Bacon_puzzle.jpg */; };
-		B873146D155C373D00FB77FC /* Broken TV_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731450155C373D00FB77FC /* Broken TV_puzzle.jpg */; };
-		B873146E155C373D00FB77FC /* Broken TV_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731450155C373D00FB77FC /* Broken TV_puzzle.jpg */; };
 		B873146F155C373D00FB77FC /* Bulldog_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731451155C373D00FB77FC /* Bulldog_puzzle.jpg */; };
 		B8731470155C373D00FB77FC /* Bulldog_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731451155C373D00FB77FC /* Bulldog_puzzle.jpg */; };
 		B8731471155C373D00FB77FC /* Drops_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B8731452155C373D00FB77FC /* Drops_puzzle.JPG */; };
 		B8731472155C373D00FB77FC /* Drops_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B8731452155C373D00FB77FC /* Drops_puzzle.JPG */; };
-		B8731473155C373D00FB77FC /* Earth_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B8731453155C373D00FB77FC /* Earth_puzzle.JPG */; };
-		B8731474155C373D00FB77FC /* Earth_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B8731453155C373D00FB77FC /* Earth_puzzle.JPG */; };
 		B8731475155C373D00FB77FC /* Flower_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B8731454155C373D00FB77FC /* Flower_puzzle.JPG */; };
 		B8731476155C373D00FB77FC /* Flower_puzzle.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B8731454155C373D00FB77FC /* Flower_puzzle.JPG */; };
 		B8731477155C373D00FB77FC /* Fractal leaf_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731455155C373D00FB77FC /* Fractal leaf_puzzle.jpg */; };
 		B8731478155C373D00FB77FC /* Fractal leaf_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731455155C373D00FB77FC /* Fractal leaf_puzzle.jpg */; };
-		B8731479155C373D00FB77FC /* Lattine_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731456155C373D00FB77FC /* Lattine_puzzle.jpg */; };
-		B873147A155C373D00FB77FC /* Lattine_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731456155C373D00FB77FC /* Lattine_puzzle.jpg */; };
 		B873147B155C373D00FB77FC /* Lego_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731457155C373D00FB77FC /* Lego_puzzle.jpg */; };
 		B873147C155C373D00FB77FC /* Lego_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731457155C373D00FB77FC /* Lego_puzzle.jpg */; };
 		B873147D155C373D00FB77FC /* Micetto furbetto_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731458155C373D00FB77FC /* Micetto furbetto_puzzle.jpg */; };
@@ -57,8 +49,6 @@
 		B8731490155C373D00FB77FC /* Pizza_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731461155C373D00FB77FC /* Pizza_puzzle.jpg */; };
 		B8731491155C373D00FB77FC /* PlayStation_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731462155C373D00FB77FC /* PlayStation_puzzle.jpg */; };
 		B8731492155C373D00FB77FC /* PlayStation_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731462155C373D00FB77FC /* PlayStation_puzzle.jpg */; };
-		B8731493155C373D00FB77FC /* Scorpione_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731463155C373D00FB77FC /* Scorpione_puzzle.jpg */; };
-		B8731494155C373D00FB77FC /* Scorpione_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731463155C373D00FB77FC /* Scorpione_puzzle.jpg */; };
 		B8731495155C373D00FB77FC /* Yellow_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731464155C373D00FB77FC /* Yellow_puzzle.jpg */; };
 		B8731496155C373D00FB77FC /* Yellow_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731464155C373D00FB77FC /* Yellow_puzzle.jpg */; };
 		B87314B0155C374D00FB77FC /* Copia di All seeing eye_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731497155C374D00FB77FC /* Copia di All seeing eye_puzzle_thumb.jpg */; };
@@ -67,22 +57,14 @@
 		B87314B3155C374D00FB77FC /* Copia di Amsterdam bikes_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731498155C374D00FB77FC /* Copia di Amsterdam bikes_puzzle_thumb.jpg */; };
 		B87314B4155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731499155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg */; };
 		B87314B5155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731499155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg */; };
-		B87314B6155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873149A155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg */; };
-		B87314B7155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873149A155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg */; };
-		B87314B8155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873149B155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg */; };
-		B87314B9155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873149B155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg */; };
 		B87314BA155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873149C155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg */; };
 		B87314BB155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873149C155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg */; };
 		B87314BC155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B873149D155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG */; };
 		B87314BD155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B873149D155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG */; };
-		B87314BE155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B873149E155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG */; };
-		B87314BF155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B873149E155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG */; };
 		B87314C0155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B873149F155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG */; };
 		B87314C1155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B873149F155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG */; };
 		B87314C2155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A0155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg */; };
 		B87314C3155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A0155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg */; };
-		B87314C4155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A1155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg */; };
-		B87314C5155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A1155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg */; };
 		B87314C6155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A2155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg */; };
 		B87314C7155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A2155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg */; };
 		B87314C8155C374D00FB77FC /* Copia di Micetto furbetto_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A3155C374D00FB77FC /* Copia di Micetto furbetto_puzzle_thumb.jpg */; };
@@ -107,8 +89,6 @@
 		B87314DB155C374D00FB77FC /* Copia di Pizza_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314AC155C374D00FB77FC /* Copia di Pizza_puzzle_thumb.jpg */; };
 		B87314DC155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314AD155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg */; };
 		B87314DD155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314AD155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg */; };
-		B87314DE155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314AE155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg */; };
-		B87314DF155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314AE155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg */; };
 		B87314E0155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314AF155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg */; };
 		B87314E1155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314AF155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg */; };
 		B87C5CC615400B2A00AF69BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC515400B2A00AF69BC /* UIKit.framework */; };
@@ -216,14 +196,10 @@
 		B873144C155C373D00FB77FC /* All seeing eye_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "All seeing eye_puzzle.jpg"; sourceTree = "<group>"; };
 		B873144D155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Amsterdam bikes_puzzle.jpg"; sourceTree = "<group>"; };
 		B873144E155C373D00FB77FC /* Amsterdam signs_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Amsterdam signs_puzzle.jpg"; sourceTree = "<group>"; };
-		B873144F155C373D00FB77FC /* Bacon_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Bacon_puzzle.jpg; sourceTree = "<group>"; };
-		B8731450155C373D00FB77FC /* Broken TV_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Broken TV_puzzle.jpg"; sourceTree = "<group>"; };
 		B8731451155C373D00FB77FC /* Bulldog_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Bulldog_puzzle.jpg; sourceTree = "<group>"; };
 		B8731452155C373D00FB77FC /* Drops_puzzle.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Drops_puzzle.JPG; sourceTree = "<group>"; };
-		B8731453155C373D00FB77FC /* Earth_puzzle.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Earth_puzzle.JPG; sourceTree = "<group>"; };
 		B8731454155C373D00FB77FC /* Flower_puzzle.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Flower_puzzle.JPG; sourceTree = "<group>"; };
 		B8731455155C373D00FB77FC /* Fractal leaf_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Fractal leaf_puzzle.jpg"; sourceTree = "<group>"; };
-		B8731456155C373D00FB77FC /* Lattine_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Lattine_puzzle.jpg; sourceTree = "<group>"; };
 		B8731457155C373D00FB77FC /* Lego_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Lego_puzzle.jpg; sourceTree = "<group>"; };
 		B8731458155C373D00FB77FC /* Micetto furbetto_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Micetto furbetto_puzzle.jpg"; sourceTree = "<group>"; };
 		B8731459155C373D00FB77FC /* Micio matto_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Micio matto_puzzle.jpg"; sourceTree = "<group>"; };
@@ -236,19 +212,14 @@
 		B8731460155C373D00FB77FC /* Pasta_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Pasta_puzzle.jpg; sourceTree = "<group>"; };
 		B8731461155C373D00FB77FC /* Pizza_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Pizza_puzzle.jpg; sourceTree = "<group>"; };
 		B8731462155C373D00FB77FC /* PlayStation_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PlayStation_puzzle.jpg; sourceTree = "<group>"; };
-		B8731463155C373D00FB77FC /* Scorpione_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Scorpione_puzzle.jpg; sourceTree = "<group>"; };
 		B8731464155C373D00FB77FC /* Yellow_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Yellow_puzzle.jpg; sourceTree = "<group>"; };
 		B8731497155C374D00FB77FC /* Copia di All seeing eye_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di All seeing eye_puzzle_thumb.jpg"; path = "Thumbs/Copia di All seeing eye_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B8731498155C374D00FB77FC /* Copia di Amsterdam bikes_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Amsterdam bikes_puzzle_thumb.jpg"; path = "Thumbs/Copia di Amsterdam bikes_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B8731499155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Amsterdam signs_puzzle_thumb.jpg"; path = "Thumbs/Copia di Amsterdam signs_puzzle_thumb.jpg"; sourceTree = "<group>"; };
-		B873149A155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Bacon_puzzle_thumb.jpg"; path = "Thumbs/Copia di Bacon_puzzle_thumb.jpg"; sourceTree = "<group>"; };
-		B873149B155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Broken TV_puzzle_thumb.jpg"; path = "Thumbs/Copia di Broken TV_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B873149C155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Bulldog_puzzle_thumb.jpg"; path = "Thumbs/Copia di Bulldog_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B873149D155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Drops_puzzle_thumb.JPG"; path = "Thumbs/Copia di Drops_puzzle_thumb.JPG"; sourceTree = "<group>"; };
-		B873149E155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Earth_puzzle_thumb.JPG"; path = "Thumbs/Copia di Earth_puzzle_thumb.JPG"; sourceTree = "<group>"; };
 		B873149F155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Flower_puzzle_thumb.JPG"; path = "Thumbs/Copia di Flower_puzzle_thumb.JPG"; sourceTree = "<group>"; };
 		B87314A0155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Fractal leaf_puzzle_thumb.jpg"; path = "Thumbs/Copia di Fractal leaf_puzzle_thumb.jpg"; sourceTree = "<group>"; };
-		B87314A1155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Lattine_puzzle_thumb.jpg"; path = "Thumbs/Copia di Lattine_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B87314A2155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Lego_puzzle_thumb.jpg"; path = "Thumbs/Copia di Lego_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B87314A3155C374D00FB77FC /* Copia di Micetto furbetto_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Micetto furbetto_puzzle_thumb.jpg"; path = "Thumbs/Copia di Micetto furbetto_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B87314A4155C374D00FB77FC /* Copia di Micio matto_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Micio matto_puzzle_thumb.jpg"; path = "Thumbs/Copia di Micio matto_puzzle_thumb.jpg"; sourceTree = "<group>"; };
@@ -261,7 +232,6 @@
 		B87314AB155C374D00FB77FC /* Copia di Pasta_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Pasta_puzzle_thumb.jpg"; path = "Thumbs/Copia di Pasta_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B87314AC155C374D00FB77FC /* Copia di Pizza_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Pizza_puzzle_thumb.jpg"; path = "Thumbs/Copia di Pizza_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B87314AD155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di PlayStation_puzzle_thumb.jpg"; path = "Thumbs/Copia di PlayStation_puzzle_thumb.jpg"; sourceTree = "<group>"; };
-		B87314AE155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Scorpione_puzzle_thumb.jpg"; path = "Thumbs/Copia di Scorpione_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B87314AF155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Yellow_puzzle_thumb.jpg"; path = "Thumbs/Copia di Yellow_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B87C5CC115400B2A00AF69BC /* YourPuzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourPuzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B87C5CC515400B2A00AF69BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -367,14 +337,10 @@
 				B8731497155C374D00FB77FC /* Copia di All seeing eye_puzzle_thumb.jpg */,
 				B8731498155C374D00FB77FC /* Copia di Amsterdam bikes_puzzle_thumb.jpg */,
 				B8731499155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg */,
-				B873149A155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg */,
-				B873149B155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg */,
 				B873149C155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg */,
 				B873149D155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG */,
-				B873149E155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG */,
 				B873149F155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG */,
 				B87314A0155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg */,
-				B87314A1155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg */,
 				B87314A2155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg */,
 				B87314A3155C374D00FB77FC /* Copia di Micetto furbetto_puzzle_thumb.jpg */,
 				B87314A4155C374D00FB77FC /* Copia di Micio matto_puzzle_thumb.jpg */,
@@ -387,7 +353,6 @@
 				B87314AB155C374D00FB77FC /* Copia di Pasta_puzzle_thumb.jpg */,
 				B87314AC155C374D00FB77FC /* Copia di Pizza_puzzle_thumb.jpg */,
 				B87314AD155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg */,
-				B87314AE155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg */,
 				B87314AF155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg */,
 			);
 			name = Thumbs;
@@ -535,14 +500,10 @@
 				B873144C155C373D00FB77FC /* All seeing eye_puzzle.jpg */,
 				B873144D155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg */,
 				B873144E155C373D00FB77FC /* Amsterdam signs_puzzle.jpg */,
-				B873144F155C373D00FB77FC /* Bacon_puzzle.jpg */,
-				B8731450155C373D00FB77FC /* Broken TV_puzzle.jpg */,
 				B8731451155C373D00FB77FC /* Bulldog_puzzle.jpg */,
 				B8731452155C373D00FB77FC /* Drops_puzzle.JPG */,
-				B8731453155C373D00FB77FC /* Earth_puzzle.JPG */,
 				B8731454155C373D00FB77FC /* Flower_puzzle.JPG */,
 				B8731455155C373D00FB77FC /* Fractal leaf_puzzle.jpg */,
-				B8731456155C373D00FB77FC /* Lattine_puzzle.jpg */,
 				B8731457155C373D00FB77FC /* Lego_puzzle.jpg */,
 				B8731458155C373D00FB77FC /* Micetto furbetto_puzzle.jpg */,
 				B8731459155C373D00FB77FC /* Micio matto_puzzle.jpg */,
@@ -555,7 +516,6 @@
 				B8731460155C373D00FB77FC /* Pasta_puzzle.jpg */,
 				B8731461155C373D00FB77FC /* Pizza_puzzle.jpg */,
 				B8731462155C373D00FB77FC /* PlayStation_puzzle.jpg */,
-				B8731463155C373D00FB77FC /* Scorpione_puzzle.jpg */,
 				B8731464155C373D00FB77FC /* Yellow_puzzle.jpg */,
 			);
 			name = "Puzzle images";
@@ -695,14 +655,10 @@
 				B8731465155C373D00FB77FC /* All seeing eye_puzzle.jpg in Resources */,
 				B8731467155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg in Resources */,
 				B8731469155C373D00FB77FC /* Amsterdam signs_puzzle.jpg in Resources */,
-				B873146B155C373D00FB77FC /* Bacon_puzzle.jpg in Resources */,
-				B873146D155C373D00FB77FC /* Broken TV_puzzle.jpg in Resources */,
 				B873146F155C373D00FB77FC /* Bulldog_puzzle.jpg in Resources */,
 				B8731471155C373D00FB77FC /* Drops_puzzle.JPG in Resources */,
-				B8731473155C373D00FB77FC /* Earth_puzzle.JPG in Resources */,
 				B8731475155C373D00FB77FC /* Flower_puzzle.JPG in Resources */,
 				B8731477155C373D00FB77FC /* Fractal leaf_puzzle.jpg in Resources */,
-				B8731479155C373D00FB77FC /* Lattine_puzzle.jpg in Resources */,
 				B873147B155C373D00FB77FC /* Lego_puzzle.jpg in Resources */,
 				B873147D155C373D00FB77FC /* Micetto furbetto_puzzle.jpg in Resources */,
 				B873147F155C373D00FB77FC /* Micio matto_puzzle.jpg in Resources */,
@@ -715,19 +671,14 @@
 				B873148D155C373D00FB77FC /* Pasta_puzzle.jpg in Resources */,
 				B873148F155C373D00FB77FC /* Pizza_puzzle.jpg in Resources */,
 				B8731491155C373D00FB77FC /* PlayStation_puzzle.jpg in Resources */,
-				B8731493155C373D00FB77FC /* Scorpione_puzzle.jpg in Resources */,
 				B8731495155C373D00FB77FC /* Yellow_puzzle.jpg in Resources */,
 				B87314B0155C374D00FB77FC /* Copia di All seeing eye_puzzle_thumb.jpg in Resources */,
 				B87314B2155C374D00FB77FC /* Copia di Amsterdam bikes_puzzle_thumb.jpg in Resources */,
 				B87314B4155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg in Resources */,
-				B87314B6155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg in Resources */,
-				B87314B8155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg in Resources */,
 				B87314BA155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg in Resources */,
 				B87314BC155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG in Resources */,
-				B87314BE155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG in Resources */,
 				B87314C0155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG in Resources */,
 				B87314C2155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg in Resources */,
-				B87314C4155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg in Resources */,
 				B87314C6155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg in Resources */,
 				B87314C8155C374D00FB77FC /* Copia di Micetto furbetto_puzzle_thumb.jpg in Resources */,
 				B87314CA155C374D00FB77FC /* Copia di Micio matto_puzzle_thumb.jpg in Resources */,
@@ -740,7 +691,6 @@
 				B87314D8155C374D00FB77FC /* Copia di Pasta_puzzle_thumb.jpg in Resources */,
 				B87314DA155C374D00FB77FC /* Copia di Pizza_puzzle_thumb.jpg in Resources */,
 				B87314DC155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg in Resources */,
-				B87314DE155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg in Resources */,
 				B87314E0155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -778,14 +728,10 @@
 				B8731466155C373D00FB77FC /* All seeing eye_puzzle.jpg in Resources */,
 				B8731468155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg in Resources */,
 				B873146A155C373D00FB77FC /* Amsterdam signs_puzzle.jpg in Resources */,
-				B873146C155C373D00FB77FC /* Bacon_puzzle.jpg in Resources */,
-				B873146E155C373D00FB77FC /* Broken TV_puzzle.jpg in Resources */,
 				B8731470155C373D00FB77FC /* Bulldog_puzzle.jpg in Resources */,
 				B8731472155C373D00FB77FC /* Drops_puzzle.JPG in Resources */,
-				B8731474155C373D00FB77FC /* Earth_puzzle.JPG in Resources */,
 				B8731476155C373D00FB77FC /* Flower_puzzle.JPG in Resources */,
 				B8731478155C373D00FB77FC /* Fractal leaf_puzzle.jpg in Resources */,
-				B873147A155C373D00FB77FC /* Lattine_puzzle.jpg in Resources */,
 				B873147C155C373D00FB77FC /* Lego_puzzle.jpg in Resources */,
 				B873147E155C373D00FB77FC /* Micetto furbetto_puzzle.jpg in Resources */,
 				B8731480155C373D00FB77FC /* Micio matto_puzzle.jpg in Resources */,
@@ -798,19 +744,14 @@
 				B873148E155C373D00FB77FC /* Pasta_puzzle.jpg in Resources */,
 				B8731490155C373D00FB77FC /* Pizza_puzzle.jpg in Resources */,
 				B8731492155C373D00FB77FC /* PlayStation_puzzle.jpg in Resources */,
-				B8731494155C373D00FB77FC /* Scorpione_puzzle.jpg in Resources */,
 				B8731496155C373D00FB77FC /* Yellow_puzzle.jpg in Resources */,
 				B87314B1155C374D00FB77FC /* Copia di All seeing eye_puzzle_thumb.jpg in Resources */,
 				B87314B3155C374D00FB77FC /* Copia di Amsterdam bikes_puzzle_thumb.jpg in Resources */,
 				B87314B5155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg in Resources */,
-				B87314B7155C374D00FB77FC /* Copia di Bacon_puzzle_thumb.jpg in Resources */,
-				B87314B9155C374D00FB77FC /* Copia di Broken TV_puzzle_thumb.jpg in Resources */,
 				B87314BB155C374D00FB77FC /* Copia di Bulldog_puzzle_thumb.jpg in Resources */,
 				B87314BD155C374D00FB77FC /* Copia di Drops_puzzle_thumb.JPG in Resources */,
-				B87314BF155C374D00FB77FC /* Copia di Earth_puzzle_thumb.JPG in Resources */,
 				B87314C1155C374D00FB77FC /* Copia di Flower_puzzle_thumb.JPG in Resources */,
 				B87314C3155C374D00FB77FC /* Copia di Fractal leaf_puzzle_thumb.jpg in Resources */,
-				B87314C5155C374D00FB77FC /* Copia di Lattine_puzzle_thumb.jpg in Resources */,
 				B87314C7155C374D00FB77FC /* Copia di Lego_puzzle_thumb.jpg in Resources */,
 				B87314C9155C374D00FB77FC /* Copia di Micetto furbetto_puzzle_thumb.jpg in Resources */,
 				B87314CB155C374D00FB77FC /* Copia di Micio matto_puzzle_thumb.jpg in Resources */,
@@ -823,7 +764,6 @@
 				B87314D9155C374D00FB77FC /* Copia di Pasta_puzzle_thumb.jpg in Resources */,
 				B87314DB155C374D00FB77FC /* Copia di Pizza_puzzle_thumb.jpg in Resources */,
 				B87314DD155C374D00FB77FC /* Copia di PlayStation_puzzle_thumb.jpg in Resources */,
-				B87314DF155C374D00FB77FC /* Copia di Scorpione_puzzle_thumb.jpg in Resources */,
 				B87314E1155C374D00FB77FC /* Copia di Yellow_puzzle_thumb.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

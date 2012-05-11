@@ -1124,6 +1124,9 @@
     
     if (piece.position!=0) {
         
+        return YES;
+
+        
         if (r==2 && (piece.position+1)%pieceNumber==0) {
             NSLog(@"bottom piece (#%d) checking down", piece.number);
             return NO;
