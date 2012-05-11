@@ -24,7 +24,7 @@
 - (void)main {
     
     
-    // Create context on background thread
+    //Create context on background thread
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     insertionContext = [[NSManagedObjectContext alloc] init];
