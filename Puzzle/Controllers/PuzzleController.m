@@ -633,7 +633,7 @@
         
         CGSize screen = [[UIScreen mainScreen] bounds].size;
         
-        if (lattice.scale*z*pieceNumber*piceSize>piceSize && lattice.scale*z*piceSize<screen.width) {
+        if (lattice.scale*z*3*pieceNumber*(piceSize-2*padding)>screen.width && lattice.scale*z*piceSize<screen.width) {
             
             lattice.scale *= z;
             lattice.transform = CGAffineTransformScale(lattice.transform, z, z);
