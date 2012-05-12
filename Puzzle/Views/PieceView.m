@@ -49,6 +49,7 @@
     if (delegate.loadingGame) return;
     
     CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
+    //trasform = CATransform3DRotate(trasform, group.angle-self.angle, 0, 0, 1);
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
     animation.toValue = [NSValue valueWithCATransform3D:trasform];

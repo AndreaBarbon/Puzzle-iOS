@@ -394,9 +394,7 @@
 
         
     }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
+        
     [menu.game gameStarted];
     
     NSLog(@"Memory after creating:");
@@ -410,7 +408,6 @@
 - (void)loadingFailed {
     
     loadingFailed = YES;
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     menu.duringGame = NO;
     [menu.game loadingFailed];
     [puzzleOperation cancel];
@@ -544,8 +541,16 @@
 
     
     [UIView animateWithDuration:2 animations:^{
+    
         drawerView.alpha = 0;
         panningSwitch.alpha = 0;
+
+    }completion:^(BOOL finished) {
+        
+        puzzleDB.percentage = [NSNumber numberWithInt:100];
+        [self saveGame];
+        
+        [self.view bringSubviewToFront:HUDView];
     }];
     
     
@@ -555,10 +560,6 @@
         
     }
     
-    puzzleDB.percentage = [NSNumber numberWithInt:100];
-    [self saveGame];
-    
-    [self.view bringSubviewToFront:HUDView];
 }
 
 - (IBAction)restartPuzzle:(id)sender {
@@ -1229,9 +1230,7 @@
                                 if (
                                     !loadingGame &&
                                     !IS_DEVICE_PLAUYING_MUSIC &&
-                                    !(firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber) == piece.position) && 
-                                    ABS(piece.angle)<1
-                                    
+                                    !(firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber) == piece.position)
                                     ) {
                                     
                                     [neighborSound play];
