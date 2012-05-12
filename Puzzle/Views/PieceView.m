@@ -318,7 +318,7 @@
             rotation = tempAngle/ABS(tempAngle) * t*M_PI/2 - tempAngle;
             
             angle += rotation;
-            angle = [PuzzleController float:angle modulo:2*M_PI];
+            angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
             [self setAngle:angle];
             
             //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
@@ -389,7 +389,7 @@
     }
         
     angle += M_PI_2;
-    angle = [PuzzleController float:angle modulo:2*M_PI];
+    angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
     [self setAngle:angle];
     
     if (group==nil) {
@@ -413,7 +413,7 @@
         [self setAnchorPoint:CGPointMake(point.x / group.bounds.size.width, point.y / group.bounds.size.height) forView:group];
         
         group.angle += M_PI_2;
-        group.angle = [PuzzleController float:group.angle modulo:2*M_PI];
+        group.angle = [PuzzleController computeFloat:group.angle modulo:2*M_PI];
         
         CGAffineTransform transform = group.transform;
         transform = CGAffineTransformRotate(transform,M_PI_2);

@@ -426,8 +426,6 @@
 				B8AE120C155990F100742256 /* AppDelegate.m */,
 				B8AE120F155990F100742256 /* CreatePuzzleOperation.h */,
 				B8AE120D155990F100742256 /* CreatePuzzleOperation.m */,
-				B82AC5C5154411B500208887 /* Lattice.h */,
-				B82AC5C6154411B500208887 /* Lattice.m */,
 				B84014F21540E57D0075734A /* UIImage+CWAdditions.h */,
 				B84014F31540E57D0075734A /* UIImage+CWAdditions.m */,
 			);
@@ -441,6 +439,8 @@
 				B8AE1205155990DB00742256 /* PieceView.m */,
 				B8AE1206155990DB00742256 /* GroupView.h */,
 				B8AE1204155990DB00742256 /* GroupView.m */,
+				B82AC5C5154411B500208887 /* Lattice.h */,
+				B82AC5C6154411B500208887 /* Lattice.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";

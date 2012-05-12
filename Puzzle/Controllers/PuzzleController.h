@@ -47,7 +47,8 @@
     IBOutlet UIView *HUDView;
     IBOutlet UIView *firstPointView;
     
-    NSArray *directions;
+    NSArray *directions_positions;
+    NSArray *directions_numbers;
     
     UIAlertView *alertView;
 
@@ -55,6 +56,8 @@
     int numberOfPiecesInDrawer;
     
     int DrawerPosition;
+    int firstPiecePlace;
+    
     float drawerSize;
     float drawerMargin;
 
@@ -70,7 +73,7 @@
 
 @property(nonatomic) float piceSize;
 @property(nonatomic) float elapsedTime;
-@property(nonatomic) float NumberSquare;
+@property(nonatomic) int NumberSquare;
 @property(nonatomic) float padding;
 
 @property(nonatomic) int pieceNumber;
@@ -120,8 +123,7 @@
 
 
 
-+ (float)float:(float)f modulo:(float)m;
-+ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
++ (float)computeFloat:(float)f modulo:(float)m;
 
 - (BOOL)pieceIsOut:(PieceView *)piece;
 - (PieceView*)pieceWithNumber:(int)j;
@@ -152,7 +154,6 @@
 - (void)startNewGame;
 - (void)print_free_memory;
 - (void)removeOldPieces;
-- (UIImage*)clipImage:(UIImage*)img toRect:(CGRect)rect;
 
 
 - (void)allPiecesLoaded;
@@ -166,7 +167,6 @@
 - (void)puzzleSaved:(NSNotification *)saveNotification;
 - (void)addPiecesToView;
 - (void)resetSizeOfAllThePieces;
-- (void)refreshPieces;
 - (IBAction)rateGame;
 - (BOOL)saveGame;
 - (BOOL)isPositioned:(PieceView*)piece;

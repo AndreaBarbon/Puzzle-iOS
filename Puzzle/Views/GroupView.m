@@ -45,7 +45,7 @@
             rotation = tempAngle/ABS(tempAngle) * t*M_PI/2 - tempAngle;
             
             angle += rotation;
-            angle = [PuzzleController float:angle modulo:2*M_PI];
+            angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
             [self setAngle:angle];
             
             //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
