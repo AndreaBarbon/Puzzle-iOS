@@ -27,19 +27,16 @@
     @autoreleasepool {
         
         NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:n^2];
-        
-        for (int k=0; k<3; k++) {
-            for (int l=0; l<3; l++) {
                 
-                for (int i=0;i<n;i++){
-                    for (int j=0;j<n;j++){
+                for (int i=0;i<3*n;i++){
+                    for (int j=0;j<3*n;j++){
                         
                         //CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+2*self.padding+20, w-1, w-1);
                         //CGRect rect = CGRectMake(i*w+frame.origin.x, (j)*w+frame.origin.y, w-1, w-1);
                         
                         float panning = 2.0;
                         
-                        CGRect rect = CGRectMake(k*w*n + i*w-panning, l*w*n + (j)*w-panning, w-2*panning, w-2*panning);
+                        CGRect rect = CGRectMake(i*w-panning, j*w-panning, w-2*panning, w-2*panning);
                         UIView *v = [[UIView alloc] initWithFrame:rect];
                         
                         
@@ -48,7 +45,7 @@
                         
                         v.backgroundColor = [UIColor whiteColor];
 
-                        if ( l == 1 && k == 1 ) {
+                        if ( i >= n && i < 2*n && j >= n && j < 2*n ) {
                             
                             v.alpha = .2;
                             
@@ -61,9 +58,7 @@
                         [self addSubview:v];
                     }
                 }
-            }
-        }
-        
+
         pieces = [NSArray arrayWithArray:a];
         
     }

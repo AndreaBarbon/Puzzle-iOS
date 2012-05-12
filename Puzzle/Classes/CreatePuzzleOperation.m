@@ -14,7 +14,8 @@
 #define IMAGE_SIZE_BOUND_IPHONE 3*PIECE_SIZE_IPHONE
 
 #define JPG_QUALITY 1
-#define SHAPE_QUALITY 4
+#define SHAPE_QUALITY_IPAD 1
+#define SHAPE_QUALITY_IPHONE 1.5
 
 
 @implementation CreatePuzzleOperation
@@ -23,6 +24,20 @@
 
 - (void)main {
     
+    float IMAGE_SIZE_BOUND = 0;
+    float SHAPE_QUALITY = 0;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+     
+        IMAGE_SIZE_BOUND = IMAGE_SIZE_BOUND_IPAD;
+        SHAPE_QUALITY = SHAPE_QUALITY_IPAD;
+        
+    } else {  
+
+        IMAGE_SIZE_BOUND = IMAGE_SIZE_BOUND_IPHONE;
+        SHAPE_QUALITY = SHAPE_QUALITY_IPHONE;
+
+    }    
     
     //Create context on background thread
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -59,9 +74,9 @@
         
         float partSize = delegate.image.size.width/(delegate.pieceNumber*0.7);
         
-        if (partSize>IMAGE_SIZE_BOUND_IPAD) {
+        if (partSize>IMAGE_SIZE_BOUND) {
             
-            partSize = IMAGE_SIZE_BOUND_IPAD;
+            partSize = IMAGE_SIZE_BOUND;
         }
         
         //and split the big image using computed size

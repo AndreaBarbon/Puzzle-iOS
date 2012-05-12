@@ -165,8 +165,9 @@
         
         popover = [[UIPopoverController alloc] initWithContentViewController:c];
         popover.delegate = self;
-        CGRect rect = CGRectMake(self.view.center.x+20, 0, 1, 1);
-        [popover presentPopoverFromRect:rect inView:delegate.delegate.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        CGRect rect = CGRectMake(self.view.center.x, -20, 1, 1);
+        [popover setPopoverContentSize:self.view.bounds.size];
+        [popover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
         
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
@@ -205,6 +206,7 @@
         popover = [[UIPopoverController alloc] initWithContentViewController:c];
         popover.delegate = self;
         CGRect rect = CGRectMake(self.view.center.x, -20, 1, 1);
+        [popover setPopoverContentSize:self.view.bounds.size];
         [popover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:direction animated:YES];
         
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {

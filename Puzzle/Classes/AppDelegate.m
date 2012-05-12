@@ -88,7 +88,7 @@
     
     if (wasOpened) {
         
-        [puzzle refreshPieces];
+        //[puzzle refreshPieces];
     }
     
 
