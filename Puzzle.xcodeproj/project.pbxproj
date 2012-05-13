@@ -133,6 +133,14 @@
 		B8B0E729155FB612002FE0A2 /* Wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E722155FB612002FE0A2 /* Wood.jpg */; };
 		B8B0E72A155FB612002FE0A2 /* Wood@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */; };
 		B8B0E72B155FB612002FE0A2 /* Wood@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */; };
+		B8B0E72E155FFA56002FE0A2 /* PuzzleComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */; };
+		B8B0E72F155FFA56002FE0A2 /* PuzzleComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */; };
+		B8B0E730155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */; };
+		B8B0E731155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */; };
+		B8B0E7341560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */; };
+		B8B0E7351560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */; };
+		B8B0E7361560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */; };
+		B8B0E7371560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */; };
 		B8DAFCC4155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC5155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC6155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */; };
@@ -283,6 +291,10 @@
 		B8B0E721155FB612002FE0A2 /* ChooseLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChooseLabel.png; path = PNGs/ChooseLabel.png; sourceTree = "<group>"; };
 		B8B0E722155FB612002FE0A2 /* Wood.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Wood.jpg; path = PNGs/Wood.jpg; sourceTree = "<group>"; };
 		B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Wood@2x.jpg"; path = "PNGs/Wood@2x.jpg"; sourceTree = "<group>"; };
+		B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PuzzleComplete.png; path = PNGs/PuzzleComplete.png; sourceTree = "<group>"; };
+		B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PuzzleComplete@2x.png"; path = "PNGs/PuzzleComplete@2x.png"; sourceTree = "<group>"; };
+		B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PuzzleComplete_iPhone.png; path = PNGs/PuzzleComplete_iPhone.png; sourceTree = "<group>"; };
+		B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PuzzleComplete_iPhone@2x.png"; path = "PNGs/PuzzleComplete_iPhone@2x.png"; sourceTree = "<group>"; };
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
 		B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PuzzleCompleted.mp3; path = Audio/PuzzleCompleted.mp3; sourceTree = "<group>"; };
@@ -548,6 +560,10 @@
 				B8B0E721155FB612002FE0A2 /* ChooseLabel.png */,
 				B8B0E722155FB612002FE0A2 /* Wood.jpg */,
 				B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */,
+				B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */,
+				B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */,
+				B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */,
+				B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */,
 			);
 			name = PNGs;
 			sourceTree = "<group>";
@@ -702,6 +718,10 @@
 				B8B0E726155FB612002FE0A2 /* ChooseLabel.png in Resources */,
 				B8B0E728155FB612002FE0A2 /* Wood.jpg in Resources */,
 				B8B0E72A155FB612002FE0A2 /* Wood@2x.jpg in Resources */,
+				B8B0E72E155FFA56002FE0A2 /* PuzzleComplete.png in Resources */,
+				B8B0E730155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */,
+				B8B0E7341560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */,
+				B8B0E7361560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,6 +797,10 @@
 				B8B0E727155FB612002FE0A2 /* ChooseLabel.png in Resources */,
 				B8B0E729155FB612002FE0A2 /* Wood.jpg in Resources */,
 				B8B0E72B155FB612002FE0A2 /* Wood@2x.jpg in Resources */,
+				B8B0E72F155FFA56002FE0A2 /* PuzzleComplete.png in Resources */,
+				B8B0E731155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */,
+				B8B0E7351560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */,
+				B8B0E7371560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

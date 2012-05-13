@@ -46,6 +46,9 @@
     
     IBOutlet UIView *HUDView;
     IBOutlet UIView *firstPointView;
+
+    IBOutlet UIImageView *puzzleCompleteImage;
+
     
     NSArray *directions_positions;
     NSArray *directions_numbers;
@@ -63,7 +66,8 @@
 
     float biggerPieceSize;
     float screenWidth;
-    
+    float screenHeight;
+
     NSTimer *timer;
     
     PieceView *movingPiece;

@@ -107,6 +107,7 @@
 - (void)showNewGameView {
     
     chooseLabel.center = CGPointMake(self.view.center.x-5, self.view.center.y-280);
+    game.tapToSelectLabel.hidden = NO;
     game.startButton.enabled = (game.image.image != nil);
     game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
     mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);

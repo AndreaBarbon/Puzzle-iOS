@@ -48,6 +48,7 @@
     [super viewDidLoad];
     
     screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    screenHeight = [[UIScreen mainScreen] bounds].size.height;
     
     directions_numbers = [[NSArray alloc] init];    
     directions_positions = [[NSArray alloc] init];    
@@ -93,6 +94,15 @@
     
     imageViewLattice = [[UIImageView alloc] initWithImage:image];
     
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        puzzleCompleteImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PuzzleComplete"]];
+    } else {  
+        puzzleCompleteImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PuzzleComplete_iPhone"]];
+    }
+    
+    [self.view addSubview:puzzleCompleteImage];
+    puzzleCompleteImage.alpha = 0;    
     
     
     //Resize the drawer
@@ -224,6 +234,71 @@
 
 #pragma mark -
 #pragma mark Puzzle
+
+- (void)showCompleteImage {
+    
+    [self centerCompletedImage];
+    puzzleCompleteImage.transform = CGAffineTransformIdentity;
+    
+    
+    [self.view bringSubviewToFront:puzzleCompleteImage];
+    
+    [UIView animateWithDuration:1 animations:^{
+        
+        puzzleCompleteImage.alpha = 1;
+    }];
+    
+    puzzleCompleteImage.transform = CGAffineTransformScale(puzzleCompleteImage.transform, 1/1.8, 1/1.8);
+    
+    
+    [UIView beginAnimations:@"pulseAnimation" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationRepeatAutoreverses:YES];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationRepeatCount:2.5];
+    [UIView setAnimationDelegate:self];
+    
+    puzzleCompleteImage.transform = CGAffineTransformScale(puzzleCompleteImage.transform, 1.8, 1.8);
+    
+    [UIView commitAnimations];
+    
+}
+
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+    if ([finished boolValue]) {
+        
+        if ([animationID isEqualToString:@"pulseAnimation"]) {
+            
+            float f = screenWidth/(pieceNumber+2);
+            f = f/(piceSize-2*padding);
+            
+            [UIView animateWithDuration:0.5 animations:^{
+                
+                for (GroupView *g in groups) {
+                    g.alpha = 0;
+                }
+                
+            }completion:^(BOOL finished) {
+                
+                [self resizeLatticeToScale:f];
+                [self moveLatticeToLeftWithDuration:0.5];
+            }];
+            
+            float translation = 0;
+            if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+                translation = -screenWidth/2+puzzleCompleteImage.bounds.size.height/2;
+            } else {
+                translation = -screenHeight/2+puzzleCompleteImage.bounds.size.height/2;
+            }
+            
+            [UIView animateWithDuration:1 animations:^{
+               
+                puzzleCompleteImage.transform = CGAffineTransformMakeTranslation(0, translation);
+                
+            }];
+        }
+    }
+}
 
 - (void)loadPuzzle {
     
@@ -393,7 +468,7 @@
     
     
     self.view.userInteractionEnabled = YES;
-    
+        
 }
 
 - (void)loadingFailed {
@@ -407,6 +482,18 @@
     
 }
 
+- (void)centerCompletedImage {
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        puzzleCompleteImage.center = CGPointMake(self.view.center.y, self.view.center.x);
+        
+    } else {
+        
+        puzzleCompleteImage.center = CGPointMake(self.view.center.x, self.view.center.y);
+    }
+}
+
 - (void)prepareForNewPuzzle {
     
     [self.view bringSubviewToFront:lattice];
@@ -417,6 +504,8 @@
     drawerView.alpha = 1;
     panningSwitch.alpha = 1;
     drawerStopped = NO;
+    
+    puzzleCompleteImage.alpha = 0;
     
     directions_numbers = [NSArray arrayWithArray:[self directionsUpdated_numbers]];
     directions_positions = [NSArray arrayWithArray:[self directionsUpdated_positions]];
@@ -518,10 +607,8 @@
     
 }
 
-- (void)puzzleCompleted {
-    
-    //imageView.frame = lattice.bounds;
-    
+- (IBAction)puzzleCompleted {
+        
     [self.view bringSubviewToFront:lattice];
     for (UIView *v in lattice.pieces) {
         v.alpha = 0;
@@ -538,9 +625,8 @@
 
     }completion:^(BOOL finished) {
         
-        puzzleDB.percentage = [NSNumber numberWithInt:100];
+        //puzzleDB.percentage = [NSNumber numberWithInt:100];
         [self saveGame];
-        
         [self.view bringSubviewToFront:HUDView];
     }];
     
@@ -550,6 +636,8 @@
         [completedSound play];
         
     }
+    
+    [self showCompleteImage];
     
 }
 
@@ -1566,6 +1654,25 @@
     
 }
 
+- (void)moveLatticeToLeftWithDuration:(float)duration {
+    
+    CGPoint center = [self.view convertPoint:[[lattice objectAtIndex:firstPiecePlace] center] fromView:lattice];
+    int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)*20;
+    
+    lattice.transform = CGAffineTransformTranslate(lattice.transform, 
+                                                   -center.x/lattice.scale+(piceSize-2*padding)/2+30, 
+                                                   -center.y/lattice.scale+(piceSize-2*padding)/2+puzzleCompleteImage.bounds.size.height/lattice.scale+topBar+20);
+    
+    [self refreshPositions];
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        for (GroupView *g in groups) {
+            g.alpha = 1;
+        }
+    }];    
+}
+
 - (CGRect)frameOfLatticePiece:(int)i {
     
     UIView *v = [lattice objectAtIndex:i];
@@ -2140,6 +2247,7 @@
     CGRect stepperFrame = stepperDrawer.frame;
     CGRect imageFrame = imageView.frame;    
     CGPoint chooseCenter = CGPointZero;
+    CGPoint completedCenter = CGPointZero;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
@@ -2157,6 +2265,8 @@
         panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
         
         lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y-drawerSize);
+        
+        completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
 
         
     } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
@@ -2175,6 +2285,9 @@
         panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
         
         lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y+drawerSize);
+        
+        completedCenter = CGPointMake(self.view.center.x, self.view.center.y);
+
     }
     
     
@@ -2187,6 +2300,7 @@
         stepperDrawer.frame = stepperFrame;
         imageView.frame = imageFrame;
         menu.chooseLabel.center = chooseCenter;
+        puzzleCompleteImage.center = completedCenter;
         
     }];
     

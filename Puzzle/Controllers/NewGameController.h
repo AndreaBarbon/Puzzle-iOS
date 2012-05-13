@@ -27,7 +27,6 @@
     IBOutlet UIActivityIndicatorView *indicator;
     IBOutlet UIView *loadingView;
     IBOutlet UIView *tapToSelectView;
-    IBOutlet UIView *tapToSelectLabel;
     IBOutlet UIView *containerView;
     IBOutlet UIView *typeOfImageView;
     NSTimer *timer;
@@ -40,6 +39,7 @@
 @property (nonatomic, assign) MenuController *delegate;
 @property (nonatomic, retain) IBOutlet UIButton *startButton;
 @property (nonatomic, retain) IBOutlet UIImageView *image;
+@property (nonatomic, retain) IBOutlet UIView *tapToSelectLabel;
 
 
 - (IBAction)startNewGame:(id)sender;

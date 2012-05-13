@@ -22,7 +22,7 @@
 
 @implementation NewGameController
 
-@synthesize popover, delegate, imagePath, startButton, image;
+@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel;
 
 - (void)viewDidLoad
 {
