@@ -767,15 +767,7 @@
         }        
     }
     
-//    for (PieceView *p in pieces) {
-//        if (p.isFree && p.group==nil) {
-//            [self.view bringSubviewToFront:p];
-//        }
-//    }
-    
-    
     [self moveGroup:newGroup toLatticePoint:newGroup.boss.position animated:NO];
-    
     
 }
 
@@ -891,19 +883,11 @@
             
             if (p.group==group) {
                 
-                [self isPositioned:p];
-                
-            } else if (p.userInteractionEnabled) {
-                
-                [self.view bringSubviewToFront:p];
+                [self isPositioned:p];   
             }
-            
         }
-        
         group.userInteractionEnabled = NO;
-        
     }
-    
 }
 
 - (void)updateGroupDB:(GroupView*)group{
@@ -1298,13 +1282,6 @@
             piece.userInteractionEnabled = NO;
             
             //NSLog(@"Salvi! Piece #%d is positioned! :-)", piece.number);
-            
-            for (PieceView *p in pieces) {
-                if (p.isFree && p!=piece && !p.isPositioned) {
-                    
-                    [self.view bringSubviewToFront:p];
-                }
-            }
             
             [piece pulse];
 
