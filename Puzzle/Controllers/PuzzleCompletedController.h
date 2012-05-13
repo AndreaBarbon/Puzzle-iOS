@@ -8,6 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PuzzleCompletedController : UIViewController
+@class PuzzleController;
+
+@interface PuzzleCompletedController : UIViewController {
+    
+    IBOutlet UIView *one;
+    IBOutlet UIView *two;
+    
+    IBOutlet UILabel *pieces;
+    IBOutlet UILabel *time;    
+    IBOutlet UILabel *score;
+    IBOutlet UILabel *moves;
+    IBOutlet UILabel *rotations;    
+}
+
+@property (nonatomic, assign) PuzzleController *delegate;
+
+- (void)updateValues;
 
 @end

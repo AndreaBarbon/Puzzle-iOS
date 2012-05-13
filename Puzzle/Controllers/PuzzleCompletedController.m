@@ -7,6 +7,7 @@
 //
 
 #import "PuzzleCompletedController.h"
+#import "PuzzleController.h"
 
 @interface PuzzleCompletedController ()
 
@@ -14,19 +15,23 @@
 
 @implementation PuzzleCompletedController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize delegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)updateValues {
+    
+    pieces.text = [NSString stringWithFormat:@"%d pieces", delegate.NumberSquare];
+    time.text = [NSString stringWithFormat:@"Game time: %@", delegate.elapsedTimeLabel.text];
+
+    score.text = [NSString stringWithFormat:@"%d", 0];
+    moves.text = [NSString stringWithFormat:@"Moves: %d", delegate.moves];
+    rotations.text = [NSString stringWithFormat:@"Rotations: %d", delegate.rotations];
+
 }
 
 - (void)viewDidUnload
@@ -36,8 +41,19 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        two.center = CGPointMake(one.center.x+320, 80);
+    } else {
+        two.center = CGPointMake(160, 240);
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return NO;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 

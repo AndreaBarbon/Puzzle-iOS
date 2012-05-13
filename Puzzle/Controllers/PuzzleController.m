@@ -27,7 +27,7 @@
 
 
 
-@synthesize pieces, image, lattice, imageView, imageViewLattice, drawerView, menuButtonView, groups, panningSwitch;
+@synthesize pieces, image, lattice, imageView, imageViewLattice, drawerView, menuButtonView, groups, panningSwitch, puzzleCompleteImage, elapsedTimeLabel;
 
 @synthesize puzzleOperation, operationQueue;
 
@@ -35,7 +35,7 @@
 
 @synthesize padding, pieceNumber, piceSize, elapsedTime, imageSize;
 
-@synthesize loadedPieces, NumberSquare, missedPieces;
+@synthesize loadedPieces, NumberSquare, missedPieces, moves, rotations;
 
 @synthesize pan, panDrawer, pinch;
 
@@ -155,7 +155,11 @@
     
     //Add the puzzleCompletedController
     completedController = [[PuzzleCompletedController alloc] init];
-    
+    completedController.delegate = self;
+    [self.view addSubview:completedController.view];
+    completedController.view.center = CGPointMake(self.view.center.x, screenHeight-30);
+    completedController.view.alpha = 0;
+
     
     //gesture recognizers
     [self addGestures];    
@@ -252,8 +256,13 @@
         
         if ([animationID isEqualToString:@"pulseAnimation"]) {
             
-            float f = screenWidth/(pieceNumber+2);
-            f = f/(piceSize-2*padding);
+            float boardSize = pieceNumber*(piceSize-2*padding);
+            float f = (screenWidth-puzzleCompleteImage.bounds.size.height-30)/boardSize;
+            
+            [UIView animateWithDuration:1.5 animations:^{
+               
+                completedController.view.alpha = 1;
+            }];
             
             [UIView animateWithDuration:0.5 animations:^{
                 
@@ -272,7 +281,9 @@
                 translation = -screenWidth/2+puzzleCompleteImage.bounds.size.height/2;
             } else {
                 translation = -screenHeight/2+puzzleCompleteImage.bounds.size.height/2;
+                translation += 20;
             }
+
             
             [UIView animateWithDuration:1 animations:^{
                
@@ -302,6 +313,8 @@
             groups = [[NSMutableArray alloc] initWithCapacity:NumberSquare/2];
             elapsedTime = [puzzleDB.elapsedTime floatValue];
             percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
+            moves = puzzleDB.moves.intValue;
+            rotations = puzzleDB.rotations.intValue;
             
             NSLog(@"Percentage = %d", puzzleDB.percentage.intValue);
             if (puzzleDB.percentage.intValue==100) {
@@ -484,11 +497,18 @@
     [self.view bringSubviewToFront:HUDView];
     
     missedPieces = 0;
+    moves = 0;
+    rotations = 0;
+
     drawerView.alpha = 1;
     panningSwitch.alpha = 1;
+    percentageLabel.alpha = 1;
+    elapsedTimeLabel.alpha = 1;
+
     drawerStopped = NO;
     
     puzzleCompleteImage.alpha = 0;
+    completedController.view.alpha = 0;
     
     directions_numbers = [NSArray arrayWithArray:[self directionsUpdated_numbers]];
     directions_positions = [NSArray arrayWithArray:[self directionsUpdated_positions]];
@@ -552,11 +572,9 @@
                 return NO;
             }
         }
-        
+                
         [self puzzleCompleted];
-        
-        puzzleCompete = YES;
-    }
+}
     
     return puzzleCompete;
     
@@ -591,25 +609,30 @@
 }
 
 - (IBAction)puzzleCompleted {
-        
-    [self.view bringSubviewToFront:lattice];
-    for (UIView *v in lattice.pieces) {
-        v.alpha = 0;
-    }
+    
+    puzzleCompete = YES;
     
     [self stopTimer];
-    
+    [completedController updateValues];
 
     
-    [UIView animateWithDuration:2 animations:^{
+    [UIView animateWithDuration:5 animations:^{
     
         drawerView.alpha = 0;
         panningSwitch.alpha = 0;
+        percentageLabel.alpha = 0;
+        elapsedTimeLabel.alpha = 0;
 
+        for (UIView *v in lattice.pieces) {
+            v.alpha = 0;
+        }
+        
     }completion:^(BOOL finished) {
         
-        //puzzleDB.percentage = [NSNumber numberWithInt:100];
+        [self.view bringSubviewToFront:lattice];
+        puzzleDB.percentage = [NSNumber numberWithInt:100];
         [self saveGame];
+        [self.view bringSubviewToFront:completedController.view];
         [self.view bringSubviewToFront:HUDView];
     }];
     
@@ -775,7 +798,6 @@
         
         [self refreshPositions];        
     }
-    
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -1052,6 +1074,7 @@
     
     CGPoint point = piece.center;   
     
+    moves++;
     
     if (!piece.hasNeighbors) {
         
@@ -1172,6 +1195,8 @@
 }
 
 - (void)pieceRotated:(PieceView *)piece {
+    
+    rotations++;
     
     //NSLog(@"Piece rotated! Angle = %.1f", piece.angle);
     
@@ -1651,7 +1676,7 @@
         [UIView animateWithDuration:duration animations:^{
             
             CGPoint center = [self.view convertPoint:[[lattice objectAtIndex:firstPiecePlace] center] fromView:lattice];
-            int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)*20;
+            int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad && UIInterfaceOrientationIsLandscape(self.interfaceOrientation))*20;
 
             if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
                 
@@ -1675,11 +1700,11 @@
 - (void)moveLatticeToLeftWithDuration:(float)duration {
     
     CGPoint center = [self.view convertPoint:[[lattice objectAtIndex:firstPiecePlace] center] fromView:lattice];
-    int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)*20;
+    int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad && UIInterfaceOrientationIsPortrait(self.interfaceOrientation))*20;
     
     lattice.transform = CGAffineTransformTranslate(lattice.transform, 
                                                    -center.x/lattice.scale+(piceSize-2*padding)/2+30, 
-                                                   -center.y/lattice.scale+(piceSize-2*padding)/2+puzzleCompleteImage.bounds.size.height/lattice.scale+topBar+20);
+                                                   -center.y/lattice.scale+(piceSize-2*padding)/2+puzzleCompleteImage.bounds.size.height/lattice.scale+topBar);
     
     [self refreshPositions];
     
@@ -2168,6 +2193,8 @@
         [self createPuzzleInDB];
     }
     
+    puzzleDB.moves = [NSNumber numberWithInt:moves];
+    puzzleDB.rotations = [NSNumber numberWithInt:rotations];
     puzzleDB.lastSaved = [NSDate date];
     
     if ([managedObjectContext save:nil]) {
@@ -2195,6 +2222,7 @@
         pieceDB.puzzle = puzzleDB;
         pieceDB.number = [NSNumber numberWithInt:piece.number];
         pieceDB.position = [NSNumber numberWithInt:piece.position];
+        pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
         pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
         Image *imagePieceDB = [self newImageInCOntext:managedObjectContext];
         imagePieceDB.data = UIImageJPEGRepresentation(piece.image, 0.5);
@@ -2240,6 +2268,9 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     
+    if (puzzleCompete) {
+        return NO;
+    }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
@@ -2259,13 +2290,18 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
         
+    [completedController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
     //Rotate the drawer
     
     CGRect rect = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     CGRect imageFrame = imageView.frame;    
+    CGRect statsFrame = completedController.view.frame;    
     CGPoint chooseCenter = CGPointZero;
     CGPoint completedCenter = CGPointZero;
+    
+    
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
@@ -2285,6 +2321,8 @@
         lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y-drawerSize);
         
         completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
+        
+        statsFrame = CGRectMake(screenWidth/2-160, screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
 
         
     } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
@@ -2295,7 +2333,7 @@
         rect.size.width = screenWidth;
         stepperFrame.origin.y = rect.size.height;
         stepperFrame.origin.x = rect.size.width - stepperFrame.size.width-10;
-        float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.height)/1;
+        float pad = (screenHeight - imageFrame.size.height)/1;
         imageFrame.origin.y = pad;
         imageFrame.origin.x = 0;
         
@@ -2305,6 +2343,10 @@
         lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y+drawerSize);
         
         completedCenter = CGPointMake(self.view.center.x, self.view.center.y);
+        
+        statsFrame = CGRectMake((screenHeight-statsFrame.size.width)/2, screenWidth-240-20, statsFrame.size.width, statsFrame.size.height);
+        
+        NSLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
 
     }
     
@@ -2319,6 +2361,7 @@
         imageView.frame = imageFrame;
         menu.chooseLabel.center = chooseCenter;
         puzzleCompleteImage.center = completedCenter;
+        completedController.view.frame = statsFrame;
         
     }];
     

@@ -43,12 +43,10 @@
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
     IBOutlet UILabel *percentageLabel;
-    IBOutlet UILabel *elapsedTimeLabel;
     
     IBOutlet UIView *HUDView;
     IBOutlet UIView *firstPointView;
 
-    IBOutlet UIImageView *puzzleCompleteImage;
 
     
     NSArray *directions_positions;
@@ -85,6 +83,8 @@
 @property(nonatomic) int loadedPieces;
 @property(nonatomic) int missedPieces;
 @property(nonatomic) int imageSize;
+@property(nonatomic) int moves;
+@property(nonatomic) int rotations;
 
 @property(nonatomic) BOOL loadingGame;
 @property(nonatomic) BOOL puzzleCompete;
@@ -111,6 +111,8 @@
 
 @property (nonatomic, retain) IBOutlet UIView *drawerView;
 @property (nonatomic, retain) IBOutlet UIView *menuButtonView;
+@property (nonatomic, retain) IBOutlet UIImageView *puzzleCompleteImage;
+@property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;;
 
 
 @property (nonatomic, retain) NSMutableArray *pieces;

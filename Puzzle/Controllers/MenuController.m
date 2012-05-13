@@ -21,7 +21,8 @@
 
 - (void)toggleMenuWithDuration:(float)duration {
     
-    
+    delegate.puzzleCompete = NO;
+
     resumeButton.hidden = !duringGame;
     showThePictureButton.hidden = !duringGame;  
     
@@ -85,7 +86,6 @@
     //[self toggleMenu];
     //[delegate startNewGame];
     
-
     if (sender!=nil) {
         
         [self playMenuSound];
@@ -133,6 +133,8 @@
 
 - (IBAction)resumeGame:(id)sender {
     
+    delegate.completedController.view.alpha = 0;
+    delegate.puzzleCompleteImage.alpha = 0;
     [self toggleMenuWithDuration:0.5];
     [self playMenuSound];
 }

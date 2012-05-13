@@ -117,12 +117,8 @@
 		B8AE1211155990F100742256 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE120C155990F100742256 /* AppDelegate.m */; };
 		B8AE1212155990F100742256 /* CreatePuzzleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE120D155990F100742256 /* CreatePuzzleOperation.m */; };
 		B8AE1213155990F100742256 /* CreatePuzzleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE120D155990F100742256 /* CreatePuzzleOperation.m */; };
-		B8AE12211559912200742256 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE12161559912200742256 /* Image.m */; };
-		B8AE12221559912200742256 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE12161559912200742256 /* Image.m */; };
 		B8AE12231559912200742256 /* Piece.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE12181559912200742256 /* Piece.m */; };
 		B8AE12241559912200742256 /* Piece.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE12181559912200742256 /* Piece.m */; };
-		B8AE12251559912200742256 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121A1559912200742256 /* Puzzle.m */; };
-		B8AE12261559912200742256 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121A1559912200742256 /* Puzzle.m */; };
 		B8AE12271559912200742256 /* Puzzle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121B1559912200742256 /* Puzzle.xcdatamodeld */; };
 		B8AE12281559912200742256 /* Puzzle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121B1559912200742256 /* Puzzle.xcdatamodeld */; };
 		B8B0E724155FB612002FE0A2 /* ChooseLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E720155FB612002FE0A2 /* ChooseLabel@2x.png */; };
@@ -145,6 +141,10 @@
 		B8B0E73C15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */; };
 		B8B0E73D15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */; };
 		B8B0E73E15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */; };
+		B8B0E74215605E23002FE0A2 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74115605E23002FE0A2 /* Image.m */; };
+		B8B0E74315605E23002FE0A2 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74115605E23002FE0A2 /* Image.m */; };
+		B8B0E74715605EE8002FE0A2 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
+		B8B0E74815605EE8002FE0A2 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
 		B8DAFCC4155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC5155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC6155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */; };
@@ -280,16 +280,12 @@
 		B8AE120D155990F100742256 /* CreatePuzzleOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreatePuzzleOperation.m; path = Classes/CreatePuzzleOperation.m; sourceTree = "<group>"; };
 		B8AE120E155990F100742256 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		B8AE120F155990F100742256 /* CreatePuzzleOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreatePuzzleOperation.h; path = Classes/CreatePuzzleOperation.h; sourceTree = "<group>"; };
-		B8AE12151559912200742256 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
-		B8AE12161559912200742256 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		B8AE12171559912200742256 /* Piece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piece.h; sourceTree = "<group>"; };
 		B8AE12181559912200742256 /* Piece.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Piece.m; sourceTree = "<group>"; };
-		B8AE12191559912200742256 /* Puzzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puzzle.h; sourceTree = "<group>"; };
-		B8AE121A1559912200742256 /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
 		B8AE121C1559912200742256 /* Puzzle 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 2.xcdatamodel"; sourceTree = "<group>"; };
 		B8AE121D1559912200742256 /* Puzzle 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 3.xcdatamodel"; sourceTree = "<group>"; };
 		B8AE121E1559912200742256 /* Puzzle 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 4.xcdatamodel"; sourceTree = "<group>"; };
-		B8AE121F1559912200742256 /* Puzzle 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 5.xcdatamodel"; sourceTree = "<group>"; };
+		B8AE121F1559912200742256 /* Puzzle 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 6.xcdatamodel"; sourceTree = "<group>"; };
 		B8AE12201559912200742256 /* Puzzle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Puzzle.xcdatamodel; sourceTree = "<group>"; };
 		B8B0E720155FB612002FE0A2 /* ChooseLabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChooseLabel@2x.png"; path = "PNGs/ChooseLabel@2x.png"; sourceTree = "<group>"; };
 		B8B0E721155FB612002FE0A2 /* ChooseLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChooseLabel.png; path = PNGs/ChooseLabel.png; sourceTree = "<group>"; };
@@ -302,6 +298,12 @@
 		B8B0E73815601E2C002FE0A2 /* PuzzleCompletedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleCompletedController.h; path = Controllers/PuzzleCompletedController.h; sourceTree = "<group>"; };
 		B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleCompletedController.m; path = Controllers/PuzzleCompletedController.m; sourceTree = "<group>"; };
 		B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleCompletedController.xib; path = Controllers/PuzzleCompletedController.xib; sourceTree = "<group>"; };
+		B8B0E73F15605DA0002FE0A2 /* Puzzle 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 5.xcdatamodel"; sourceTree = "<group>"; };
+		B8B0E74015605E23002FE0A2 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
+		B8B0E74115605E23002FE0A2 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
+		B8B0E74415605EB8002FE0A2 /* Puzzle 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 7.xcdatamodel"; sourceTree = "<group>"; };
+		B8B0E74515605EE8002FE0A2 /* Puzzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puzzle.h; sourceTree = "<group>"; };
+		B8B0E74615605EE8002FE0A2 /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
 		B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PuzzleCompleted.mp3; path = Audio/PuzzleCompleted.mp3; sourceTree = "<group>"; };
@@ -510,13 +512,13 @@
 		B8AE12141559912200742256 /* Core Data models */ = {
 			isa = PBXGroup;
 			children = (
+				B8B0E74015605E23002FE0A2 /* Image.h */,
+				B8B0E74115605E23002FE0A2 /* Image.m */,
 				B8AE121B1559912200742256 /* Puzzle.xcdatamodeld */,
-				B8AE12151559912200742256 /* Image.h */,
-				B8AE12161559912200742256 /* Image.m */,
+				B8B0E74515605EE8002FE0A2 /* Puzzle.h */,
+				B8B0E74615605EE8002FE0A2 /* Puzzle.m */,
 				B8AE12171559912200742256 /* Piece.h */,
 				B8AE12181559912200742256 /* Piece.m */,
-				B8AE12191559912200742256 /* Puzzle.h */,
-				B8AE121A1559912200742256 /* Puzzle.m */,
 			);
 			path = "Core Data models";
 			sourceTree = "<group>";
@@ -833,12 +835,12 @@
 				B8AE120A155990DB00742256 /* PieceView.m in Sources */,
 				B8AE1210155990F100742256 /* AppDelegate.m in Sources */,
 				B8AE1212155990F100742256 /* CreatePuzzleOperation.m in Sources */,
-				B8AE12211559912200742256 /* Image.m in Sources */,
 				B8AE12231559912200742256 /* Piece.m in Sources */,
-				B8AE12251559912200742256 /* Puzzle.m in Sources */,
 				B8AE12271559912200742256 /* Puzzle.xcdatamodeld in Sources */,
 				B8DAFCE6155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */,
 				B8B0E73B15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */,
+				B8B0E74215605E23002FE0A2 /* Image.m in Sources */,
+				B8B0E74715605EE8002FE0A2 /* Puzzle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -856,12 +858,12 @@
 				B8AE120B155990DB00742256 /* PieceView.m in Sources */,
 				B8AE1211155990F100742256 /* AppDelegate.m in Sources */,
 				B8AE1213155990F100742256 /* CreatePuzzleOperation.m in Sources */,
-				B8AE12221559912200742256 /* Image.m in Sources */,
 				B8AE12241559912200742256 /* Piece.m in Sources */,
-				B8AE12261559912200742256 /* Puzzle.m in Sources */,
 				B8AE12281559912200742256 /* Puzzle.xcdatamodeld in Sources */,
 				B8DAFCE7155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */,
 				B8B0E73C15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */,
+				B8B0E74315605E23002FE0A2 /* Image.m in Sources */,
+				B8B0E74815605EE8002FE0A2 /* Puzzle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1029,10 +1031,12 @@
 				B8AE121C1559912200742256 /* Puzzle 2.xcdatamodel */,
 				B8AE121D1559912200742256 /* Puzzle 3.xcdatamodel */,
 				B8AE121E1559912200742256 /* Puzzle 4.xcdatamodel */,
-				B8AE121F1559912200742256 /* Puzzle 5.xcdatamodel */,
+				B8AE121F1559912200742256 /* Puzzle 6.xcdatamodel */,
+				B8B0E73F15605DA0002FE0A2 /* Puzzle 5.xcdatamodel */,
+				B8B0E74415605EB8002FE0A2 /* Puzzle 7.xcdatamodel */,
 				B8AE12201559912200742256 /* Puzzle.xcdatamodel */,
 			);
-			currentVersion = B8AE121F1559912200742256 /* Puzzle 5.xcdatamodel */;
+			currentVersion = B8B0E74415605EB8002FE0A2 /* Puzzle 7.xcdatamodel */;
 			path = Puzzle.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
