@@ -432,7 +432,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<float key="IBUIValue">4</float>
-						<float key="IBUIMinValue">2</float>
+						<float key="IBUIMinValue">1</float>
 						<float key="IBUIMaxValue">20</float>
 						<object class="NSColor" key="IBUIMinimumTrackTintColor">
 							<int key="NSColorSpace">2</int>

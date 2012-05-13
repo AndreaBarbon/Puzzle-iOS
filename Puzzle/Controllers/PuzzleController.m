@@ -256,8 +256,7 @@
         
         if ([animationID isEqualToString:@"pulseAnimation"]) {
             
-            float boardSize = pieceNumber*(piceSize-2*padding);
-            float f = (screenWidth-puzzleCompleteImage.bounds.size.height-30)/boardSize;
+            float f = (screenWidth)/(pieceNumber+1)/(piceSize-2*padding);
             
             [UIView animateWithDuration:1.5 animations:^{
                
@@ -1664,8 +1663,7 @@
 
 - (void)resetLatticePositionAndSizeWithDuration:(float)duration {
     
-    float f = screenWidth/(pieceNumber+1);
-    f = f/(piceSize-2*padding);
+    float f = (screenWidth)/(pieceNumber+1)/(piceSize-2*padding);
     
     [UIView animateWithDuration:duration animations:^{
 
@@ -1698,13 +1696,22 @@
 }
 
 - (void)moveLatticeToLeftWithDuration:(float)duration {
-    
+        
     CGPoint center = [self.view convertPoint:[[lattice objectAtIndex:firstPiecePlace] center] fromView:lattice];
     int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad && UIInterfaceOrientationIsPortrait(self.interfaceOrientation))*20;
     
-    lattice.transform = CGAffineTransformTranslate(lattice.transform, 
-                                                   -center.x/lattice.scale+(piceSize-2*padding)/2+30, 
-                                                   -center.y/lattice.scale+(piceSize-2*padding)/2+puzzleCompleteImage.bounds.size.height/lattice.scale+topBar);
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        
+        lattice.transform = CGAffineTransformTranslate(lattice.transform, 
+                                                       -center.x/lattice.scale+(piceSize-2*padding)/2+30, 
+                                                       -center.y/lattice.scale+(piceSize-2*padding)-topBar);
+    } else {
+        
+        lattice.transform = CGAffineTransformTranslate(lattice.transform, 
+                    -center.x/lattice.scale+(piceSize-2*padding), 
+                    -center.y/lattice.scale+(piceSize-2*padding)/2+puzzleCompleteImage.bounds.size.height/lattice.scale+topBar);
+    }
+
     
     [self refreshPositions];
     

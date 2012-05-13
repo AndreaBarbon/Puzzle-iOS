@@ -144,6 +144,8 @@
 - (IBAction)scrollDrawerRight:(id)sender;
 - (IBAction)scrollDrawerLeft:(id)sender;
 - (IBAction)togglePanningMode:(id)sender;
+- (IBAction)puzzleCompleted;
+- (IBAction)toggleMenu:(id)sender;
 
 - (void)loadPuzzle;
 - (BOOL)drawerStoppedShouldBeStopped;

@@ -10112,6 +10112,27 @@ AAEAAQABA</bytes>
 									<bytes key="NSRGB">MSAwLjc4NTQ3ODExMzMgMAA</bytes>
 								</object>
 							</object>
+							<object class="IBUIButton" id="536640691">
+								<reference key="NSNextResponder" ref="519583281"/>
+								<int key="NSvFlags">-2147483356</int>
+								<string key="NSFrame">{{194, 14}, {72, 37}}</string>
+								<reference key="NSSuperview" ref="519583281"/>
+								<reference key="NSWindow"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<int key="IBUIButtonType">1</int>
+								<reference key="IBUIHighlightedTitleColor" ref="27754075"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="1061150384"/>
+								<reference key="IBUIFontDescription" ref="372193378"/>
+								<reference key="IBUIFont" ref="882161658"/>
+							</object>
 						</array>
 						<string key="NSFrame">{{0, 397}, {320, 66}}</string>
 						<reference key="NSSuperview" ref="811427304"/>
@@ -14627,6 +14648,15 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					</object>
 					<int key="connectionID">59</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">puzzleCompleted</string>
+						<reference key="source" ref="536640691"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">66</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -14684,6 +14714,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<reference ref="138747746"/>
 							<reference ref="282070743"/>
 							<reference ref="64352340"/>
+							<reference ref="536640691"/>
 						</array>
 						<reference key="parent" ref="811427304"/>
 						<string key="objectName">HUD</string>
@@ -14738,6 +14769,11 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="950110971"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">65</int>
+						<reference key="object" ref="536640691"/>
+						<reference key="parent" ref="519583281"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -14758,6 +14794,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<string key="55.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="60.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="65.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -14765,7 +14802,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">64</int>
+			<int key="maxID">66</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -14773,13 +14810,19 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<string key="className">PuzzleController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="puzzleCompleted">id</string>
 						<string key="rateGame">id</string>
 						<string key="restartPuzzle:">id</string>
 						<string key="scrollDrawerLeft:">id</string>
 						<string key="scrollDrawerRight:">id</string>
+						<string key="toggleMenu:">id</string>
 						<string key="togglePanningMode:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="puzzleCompleted">
+							<string key="name">puzzleCompleted</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="rateGame">
 							<string key="name">rateGame</string>
 							<string key="candidateClassName">id</string>
@@ -14794,6 +14837,10 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						</object>
 						<object class="IBActionInfo" key="scrollDrawerRight:">
 							<string key="name">scrollDrawerRight:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleMenu:">
+							<string key="name">toggleMenu:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="togglePanningMode:">
