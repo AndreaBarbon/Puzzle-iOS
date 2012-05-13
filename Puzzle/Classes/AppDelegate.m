@@ -38,10 +38,6 @@
     
     application.applicationSupportsShakeToEdit = YES;
     
-
-
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     puzzle = [[PuzzleController alloc] init];
     puzzle.managedObjectContext = self.managedObjectContext;

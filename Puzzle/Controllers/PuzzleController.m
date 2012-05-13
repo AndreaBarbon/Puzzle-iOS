@@ -40,20 +40,10 @@
 #pragma mark -
 #pragma mark View Lifecycle
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    
-//    for (PieceView *p in pieces) {
-//        if ((p.pan==gestureRecognizer && pan==otherGestureRecognizer) || 
-//            (pan==gestureRecognizer && p.pan==otherGestureRecognizer)) {
-//            
-//        }
-//    }    
-    
-    return (    (gestureRecognizer==pan && otherGestureRecognizer==pinch)   ||
-                (gestureRecognizer==pinch && otherGestureRecognizer==pan)   );
-}
-
 - (void)viewDidLoad {
+    
+    CGPoint center = self.view.window.center;
+    NSLog(@"Center = (%.0f, %.0f)", center.x, center.y);
     
     [super viewDidLoad];
     
@@ -139,6 +129,7 @@
     menu.duringGame = NO;
     menu.view.center = self.view.center;
     [self.view addSubview:menu.view];
+
     
     
     pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
@@ -679,6 +670,12 @@
         [self refreshPositions];        
     }
     
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    
+    return (    (gestureRecognizer==pan && otherGestureRecognizer==pinch)   ||
+            (gestureRecognizer==pinch && otherGestureRecognizer==pan)   );
 }
 
 
@@ -2130,14 +2127,19 @@
     }    
 }
 
+- (CGRect)rotatedFrame:(CGRect)frame {
+    
+    return CGRectMake(frame.origin.y, frame.origin.x, frame.size.width, frame.size.height);
+}
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
         
     //Rotate the drawer
     
     CGRect rect = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
-    CGRect imageFrame = imageView.frame;
-    
+    CGRect imageFrame = imageView.frame;    
+    CGPoint chooseCenter = CGPointZero;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
@@ -2151,12 +2153,14 @@
         imageFrame.origin.x = pad;
         imageFrame.origin.y = 0;
         
+        chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
         panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
         
-        lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
+        lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y-drawerSize);
+
         
     } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-        
+
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
         rect.size.height = drawerSize;
@@ -2167,27 +2171,14 @@
         imageFrame.origin.y = pad;
         imageFrame.origin.x = 0;
         
+        chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
         panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
         
-        lattice.frame = CGRectMake(lattice.frame.origin.y, lattice.frame.origin.x, lattice.bounds.size.width, lattice.bounds.size.height);
-        
+        lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y+drawerSize);
     }
     
     
-    [self refreshPositions];
-    
-    
-    //    if (!receivedFirstTouch) {
-    //        
-    //        [UIView animateWithDuration:duration animations:^{
-    //
-    //            lattice.frame = [self frameForLatticeWithOrientation:toInterfaceOrientation];
-    //            
-    //        }];
-    //        
-    //    }
-    
-    
+    [self refreshPositions];    
     
     
     [UIView animateWithDuration:duration animations:^{
@@ -2195,6 +2186,7 @@
         drawerView.frame = rect;
         stepperDrawer.frame = stepperFrame;
         imageView.frame = imageFrame;
+        menu.chooseLabel.center = chooseCenter;
         
     }];
     
@@ -2216,7 +2208,7 @@
         ) {
         
         [menu.game.popover dismissPopoverAnimated:NO];
-        CGRect rect = CGRectMake(menu.game.view.center.x, 20, 1, 1);
+        CGRect rect = CGRectMake(menu.game.view.center.x, -20, 1, 1);
         [menu.game.popover presentPopoverFromRect:rect inView:menu.game.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];        
     }
     
@@ -2401,8 +2393,8 @@
         }
     }
     
-    [self.view bringSubviewToFront:HUDView];
     [self.view bringSubviewToFront:drawerView];
+    [self.view bringSubviewToFront:HUDView];
         
     for (PieceView *p in pieces) {
         if (!p.isFree) {

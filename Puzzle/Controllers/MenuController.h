@@ -43,6 +43,8 @@
 @property (nonatomic, retain) NewGameController *game;
 @property (nonatomic, retain) UIView *obscuringView;
 @property (nonatomic, retain) IBOutlet UIView *mainView;
+@property (nonatomic, retain) IBOutlet UIImageView *chooseLabel;
+
 
 @property (nonatomic, retain) AVAudioPlayer *menuSound;
 

@@ -16,7 +16,7 @@
 
 @implementation MenuController
 
-@synthesize delegate, duringGame, game, obscuringView, mainView, menuSound;
+@synthesize delegate, duringGame, game, obscuringView, mainView, menuSound, chooseLabel;
 
 
 - (void)toggleMenuWithDuration:(float)duration {
@@ -106,6 +106,7 @@
 
 - (void)showNewGameView {
     
+    chooseLabel.center = CGPointMake(self.view.center.x-5, self.view.center.y-280);
     game.startButton.enabled = (game.image.image != nil);
     game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
     mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
@@ -160,14 +161,19 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      
         self.view.layer.masksToBounds = YES;
-        self.view.layer.cornerRadius = 20;
-        
+        self.view.layer.cornerRadius = 20;        
     }
 
     CGRect screen = [[UIScreen mainScreen] bounds];
     CGRect rect = CGRectMake(0, 0, screen.size.height, screen.size.height);
     obscuringView = [[UIView alloc] initWithFrame:rect];
     obscuringView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    
+    
+    chooseLabel = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ChooseLabel"]];
+    chooseLabel.alpha = 0;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) [obscuringView addSubview:chooseLabel];
     
     [delegate.view addSubview:obscuringView];
     [delegate.view bringSubviewToFront:self.view];

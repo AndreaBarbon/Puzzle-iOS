@@ -56,9 +56,7 @@
     float pieceNumber = delegate.pieceNumber;
     float NumberSquare = delegate.NumberSquare;
     
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
+        
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
     NSMutableArray *array;
     

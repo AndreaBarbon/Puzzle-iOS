@@ -44,6 +44,9 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
      
         slider.maximumValue = 15;
+                
+    } else {
+
     }
     
     loadingView.layer.cornerRadius = 10;
@@ -68,6 +71,9 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     typeOfImageView.hidden = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        delegate.chooseLabel.alpha = 0;
+    }];
 
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
 
@@ -98,12 +104,19 @@
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 
     popover = nil;
-    
+    [UIView animateWithDuration:0.3 animations:^{
+        delegate.chooseLabel.alpha = 0;
+    }];
+
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-        
+
+    [UIView animateWithDuration:0.3 animations:^{
+        delegate.chooseLabel.alpha = 0;
+    }];
     [self dismissPicker];
+
 }
 
 - (void)dismissPicker {
@@ -122,6 +135,10 @@
 - (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage {
     
     typeOfImageView.hidden = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        delegate.chooseLabel.alpha = 0;
+    }];
+
     
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
     
@@ -156,6 +173,8 @@
 - (IBAction)selectImageFromPuzzleLibrary:(id)sender {
     
     [delegate playMenuSound];
+    delegate.chooseLabel.alpha = 1;
+
     
     PuzzleLibraryController *c = [[PuzzleLibraryController alloc] init];
     c.delegate = self;
@@ -179,7 +198,8 @@
 - (IBAction)selectImageFromPhotoLibrary:(UIButton*)sender {
 
     [delegate playMenuSound];
-    
+    delegate.chooseLabel.alpha = 1;
+
     int direction;
 
     UIImagePickerController *c = [[UIImagePickerController alloc] init];
@@ -221,7 +241,9 @@
     [delegate playMenuSound];
 
     typeOfImageView.hidden = NO;
-
+    [UIView animateWithDuration:0.3 animations:^{
+        delegate.chooseLabel.alpha = 0;
+    }];
 }
 
 - (IBAction)startNewGame:(id)sender {
