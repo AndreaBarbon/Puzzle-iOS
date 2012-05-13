@@ -13,6 +13,7 @@
 
 #import "PieceView.h"
 #import "MenuController.h"
+#import "PuzzleCompletedController.h"
 #import "Lattice.h"
 #import "Piece.h"
 #import "Puzzle.h"
@@ -105,7 +106,7 @@
 @property (nonatomic, retain, readonly) NSOperationQueue *operationQueue;
 
 @property (nonatomic,retain) CreatePuzzleOperation *puzzleOperation;
-@property (nonatomic,retain)  Puzzle *puzzleDB;
+@property (nonatomic,retain) Puzzle *puzzleDB;
 
 
 @property (nonatomic, retain) IBOutlet UIView *drawerView;
@@ -120,6 +121,7 @@
 @property (nonatomic, retain) UIPinchGestureRecognizer *pinch;
 
 @property (nonatomic, retain) MenuController *menu;
+@property (nonatomic, retain) PuzzleCompletedController *completedController;
 
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView *imageView;

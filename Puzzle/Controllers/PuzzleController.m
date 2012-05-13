@@ -25,7 +25,17 @@
 
 @implementation PuzzleController
 
-@synthesize pieces, image, piceSize, lattice, NumberSquare, pieceNumber, imageView, imageViewLattice, menu, loadedPieces, drawerView, managedObjectContext, menuButtonView, persistentStoreCoordinator, puzzleOperation, padding, puzzleDB, operationQueue, missedPieces, elapsedTime, groups, panningSwitch, imageSize;
+
+
+@synthesize pieces, image, lattice, imageView, imageViewLattice, drawerView, menuButtonView, groups, panningSwitch;
+
+@synthesize puzzleOperation, operationQueue;
+
+@synthesize managedObjectContext, persistentStoreCoordinator, puzzleDB;
+
+@synthesize padding, pieceNumber, piceSize, elapsedTime, imageSize;
+
+@synthesize loadedPieces, NumberSquare, missedPieces;
 
 @synthesize pan, panDrawer, pinch;
 
@@ -34,6 +44,8 @@
 @synthesize positionedSound, completedSound, neighborSound;
 
 @synthesize puzzleCompete, loadingGame;
+
+@synthesize menu, completedController;
 
 
 
@@ -85,7 +97,7 @@
     [self loadSounds];
     [self computePieceSize];
     
-    //Add the image;    
+    //Add the images;    
     imageView = [[UIImageView alloc] init];
     rect = CGRectMake(0, (rect.size.height-rect.size.width)/1, rect.size.width, rect.size.width);
     imageView.frame = rect;
@@ -139,44 +151,15 @@
     menu.duringGame = NO;
     menu.view.center = self.view.center;
     [self.view addSubview:menu.view];
+    
+    
+    //Add the puzzleCompletedController
+    completedController = [[PuzzleCompletedController alloc] init];
+    
+    
+    //gesture recognizers
+    [self addGestures];    
 
-    
-    
-    pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
-    pinch.delegate = self;
-    [self.view addGestureRecognizer:pinch];
-    
-    
-    pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-    pan.delegate = self;
-    [pan setMinimumNumberOfTouches:1];
-    [pan setMaximumNumberOfTouches:2];
-    
-    
-    panDrawer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDrawer:)];
-    [panDrawer setMinimumNumberOfTouches:1];
-    [panDrawer setMaximumNumberOfTouches:1];
-    [drawerView addGestureRecognizer:panDrawer];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
-    tap.numberOfTapsRequired = 2;
-    [self.view addGestureRecognizer:tap];
-    
-    UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
-    [longPressure setMinimumPressDuration:0.5];
-    [self.view addGestureRecognizer:longPressure];
-    
-    
-//    UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
-//    [swipeR setDirection:UISwipeGestureRecognizerDirectionRight];
-//    [swipeR setNumberOfTouchesRequired:2];
-//    [self.view addGestureRecognizer:swipeR];
-//    
-//    UISwipeGestureRecognizer *swipeL = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeL:)];
-//    [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
-//    [swipeL setNumberOfTouchesRequired:2];
-//    [self.view addGestureRecognizer:swipeL];
-    
 }
 
 - (NSArray*)directionsUpdated_numbers {
@@ -650,6 +633,41 @@
 
 #pragma mark -
 #pragma mark Gesture handling
+
+- (void)addGestures {
+    
+    pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    pinch.delegate = self;
+    [self.view addGestureRecognizer:pinch];
+    
+    pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    pan.delegate = self;
+    [pan setMinimumNumberOfTouches:1];
+    [pan setMaximumNumberOfTouches:2];
+    
+    panDrawer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDrawer:)];
+    [panDrawer setMinimumNumberOfTouches:1];
+    [panDrawer setMaximumNumberOfTouches:1];
+    [drawerView addGestureRecognizer:panDrawer];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
+    tap.numberOfTapsRequired = 2;
+    [self.view addGestureRecognizer:tap];
+    
+    UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
+    [longPressure setMinimumPressDuration:0.5];
+    [self.view addGestureRecognizer:longPressure];
+    
+//    UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
+//    [swipeR setDirection:UISwipeGestureRecognizerDirectionRight];
+//    [swipeR setNumberOfTouchesRequired:2];
+//    [self.view addGestureRecognizer:swipeR];
+//    UISwipeGestureRecognizer *swipeL = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeL:)];
+//    [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
+//    [swipeL setNumberOfTouchesRequired:2];
+//    [self.view addGestureRecognizer:swipeL];
+    
+}
 
 - (void)doubleTap:(UITapGestureRecognizer*)gesture {
     

@@ -141,6 +141,10 @@
 		B8B0E7351560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */; };
 		B8B0E7361560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */; };
 		B8B0E7371560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */; };
+		B8B0E73B15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */; };
+		B8B0E73C15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */; };
+		B8B0E73D15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */; };
+		B8B0E73E15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */; };
 		B8DAFCC4155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC5155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC6155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */; };
@@ -295,6 +299,9 @@
 		B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PuzzleComplete@2x.png"; path = "PNGs/PuzzleComplete@2x.png"; sourceTree = "<group>"; };
 		B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PuzzleComplete_iPhone.png; path = PNGs/PuzzleComplete_iPhone.png; sourceTree = "<group>"; };
 		B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PuzzleComplete_iPhone@2x.png"; path = "PNGs/PuzzleComplete_iPhone@2x.png"; sourceTree = "<group>"; };
+		B8B0E73815601E2C002FE0A2 /* PuzzleCompletedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleCompletedController.h; path = Controllers/PuzzleCompletedController.h; sourceTree = "<group>"; };
+		B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleCompletedController.m; path = Controllers/PuzzleCompletedController.m; sourceTree = "<group>"; };
+		B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleCompletedController.xib; path = Controllers/PuzzleCompletedController.xib; sourceTree = "<group>"; };
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
 		B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PuzzleCompleted.mp3; path = Audio/PuzzleCompleted.mp3; sourceTree = "<group>"; };
@@ -478,6 +485,9 @@
 				B8DAFCE3155BDB0600A901A3 /* PuzzleLibraryController.h */,
 				B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */,
 				B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */,
+				B8B0E73815601E2C002FE0A2 /* PuzzleCompletedController.h */,
+				B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */,
+				B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -722,6 +732,7 @@
 				B8B0E730155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */,
 				B8B0E7341560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */,
 				B8B0E7361560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */,
+				B8B0E73D15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,6 +812,7 @@
 				B8B0E731155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */,
 				B8B0E7351560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */,
 				B8B0E7371560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */,
+				B8B0E73E15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -826,6 +838,7 @@
 				B8AE12251559912200742256 /* Puzzle.m in Sources */,
 				B8AE12271559912200742256 /* Puzzle.xcdatamodeld in Sources */,
 				B8DAFCE6155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */,
+				B8B0E73B15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,6 +861,7 @@
 				B8AE12261559912200742256 /* Puzzle.m in Sources */,
 				B8AE12281559912200742256 /* Puzzle.xcdatamodeld in Sources */,
 				B8DAFCE7155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */,
+				B8B0E73C15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
