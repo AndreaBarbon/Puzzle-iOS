@@ -10,9 +10,9 @@
 #define ORG_TIME 0.5
 
 #import "PuzzleController.h"
-#import "UIImage+CWAdditions.h"
 #import "AppDelegate.h"
 #import "GroupView.h"
+#import "LoadGameController.h"
 
 #import <mach/mach.h>
 #import <mach/mach_host.h>
@@ -335,24 +335,6 @@
         
     }
     
-}
-
-- (Puzzle*)lastSavedPuzzle {
-    
-    NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext: managedObjectContext];
-    
-    [fetchRequest1 setEntity:entity];
-    
-    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
-    [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
-    dateSort = nil;
-    
-    [fetchRequest1 setFetchLimit:1];
-    
-    return [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
-
 }
 
 - (IBAction)toggleMenu:(id)sender {
@@ -1216,7 +1198,6 @@
         for (PieceView *p in piece.group.pieces) {
             
             p.angle = piece.angle;
-
         }
 
         [self updatePositionsInGroup:piece.group withReferencePiece:piece];
@@ -2215,6 +2196,24 @@
     }
     
     return YES;
+    
+}
+
+- (Puzzle*)lastSavedPuzzle {
+    
+    NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext: managedObjectContext];
+    
+    [fetchRequest1 setEntity:entity];
+    
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
+    [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+    dateSort = nil;
+    
+    [fetchRequest1 setFetchLimit:1];
+    
+    return [[managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
     
 }
 

@@ -9,6 +9,7 @@
 #import "MenuController.h"
 #import "PuzzleController.h"
 #import "NewGameController.h"
+#import "LoadGameController.h"
 
 @interface MenuController ()
 
@@ -16,7 +17,7 @@
 
 @implementation MenuController
 
-@synthesize delegate, duringGame, game, obscuringView, mainView, menuSound, chooseLabel;
+@synthesize delegate, duringGame, game, obscuringView, mainView, menuSound, chooseLabel, loadGameController;
 
 
 - (void)toggleMenuWithDuration:(float)duration {
@@ -131,6 +132,42 @@
     }
 }
 
+- (IBAction)loadGame:(id)sender {
+
+    loadGameController.contents = nil;
+    loadGameController.images = nil;
+    
+    NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext:delegate.managedObjectContext];
+    
+    [fetchRequest1 setEntity:entity];
+    
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
+    [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+    dateSort = nil;
+    [fetchRequest1 setFetchLimit:100];
+
+    loadGameController.contents = [NSMutableArray arrayWithArray:[delegate.managedObjectContext executeFetchRequest:fetchRequest1 error:nil]];
+    
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:100];
+    
+    for (Puzzle *puzzle in loadGameController.contents) {
+        [array addObject:[[UIImage imageWithData:puzzle.image.data] imageByResizingToFitSize:CGSizeMake(400, 400) scaleUpIfNeeded:YES]];
+    }
+    
+    loadGameController.images = array;
+    array = nil;
+    
+    [loadGameController.tableView reloadData];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        loadGameController.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
+        mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+    }];
+}
+
 - (IBAction)resumeGame:(id)sender {
     
     delegate.completedController.view.alpha = 0;
@@ -163,6 +200,7 @@
     newGameButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     resumeButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     showThePictureButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    loadGameButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
@@ -189,13 +227,19 @@
     showThePictureButton.hidden = YES; 
     
     
-    game = [[NewGameController alloc] init];    
-    game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
     mainView.frame = CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height);
 
+    game = [[NewGameController alloc] init];    
+    game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
     game.delegate = self;
 
     [self.view addSubview:game.view];
+    
+    loadGameController = [[LoadGameController alloc] init];   
+    loadGameController.view.frame = CGRectMake(self.view.frame.size.width, 0, loadGameController.view.frame.size.width, loadGameController.view.frame.size.height);
+    loadGameController.delegate = self;
+    
+    [self.view addSubview:loadGameController.view];
 
 }
 

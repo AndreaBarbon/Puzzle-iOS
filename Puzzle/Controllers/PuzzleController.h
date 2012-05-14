@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVAudioPlayer.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "UIImage+CWAdditions.h"
 
 #import "PieceView.h"
 #import "MenuController.h"

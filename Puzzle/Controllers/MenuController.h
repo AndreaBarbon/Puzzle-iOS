@@ -16,6 +16,7 @@
 
 @class PuzzleController;
 @class NewGameController;
+@class LoadGameController;
 
 
 @protocol MenuProtocol
@@ -30,6 +31,7 @@
     IBOutlet UIButton *resumeButton;
     IBOutlet UIButton *newGameButton;
     IBOutlet UIButton *showThePictureButton;
+    IBOutlet UIButton *loadGameButton;
     
     IBOutlet UIImageView *image;
     IBOutlet UIProgressView *progressView;
@@ -41,6 +43,8 @@
 @property (nonatomic, assign) PuzzleController *delegate;
 @property (nonatomic) BOOL duringGame;
 @property (nonatomic, retain) NewGameController *game;
+@property (nonatomic, retain) LoadGameController *loadGameController;
+
 @property (nonatomic, retain) UIView *obscuringView;
 @property (nonatomic, retain) IBOutlet UIView *mainView;
 @property (nonatomic, retain) IBOutlet UIImageView *chooseLabel;
@@ -51,6 +55,7 @@
 
 - (IBAction)startNewGame:(id)sender;
 - (IBAction)resumeGame:(id)sender;
+- (IBAction)loadGame:(id)sender;
 - (IBAction)showThePicture:(id)sender;
 
 - (void)toggleMenuWithDuration:(float)duration;
