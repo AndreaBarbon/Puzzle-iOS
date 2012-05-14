@@ -54,6 +54,8 @@
 
 - (void)viewDidLoad {
     
+    NSLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
+    
     CGPoint center = self.view.window.center;
     NSLog(@"Center = (%.0f, %.0f)", center.x, center.y);
     

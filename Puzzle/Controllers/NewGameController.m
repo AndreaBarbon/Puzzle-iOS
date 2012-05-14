@@ -27,7 +27,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];
+    
+    
+    piecesLabel.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    backButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    startButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    
+    yourPhotosButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
+    cameraButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
+    puzzleLibraryButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
+    
+    pieceNumberLabel.font = [UIFont fontWithName:@"Bello-Pro" size:80];
+
+    
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         cameraButton.enabled = NO;
@@ -304,7 +317,7 @@
     if (delegate.delegate.loadingGame) {
         
         int n = [delegate.delegate.puzzleDB.pieceNumber intValue]*[delegate.delegate.puzzleDB.pieceNumber intValue];
-        pieceNumberLabel.text = [NSString stringWithFormat:@"%d", n];    
+        pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", n];    
         slider.hidden = YES;    
         tapToSelectView.hidden = YES;
         image.image = delegate.delegate.image;
@@ -350,7 +363,7 @@
     tapToSelectLabel.hidden = NO;
 
     
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];    
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];    
 
 }
 
@@ -376,7 +389,7 @@
     tapToSelectView.hidden = NO;
     tapToSelectLabel.hidden = NO ;
     
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];    
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];    
     
     self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
 
@@ -400,7 +413,7 @@
 
 - (IBAction)numberSelected:(UISlider*)sender {
         
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d", (int)slider.value*(int)slider.value];
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];
 
     
 }

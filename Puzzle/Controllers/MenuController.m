@@ -160,6 +160,10 @@
     [super viewDidLoad];
     [self loadSounds];
     
+    newGameButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    resumeButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    showThePictureButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      

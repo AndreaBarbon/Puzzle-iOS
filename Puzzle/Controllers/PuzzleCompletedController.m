@@ -22,6 +22,9 @@
 {
     [super viewDidLoad];
     
+    score.font = [UIFont fontWithName:@"Bello-Pro" size:100];
+
+    
     self.view.layer.cornerRadius = 20;
     self.view.layer.masksToBounds = YES;
     // Do any additional setup after loading the view from its nib.

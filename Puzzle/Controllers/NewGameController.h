@@ -23,6 +23,8 @@
     IBOutlet UIButton *backButton;
     IBOutlet UIButton *imageButton;
     IBOutlet UIButton *cameraButton;
+    IBOutlet UIButton *yourPhotosButton;
+    IBOutlet UIButton *puzzleLibraryButton;
     IBOutlet UIProgressView *progressView;
     IBOutlet UIActivityIndicatorView *indicator;
     IBOutlet UIView *loadingView;
