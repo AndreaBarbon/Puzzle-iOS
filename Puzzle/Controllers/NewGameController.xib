@@ -10217,10 +10217,20 @@ AAEAAQABA</bytes>
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MSAwLjc4NTMwMjU1MTUgMAA</bytes>
 						</object>
-						<reference key="IBUIDisabledTitleColor" ref="792981882"/>
+						<object class="NSColor" key="IBUIDisabledTitleColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MSAwLjIAA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace" id="376940962">
+								<int key="NSID">2</int>
+							</object>
+						</object>
 						<reference key="IBUINormalTitleColor" ref="25717618"/>
 						<reference key="IBUIHighlightedTitleShadowColor" ref="398223833"/>
-						<reference key="IBUIDisabledTitleShadowColor" ref="434079065"/>
+						<object class="NSColor" key="IBUIDisabledTitleShadowColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MCAwLjIAA</bytes>
+							<reference key="NSCustomColorSpace" ref="376940962"/>
+						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="398223833"/>
 						<reference key="IBUIFontDescription" ref="103788545"/>
 						<reference key="IBUIFont" ref="936354344"/>
@@ -10270,7 +10280,10 @@ AAEAAQABA</bytes>
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MSAwLjc4NTMwMjU1MTUgMAA</bytes>
 						</object>
-						<reference key="IBUIMaximumTrackTintColor" ref="25717618"/>
+						<object class="NSColor" key="IBUIMaximumTrackTintColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MSAwLjc4NTMwMjU1MTUgMCAwLjEAA</bytes>
+						</object>
 						<reference key="IBUIThumbTintColor" ref="25717618"/>
 					</object>
 					<object class="IBUILabel" id="591954673">
@@ -10307,7 +10320,7 @@ AAEAAQABA</bytes>
 					<object class="IBUIProgressView" id="519756556">
 						<reference key="NSNextResponder" ref="544214420"/>
 						<int key="NSvFlags">-2147483356</int>
-						<string key="NSFrame">{{40, 431}, {240, 9}}</string>
+						<string key="NSFrame">{{40, 433}, {240, 9}}</string>
 						<reference key="NSSuperview" ref="544214420"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="198605927"/>
@@ -10319,7 +10332,10 @@ AAEAAQABA</bytes>
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MSAwLjc4NTMwMjU1MTUgMAA</bytes>
 						</object>
-						<reference key="IBUITrackTintColor" ref="25717618"/>
+						<object class="NSColor" key="IBUITrackTintColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MCAwIDAgMC4yAA</bytes>
+						</object>
 					</object>
 					<object class="IBUIButton" id="627943688">
 						<reference key="NSNextResponder" ref="544214420"/>
@@ -10742,7 +10758,7 @@ AAEAAQABA</bytes>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="10.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="10.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="3" key="10.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

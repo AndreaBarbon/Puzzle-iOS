@@ -156,7 +156,9 @@
     
     
     //Add the puzzleCompletedController
-    completedController = [[PuzzleCompletedController alloc] init];
+    NSString *nibName = @"PuzzleCompletedController";
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) nibName = [nibName stringByAppendingFormat:@"_iPhone"];
+    completedController = [[PuzzleCompletedController alloc] initWithNibName:nibName bundle:nil];
     completedController.delegate = self;
     [self.view addSubview:completedController.view];
     completedController.view.center = CGPointMake(self.view.center.x, screenHeight-30);
@@ -498,8 +500,6 @@
     [self.view bringSubviewToFront:HUDView];
     
     missedPieces = 0;
-    moves = 0;
-    rotations = 0;
 
     drawerView.alpha = 1;
     panningSwitch.alpha = 1;
@@ -528,11 +528,9 @@
 - (void)createPuzzleFromSavedGame {
 
     loadingGame = YES;
-    self.view.userInteractionEnabled = NO;
-
-
+    self.view.userInteractionEnabled = NO;    
     [self prepareForNewPuzzle];
-    
+
     
     menu.game.view.frame = CGRectMake(0, 0, menu.game.view.frame.size.width, menu.game.view.frame.size.height);
     
@@ -552,7 +550,9 @@
 - (void)createPuzzleFromImage:(UIImage*)image_ {
 
     loadingGame = NO;
-
+    moves = 0;
+    rotations = 0;
+    
     [self prepareForNewPuzzle];
 
     [self.operationQueue addOperation:puzzleOperation];
@@ -611,7 +611,7 @@
 
 - (IBAction)puzzleCompleted {
     
-    puzzleCompete = YES;
+    //puzzleCompete = YES;
     
     [self stopTimer];
     [completedController updateValues];
@@ -630,9 +630,9 @@
         
     }completion:^(BOOL finished) {
         
-        [self.view bringSubviewToFront:lattice];
-        puzzleDB.percentage = [NSNumber numberWithInt:100];
+        //puzzleDB.percentage = [NSNumber numberWithInt:100];
         [self saveGame];
+        [self.view bringSubviewToFront:lattice];
         [self.view bringSubviewToFront:completedController.view];
         [self.view bringSubviewToFront:HUDView];
     }];
@@ -913,25 +913,25 @@
     [group.pieces addObject:piece];
 
         
-        [group addSubview:piece];
-        
-        //Reset piece size
-        piece.transform = group.boss.transform;
-        
-        CGPoint relative = [self coordinatesOfPiece:piece relativeToPiece:group.boss];
-        
-        CGAffineTransform matrix = CGAffineTransformMakeRotation(group.boss.angle-group.angle);
-        relative = [self applyMatrix:matrix toVector:relative];
-        
-        float w = [[lattice objectAtIndex:0] bounds].size.width+4;
-        
-        CGPoint trans = CGPointMake(relative.y*w, relative.x*w);
-        
-        piece.center = CGPointMake(group.boss.center.x+trans.x, group.boss.center.y+trans.y);
-            
-        [self refreshPositions];
-        
-
+    [group addSubview:piece];
+    
+    //Reset piece size
+    piece.transform = group.boss.transform;
+    
+    CGPoint relative = [self coordinatesOfPiece:piece relativeToPiece:group.boss];
+    
+    CGAffineTransform matrix = CGAffineTransformMakeRotation(group.boss.angle-group.angle);
+    relative = [self applyMatrix:matrix toVector:relative];
+    
+    float w = [[lattice objectAtIndex:0] bounds].size.width+4;
+    
+    CGPoint trans = CGPointMake(relative.y*w, relative.x*w);
+    
+    piece.center = CGPointMake(group.boss.center.x+trans.x, group.boss.center.y+trans.y);
+    
+    NSLog(@"Added piece position = %d", piece.position);
+    
+    //[self refreshPositions];
 }
 
 - (void)moveGroup:(GroupView*)group toLatticePoint:(int)i animated:(BOOL)animated {
@@ -2331,7 +2331,7 @@
         
         completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
         
-        statsFrame = CGRectMake(screenWidth/2-160, screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
+        statsFrame = CGRectMake(screenWidth/2-160+10, screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
 
         
     } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){

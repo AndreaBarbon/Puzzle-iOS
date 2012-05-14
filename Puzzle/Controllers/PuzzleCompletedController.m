@@ -18,11 +18,15 @@
 
 @synthesize delegate;
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    score.font = [UIFont fontWithName:@"Bello-Pro" size:100];
+    int size = 40;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) size = 60;
+    score.font = [UIFont fontWithName:@"Bello-Pro" size:size];
 
     
     self.view.layer.cornerRadius = 20;

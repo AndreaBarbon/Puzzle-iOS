@@ -29,15 +29,15 @@
     [super viewDidLoad];
     
     
-    piecesLabel.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    //piecesLabel.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     backButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     startButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     
-    yourPhotosButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
-    cameraButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
-    puzzleLibraryButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
+    //yourPhotosButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
+    //cameraButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
+    //puzzleLibraryButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:30];
     
-    pieceNumberLabel.font = [UIFont fontWithName:@"Bello-Pro" size:80];
+    //pieceNumberLabel.font = [UIFont fontWithName:@"Bello-Pro" size:80];
 
     
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];

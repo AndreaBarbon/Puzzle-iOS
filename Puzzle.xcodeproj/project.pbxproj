@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B804EF3A1560870F00826712 /* BelloPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B804EF391560870F00826712 /* BelloPro.ttf */; };
 		B804EF3B1560870F00826712 /* BelloPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B804EF391560870F00826712 /* BelloPro.ttf */; };
+		B804EF3E156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */; };
+		B804EF3F156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */; };
 		B82AC5C7154411B500208887 /* Lattice.m in Sources */ = {isa = PBXBuildFile; fileRef = B82AC5C6154411B500208887 /* Lattice.m */; };
 		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
 		B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
@@ -206,6 +208,7 @@
 
 /* Begin PBXFileReference section */
 		B804EF391560870F00826712 /* BelloPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BelloPro.ttf; sourceTree = "<group>"; };
+		B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleCompletedController_iPhone.xib; path = Controllers/PuzzleCompletedController_iPhone.xib; sourceTree = "<group>"; };
 		B82AC5C5154411B500208887 /* Lattice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lattice.h; path = Classes/Lattice.h; sourceTree = "<group>"; };
 		B82AC5C6154411B500208887 /* Lattice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lattice.m; path = Classes/Lattice.m; sourceTree = "<group>"; };
 		B84014EB1540D0880075734A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -494,6 +497,7 @@
 				B8B0E73815601E2C002FE0A2 /* PuzzleCompletedController.h */,
 				B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */,
 				B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */,
+				B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -740,6 +744,7 @@
 				B8B0E7361560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */,
 				B8B0E73D15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */,
 				B804EF3A1560870F00826712 /* BelloPro.ttf in Resources */,
+				B804EF3E156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -821,6 +826,7 @@
 				B8B0E7371560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */,
 				B8B0E73E15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */,
 				B804EF3B1560870F00826712 /* BelloPro.ttf in Resources */,
+				B804EF3F156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
