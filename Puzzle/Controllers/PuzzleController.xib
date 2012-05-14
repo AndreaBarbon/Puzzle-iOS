@@ -10112,7 +10112,7 @@ AAEAAQABA</bytes>
 									<bytes key="NSRGB">MSAwLjc4NTQ3ODExMzMgMAA</bytes>
 								</object>
 							</object>
-							<object class="IBUIButton" id="379043474">
+							<object class="IBUIButton" id="275068815">
 								<reference key="NSNextResponder" ref="519583281"/>
 								<int key="NSvFlags">265</int>
 								<string key="NSFrame">{{209, -2}, {57, 66}}</string>
@@ -10139,7 +10139,7 @@ AAEAAQABA</bytes>
 						<reference key="NSNextKeyView" ref="785001214"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="205493746"/>
-						<float key="IBUIAlpha">0.5</float>
+						<float key="IBUIAlpha">0.80000001192092896</float>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
@@ -14650,7 +14650,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">puzzleCompleted</string>
-						<reference key="source" ref="379043474"/>
+						<reference key="source" ref="275068815"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">2</int>
 					</object>
@@ -14713,7 +14713,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<reference ref="138747746"/>
 							<reference ref="282070743"/>
 							<reference ref="64352340"/>
-							<reference ref="379043474"/>
+							<reference ref="275068815"/>
 						</array>
 						<reference key="parent" ref="811427304"/>
 						<string key="objectName">HUD</string>
@@ -14770,7 +14770,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">67</int>
-						<reference key="object" ref="379043474"/>
+						<reference key="object" ref="275068815"/>
 						<reference key="parent" ref="519583281"/>
 					</object>
 				</array>

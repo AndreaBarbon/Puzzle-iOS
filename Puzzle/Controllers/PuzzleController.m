@@ -567,7 +567,7 @@
     } else {
         
         for (PieceView *p in pieces) {
-            if (!p.isPositioned) {
+            if (!p.isPositioned && !p.group.isPositioned) {
                 //NSLog(@"Piece #%d is not positioned", p.number);
                 
                 return NO;
@@ -732,7 +732,9 @@
             
             if ([self point:point isInFrame:rect]) {
                 NSLog(@"Position %d ", i);
-                if ([self pieceWithPosition:i].userInteractionEnabled) {
+                PieceView *piece = [self pieceWithPosition:i];
+                if (piece==nil) NSLog(@"NIL DC!!");
+                if (piece.userInteractionEnabled) {
                     NSLog(@"Piece #%d is enabled", [self pieceWithPosition:i].number);
                     movingPiece = [self pieceWithPosition:i];
                 }
@@ -1151,9 +1153,6 @@
                 }
             }
         }
-        
-        
-        
     }
     
     piece.isLifted = NO;
@@ -1234,6 +1233,9 @@
     } else {
         
         [self checkNeighborsOfPiece:piece];
+        if (piece.hasNeighbors) {
+            [self createNewGroupForPiece:piece];
+        }
     }
     
     [self updatePieceDB:piece];
@@ -1410,6 +1412,10 @@
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
             
+            if (piece.group!=nil) {
+                piece.group.isPositioned = YES;
+            }
+            
             //NSLog(@"Salvi! Piece #%d is positioned! :-)", piece.number);
             
             [piece pulse];
@@ -1466,8 +1472,6 @@
     }
         
     piece.oldPosition = [piece realCenter];
-    
-    
     
 }
 

@@ -12,7 +12,7 @@
 
 @implementation GroupView
 
-@synthesize boss, pieces, angle, delegate;
+@synthesize boss, pieces, angle, delegate, isPositioned;
 
 - (void)translateWithVector:(CGPoint)traslation {
 

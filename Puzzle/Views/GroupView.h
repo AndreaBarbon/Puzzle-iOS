@@ -18,6 +18,7 @@
 
 @property (nonatomic, retain) PieceView *boss;
 @property (nonatomic) float angle;
+@property (nonatomic) BOOL isPositioned;
 @property (nonatomic, retain) NSMutableArray *pieces;
 @property (nonatomic, assign) PuzzleController *delegate;
 
