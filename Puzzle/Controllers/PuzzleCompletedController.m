@@ -8,6 +8,7 @@
 
 #import "PuzzleCompletedController.h"
 #import "PuzzleController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface PuzzleCompletedController ()
 
@@ -20,17 +21,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.layer.cornerRadius = 20;
+    self.view.layer.masksToBounds = YES;
     // Do any additional setup after loading the view from its nib.
 }
 
 - (void)updateValues {
     
     pieces.text = [NSString stringWithFormat:@"%d pieces", delegate.NumberSquare];
-    time.text = [NSString stringWithFormat:@"Game time: %@", delegate.elapsedTimeLabel.text];
+    time.text = [NSString stringWithFormat:@"%@", delegate.elapsedTimeLabel.text];
 
-    score.text = [NSString stringWithFormat:@"%d", 0];
-    moves.text = [NSString stringWithFormat:@"Moves: %d", delegate.moves];
-    rotations.text = [NSString stringWithFormat:@"Rotations: %d", delegate.rotations];
+    score.text = [NSString stringWithFormat:@"%d", arc4random_uniform(10000000)];
+    moves.text = [NSString stringWithFormat:@"%d", delegate.moves];
+    rotations.text = [NSString stringWithFormat:@"%d", delegate.rotations];
 
 }
 

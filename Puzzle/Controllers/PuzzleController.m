@@ -280,8 +280,8 @@
                 translation = -screenWidth/2+puzzleCompleteImage.bounds.size.height/2;
             } else {
                 translation = -screenHeight/2+puzzleCompleteImage.bounds.size.height/2;
-                translation += 20;
             }
+            translation += 20;
 
             
             [UIView animateWithDuration:1 animations:^{
@@ -2807,12 +2807,13 @@
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake)
     {
-        [UIView animateWithDuration:0.5 animations:^{
-            
-            //NSLog(@"Shuffle!");
-            //[self shuffle];
-            
-        }];
+        
+        for (PieceView *p in pieces) {
+            p.isFree = YES;
+            [self movePiece:p toLatticePoint:p.number animated:NO];
+        }
+        
+    [self refreshPositions];
     }
 }
 
