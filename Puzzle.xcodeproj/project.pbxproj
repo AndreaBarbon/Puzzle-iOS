@@ -15,6 +15,67 @@
 		B82375811561B58000426E92 /* LoadGameController.m in Sources */ = {isa = PBXBuildFile; fileRef = B823757E1561B58000426E92 /* LoadGameController.m */; };
 		B82375821561B58000426E92 /* LoadGameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B823757F1561B58000426E92 /* LoadGameController.xib */; };
 		B82375831561B58000426E92 /* LoadGameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B823757F1561B58000426E92 /* LoadGameController.xib */; };
+		B823758715626FC300426E92 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B87C5CD315400B2A00AF69BC /* main.m */; };
+		B823758815626FC300426E92 /* PuzzleController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87C5CEF1540174400AF69BC /* PuzzleController.m */; };
+		B823758915626FC300426E92 /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
+		B823758A15626FC300426E92 /* Lattice.m in Sources */ = {isa = PBXBuildFile; fileRef = B82AC5C6154411B500208887 /* Lattice.m */; };
+		B823758B15626FC300426E92 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E4AC7D154AA22300D0A75D /* MenuController.m */; };
+		B823758C15626FC300426E92 /* NewGameController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AA19CC154B565400750458 /* NewGameController.m */; };
+		B823758D15626FC300426E92 /* GroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE1204155990DB00742256 /* GroupView.m */; };
+		B823758E15626FC300426E92 /* PieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE1205155990DB00742256 /* PieceView.m */; };
+		B823758F15626FC300426E92 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE120C155990F100742256 /* AppDelegate.m */; };
+		B823759015626FC300426E92 /* CreatePuzzleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE120D155990F100742256 /* CreatePuzzleOperation.m */; };
+		B823759115626FC300426E92 /* Piece.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE12181559912200742256 /* Piece.m */; };
+		B823759215626FC300426E92 /* Puzzle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121B1559912200742256 /* Puzzle.xcdatamodeld */; };
+		B823759315626FC300426E92 /* PuzzleLibraryController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */; };
+		B823759415626FC300426E92 /* PuzzleCompletedController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */; };
+		B823759515626FC300426E92 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74115605E23002FE0A2 /* Image.m */; };
+		B823759615626FC300426E92 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
+		B823759715626FC300426E92 /* LoadGameController.m in Sources */ = {isa = PBXBuildFile; fileRef = B823757E1561B58000426E92 /* LoadGameController.m */; };
+		B823759915626FC300426E92 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E18158155000C200A8B450 /* MediaPlayer.framework */; };
+		B823759A15626FC300426E92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B853810F1548D91B00F3BFA5 /* AVFoundation.framework */; };
+		B823759B15626FC300426E92 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
+		B823759C15626FC300426E92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC515400B2A00AF69BC /* UIKit.framework */; };
+		B823759D15626FC300426E92 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC715400B2A00AF69BC /* Foundation.framework */; };
+		B823759E15626FC300426E92 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CC915400B2A00AF69BC /* CoreGraphics.framework */; };
+		B823759F15626FC300426E92 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87C5CCB15400B2A00AF69BC /* CoreData.framework */; };
+		B82375A115626FC300426E92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CD015400B2A00AF69BC /* InfoPlist.strings */; };
+		B82375A215626FC300426E92 /* PuzzleController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CF01540174400AF69BC /* PuzzleController.xib */; };
+		B82375A315626FC300426E92 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
+		B82375A415626FC300426E92 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
+		B82375A515626FC300426E92 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
+		B82375A615626FC300426E92 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69515497ED300256385 /* Default-Portrait~ipad.png */; };
+		B82375A715626FC300426E92 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69615497ED300256385 /* Default.png */; };
+		B82375A815626FC300426E92 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69715497ED300256385 /* Default@2x.png */; };
+		B82375A915626FC300426E92 /* MenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8E4AC7E154AA22300D0A75D /* MenuController.xib */; };
+		B82375AA15626FC300426E92 /* icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B2154B502900750458 /* icon-144.png */; };
+		B82375AB15626FC300426E92 /* icon-512.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B3154B502900750458 /* icon-512.png */; };
+		B82375AC15626FC300426E92 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B4154B502900750458 /* icon-72.png */; };
+		B82375AD15626FC300426E92 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B5154B502900750458 /* Icon-Small-50.png */; };
+		B82375AE15626FC300426E92 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B6154B502900750458 /* Icon-Small.png */; };
+		B82375AF15626FC300426E92 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B7154B502900750458 /* Icon-Small@2x.png */; };
+		B82375B015626FC300426E92 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B8154B502900750458 /* icon.png */; };
+		B82375B115626FC300426E92 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B9154B502900750458 /* icon@2x.png */; };
+		B82375B215626FC300426E92 /* NewGameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19CD154B565400750458 /* NewGameController.xib */; };
+		B82375B315626FC300426E92 /* Puzzle iPhone-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */; };
+		B82375B415626FC300426E92 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
+		B82375B515626FC300426E92 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */; };
+		B82375B615626FC300426E92 /* PuzzleCompleted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */; };
+		B82375B715626FC300426E92 /* MenuSound.aif in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCCF155BB78A00A901A3 /* MenuSound.aif */; };
+		B82375B815626FC300426E92 /* Scissors_Shears.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCD5155BB9E000A901A3 /* Scissors_Shears.wav */; };
+		B82375B915626FC300426E92 /* PuzzleLibraryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */; };
+		B82375E215626FC300426E92 /* ChooseLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E720155FB612002FE0A2 /* ChooseLabel@2x.png */; };
+		B82375E315626FC300426E92 /* ChooseLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E721155FB612002FE0A2 /* ChooseLabel.png */; };
+		B82375E415626FC300426E92 /* Wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E722155FB612002FE0A2 /* Wood.jpg */; };
+		B82375E515626FC300426E92 /* Wood@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */; };
+		B82375E615626FC300426E92 /* PuzzleComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */; };
+		B82375E715626FC300426E92 /* PuzzleComplete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */; };
+		B82375E815626FC300426E92 /* PuzzleComplete_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */; };
+		B82375E915626FC300426E92 /* PuzzleComplete_iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */; };
+		B82375EA15626FC300426E92 /* PuzzleCompletedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */; };
+		B82375EB15626FC300426E92 /* BelloPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B804EF391560870F00826712 /* BelloPro.ttf */; };
+		B82375EC15626FC300426E92 /* PuzzleCompletedController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */; };
+		B82375ED15626FC300426E92 /* LoadGameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B823757F1561B58000426E92 /* LoadGameController.xib */; };
 		B82AC5C7154411B500208887 /* Lattice.m in Sources */ = {isa = PBXBuildFile; fileRef = B82AC5C6154411B500208887 /* Lattice.m */; };
 		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
 		B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
@@ -216,6 +277,8 @@
 		B823757D1561B58000426E92 /* LoadGameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadGameController.h; path = Controllers/LoadGameController.h; sourceTree = "<group>"; };
 		B823757E1561B58000426E92 /* LoadGameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoadGameController.m; path = Controllers/LoadGameController.m; sourceTree = "<group>"; };
 		B823757F1561B58000426E92 /* LoadGameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoadGameController.xib; path = Controllers/LoadGameController.xib; sourceTree = "<group>"; };
+		B82375F115626FC300426E92 /* Puzzle test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Puzzle test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B82375F315626FC300426E92 /* Puzzle test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Puzzle test-Info.plist"; path = "/Users/abramo/Documents/iPhone apps/Puzzle/Puzzle test-Info.plist"; sourceTree = "<absolute>"; };
 		B82AC5C5154411B500208887 /* Lattice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lattice.h; path = Classes/Lattice.h; sourceTree = "<group>"; };
 		B82AC5C6154411B500208887 /* Lattice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lattice.m; path = Classes/Lattice.m; sourceTree = "<group>"; };
 		B84014EB1540D0880075734A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -333,13 +396,27 @@
 		B8DFA69715497ED300256385 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B8E18158155000C200A8B450 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B8E1818F1550402800A8B450 /* YourPuzzle iPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YourPuzzle iPhone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Puzzle iPhone-Info.plist"; sourceTree = "<group>"; };
+		B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Puzzle iPhone-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B8E4AC7C154AA22300D0A75D /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuController.h; path = Controllers/MenuController.h; sourceTree = "<group>"; };
 		B8E4AC7D154AA22300D0A75D /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuController.m; path = Controllers/MenuController.m; sourceTree = "<group>"; };
 		B8E4AC7E154AA22300D0A75D /* MenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MenuController.xib; path = Controllers/MenuController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B823759815626FC300426E92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B823759915626FC300426E92 /* MediaPlayer.framework in Frameworks */,
+				B823759A15626FC300426E92 /* AVFoundation.framework in Frameworks */,
+				B823759B15626FC300426E92 /* QuartzCore.framework in Frameworks */,
+				B823759C15626FC300426E92 /* UIKit.framework in Frameworks */,
+				B823759D15626FC300426E92 /* Foundation.framework in Frameworks */,
+				B823759E15626FC300426E92 /* CoreGraphics.framework in Frameworks */,
+				B823759F15626FC300426E92 /* CoreData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B87C5CBE15400B2A00AF69BC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -404,7 +481,6 @@
 				B87C5CCD15400B2A00AF69BC /* Puzzle */,
 				B87C5CC415400B2A00AF69BC /* Frameworks */,
 				B87C5CC215400B2A00AF69BC /* Products */,
-				B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -413,6 +489,7 @@
 			children = (
 				B87C5CC115400B2A00AF69BC /* YourPuzzle.app */,
 				B8E1818F1550402800A8B450 /* YourPuzzle iPhone.app */,
+				B82375F115626FC300426E92 /* Puzzle test.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -451,6 +528,8 @@
 		B87C5CCE15400B2A00AF69BC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */,
+				B82375F315626FC300426E92 /* Puzzle test-Info.plist */,
 				B804EF391560870F00826712 /* BelloPro.ttf */,
 				B87C5CCF15400B2A00AF69BC /* Puzzle-Info.plist */,
 				B87C5CD015400B2A00AF69BC /* InfoPlist.strings */,
@@ -613,6 +692,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B823758515626FC300426E92 /* Puzzle test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B82375EE15626FC300426E92 /* Build configuration list for PBXNativeTarget "Puzzle test" */;
+			buildPhases = (
+				B823758615626FC300426E92 /* Sources */,
+				B823759815626FC300426E92 /* Frameworks */,
+				B82375A015626FC300426E92 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Puzzle test";
+			productName = Puzzle;
+			productReference = B82375F115626FC300426E92 /* Puzzle test.app */;
+			productType = "com.apple.product-type.application";
+		};
 		B87C5CC015400B2A00AF69BC /* Puzzle */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B87C5CDE15400B2A00AF69BC /* Build configuration list for PBXNativeTarget "Puzzle" */;
@@ -670,11 +766,56 @@
 			targets = (
 				B87C5CC015400B2A00AF69BC /* Puzzle */,
 				B8E181601550402800A8B450 /* Puzzle iPhone */,
+				B823758515626FC300426E92 /* Puzzle test */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B82375A015626FC300426E92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B82375A115626FC300426E92 /* InfoPlist.strings in Resources */,
+				B82375A215626FC300426E92 /* PuzzleController.xib in Resources */,
+				B82375A315626FC300426E92 /* Default-Landscape@2x~ipad.png in Resources */,
+				B82375A415626FC300426E92 /* Default-Landscape~ipad.png in Resources */,
+				B82375A515626FC300426E92 /* Default-Portrait@2x~ipad.png in Resources */,
+				B82375A615626FC300426E92 /* Default-Portrait~ipad.png in Resources */,
+				B82375A715626FC300426E92 /* Default.png in Resources */,
+				B82375A815626FC300426E92 /* Default@2x.png in Resources */,
+				B82375A915626FC300426E92 /* MenuController.xib in Resources */,
+				B82375AA15626FC300426E92 /* icon-144.png in Resources */,
+				B82375AB15626FC300426E92 /* icon-512.png in Resources */,
+				B82375AC15626FC300426E92 /* icon-72.png in Resources */,
+				B82375AD15626FC300426E92 /* Icon-Small-50.png in Resources */,
+				B82375AE15626FC300426E92 /* Icon-Small.png in Resources */,
+				B82375AF15626FC300426E92 /* Icon-Small@2x.png in Resources */,
+				B82375B015626FC300426E92 /* icon.png in Resources */,
+				B82375B115626FC300426E92 /* icon@2x.png in Resources */,
+				B82375B215626FC300426E92 /* NewGameController.xib in Resources */,
+				B82375B315626FC300426E92 /* Puzzle iPhone-Info.plist in Resources */,
+				B82375B415626FC300426E92 /* NeighborFound.wav in Resources */,
+				B82375B515626FC300426E92 /* PiecePositioned.mp3 in Resources */,
+				B82375B615626FC300426E92 /* PuzzleCompleted.mp3 in Resources */,
+				B82375B715626FC300426E92 /* MenuSound.aif in Resources */,
+				B82375B815626FC300426E92 /* Scissors_Shears.wav in Resources */,
+				B82375B915626FC300426E92 /* PuzzleLibraryController.xib in Resources */,
+				B82375E215626FC300426E92 /* ChooseLabel@2x.png in Resources */,
+				B82375E315626FC300426E92 /* ChooseLabel.png in Resources */,
+				B82375E415626FC300426E92 /* Wood.jpg in Resources */,
+				B82375E515626FC300426E92 /* Wood@2x.jpg in Resources */,
+				B82375E615626FC300426E92 /* PuzzleComplete.png in Resources */,
+				B82375E715626FC300426E92 /* PuzzleComplete@2x.png in Resources */,
+				B82375E815626FC300426E92 /* PuzzleComplete_iPhone.png in Resources */,
+				B82375E915626FC300426E92 /* PuzzleComplete_iPhone@2x.png in Resources */,
+				B82375EA15626FC300426E92 /* PuzzleCompletedController.xib in Resources */,
+				B82375EB15626FC300426E92 /* BelloPro.ttf in Resources */,
+				B82375EC15626FC300426E92 /* PuzzleCompletedController_iPhone.xib in Resources */,
+				B82375ED15626FC300426E92 /* LoadGameController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B87C5CBF15400B2A00AF69BC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -845,6 +986,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B823758615626FC300426E92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B823758715626FC300426E92 /* main.m in Sources */,
+				B823758815626FC300426E92 /* PuzzleController.m in Sources */,
+				B823758915626FC300426E92 /* UIImage+CWAdditions.m in Sources */,
+				B823758A15626FC300426E92 /* Lattice.m in Sources */,
+				B823758B15626FC300426E92 /* MenuController.m in Sources */,
+				B823758C15626FC300426E92 /* NewGameController.m in Sources */,
+				B823758D15626FC300426E92 /* GroupView.m in Sources */,
+				B823758E15626FC300426E92 /* PieceView.m in Sources */,
+				B823758F15626FC300426E92 /* AppDelegate.m in Sources */,
+				B823759015626FC300426E92 /* CreatePuzzleOperation.m in Sources */,
+				B823759115626FC300426E92 /* Piece.m in Sources */,
+				B823759215626FC300426E92 /* Puzzle.xcdatamodeld in Sources */,
+				B823759315626FC300426E92 /* PuzzleLibraryController.m in Sources */,
+				B823759415626FC300426E92 /* PuzzleCompletedController.m in Sources */,
+				B823759515626FC300426E92 /* Image.m in Sources */,
+				B823759615626FC300426E92 /* Puzzle.m in Sources */,
+				B823759715626FC300426E92 /* LoadGameController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B87C5CBD15400B2A00AF69BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -907,6 +1072,34 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B82375EF15626FC300426E92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				INFOPLIST_FILE = "Puzzle test-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PRODUCT_NAME = "Puzzle test";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		B82375F015626FC300426E92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				INFOPLIST_FILE = "Puzzle test-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PRODUCT_NAME = "Puzzle test";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		B87C5CDC15400B2A00AF69BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -931,7 +1124,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -954,7 +1147,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1021,6 +1214,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B82375EE15626FC300426E92 /* Build configuration list for PBXNativeTarget "Puzzle test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B82375EF15626FC300426E92 /* Debug */,
+				B82375F015626FC300426E92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B87C5CBB15400B2A00AF69BC /* Build configuration list for PBXProject "Puzzle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
