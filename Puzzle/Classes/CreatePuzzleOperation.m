@@ -15,7 +15,7 @@
 
 #define JPG_QUALITY 1
 #define SHAPE_QUALITY_IPAD 1
-#define SHAPE_QUALITY_IPHONE 1.5
+#define SHAPE_QUALITY_IPHONE 3
 
 
 @implementation CreatePuzzleOperation

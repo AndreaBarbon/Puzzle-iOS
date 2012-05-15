@@ -707,11 +707,11 @@
             CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
             
             if ([self point:point isInFrame:rect]) {
-                NSLog(@"Position %d ", i);
+                //NSLog(@"Position %d ", i);
                 PieceView *piece = [self pieceWithPosition:i];
-                if (piece==nil) NSLog(@"NIL DC!!");
+                //if (piece==nil) NSLog(@"NIL DC!!");
                 if (piece.userInteractionEnabled) {
-                    NSLog(@"Piece #%d is enabled", [self pieceWithPosition:i].number);
+                    //NSLog(@"Piece #%d is enabled", [self pieceWithPosition:i].number);
                     movingPiece = [self pieceWithPosition:i];
                 }
                 
@@ -973,7 +973,7 @@
 
             p.position = boss.position + relativePosition.x + 3*pieceNumber*relativePosition.y;
 
-            NSLog(@"NewPosition = %d. %.1f, boss position = %d, %.1f", p.position, p.angle, boss.position, boss.angle);
+            //NSLog(@"NewPosition = %d. %.1f, boss position = %d, %.1f", p.position, p.angle, boss.position, boss.angle);
             
         }
     }
@@ -2350,7 +2350,7 @@
         
         statsFrame = CGRectMake((screenHeight-statsFrame.size.width)/2, screenWidth-240-20, statsFrame.size.width, statsFrame.size.height);
         
-        NSLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
+        //NSLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
 
     }
     
