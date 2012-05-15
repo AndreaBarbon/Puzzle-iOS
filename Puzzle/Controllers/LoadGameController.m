@@ -27,6 +27,9 @@
     tableView.backgroundColor = [UIColor clearColor];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"d MMM YYYY - hh:mm"];
+    
     contents = [[NSMutableArray alloc] initWithCapacity:100];
     images = [[NSMutableArray alloc] initWithCapacity:100];
     
@@ -34,6 +37,58 @@
 
     
     //contents =  [[NSMutableArray alloc] initWithArray:[managedObjectContext executeFetchRequest:fetchRequest1 error:nil]];
+    
+}
+
+- (void)reloadData {
+    
+    if (loading) return;
+    
+    loading = YES;
+    
+    [tableView reloadData];
+    
+    indicator.alpha = 1;
+    [indicator startAnimating];
+    
+    
+    [NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+
+}
+
+- (void)fetchData {
+    
+    NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Puzzle"  inManagedObjectContext:delegate.delegate.managedObjectContext];
+    
+    [fetchRequest1 setEntity:entity];
+    fetchRequest1.predicate = [NSPredicate predicateWithFormat:@"name != %@", delegate.delegate.puzzleDB.name];
+    
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"lastSaved" ascending:NO];
+    [fetchRequest1 setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+    dateSort = nil;
+    [fetchRequest1 setFetchLimit:100];
+    
+    contents = [NSMutableArray arrayWithArray:[delegate.delegate.managedObjectContext executeFetchRequest:fetchRequest1 error:nil]];
+    
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:100];
+    
+    for (Puzzle *puzzle in contents) {
+        [array addObject:[[UIImage imageWithData:puzzle.image.data] imageByResizingToFitSize:CGSizeMake(400, 400) scaleUpIfNeeded:YES]];
+    }
+    
+    images = array;
+    array = nil;
+    
+    
+    
+    indicator.alpha = 0;
+    [indicator stopAnimating];
+    
+    loading = NO;
+    
+    [tableView reloadData];
     
 }
 
@@ -46,7 +101,9 @@
 
 - (IBAction)back:(id)sender {
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [delegate.delegate.managedObjectContext save:nil];
+    
+    [UIView animateWithDuration:0.3 animations:^{
         
         self.view.frame = CGRectMake(delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
         delegate.mainView.frame = CGRectMake(0, 0, delegate.mainView.frame.size.width, delegate.mainView.frame.size.height);
@@ -74,14 +131,11 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"DC");
-    return 1;
+    return !loading;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"Contents count %d", contents.count);
-
     return contents.count;
 }
 
@@ -92,43 +146,43 @@
     
     if (cell == nil) {
         
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.backgroundColor = [UIColor clearColor];
         UIView *v = [[UIView alloc] init];
         v.backgroundColor = YELLOW;
         cell.selectedBackgroundView = v;
         cell.textLabel.textColor = [UIColor whiteColor];
+        cell.detailTextLabel.textColor = YELLOW;
+        cell.textLabel.textAlignment = UITextAlignmentRight;        
+        cell.detailTextLabel.textAlignment = UITextAlignmentRight;
     }
         
+    Puzzle *puzzle = [contents objectAtIndex:indexPath.row];
+    
     cell.imageView.image = [images objectAtIndex:indexPath.row];
-
-    cell.textLabel.text = [[[contents objectAtIndex:indexPath.row] lastSaved] description];
+    cell.textLabel.text = [df stringFromDate:[puzzle lastSaved]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d pieces, %d%% completed", puzzle.pieceNumber.intValue, puzzle.percentage.intValue];
 
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (void)tableView:(UITableView *)tableView_ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+
+        [delegate.delegate.managedObjectContext deleteObject:[contents objectAtIndex:indexPath.row]];
+        [contents removeObjectAtIndex:indexPath.row];
+        [images removeObjectAtIndex:indexPath.row];
+        
+        [tableView_ deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }    
 }
-*/
 
 /*
 // Override to support rearranging the table view.
@@ -150,13 +204,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.view.frame = CGRectMake(delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);        
+    }];
+    
+    [delegate.delegate.managedObjectContext save:nil];
+    [delegate.delegate prepareForNewPuzzle];
+    [delegate.delegate loadPuzzle:[contents objectAtIndex:indexPath.row]];
 }
 
 @end

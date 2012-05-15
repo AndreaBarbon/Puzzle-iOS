@@ -297,44 +297,38 @@
     }
 }
 
-- (void)loadPuzzle {
+- (void)loadPuzzle:(Puzzle*)puzzleDB_ {
+    
+    puzzleDB = puzzleDB_;
     
     loadingFailed = NO;
-
+        
+    if (puzzleDB!=nil) {
     
-    if (managedObjectContext) {
+        [self removeOldPieces];
+        [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
+    
+        image = [UIImage imageWithData:puzzleDB.image.data];
+        groups = [[NSMutableArray alloc] initWithCapacity:NumberSquare/2];
+        elapsedTime = [puzzleDB.elapsedTime floatValue];
+        percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
+        moves = puzzleDB.moves.intValue;
+        rotations = puzzleDB.rotations.intValue;
         
-        puzzleDB = [self lastSavedPuzzle];
-        
-        if (puzzleDB!=nil) {
-            
-            [self setPieceNumber:[puzzleDB.pieceNumber intValue]];
-            for (UIView *v in groups) {
-                [v removeFromSuperview];
-            }
-            image = [UIImage imageWithData:puzzleDB.image.data];
-            groups = [[NSMutableArray alloc] initWithCapacity:NumberSquare/2];
-            elapsedTime = [puzzleDB.elapsedTime floatValue];
-            percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
-            moves = puzzleDB.moves.intValue;
-            rotations = puzzleDB.rotations.intValue;
-            
-            NSLog(@"Percentage = %d", puzzleDB.percentage.intValue);
-            if (puzzleDB.percentage.intValue==100) {
-                puzzleCompete = YES;
-                [menu startNewGame:nil];
-                return;
-            }
-            
-            [self createPuzzleFromSavedGame];
-            
-        } else {
-            
+        NSLog(@"Percentage = %d", puzzleDB.percentage.intValue);
+        if (puzzleDB.percentage.intValue==100) {
+            puzzleCompete = YES;
             [menu startNewGame:nil];
+            return;
         }
         
+        [self createPuzzleFromSavedGame];
+        
+    } else {
+        
+        [menu startNewGame:nil];
     }
-    
+        
 }
 
 - (IBAction)toggleMenu:(id)sender {
@@ -872,7 +866,7 @@
         if (piece.group!=newGroup) {
             
             [self addPiece:piece toGroup:newGroup];
-            NSLog(@"Piece #%d added to existing group", piece.number);
+            //NSLog(@"Piece #%d added to existing group", piece.number);
 
         }        
     }
@@ -912,9 +906,7 @@
     CGPoint trans = CGPointMake(relative.y*w, relative.x*w);
     
     piece.center = CGPointMake(group.boss.center.x+trans.x, group.boss.center.y+trans.y);
-    
-    NSLog(@"Added piece position = %d", piece.position);
-    
+        
     //[self refreshPositions];
 }
 
@@ -2627,6 +2619,10 @@
         p = nil;
     }
     
+    for (UIView *v in groups) {
+        [v removeFromSuperview];
+    }
+    
     
     //pieces = nil;
     
@@ -2774,15 +2770,11 @@
     elapsedTime = 0.0;
     puzzleCompete = NO;
     
-    for (UIView *v in groups) {
-        [v removeFromSuperview];
-    }
+    [self removeOldPieces];
     
-    for (PieceView *p in pieces) {
-        [p removeFromSuperview];
-    }
-    
-    groups = [[NSMutableArray alloc] initWithCapacity:NumberSquare/2];
+    groups = nil;
+    pieces = nil;
+    groups = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
     pieces = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
     
     

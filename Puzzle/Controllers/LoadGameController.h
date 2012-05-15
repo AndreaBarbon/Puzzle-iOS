@@ -14,7 +14,10 @@
 @interface LoadGameController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
     
     NSMutableArray *contents;
+    NSDateFormatter *df;
+    BOOL loading;
     
+    IBOutlet UIActivityIndicatorView *indicator;
 }
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext; 
@@ -23,5 +26,6 @@
 @property (nonatomic, retain) NSMutableArray *images;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 
+- (void)reloadData;
 
 @end

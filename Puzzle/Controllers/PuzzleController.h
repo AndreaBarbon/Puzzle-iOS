@@ -148,8 +148,10 @@
 - (IBAction)puzzleCompleted;
 - (IBAction)toggleMenu:(id)sender;
 
-- (void)loadPuzzle;
+- (void)loadPuzzle:(Puzzle*)puzzleDB;
 - (BOOL)drawerStoppedShouldBeStopped;
+- (Puzzle*)lastSavedPuzzle;
+- (void)prepareForNewPuzzle;
 
 - (CGRect)frameOfLatticePiece:(int)i;
 

@@ -42,8 +42,7 @@
     puzzle = [[PuzzleController alloc] init];
     puzzle.managedObjectContext = self.managedObjectContext;
     puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    //puzzle.wantsFullScreenLayout = NO;
-    [puzzle loadPuzzle];
+    [puzzle loadPuzzle:[puzzle lastSavedPuzzle]];
 
     
     [self.window addSubview:puzzle.view];

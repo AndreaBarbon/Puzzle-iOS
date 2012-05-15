@@ -156,7 +156,7 @@
             puzzleDB.lastSaved = [NSDate date];
             puzzleDB.image = imageDB;
             puzzleDB.pieceNumber = [NSNumber numberWithInt:delegate.pieceNumber];
-            puzzleDB.name = @"007";
+            puzzleDB.name = [NSString stringWithFormat:@"%d", arc4random_uniform(1000000)];
             
             
             NSLog(@"Memory b4 creating:");        
