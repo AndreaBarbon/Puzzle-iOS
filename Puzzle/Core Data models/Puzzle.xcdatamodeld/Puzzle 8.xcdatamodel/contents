@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E53" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Image" representedClassName="Image" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="piece" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Piece" inverseName="image" inverseEntity="Piece" syncable="YES"/>
+        <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="image" inverseEntity="Puzzle" syncable="YES"/>
+    </entity>
+    <entity name="Piece" representedClassName="Piece" syncable="YES">
+        <attribute name="angle" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="edge0" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="edge1" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="edge2" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="edge3" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isFree" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="moves" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="position" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="rotations" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="image" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="piece" inverseEntity="Image" syncable="YES"/>
+        <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="pieces" inverseEntity="Puzzle" syncable="YES"/>
+    </entity>
+    <entity name="Puzzle" representedClassName="Puzzle" syncable="YES">
+        <attribute name="elapsedTime" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lastSaved" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="moves" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="percentage" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="pieceNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="rotations" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="image" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="puzzle" inverseEntity="Image" syncable="YES"/>
+        <relationship name="pieces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Piece" inverseName="puzzle" inverseEntity="Piece" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Image" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="Piece" positionX="394" positionY="90" width="128" height="225"/>
+        <element name="Puzzle" positionX="178" positionY="207" width="128" height="195"/>
+    </elements>
+</model>

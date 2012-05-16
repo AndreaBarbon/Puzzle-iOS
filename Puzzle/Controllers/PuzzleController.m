@@ -35,7 +35,7 @@
 
 @synthesize padding, pieceNumber, piceSize, elapsedTime, imageSize;
 
-@synthesize loadedPieces, NumberSquare, missedPieces, moves, rotations;
+@synthesize loadedPieces, NumberSquare, missedPieces, moves, rotations, score;
 
 @synthesize pan, panDrawer, pinch;
 
@@ -54,10 +54,10 @@
 
 - (void)viewDidLoad {
     
-    NSLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
-    
-    CGPoint center = self.view.window.center;
-    NSLog(@"Center = (%.0f, %.0f)", center.x, center.y);
+    //NSLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
+        
+    scoreLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+
     
     [super viewDidLoad];
     
@@ -78,14 +78,17 @@
         
         imageSize *= 0.5;
      
-        percentageLabel.font = [UIFont boldSystemFontOfSize:20.0];
-        percentageLabel.transform = CGAffineTransformMakeTranslation(10, 10);
-        
-        elapsedTimeLabel.font = [UIFont boldSystemFontOfSize:20.0];
-        elapsedTimeLabel.transform = CGAffineTransformMakeTranslation(10, 10);
-
-        menuButtonView.transform = CGAffineTransformMakeTranslation(5, 10);
-        panningSwitch.transform = CGAffineTransformMakeTranslation(-8, 10);
+//        percentageLabel.font = [UIFont boldSystemFontOfSize:20.0];
+//        percentageLabel.transform = CGAffineTransformMakeTranslation(10, 10);
+//        
+//        scoreLabel.font = [UIFont boldSystemFontOfSize:20.0];
+//        scoreLabel.transform = CGAffineTransformMakeTranslation(10, 10);
+//
+//        elapsedTimeLabel.font = [UIFont boldSystemFontOfSize:20.0];
+//        elapsedTimeLabel.transform = CGAffineTransformMakeTranslation(10, 10);
+//
+//        menuButtonView.transform = CGAffineTransformMakeTranslation(5, 10);
+//        panningSwitch.transform = CGAffineTransformMakeTranslation(-8, 10);
         panningSwitch.transform = CGAffineTransformScale(panningSwitch.transform, 0.8, 0.8);
                 
     }
@@ -222,6 +225,32 @@
 }
 
 
+#pragma mark -
+#pragma mark Score
+
+- (void)addPoints:(int)add {
+        
+    score += add;
+    
+    [self updateScoreLabel];
+    
+}
+
+- (void)updateScoreLabel {
+    
+    scoreLabel.text = [NSString stringWithFormat:@"%d", score];
+}
+
+- (int)pointsForPiece:(PieceView*)piece {
+    
+    int points = 1000 + 1000/piece.moves + 1000/(piece.rotations+1) + NumberSquare*1000/(int)(elapsedTime+10);
+    
+    NSLog(@"Points:%d", points);
+    
+    return points;
+}
+
+
 
 #pragma mark -
 #pragma mark Puzzle
@@ -300,8 +329,10 @@
 - (void)loadPuzzle:(Puzzle*)puzzleDB_ {
     
     puzzleDB = puzzleDB_;
-    
     loadingFailed = NO;
+    
+    [self prepareForNewPuzzle];
+    [self computePieceSize];
         
     if (puzzleDB!=nil) {
     
@@ -314,8 +345,11 @@
         percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [puzzleDB.percentage intValue]];
         moves = puzzleDB.moves.intValue;
         rotations = puzzleDB.rotations.intValue;
+        score = puzzleDB.score.intValue;
+        [self updateScoreLabel];
         
-        NSLog(@"Percentage = %d", puzzleDB.percentage.intValue);
+        NSLog(@"Score = %d, piece number = %d", score, NumberSquare);
+        
         if (puzzleDB.percentage.intValue==100) {
             puzzleCompete = YES;
             [menu startNewGame:nil];
@@ -333,14 +367,14 @@
 
 - (IBAction)toggleMenu:(id)sender {
     
-    [menu playMenuSound];
-
-    menu.duringGame = YES;
+    if (sender!=nil) [menu playMenuSound];
+    
+    menu.duringGame = (puzzleDB!=nil);
     [self.view bringSubviewToFront:menu.obscuringView];
     [self.view bringSubviewToFront:menu.view];
     [self.view bringSubviewToFront:menuButtonView];
     
-    [menu toggleMenuWithDuration:0.5];
+    [menu toggleMenuWithDuration:(sender!=nil)*0.5];
     
 }
 
@@ -476,16 +510,25 @@
     [self.view bringSubviewToFront:HUDView];
     
     missedPieces = 0;
-
+    loadedPieces = 0;
+    
     drawerView.alpha = 1;
     panningSwitch.alpha = 1;
     percentageLabel.alpha = 1;
     elapsedTimeLabel.alpha = 1;
+    scoreLabel.alpha = 1;
 
     drawerStopped = NO;
     
     puzzleCompleteImage.alpha = 0;
     completedController.view.alpha = 0;
+    
+    if (!loadingGame) {
+        
+        elapsedTime = 0.0;
+        score = 0;
+        scoreLabel.text = @"0";
+    }
     
     directions_numbers = [NSArray arrayWithArray:[self directionsUpdated_numbers]];
     directions_positions = [NSArray arrayWithArray:[self directionsUpdated_positions]];
@@ -587,18 +630,19 @@
 
 - (IBAction)puzzleCompleted {
     
-    //puzzleCompete = YES;
+    puzzleCompete = YES;
     
     [self stopTimer];
     [completedController updateValues];
 
     
-    [UIView animateWithDuration:5 animations:^{
+    [UIView animateWithDuration:2 animations:^{
     
         drawerView.alpha = 0;
         panningSwitch.alpha = 0;
         percentageLabel.alpha = 0;
         elapsedTimeLabel.alpha = 0;
+        scoreLabel.alpha = 0;
 
         for (UIView *v in lattice.pieces) {
             v.alpha = 0;
@@ -707,13 +751,8 @@
             CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
             
             if ([self point:point isInFrame:rect]) {
-                //NSLog(@"Position %d ", i);
-                PieceView *piece = [self pieceWithPosition:i];
-                //if (piece==nil) NSLog(@"NIL DC!!");
-                if (piece.userInteractionEnabled) {
-                    //NSLog(@"Piece #%d is enabled", [self pieceWithPosition:i].number);
-                    movingPiece = [self pieceWithPosition:i];
-                }
+                NSLog(@"Position %d ", i);
+                movingPiece = [self pieceWithPosition:i];
                 
             }
             
@@ -1051,8 +1090,6 @@
     
     CGPoint point = piece.center;   
     
-    moves++;
-    
     if (!piece.hasNeighbors) {
         
         BOOL outOfDrawer;
@@ -1086,6 +1123,28 @@
     } else {
         piece.isFree = YES;
     }
+    
+    
+    
+    
+    
+    
+    moves++;    
+//    if (piece.group==nil) {
+        if (piece.isFree) {
+            piece.moves++;
+        }
+//    } else {
+//        for (int i=0; i<piece.group.pieces.count; i++) {
+//            PieceView *p = [piece.group.pieces objectAtIndex:i];
+//            p.moves++;
+//        }
+//    }
+//    
+    
+    
+    
+    
     
     
     if (piece.isFree) {
@@ -1171,7 +1230,17 @@
 - (void)pieceRotated:(PieceView *)piece {
     
     rotations++;
-    
+//    if (piece.group==nil) {
+        if (piece.isFree) {
+            piece.rotations++;
+        }
+//    } else {
+//        for (int i=0; i<piece.group.pieces.count; i++) {
+//            PieceView *p = [piece.group.pieces objectAtIndex:i];
+//            p.rotations++;
+//        }
+//    }
+//    
     //NSLog(@"Piece rotated! Angle = %.1f", piece.angle);
     
     if (piece.group==nil) {
@@ -1382,6 +1451,13 @@
         //Flashes and block the piece
         if (!piece.isPositioned) {
             
+            
+            if (!loadingGame) {
+                                
+                [self addPoints:[self pointsForPiece:piece]];
+            }
+            
+            
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
             
@@ -1470,7 +1546,9 @@
     Piece *pieceDB = [self pieceOfCurrentPuzzleDB:piece.number];
     pieceDB.position = [NSNumber numberWithInt:piece.position];
     pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
-    pieceDB.isFree = (BOOL)piece.isFree;
+    pieceDB.moves = [NSNumber numberWithInt:piece.rotations];
+    pieceDB.rotations = [NSNumber numberWithInt:piece.moves];
+    [pieceDB setisFreeScalar:piece.isFree];
     
     pieceDB.edge0 = [piece.edges objectAtIndex:0];
     pieceDB.edge1 = [piece.edges objectAtIndex:1];
@@ -1547,10 +1625,12 @@
     
     for (PieceView *p in pieces) {
         
-        if (p.position==j) {
+        if (p.position==j && p.userInteractionEnabled) {
             return p;
         }
     }
+    
+    NSLog(@"None of the pieces is in position %d", j);
     
     return nil;
 }
@@ -2181,6 +2261,7 @@
     
     puzzleDB.moves = [NSNumber numberWithInt:moves];
     puzzleDB.rotations = [NSNumber numberWithInt:rotations];
+    puzzleDB.score = [NSNumber numberWithInt:score];
     puzzleDB.lastSaved = [NSDate date];
     
     if ([managedObjectContext save:nil]) {
@@ -2272,11 +2353,13 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     
-    if (puzzleCompete) {
-        return NO;
-    }
+
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        if (puzzleCompete && menu.view.alpha<1) {
+            return NO;
+        }
         
         return YES;
         
@@ -2767,7 +2850,6 @@
 
 - (void)startNewGame {
     
-    elapsedTime = 0.0;
     puzzleCompete = NO;
     
     [self removeOldPieces];
@@ -2802,6 +2884,9 @@
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    
+    return;
+    
     if (motion == UIEventSubtypeMotionShake)
     {
         

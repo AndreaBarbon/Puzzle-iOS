@@ -44,6 +44,7 @@
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
     IBOutlet UILabel *percentageLabel;
+    IBOutlet UILabel *scoreLabel;
     
     IBOutlet UIView *HUDView;
     IBOutlet UIView *firstPointView;
@@ -86,6 +87,7 @@
 @property(nonatomic) int imageSize;
 @property(nonatomic) int moves;
 @property(nonatomic) int rotations;
+@property(nonatomic) int score;
 
 @property(nonatomic) BOOL loadingGame;
 @property(nonatomic) BOOL puzzleCompete;

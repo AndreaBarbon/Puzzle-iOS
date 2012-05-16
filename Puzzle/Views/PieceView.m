@@ -18,6 +18,11 @@
 
 @synthesize pan;
 
+@synthesize moves, rotations;
+
+
+
+
 - (void)setup {
     
             
@@ -48,8 +53,12 @@
     
     if (delegate.loadingGame) return;
     
-    CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
-    //trasform = CATransform3DRotate(trasform, group.angle-self.angle, 0, 0, 1);
+    CATransform3D trasform = CATransform3DMakeRotation(angle, 0, 0, 1);
+    trasform = CATransform3DScale(trasform, 1.15, 1.15, 1);
+
+    
+    NSLog(@"Piece angle %.1f", self.angle);
+    NSLog(@"Group angle %.1f", group.angle);
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
     animation.toValue = [NSValue valueWithCATransform3D:trasform];
@@ -363,8 +372,8 @@
     
 }
 
-- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
-{
+- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view {
+
     CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
     CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
     
@@ -441,8 +450,8 @@
 
 - (void)drawEdgeNumber:(int)n ofType:(int)type inContext:(CGContextRef)ctx {
     
-    float x = self.frame.size.width;
-    float y = self.frame.size.height;
+    float x = self.bounds.size.width;
+    float y = self.bounds.size.height;
     float l;
     float p = self.padding;
     
@@ -593,9 +602,12 @@
     
 }
 
+- (void)drawRect:(CGRect)rect {
 
-- (void)drawRect:(CGRect)rect
-{
+    
+    if (!delegate.loadingGame) {
+        NSLog(@"----------------> Should reset!");
+    }
     
     padding = self.bounds.size.width*0.15;
     float LINE_WIDTH = self.bounds.size.width*0.005;
@@ -623,7 +635,7 @@
     //CGPathRef path = CGContextCopyPath(ctx);
 
     CGContextClip(ctx);
-    [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    [image drawInRect:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
 
 
     CGContextBeginPath(ctx);
@@ -638,7 +650,7 @@
     
     
     
-    //NSLog(@"Drawed");
+    NSLog(@"Piece #%d drawn", number);
     delegate.loadedPieces++;
 
     
@@ -668,7 +680,6 @@
     //label.text = [NSString stringWithFormat:@"%.1f", angle_];
 
 }
-
 
 -(int)edgeNumber:(int)i {
     
@@ -709,7 +720,6 @@
     return YES;
     
 }
-
 
 - (NSArray*)allTheNeighborsBut:(NSMutableArray*)excluded {
     
@@ -773,11 +783,12 @@
 
 }
 
+
+
 #pragma mark
 #pragma UNUSEFUL
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
 
     self = [super initWithFrame:frame];
     if (self) {

@@ -380,6 +380,7 @@
 		B8B0E74415605EB8002FE0A2 /* Puzzle 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 7.xcdatamodel"; sourceTree = "<group>"; };
 		B8B0E74515605EE8002FE0A2 /* Puzzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puzzle.h; sourceTree = "<group>"; };
 		B8B0E74615605EE8002FE0A2 /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
+		B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 8.xcdatamodel"; sourceTree = "<group>"; };
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
 		B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PuzzleCompleted.mp3; path = Audio/PuzzleCompleted.mp3; sourceTree = "<group>"; };
@@ -528,10 +529,10 @@
 		B87C5CCE15400B2A00AF69BC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B87C5CCF15400B2A00AF69BC /* Puzzle-Info.plist */,
 				B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */,
 				B82375F315626FC300426E92 /* Puzzle test-Info.plist */,
 				B804EF391560870F00826712 /* BelloPro.ttf */,
-				B87C5CCF15400B2A00AF69BC /* Puzzle-Info.plist */,
 				B87C5CD015400B2A00AF69BC /* InfoPlist.strings */,
 				B87C5CD315400B2A00AF69BC /* main.m */,
 				B87C5CD515400B2A00AF69BC /* Puzzle-Prefix.pch */,
@@ -1262,9 +1263,10 @@
 				B8AE121F1559912200742256 /* Puzzle 6.xcdatamodel */,
 				B8B0E73F15605DA0002FE0A2 /* Puzzle 5.xcdatamodel */,
 				B8B0E74415605EB8002FE0A2 /* Puzzle 7.xcdatamodel */,
+				B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */,
 				B8AE12201559912200742256 /* Puzzle.xcdatamodel */,
 			);
-			currentVersion = B8B0E74415605EB8002FE0A2 /* Puzzle 7.xcdatamodel */;
+			currentVersion = B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */;
 			path = Puzzle.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

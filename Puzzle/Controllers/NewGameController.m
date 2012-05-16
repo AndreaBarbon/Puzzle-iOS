@@ -22,7 +22,7 @@
 
 @implementation NewGameController
 
-@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel;
+@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton;
 
 - (void)viewDidLoad
 {
@@ -56,7 +56,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
      
-        slider.maximumValue = 15;
+        slider.maximumValue = 10;
                 
     } else {
 

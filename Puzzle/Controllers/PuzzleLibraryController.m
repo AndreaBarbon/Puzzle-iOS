@@ -47,6 +47,10 @@
     thumbs = [[NSArray alloc] initWithArray:[self imagesForPuzzle]];
     paths = [[NSArray alloc] initWithArray:[self pathsForImages]];
     
+    if (thumbs.count == 0) {
+        delegate.puzzleLibraryButton.enabled = NO;
+    }
+    
     self.clearsSelectionOnViewWillAppear = YES;
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];

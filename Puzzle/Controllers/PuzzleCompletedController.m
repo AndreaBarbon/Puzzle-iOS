@@ -39,7 +39,7 @@
     pieces.text = [NSString stringWithFormat:@"%d pieces", delegate.NumberSquare];
     time.text = [NSString stringWithFormat:@"%@", delegate.elapsedTimeLabel.text];
 
-    score.text = [NSString stringWithFormat:@"%d", arc4random_uniform(10000000)];
+    score.text = [NSString stringWithFormat:@"%d", delegate.score];
     moves.text = [NSString stringWithFormat:@"%d", delegate.moves];
     rotations.text = [NSString stringWithFormat:@"%d", delegate.rotations];
 

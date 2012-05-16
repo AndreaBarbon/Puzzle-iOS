@@ -23,5 +23,16 @@
 @dynamic position;
 @dynamic image;
 @dynamic puzzle;
+@dynamic moves;
+@dynamic rotations;
+
+
+- (BOOL) isFreeScalar {
+    return self.isFree.boolValue;
+}
+
+- (void) setisFreeScalar:(BOOL)isFree_ {
+    self.isFree = [NSNumber numberWithBool:isFree_];
+}
 
 @end

@@ -53,6 +53,8 @@
 @property(nonatomic) int number;
 @property(nonatomic) int position;
 @property(nonatomic) int positionInDrawer;
+@property(nonatomic) int moves;
+@property(nonatomic) int rotations;
 
 @property(nonatomic) float angle;
 @property(nonatomic) float size;

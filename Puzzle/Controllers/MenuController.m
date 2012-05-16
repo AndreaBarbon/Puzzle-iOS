@@ -22,8 +22,6 @@
 
 - (void)toggleMenuWithDuration:(float)duration {
     
-    delegate.puzzleCompete = NO;
-
     resumeButton.hidden = !duringGame;
     showThePictureButton.hidden = !duringGame;  
     

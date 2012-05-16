@@ -10206,6 +10206,7 @@ AAEAAQABA</bytes>
 						<string key="NSFrame">{{209, 410}, {86, 50}}</string>
 						<reference key="NSSuperview" ref="544214420"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -10327,7 +10328,6 @@ AAEAAQABA</bytes>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<float key="IBUIProgress">0.0010000000474974513</float>
 						<object class="NSColor" key="IBUIProgressTintColor">
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MSAwLjc4NTMwMjU1MTUgMAA</bytes>

@@ -109,9 +109,11 @@
                         piece.image = [UIImage imageWithData:pieceDB.image.data];
                         piece.number = j+pieceNumber*i;
                         piece.size = piceSize;
-                        piece.isFree = (BOOL)pieceDB.isFree;
+                        piece.isFree = [pieceDB isFreeScalar];
                         piece.position = [pieceDB.position intValue];
                         piece.angle = [pieceDB.angle floatValue];
+                        piece.moves = [pieceDB.moves intValue];
+                        piece.rotations = [pieceDB.rotations intValue];
                         piece.transform = CGAffineTransformMakeRotation(piece.angle);
                         
                         piece.frame = rect;

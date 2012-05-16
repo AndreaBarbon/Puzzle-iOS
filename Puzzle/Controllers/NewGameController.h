@@ -24,7 +24,6 @@
     IBOutlet UIButton *imageButton;
     IBOutlet UIButton *cameraButton;
     IBOutlet UIButton *yourPhotosButton;
-    IBOutlet UIButton *puzzleLibraryButton;
     IBOutlet UIProgressView *progressView;
     IBOutlet UIActivityIndicatorView *indicator;
     IBOutlet UIView *loadingView;
@@ -42,6 +41,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *startButton;
 @property (nonatomic, retain) IBOutlet UIImageView *image;
 @property (nonatomic, retain) IBOutlet UIView *tapToSelectLabel;
+@property (nonatomic, retain) IBOutlet UIButton *puzzleLibraryButton;
 
 
 - (IBAction)startNewGame:(id)sender;

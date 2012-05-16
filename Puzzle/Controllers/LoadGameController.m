@@ -161,7 +161,7 @@
     
     cell.imageView.image = [images objectAtIndex:indexPath.row];
     cell.textLabel.text = [df stringFromDate:[puzzle lastSaved]];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d pieces, %d%% completed", puzzle.pieceNumber.intValue, puzzle.percentage.intValue];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d pieces, %d%% completed", puzzle.pieceNumber.intValue*puzzle.pieceNumber.intValue, puzzle.percentage.intValue];
 
     return cell;
 }
@@ -204,14 +204,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        
-        self.view.frame = CGRectMake(delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);        
-    }];
-    
     [delegate.delegate.managedObjectContext save:nil];
     [delegate.delegate prepareForNewPuzzle];
     [delegate.delegate loadPuzzle:[contents objectAtIndex:indexPath.row]];
+    delegate.game.view.frame = CGRectMake(-delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);        
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        delegate.game.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);        
+        self.view.frame = CGRectMake(delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);        
+    }];
 }
 
 @end
