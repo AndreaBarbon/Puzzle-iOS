@@ -51,9 +51,6 @@
         startButton.enabled = NO;
     }
     
-    typeOfImageView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
-    
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
      
         slider.maximumValue = 10;
@@ -79,6 +76,8 @@
 
     imagePath = [[NSString alloc] initWithFormat:@""];
 
+    typeOfImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -334,7 +333,7 @@
     
     progressView.hidden = NO;
     loadingView.hidden = NO;
-    progressView.progress = 0.01;
+    progressView.progress = 0.0;
     
     timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
     
@@ -350,7 +349,7 @@
 
     [delegate toggleMenuWithDuration:0];
     
-    progressView.progress = 0.001;
+    progressView.progress = 0.0;
     delegate.delegate.loadedPieces = 0;
     progressView.hidden = YES;  
     loadingView.hidden = YES;
@@ -375,7 +374,7 @@
     
     [delegate toggleMenuWithDuration:0];
         
-    progressView.progress = 0.001;
+    progressView.progress = 0.0;
     delegate.delegate.loadedPieces = 0;
     progressView.hidden = YES;  
     loadingView.hidden = YES;

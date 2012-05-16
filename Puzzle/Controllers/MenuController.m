@@ -143,7 +143,6 @@
 
 - (IBAction)resumeGame:(id)sender {
     
-    delegate.completedController.view.alpha = 0;
     delegate.puzzleCompleteImage.alpha = 0;
     [self toggleMenuWithDuration:0.5];
     [self playMenuSound];

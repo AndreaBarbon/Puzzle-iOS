@@ -64,6 +64,18 @@
     screenWidth = [[UIScreen mainScreen] bounds].size.width;
     screenHeight = [[UIScreen mainScreen] bounds].size.height;
     
+    
+    if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad){
+      
+        self.view.frame = CGRectMake(0, 20, screenWidth, screenHeight-20);
+        HUDView.frame = CGRectMake(0, 10, screenWidth, HUDView.frame.size.height);
+    
+    } else {
+        
+        HUDView.frame = CGRectMake(0, -10, screenWidth, HUDView.frame.size.height);
+    } 
+
+    
     directions_numbers = [[NSArray alloc] init];    
     directions_positions = [[NSArray alloc] init];    
     
@@ -126,25 +138,14 @@
     CGRect drawerFrame = drawerView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     
-    float height = [[UIScreen mainScreen] bounds].size.height;
+
+    drawerFrame.size.height = drawerSize;
+    drawerFrame.size.width = screenHeight;
+    drawerFrame.origin.y = screenHeight-drawerSize;
     
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+    stepperFrame.origin.y = drawerFrame.size.height;
+    stepperFrame.origin.x = 10;
         
-        NSLog(@"Landscape!");
-        
-        drawerFrame.size.width = drawerSize;
-        drawerFrame.size.height = screenWidth;
-        stepperFrame.origin.y = 10;
-        stepperFrame.origin.x = drawerFrame.size.width;
-        
-    } else {
-        
-        drawerFrame.size.height = drawerSize;
-        drawerFrame.size.width = height;
-        stepperFrame.origin.y = drawerFrame.size.height;
-        stepperFrame.origin.x = 10;
-        
-    }
     
     drawerView.frame = drawerFrame;
     stepperDrawer.frame = stepperFrame;
@@ -323,6 +324,10 @@
                 
             }];
         }
+        
+        NSLog(@"Deleting");
+        [self.managedObjectContext deleteObject:puzzleDB];
+        NSLog(@"Deleted");
     }
 }
 
@@ -534,7 +539,7 @@
     directions_positions = [NSArray arrayWithArray:[self directionsUpdated_positions]];
     [self computePieceSize];
     [self createLattice];
-    drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
+    drawerFirstPoint = CGPointMake(-self.padding/2+10, screenHeight-drawerSize-self.padding/2+10);
     
     // add the importer to an operation queue for background processing (works on a separate thread)
     puzzleOperation = [[CreatePuzzleOperation alloc] init];
@@ -1094,7 +1099,7 @@
         
         BOOL outOfDrawer;
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            outOfDrawer = point.y>drawerSize-self.padding;
+            outOfDrawer = point.y<screenHeight-drawerSize;
         } else {
             outOfDrawer = point.x>drawerSize-self.padding;
         }
@@ -1738,13 +1743,13 @@
             if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
-                                                               -center.x/lattice.scale+(piceSize-2*padding)+drawerSize/lattice.scale, 
-                                                               -center.y/lattice.scale+(piceSize-2*padding)-topBar);
+                -center.x/lattice.scale+(piceSize-2*padding)+drawerSize/lattice.scale, 
+                -center.y/lattice.scale+(piceSize-2*padding)-topBar);
             } else {
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
-                                                               -center.x/lattice.scale+(piceSize-2*padding), 
-                                                               -center.y/lattice.scale+(piceSize-2*padding)+drawerSize/lattice.scale-topBar);
+                -center.x/lattice.scale+(piceSize-2*padding), 
+                -center.y/lattice.scale+(piceSize-2*padding)+HUDView.bounds.size.height/lattice.scale-topBar);
             }
                         
             [self refreshPositions];
@@ -1853,7 +1858,7 @@
                     point.x = (self.padding*0.75)/2+p.bounds.size.width/2;;
                 } else {
                     point.x = point2.x+p2.bounds.size.width+drawerMargin;
-                    point.y = (self.padding*0.75)/2+p.bounds.size.height/2;;
+                    point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2;;
                 }
                 
             } else {
@@ -1864,7 +1869,7 @@
                     point.x = (self.padding*0.75)/2+p.bounds.size.width/2;
                 } else {
                     point.x = drawerFirstPoint.x+p.bounds.size.width/2+drawerMargin;
-                    point.y = (self.padding*0.75)/2+p.bounds.size.height/2;
+                    point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2;
                 }
                 
                 //NSLog(@"FirstPoint was %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
@@ -1890,7 +1895,7 @@
         
         if (!drawerStopped) {
             drawerStopped = YES;
-            drawerFirstPoint = CGPointMake(-self.padding/2+10, -self.padding/2+10);
+            drawerFirstPoint = CGPointMake(-self.padding/2+10, screenHeight-drawerSize-self.padding/2+10);
             [UIView animateWithDuration:0.5 animations:^{
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
             }];
@@ -2061,7 +2066,7 @@
     } else {
         
         return CGRectMake(piece.frame.origin.x+piceSize+drawerMargin,
-                          (self.padding*0.75)/2,
+                          screenHeight-drawerSize+(self.padding*0.75)/2,
                           piece.frame.size.width, 
                           piece.frame.size.height);
     }    
@@ -2078,7 +2083,7 @@
     } else {
         
         return CGRectMake(piece.frame.origin.x-piceSize-drawerMargin,
-                          (self.padding*0.75)/2,
+                          screenHeight-drawerSize+(self.padding*0.75)/2,
                           piece.frame.size.width, 
                           piece.frame.size.height);
     }
@@ -2381,7 +2386,8 @@
     
     //Rotate the drawer
     
-    CGRect rect = drawerView.frame;
+    CGRect drawerFrame = drawerView.frame;
+    CGRect HUDFrame = HUDView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
     CGRect imageFrame = imageView.frame;    
     CGRect statsFrame = completedController.view.frame;    
@@ -2394,10 +2400,15 @@
         
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
-        rect.size.width = drawerSize;
-        rect.size.height = screenWidth;
-        stepperFrame.origin.y = rect.size.height - stepperFrame.size.height-30;
-        stepperFrame.origin.x = rect.size.width;
+        drawerFrame.size.width = drawerSize;
+        drawerFrame.size.height = screenWidth;
+        drawerFrame.origin.x = -1;
+        drawerFrame.origin.y = -10;
+
+
+        
+        stepperFrame.origin.y = drawerFrame.size.height - stepperFrame.size.height-30;
+        stepperFrame.origin.x = drawerFrame.size.width;
         float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.width)/1;
         imageFrame.origin.x = pad;
         imageFrame.origin.y = 0;
@@ -2405,7 +2416,7 @@
         chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
         panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
         
-        lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y-drawerSize);
+        lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y);
         
         completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
         
@@ -2416,10 +2427,13 @@
 
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
-        rect.size.height = drawerSize;
-        rect.size.width = screenWidth;
-        stepperFrame.origin.y = rect.size.height;
-        stepperFrame.origin.x = rect.size.width - stepperFrame.size.width-10;
+        drawerFrame.size.height = drawerSize;
+        drawerFrame.size.width = screenWidth;
+        drawerFrame.origin.x = -1;
+        drawerFrame.origin.y = screenWidth-drawerSize-10; //Fucking status bar
+        
+        stepperFrame.origin.y = drawerFrame.size.height;
+        stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width-10;
         float pad = (screenHeight - imageFrame.size.height)/1;
         imageFrame.origin.y = pad;
         imageFrame.origin.x = 0;
@@ -2427,7 +2441,7 @@
         chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
         panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
         
-        lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y+drawerSize);
+        lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y);
         
         completedCenter = CGPointMake(self.view.center.x, self.view.center.y);
         
@@ -2440,15 +2454,18 @@
     
     [self refreshPositions];    
     
+    HUDFrame.origin.x = 0;
+    HUDFrame.origin.y = 0;
     
     [UIView animateWithDuration:duration animations:^{
         
-        drawerView.frame = rect;
+        drawerView.frame = drawerFrame;
         stepperDrawer.frame = stepperFrame;
         imageView.frame = imageFrame;
         menu.chooseLabel.center = chooseCenter;
         puzzleCompleteImage.center = completedCenter;
         completedController.view.frame = statsFrame;
+        HUDView.frame = HUDFrame;
         
     }];
     
@@ -2589,7 +2606,7 @@
         PieceView *p = [pieces objectAtIndex:i];            
         CGRect rect = p.frame;
         rect.origin.x = piceSize*i+drawerMargin;
-        rect.origin.y = 5;
+        rect.origin.y = screenHeight-drawerSize+5;
         p.frame = rect;
         
         int r = arc4random_uniform(4);

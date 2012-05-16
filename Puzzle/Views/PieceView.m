@@ -53,8 +53,9 @@
     
     if (delegate.loadingGame) return;
     
-    CATransform3D trasform = CATransform3DMakeRotation(angle, 0, 0, 1);
-    trasform = CATransform3DScale(trasform, 1.15, 1.15, 1);
+    //CATransform3D trasform = CATransform3DMakeRotation(angle, 0, 0, 1);
+    CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
+    trasform = CATransform3DRotate(trasform, -group.angle, 0, 0, 1);
 
     
     NSLog(@"Piece angle %.1f", self.angle);
@@ -606,7 +607,7 @@
 
     
     if (!delegate.loadingGame) {
-        NSLog(@"----------------> Should reset!");
+        //NSLog(@"----------------> Should reset!");
     }
     
     padding = self.bounds.size.width*0.15;
@@ -650,7 +651,7 @@
     
     
     
-    NSLog(@"Piece #%d drawn", number);
+    //NSLog(@"Piece #%d drawn", number);
     delegate.loadedPieces++;
 
     
