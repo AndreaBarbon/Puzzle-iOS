@@ -143,42 +143,79 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    return self.view.bounds.size.width;
+    if (indexPath.section==0) {
+        
+        return 50;
+        
+    } else {
+        
+        return self.view.bounds.size.width;
+    }
 }
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return contents.count;
+    switch (section) {
+        case 0:
+            return 1;
+            break;
+        case 1:
+            return contents.count;
+            break;            
+        default:
+            return 0;
+            break;
+    }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    PhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (cell == nil) {
+    if (indexPath.section == 0) {
         
-        float w = self.view.bounds.size.width;
-        cell = [[PhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.photo = [[UIImageView alloc] initWithFrame:CGRectMake((w-IMAGE_SIZE)/2, (w-IMAGE_SIZE)/2, IMAGE_SIZE, IMAGE_SIZE)];
-        cell.photo.layer.cornerRadius = 20;
-        cell.photo.layer.masksToBounds = YES;
-        [cell addSubview:cell.photo];
-        UIView *v = [[UIView alloc] init];
-        v.backgroundColor = YELLOW;
-        cell.selectedBackgroundView = v;
+        static NSString *CellIdentifier = @"Back";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            UIView *v = [[UIView alloc] init];
+            v.backgroundColor = YELLOW;
+            cell.selectedBackgroundView = v;
+        }
+        
+        cell.textLabel.text = @"Back";
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textAlignment = UITextAlignmentCenter;
+        return cell;
+        
+    } else {
+        
+        static NSString *CellIdentifier = @"Cell";
+        PhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            
+            float w = self.view.bounds.size.width;
+            cell = [[PhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.photo = [[UIImageView alloc] initWithFrame:CGRectMake((w-IMAGE_SIZE)/2, (w-IMAGE_SIZE)/2, IMAGE_SIZE, IMAGE_SIZE)];
+            cell.photo.layer.cornerRadius = 20;
+            cell.photo.layer.masksToBounds = YES;
+            [cell addSubview:cell.photo];
+            UIView *v = [[UIView alloc] init];
+            v.backgroundColor = YELLOW;
+            cell.selectedBackgroundView = v;
+        }
+        
+        //NSString *path = [content objectAtIndex:indexPath.row];
+        cell.photo.image = [[contents objectAtIndex:indexPath.row] objectForKey:@"Thumb"];
+        return cell;
     }
-    
-    //NSString *path = [content objectAtIndex:indexPath.row];
-    cell.photo.image = [[contents objectAtIndex:indexPath.row] objectForKey:@"Thumb"];
-    
-    return cell;
 }
 
 
@@ -186,9 +223,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [delegate.delegate playMenuSound];
-    NSString *path = [[contents objectAtIndex:indexPath.row] objectForKey:@"Path"];
-    [delegate imagePickedFromPuzzleLibrary:[UIImage imageWithContentsOfFile:path]];
+    
+    if (indexPath.section==0) {
+        
+        [delegate imagePickedFromPuzzleLibrary:delegate.image.image];       
+        
+    } else {
+        
+        [delegate.delegate playMenuSound];
+        NSString *path = [[contents objectAtIndex:indexPath.row] objectForKey:@"Path"];
+        [delegate imagePickedFromPuzzleLibrary:[UIImage imageWithContentsOfFile:path]];
+        
+    }
 }
 
 @end

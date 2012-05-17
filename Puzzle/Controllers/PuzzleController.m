@@ -437,8 +437,8 @@
     } else {
         
         
-        [self movePositivePieces];
-        [self moveNegativePieces];
+
+        drawerFirstPoint = CGPointMake(-4, 5);
         
         
         if (loadingGame) {
@@ -473,7 +473,7 @@
             
         }
                 
-        NSLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
+        //NSLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
         
         [self bringDrawerToTop];
         [self resetLatticePositionAndSizeWithDuration:0.0];
