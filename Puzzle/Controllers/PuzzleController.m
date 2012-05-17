@@ -437,6 +437,10 @@
     } else {
         
         
+        [self movePositivePieces];
+        [self moveNegativePieces];
+        
+        
         if (loadingGame) {
             
             pieces = [self shuffleArray:pieces];
@@ -468,6 +472,8 @@
             NSLog(@"-----------> All pieces created");
             
         }
+                
+        NSLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
         
         [self bringDrawerToTop];
         [self resetLatticePositionAndSizeWithDuration:0.0];
@@ -2617,6 +2623,22 @@
     
 }
 
+- (NSMutableArray*)shuffleArray:(NSMutableArray*)array {
+    
+    for(NSUInteger i = [array count]; i > 1; i--) {
+        NSUInteger j = arc4random_uniform(i);
+        [array exchangeObjectAtIndex:i-1 withObjectAtIndex:j];
+    }
+    
+    for (int i=0; i<[array count]; i++) {
+        
+        [[array objectAtIndex:i] setPositionInDrawer:i];
+        
+    }
+    
+    return array;
+}
+
 - (void)shuffleAngles {
     
     for (int i=0; i<NumberSquare; i++) {          
@@ -2692,22 +2714,6 @@
     
     puzzleDB.percentage = [NSNumber numberWithFloat:[self completedPercentage]];
     percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [self completedPercentage]];
-}
-
-- (NSMutableArray*)shuffleArray:(NSMutableArray*)array {
-        
-    for(NSUInteger i = [array count]; i > 1; i--) {
-        NSUInteger j = arc4random_uniform(i);
-        [array exchangeObjectAtIndex:i-1 withObjectAtIndex:j];
-    }
-    
-    for (int i=0; i<[array count]; i++) {
-        
-        [[array objectAtIndex:i] setPositionInDrawer:i];
-        
-    }
-    
-    return array;
 }
 
 - (void)removeOldPieces {

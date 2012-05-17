@@ -46,8 +46,9 @@
 
     thumbs = [[NSArray alloc] initWithArray:[self imagesForPuzzle]];
     paths = [[NSArray alloc] initWithArray:[self pathsForImages]];
+    contents = [[NSArray alloc] initWithArray:[self joinData]];
     
-    if (thumbs.count == 0) {
+    if (contents.count == 0) {
         delegate.puzzleLibraryButton.enabled = NO;
     }
     
@@ -69,7 +70,32 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (NSMutableArray*)shuffleArray:(NSMutableArray*)array {
+    
+    for(NSUInteger i = [array count]; i > 1; i--) {
+        NSUInteger j = arc4random_uniform(i);
+        [array exchangeObjectAtIndex:i-1 withObjectAtIndex:j];
+    }
+    
+    return array;
+}
+
 #pragma mark - Table view data source
+
+- (NSArray*)joinData {
+    
+    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:paths.count];
+    for (int i=0; i<paths.count; i++) {
+        
+        NSArray *objects = [NSArray arrayWithObjects:[paths objectAtIndex:i], [thumbs objectAtIndex:i], nil];
+        NSArray *keys = [NSArray arrayWithObjects:@"Path", @"Thumb", nil];
+        NSDictionary *dict = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+        [tempArray addObject:dict];
+    }
+    
+    return [NSArray arrayWithArray:[self shuffleArray:tempArray]];
+    
+}
 
 - (NSArray*)imagesForPuzzle {
     
@@ -128,7 +154,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return thumbs.count;
+    return contents.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -150,7 +176,7 @@
     }
     
     //NSString *path = [content objectAtIndex:indexPath.row];
-    cell.photo.image = [thumbs objectAtIndex:indexPath.row];
+    cell.photo.image = [[contents objectAtIndex:indexPath.row] objectForKey:@"Thumb"];
     
     return cell;
 }
@@ -161,7 +187,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [delegate.delegate playMenuSound];
-    NSString *path = [paths objectAtIndex:indexPath.row];
+    NSString *path = [[contents objectAtIndex:indexPath.row] objectForKey:@"Path"];
     [delegate imagePickedFromPuzzleLibrary:[UIImage imageWithContentsOfFile:path]];
 }
 

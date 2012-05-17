@@ -135,6 +135,8 @@
 
 
 + (float)computeFloat:(float)f modulo:(float)m;
+- (NSMutableArray*)shuffleArray:(NSMutableArray*)array;
+
 
 - (BOOL)pieceIsOut:(PieceView *)piece;
 - (PieceView*)pieceWithNumber:(int)j;

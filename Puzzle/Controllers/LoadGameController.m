@@ -72,6 +72,7 @@
     
     contents = [NSMutableArray arrayWithArray:[delegate.delegate.managedObjectContext executeFetchRequest:fetchRequest1 error:nil]];
     
+    
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:100];
     
     for (Puzzle *puzzle in contents) {

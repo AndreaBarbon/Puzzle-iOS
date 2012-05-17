@@ -12,6 +12,8 @@
 
 @interface PuzzleLibraryController : UITableViewController {
     
+    NSArray *contents;
+    
     NSArray *thumbs;
     NSArray *paths;
 }
