@@ -114,7 +114,7 @@
             [tempArray addObject:[UIImage imageWithContentsOfFile:string]];
         } 
     }
-    NSLog(@"Found %d thumbs", tempArray.count);
+    DLog(@"Found %d thumbs", tempArray.count);
     return [NSArray arrayWithArray:tempArray];
     
 }
@@ -136,7 +136,7 @@
             [tempArray addObject:string];
         } 
     }
-    NSLog(@"Found %d images", tempArray.count);
+    DLog(@"Found %d images", tempArray.count);
     return [NSArray arrayWithArray:tempArray];
     
 }

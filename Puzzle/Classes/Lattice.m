@@ -72,10 +72,10 @@
 
 - (id)objectAtIndex:(int)i {
     
-    //NSLog(@"Asking for lattice piece #%d, returning %d", i, i+4*n*n);
+    //DLog(@"Asking for lattice piece #%d, returning %d", i, i+4*n*n);
     
     if ( i < 0 || i > n*n*9-1 ) {
-        NSLog(@"%d is out of bounds", i);
+        DLog(@"%d is out of bounds", i);
         return nil;
     }
     

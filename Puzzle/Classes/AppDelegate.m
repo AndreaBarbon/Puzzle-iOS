@@ -26,7 +26,7 @@
 
 - (void)didReceiveMemoryWarning {
     
-    NSLog(@"\n\n Dio can!   \n\n");
+    DLog(@"\n\n Dio can!   \n\n");
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -65,9 +65,7 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    
-    NSLog(@"%s", __func__);
-    
+        
     if (puzzle.menu.view.alpha==0) {
         
         //[puzzle toggleMenu:nil];
@@ -79,9 +77,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    
-    NSLog(@"%s", __func__);
-    
+        
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
@@ -89,9 +85,7 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    NSLog(@"%s", __func__);
-    
+{    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -99,22 +93,19 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-    NSLog(@"%s", __func__);
-
-    
     if (wasOpened) {
         
-        NSLog(@"Was opened");
+        //DLog(@"Was opened");
     }
     
 
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSInteger launchCount = [prefs integerForKey:@"launchCount"];
     launchCount++;
-    NSLog(@"Application has been launched %d times", launchCount);
+    //DLog(@"Application has been launched %d times", launchCount);
     [prefs setInteger:launchCount  forKey:@"launchCount"];
     
-    if (launchCount%TIMES_B4_ASKING_TO_REIEW == 0 ) {
+    if ( launchCount!=0 && (launchCount%TIMES_B4_ASKING_TO_REIEW==0 || launchCount==3)) {
         [puzzle rateGame];
     }
     
@@ -134,7 +125,7 @@
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
              // Replace this implementation with code to handle the error appropriately.
              // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         } 
     }
@@ -203,7 +194,7 @@
     
     if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         // Handle error
-        NSLog(@"Problem with PersistentStoreCoordinator: %@",error);
+        DLog(@"Problem with PersistentStoreCoordinator: %@",error);
         abort();
         
     }

@@ -54,7 +54,7 @@
 
 - (void)viewDidLoad {
     
-    //NSLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
+    //DLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
         
     scoreLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
 
@@ -246,7 +246,7 @@
     
     int points = 1000 + 1000/piece.moves + 1000/(piece.rotations+1) + NumberSquare*1000/(int)(elapsedTime+10);
     
-    NSLog(@"Points:%d", points);
+    DLog(@"Points:%d", points);
     
     return points;
 }
@@ -325,9 +325,9 @@
             }];
         }
         
-        NSLog(@"Deleting");
+        DLog(@"Deleting");
         [self.managedObjectContext deleteObject:puzzleDB];
-        NSLog(@"Deleted");
+        DLog(@"Deleted");
     }
 }
 
@@ -353,7 +353,7 @@
         score = puzzleDB.score.intValue;
         [self updateScoreLabel];
         
-        NSLog(@"Score = %d, piece number = %d", score, NumberSquare);
+        DLog(@"Score = %d, piece number = %d", score, NumberSquare);
         
         if (puzzleDB.percentage.intValue==100) {
             puzzleCompete = YES;
@@ -445,7 +445,7 @@
             
             pieces = [self shuffleArray:pieces];
             
-            NSLog(@"Name: %@", puzzleDB.name);
+            DLog(@"Name: %@", puzzleDB.name);
             
             for (PieceView *p in pieces) {
                 [self isPositioned:p];
@@ -459,21 +459,21 @@
             [self checkNeighborsForAllThePieces];
             [self updatePercentage];
             loadingGame = NO;
-            NSLog(@"-----------> All pieces Loaded");
+            DLog(@"-----------> All pieces Loaded");
             
         } else {
             
             puzzleDB = [self lastSavedPuzzle];
-            NSLog(@"Name: %@", puzzleDB.name);
+            DLog(@"Name: %@", puzzleDB.name);
             [self resetSizeOfAllThePieces];
             [self shuffle];
             [self updatePercentage];
             [self organizeDrawerWithOrientation:self.interfaceOrientation];
-            NSLog(@"-----------> All pieces created");
+            DLog(@"-----------> All pieces created");
             
         }
                 
-        //NSLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
+        //DLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
         
         [self bringDrawerToTop];
         [self resetLatticePositionAndSizeWithDuration:0.0];
@@ -483,7 +483,7 @@
         
     [menu.game gameStarted];
     
-    NSLog(@"Memory after creating:");
+    DLog(@"Memory after creating:");
     [self print_free_memory];
     
     
@@ -598,7 +598,7 @@
         
         for (PieceView *p in pieces) {
             if (!p.isPositioned && !p.group.isPositioned) {
-                //NSLog(@"Piece #%d is not positioned", p.number);
+                //DLog(@"Piece #%d is not positioned", p.number);
                 
                 return NO;
             }
@@ -762,7 +762,7 @@
             CGRect rect = [[[lattice pieces] objectAtIndex:i] frame];
             
             if ([self point:point isInFrame:rect]) {
-                NSLog(@"Position %d ", i);
+                DLog(@"Position %d ", i);
                 movingPiece = [self pieceWithPosition:i];
                 
             }
@@ -849,7 +849,7 @@
         frame = [self frameOfLatticePiece:i];
         if ([self group:group isInFrame:frame]) {
             
-            //NSLog(@"Group is in lattice piece #%d", i);
+            //DLog(@"Group is in lattice piece #%d", i);
             [self moveGroup:group toLatticePoint:i animated:YES];
             
             return;
@@ -907,7 +907,7 @@
         [groups addObject:newGroup];
         [self.view insertSubview:newGroup aboveSubview:[self upperGroupBut:newGroup]];
         
-        NSLog(@"New group created. Groups count %d", [groups count]);
+        DLog(@"New group created. Groups count %d", [groups count]);
         
     } else {
 
@@ -916,7 +916,7 @@
         if (piece.group!=newGroup) {
             
             [self addPiece:piece toGroup:newGroup];
-            //NSLog(@"Piece #%d added to existing group", piece.number);
+            //DLog(@"Piece #%d added to existing group", piece.number);
 
         }        
     }
@@ -1014,16 +1014,16 @@
                         
             CGPoint relativePosition = [self coordinatesOfPiece:p relativeToPiece:boss];
             
-            //NSLog(@"Relative Position = %.1f, %.1f, p.number-boss.number = %d", relativePosition.x, relativePosition.y, p.number-boss.number);
+            //DLog(@"Relative Position = %.1f, %.1f, p.number-boss.number = %d", relativePosition.x, relativePosition.y, p.number-boss.number);
 
             CGAffineTransform matrix = CGAffineTransformMakeRotation(boss.angle); 
             relativePosition = [self applyMatrix:matrix toVector:relativePosition];
 
-            //NSLog(@"Relative Position after matrix = %.1f, %.1f, p.number-boss.number = %d", relativePosition.x, relativePosition.y, p.number-boss.number);
+            //DLog(@"Relative Position after matrix = %.1f, %.1f, p.number-boss.number = %d", relativePosition.x, relativePosition.y, p.number-boss.number);
 
             p.position = boss.position + relativePosition.x + 3*pieceNumber*relativePosition.y;
 
-            //NSLog(@"NewPosition = %d. %.1f, boss position = %d, %.1f", p.position, p.angle, boss.position, boss.angle);
+            //DLog(@"NewPosition = %d. %.1f, boss position = %d, %.1f", p.position, p.angle, boss.position, boss.angle);
             
         }
     }
@@ -1051,7 +1051,7 @@
         pieceDB.position = [NSNumber numberWithInt:piece.position];
         pieceDB.angle = [NSNumber numberWithFloat:piece.angle];
         
-        //NSLog(@"Position of piece #%d is %d", pieceDB.number.intValue, pieceDB.position.intValue);
+        //DLog(@"Position of piece #%d is %d", pieceDB.number.intValue, pieceDB.position.intValue);
     }
 
     [self saveGame];
@@ -1075,7 +1075,7 @@
 
 - (void)checkNeighborsForGroup:(GroupView*)group {
     
-    //NSLog(@"Starting %s", __FUNCTION__);
+    //DLog(@"Starting %s", __FUNCTION__);
 
     for (int i=0; i<[group.pieces count]; i++) {
         
@@ -1087,7 +1087,7 @@
         }
     }
     
-    //NSLog(@"Finished %s", __FUNCTION__);
+    //DLog(@"Finished %s", __FUNCTION__);
 }
 
 
@@ -1097,7 +1097,7 @@
 
 - (void)pieceMoved:(PieceView *)piece {
     
-    //NSLog(@"%s", __FUNCTION__);
+    //DLog(@"%s", __FUNCTION__);
     
     CGPoint point = piece.center;   
     
@@ -1170,14 +1170,14 @@
                     rect.origin.x = p.oldPosition.x-p.frame.size.width/2;
                     rect.origin.y = p.oldPosition.y-p.frame.size.height/2;
                     p.frame = rect;
-                    //NSLog(@"Reset the old position (%.1f, %.1f) for piece #%d", p.oldPosition.x, p.oldPosition.y, p.number);
+                    //DLog(@"Reset the old position (%.1f, %.1f) for piece #%d", p.oldPosition.x, p.oldPosition.y, p.number);
                     p.position = [self positionOfPiece:p];
                 }
                 CGRect rect = piece.frame;
                 rect.origin.x = piece.oldPosition.x-piece.frame.size.width/2;
                 rect.origin.y = piece.oldPosition.y-piece.frame.size.height/2;
                 piece.frame = rect;                
-                //NSLog(@"BOSS - Reset the old position (%.1f, %.1f) for piece #%d", piece.oldPosition.x, piece.oldPosition.y, piece.number);
+                //DLog(@"BOSS - Reset the old position (%.1f, %.1f) for piece #%d", piece.oldPosition.x, piece.oldPosition.y, piece.number);
                 piece.position = [self positionOfPiece:piece]; 
             }];
             
@@ -1186,7 +1186,7 @@
             for (int i=9*NumberSquare-1; i>-1; i--) {
                 
                 
-                //NSLog(@"v origin = %.1f, %.1f - [piece realCenter] = %.1f, %.1f", frame.origin.x, frame.origin.y, [piece realCenter].x, [piece realCenter].y);
+                //DLog(@"v origin = %.1f, %.1f - [piece realCenter] = %.1f, %.1f", frame.origin.x, frame.origin.y, [piece realCenter].x, [piece realCenter].y);
                 
                 CGRect frame = [self frameOfLatticePiece:i];
                 if ([self piece:piece isInFrame:frame]) {
@@ -1216,7 +1216,7 @@
     
     
     
-    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+    //DLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
 }
 
@@ -1229,12 +1229,12 @@
         
         if ([self piece:piece isInFrame:frame]) {
             
-            //NSLog(@"-> Returning position %d",i);
+            //DLog(@"-> Returning position %d",i);
             return i;
         }
     }
     
-    //NSLog(@"-> \nReturning position -1");    
+    //DLog(@"-> \nReturning position -1");    
     return -1;
 }
 
@@ -1252,7 +1252,7 @@
 //        }
 //    }
 //    
-    //NSLog(@"Piece rotated! Angle = %.1f", piece.angle);
+    //DLog(@"Piece rotated! Angle = %.1f", piece.angle);
     
     if (piece.group==nil) {
         
@@ -1276,8 +1276,8 @@
     }
     
     
-    //NSLog(@"Position for piece #%d is %d", piece.number, piece.position);
-    //NSLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
+    //DLog(@"Position for piece #%d is %d", piece.number, piece.position);
+    //DLog(@"OldPosition (%.1f, %.1f) set for piece #%d", [piece realCenter].x, [piece realCenter].y, piece.number);
     
     if (piece.group!=nil) {
         
@@ -1303,7 +1303,7 @@
         
         if (p.position == j) {
             
-            //NSLog(@"Piece at position %d is #%d", j, p.number);
+            //DLog(@"Piece at position %d is #%d", j, p.number);
             return p;
         }
     }
@@ -1319,19 +1319,19 @@
 
         
         if (r==2 && (piece.position+1)%pieceNumber==0) {
-            NSLog(@"bottom piece (#%d) checking down", piece.number);
+            DLog(@"bottom piece (#%d) checking down", piece.number);
             return NO;
         }
         if ( r==0 && (piece.position)%pieceNumber==0) {
-            NSLog(@"top piece (#%d) checking up", piece.number);
+            DLog(@"top piece (#%d) checking up", piece.number);
             return NO;
         }
         if (r==3 && (piece.position)/pieceNumber==pieceNumber-1) {
-            NSLog(@"right piece (#%d) checking right", piece.number);
+            DLog(@"right piece (#%d) checking right", piece.number);
             return NO;
         }
         if (r==1 && (piece.position)/pieceNumber==0) {
-            NSLog(@"left piece (#%d) checking left", piece.number);
+            DLog(@"left piece (#%d) checking left", piece.number);
             return NO;
         }
         
@@ -1371,15 +1371,15 @@
             
             otherPiece = [self pieceAtPosition:j+i];
             
-            //NSLog(@"j+i = %d ; numbers are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d",j+i, piece.number+l, otherPiece.number,  piece.number, otherPiece.number, direction, rotation, r);    
+            //DLog(@"j+i = %d ; numbers are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d",j+i, piece.number+l, otherPiece.number,  piece.number, otherPiece.number, direction, rotation, r);    
             
-            //NSLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", piece.number+i, piece.number+l, otherPiece.number);
+            //DLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", piece.number+i, piece.number+l, otherPiece.number);
             
             if (otherPiece != nil) {
                 
                 if (otherPiece.isFree) {
                     
-                    //NSLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
+                    //DLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
                     
                     
                     if (piece.number+l==otherPiece.number) {
@@ -1428,37 +1428,37 @@
                             }
                             
                         } else {
-                            //NSLog(@"0 -------> Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
+                            //DLog(@"0 -------> Wrong angles. They are %.1f and %.1f for pieces #%d and #%d", piece.angle, otherPiece.angle, piece.number, otherPiece.number);
                         }
                     } else {
-                        //NSLog(@"-------> Wrong numbers. They are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d", piece.number+l, otherPiece.number, piece.number, otherPiece.number, direction, rotation, r);
+                        //DLog(@"-------> Wrong numbers. They are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d", piece.number+l, otherPiece.number, piece.number, otherPiece.number, direction, rotation, r);
                         
                     }
                 }
                 
             }else {
                 
-                //NSLog(@"NIL");
+                //DLog(@"NIL");
                 
             }
             
         } else {
-            //NSLog(@"Shouldn't check");
+            //DLog(@"Shouldn't check");
         }
         
     }
     
-    //NSLog(@"\n");
+    //DLog(@"\n");
     
 }
 
 - (BOOL)isPositioned:(PieceView*)piece  {
     
-    //NSLog(@"isPositioned? Position %d, number %d -> %d", piece.position, piece.number, firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber));
+    //DLog(@"isPositioned? Position %d, number %d -> %d", piece.position, piece.number, firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber));
     
     if (piece.isFree && (firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber) == piece.position) && ABS(piece.angle) < 1) {
         
-        //NSLog(@"Piece #%d positioned!", piece.number);
+        //DLog(@"Piece #%d positioned!", piece.number);
         //Flashes and block the piece
         if (!piece.isPositioned) {
             
@@ -1476,7 +1476,7 @@
                 piece.group.isPositioned = YES;
             }
             
-            //NSLog(@"Salvi! Piece #%d is positioned! :-)", piece.number);
+            //DLog(@"Salvi! Piece #%d is positioned! :-)", piece.number);
             
             [piece pulse];
 
@@ -1495,7 +1495,7 @@
 
 - (void)movePiece:(PieceView*)piece toLatticePoint:(int)i animated:(BOOL)animated {
     
-    //NSLog(@"Moving piece #%d to position %d", piece.number, i);
+    //DLog(@"Moving piece #%d to position %d", piece.number, i);
     
     piece.position = i;
     
@@ -1542,7 +1542,7 @@
 
 - (BOOL)point:(CGPoint)point isInFrame:(CGRect)frame {
     
-    //NSLog(@"Point = %.1f, %.1f", point.x, point.y);
+    //DLog(@"Point = %.1f, %.1f", point.x, point.y);
     
     return (frame.origin.x<point.x && 
             frame.origin.y<point.y &&
@@ -1572,7 +1572,7 @@
 
 - (CGPoint)coordinatesOfPiece:(PieceView*)piece relativeToPiece:(PieceView*)boss {
     
-//    NSLog(@"relative = (%.0f, %.0f), boss.number = %d, piece.number = %d, ", 
+//    DLog(@"relative = (%.0f, %.0f), boss.number = %d, piece.number = %d, ", 
 //          (float)((piece.number%pieceNumber-boss.number%pieceNumber)%pieceNumber), 
 //          (float)(piece.number/pieceNumber-boss.number/pieceNumber),
 //          boss.number,
@@ -1593,7 +1593,7 @@
         }
     }
     
-    NSLog(@"------>  Piece #%d is NIL!", n);
+    DLog(@"------>  Piece #%d is NIL!", n);
     
     missedPieces++;
     
@@ -1641,7 +1641,7 @@
         }
     }
     
-    NSLog(@"None of the pieces is in position %d", j);
+    DLog(@"None of the pieces is in position %d", j);
     
     return nil;
 }
@@ -1657,7 +1657,7 @@
         [piece realCenter].y < frame1.origin.y
         )
     {
-        NSLog(@"Piece #%d is out, N= %.1d", piece.number, NumberSquare);
+        DLog(@"Piece #%d is out, N= %.1d", piece.number, NumberSquare);
         return YES;
     }
     
@@ -1668,12 +1668,12 @@
             [p realCenter].x < frame1.origin.x ||
             [p realCenter].y < frame1.origin.y
             )        {
-            NSLog(@"Piece is #%d out, N= %.1d (neighbor)", piece.number, NumberSquare);
+            DLog(@"Piece is #%d out, N= %.1d (neighbor)", piece.number, NumberSquare);
             return YES;
         }
     }
     
-    //NSLog(@"IN");
+    //DLog(@"IN");
     
     return NO;
 }
@@ -1727,7 +1727,7 @@
     [lattice addSubview:imageViewLattice];
     
     
-    //NSLog(@"Lattice created");
+    //DLog(@"Lattice created");
     
 }
 
@@ -1841,7 +1841,7 @@
         PieceView *p = [temp objectAtIndex:0];
         drawerFirstPoint.x = [p frame].origin.x+p.bounds.size.height/2;
         drawerFirstPoint.y = [p frame].origin.y+p.bounds.size.height/2;
-        //NSLog(@"FirstPoint = %.1f, %.1f", drawerView.frame.origin.x, drawerView.frame.origin.y);
+        //DLog(@"FirstPoint = %.1f, %.1f", drawerView.frame.origin.x, drawerView.frame.origin.y);
 
     }
     
@@ -1878,7 +1878,7 @@
                     point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2;
                 }
                 
-                //NSLog(@"FirstPoint was %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
+                //DLog(@"FirstPoint was %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
 
             }
 
@@ -2176,7 +2176,7 @@
                 drawerFirstPoint.y += sgn*(traslation);
                 [UIView animateWithDuration:0.5 animations:^{
                     [self organizeDrawerWithOrientation:self.interfaceOrientation];
-                }];                //NSLog(@"first point = %.1f", drawerFirstPoint.x);
+                }];                //DLog(@"first point = %.1f", drawerFirstPoint.x);
                 
                 
             }completion:^(BOOL finished){
@@ -2209,7 +2209,7 @@
                     [self organizeDrawerWithOrientation:self.interfaceOrientation];
                 }];
                 
-                //NSLog(@"first point = %.1f", drawerFirstPoint.x);
+                //DLog(@"first point = %.1f", drawerFirstPoint.x);
                 
                 
             }completion:^(BOOL finished){
@@ -2266,7 +2266,7 @@
     
     if (puzzleDB==nil) {
         
-        NSLog(@"PuzzleDB is nil");
+        DLog(@"PuzzleDB is nil");
         [self createPuzzleInDB];
     }
     
@@ -2276,7 +2276,7 @@
     puzzleDB.lastSaved = [NSDate date];
     
     if ([managedObjectContext save:nil]) {
-        //NSLog(@"Puzzle saved");
+        //DLog(@"Puzzle saved");
     }
     
     return YES;
@@ -2420,7 +2420,7 @@
         imageFrame.origin.y = 0;
         
         chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
-        panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
+        panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize+25, panningSwitch.center.y);
         
         lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y);
         
@@ -2445,7 +2445,7 @@
         imageFrame.origin.x = 0;
         
         chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
-        panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
+        panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize-25, panningSwitch.center.y);
         
         lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y);
         
@@ -2453,7 +2453,7 @@
         
         statsFrame = CGRectMake((screenHeight-statsFrame.size.width)/2, screenWidth-240-20, statsFrame.size.width, statsFrame.size.height);
         
-        //NSLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
+        //DLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
 
     }
     
@@ -2479,7 +2479,7 @@
     [UIView animateWithDuration:0.5 animations:^{
         [self organizeDrawerWithOrientation:toInterfaceOrientation];
     }];    
-    //NSLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
+    //DLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
     
     
     
@@ -2618,7 +2618,7 @@
         int r = arc4random_uniform(4);
         p.transform = CGAffineTransformMakeRotation(r*M_PI/2);
         p.angle = r*M_PI/2;
-        //NSLog(@"angle=%.1f", p.angle);
+        //DLog(@"angle=%.1f", p.angle);
     }
     
 }
@@ -2680,7 +2680,7 @@
     
     firstPiecePlace =  3*NumberSquare+pieceNumber;
     
-    //NSLog(@"n = %d, %.1f", n, drawerMargin);
+    //DLog(@"n = %d, %.1f", n, drawerMargin);
     
     
 }
@@ -2775,7 +2775,7 @@
         
     } else {
         
-        NSLog(@"Already rated");
+        DLog(@"Already rated");
     }
     
 }
@@ -2799,6 +2799,7 @@
 
 - (void)print_free_memory {
     
+#ifdef FRACTAL_DEBUG
     mach_port_t host_port;
     mach_msg_type_number_t host_size;
     vm_size_t pagesize;
@@ -2810,7 +2811,7 @@
     vm_statistics_data_t vm_stat;
     
     if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS)
-        NSLog(@"Failed to fetch vm statistics");
+        NSLog(@"Failed to fetch vm statistics");;
     
     /* Stats in bytes */ 
     natural_t mem_used = (vm_stat.active_count +
@@ -2819,6 +2820,7 @@
     natural_t mem_free = vm_stat.free_count * pagesize;
     natural_t mem_total = mem_used + mem_free;
     NSLog(@"used: %u free: %u total: %u", mem_used/ 100000, mem_free/ 100000, mem_total/ 100000);
+#endif
 }
 
 + (float)computeFloat:(float)f modulo:(float)m {
@@ -2853,7 +2855,7 @@
         elapsedTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds]; 
     }    
     
-    //NSLog(@"%d, %f", (int)elapsedTime, elapsedTime);
+    //DLog(@"%d, %f", (int)elapsedTime, elapsedTime);
     
 }
 

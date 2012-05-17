@@ -93,7 +93,7 @@
     @try {
         if (loadingGame) {
             
-            NSLog(@"Loading in background");     
+            DLog(@"Loading in background");     
             
             for (int i=0;i<pieceNumber;i++){
                 for (int j=0;j<pieceNumber;j++){
@@ -131,7 +131,7 @@
                         piece.edges = [NSArray arrayWithArray:a];
                         
                         for (int k=0; k<4; k++) {
-                            //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
+                            //DLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
                         }
                         
                         
@@ -150,7 +150,7 @@
             
         } else {
             
-            //NSLog(@"Starting creating puzzle in the DB");
+            //DLog(@"Starting creating puzzle in the DB");
             
             Puzzle *puzzleDB = [self newPuzzleInCOntext:insertionContext];
             Image *imageDB = [self newImageInCOntext:insertionContext];
@@ -161,7 +161,7 @@
             puzzleDB.name = [NSString stringWithFormat:@"%d", arc4random_uniform(1000000)];
             
             
-            NSLog(@"Memory b4 creating:");        
+            DLog(@"Memory b4 creating:");        
             [delegate print_free_memory];
             
             
@@ -199,13 +199,13 @@
                         int l = [arrayPieces count]-pieceNumber;
                         int e = [[[[arrayPieces objectAtIndex:l] edges] objectAtIndex:1] intValue];
                         [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:-e]];
-                        //NSLog(@"e = %d", e);
+                        //DLog(@"e = %d", e);
                     }
                     
                     if (j>0) {
                         int e = [[[[arrayPieces lastObject] edges] objectAtIndex:2] intValue];
                         [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:-e]];
-                        //NSLog(@"e = %d", e);
+                        //DLog(@"e = %d", e);
                     }
                     
                     if (i==0) {
@@ -225,7 +225,7 @@
                     piece.edges = [NSArray arrayWithArray:a];
                     
                     for (int k=0; k<4; k++) {
-                        //NSLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
+                        //DLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
                     }
                     
                     //Creating the piece in the database
@@ -266,7 +266,7 @@
     }
     @catch (NSException *exception) {
         
-        NSLog(@"%@", [exception description]);
+        DLog(@"%@", [exception description]);
         
     }
     @finally {
@@ -281,11 +281,11 @@
             }
             
                         
-            NSLog(@"loading \"finally\"");
+            DLog(@"loading \"finally\"");
         
         } else {
             
-            NSLog(@"Some errors occured");
+            DLog(@"Some errors occured");
             [delegate loadingFailed];
             delegate.loadedPieces = 0;
 
@@ -336,7 +336,7 @@
         
     float padding = partSize*0.15;
     
-    NSLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", partSize, padding, im.size.width);
+    DLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", partSize, padding, im.size.width);
     
     delegate.loadedPieces = 0;
     
@@ -369,7 +369,7 @@
     
     float ww = w*0.15;
     
-    NSLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", w, ww, im.size.width);
+    DLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", w, ww, im.size.width);
     
     delegate.loadedPieces = 0;
     

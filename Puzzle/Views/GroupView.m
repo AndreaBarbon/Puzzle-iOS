@@ -28,7 +28,7 @@
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture {
     
-    NSLog(@"%s", __func__);
+    DLog(@"%s", __func__);
             
         float rotation = [gesture rotation];
         
@@ -48,7 +48,7 @@
             angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
             [self setAngle:angle];
             
-            //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+            //DLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             
             [UIView animateWithDuration:0.2 animations:^{
                 
@@ -76,7 +76,7 @@
             
         }
         
-        //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
+        //DLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
         
         
         [gesture setRotation:0];

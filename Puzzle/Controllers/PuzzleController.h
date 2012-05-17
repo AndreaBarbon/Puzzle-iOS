@@ -94,7 +94,6 @@
 @property(nonatomic) BOOL drawerStopped;
 
 
-@property (nonatomic, retain) IBOutlet UISwitch *panningSwitch;
 
 
 @property (nonatomic, retain) AVAudioPlayer *positionedSound;
@@ -116,6 +115,7 @@
 @property (nonatomic, retain) IBOutlet UIView *menuButtonView;
 @property (nonatomic, retain) IBOutlet UIImageView *puzzleCompleteImage;
 @property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;;
+@property (nonatomic, retain) IBOutlet UISwitch *panningSwitch;
 
 
 @property (nonatomic, retain) NSMutableArray *pieces;

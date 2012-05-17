@@ -58,8 +58,8 @@
     trasform = CATransform3DRotate(trasform, -group.angle, 0, 0, 1);
 
     
-    NSLog(@"Piece angle %.1f", self.angle);
-    NSLog(@"Group angle %.1f", group.angle);
+    DLog(@"Piece angle %.1f", self.angle);
+    DLog(@"Group angle %.1f", group.angle);
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
     animation.toValue = [NSValue valueWithCATransform3D:trasform];
@@ -83,7 +83,7 @@
         
     [UIView commitAnimations];
     
-    NSLog(@"%s", __func__);
+    DLog(@"%s", __func__);
 
 }
 
@@ -160,7 +160,7 @@
         int i = [[neighbors objectAtIndex:j] intValue];
         
         if (i<delegate.NumberSquare) {
-            //NSLog(@"From piece #%d, translating the other, i=%d", self.number ,i);
+            //DLog(@"From piece #%d, translating the other, i=%d", self.number ,i);
             PieceView *piece = [delegate pieceWithNumber:i];
             
             BOOL present = NO;
@@ -232,7 +232,7 @@
             
             //traslation = [gesture translationInView:self.superview.superview];
             [group translateWithVector:traslation];
-            //NSLog(@"%s", __FUNCTION__);
+            //DLog(@"%s", __FUNCTION__);
             
         }
         
@@ -332,7 +332,7 @@
             angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
             [self setAngle:angle];
             
-            //NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+            //DLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             
             [UIView animateWithDuration:0.2 animations:^{
                 
@@ -363,7 +363,7 @@
 
         }
         
-        //NSLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
+        //DLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
         
         
         [gesture setRotation:0];
@@ -511,7 +511,7 @@
         
         CGPoint point = [self sum:a plus:b firstWeight:2.0/3.0];
         CGContextAddLineToPoint(ctx, point.x, point.y);
-        //NSLog(@"p = ( %.1f, %.1f )", p.x, p.y);
+        //DLog(@"p = ( %.1f, %.1f )", p.x, p.y);
 
         
     if (abs(type)==1) { //Triangolino
@@ -607,7 +607,7 @@
 
     
     if (!delegate.loadingGame) {
-        //NSLog(@"----------------> Should reset!");
+        //DLog(@"----------------> Should reset!");
     }
     
     padding = self.bounds.size.width*0.15;
@@ -651,7 +651,7 @@
     
     
     
-    //NSLog(@"Piece #%d drawn", number);
+    //DLog(@"Piece #%d drawn", number);
     delegate.loadedPieces++;
 
     
@@ -677,7 +677,7 @@
     
     angle = angle_;
 
-    //NSLog(@"Angle = %.1f", angle_);    
+    //DLog(@"Angle = %.1f", angle_);    
     //label.text = [NSString stringWithFormat:@"%.1f", angle_];
 
 }
@@ -704,7 +704,7 @@
     
     neighbors = [[NSArray alloc] initWithArray:temp];
     
-    //NSLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
+    //DLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
     
     hasNeighbors = YES;
     
@@ -762,7 +762,7 @@
     }
     
     
-    //NSLog(@"Neighbors: %d", [temp count]);
+    //DLog(@"Neighbors: %d", [temp count]);
     
     return [NSArray arrayWithArray:temp];
 }

@@ -402,7 +402,7 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    if(newImage == nil) NSLog(@"could not scale image");
+    if(newImage == nil) NSLog(@"could not scale image");;
     
     
     return newImage ;
@@ -441,7 +441,7 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    if(newImage == nil) NSLog(@"could not scale image");
+    if(newImage == nil) NSLog(@"could not scale image");;
     
     
     return newImage ;

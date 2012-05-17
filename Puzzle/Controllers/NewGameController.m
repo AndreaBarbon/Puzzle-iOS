@@ -89,12 +89,12 @@
 
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
 
-    NSLog(@"After picking");
+    DLog(@"After picking");
     [delegate.delegate print_free_memory];
     
     NSData *dataJPG = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], IMAGE_QUALITY);
     
-    NSLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
+    DLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
     
     [self dismissPicker];
         
@@ -103,7 +103,7 @@
     imagePath = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
     
     rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.width);
-    NSLog(@"Original Rect = %.1f, %.1f, %.1f, %.1f",rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    DLog(@"Original Rect = %.1f, %.1f, %.1f, %.1f",rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     tapToSelectLabel.hidden = YES;
     startButton.enabled = YES;    
@@ -154,12 +154,12 @@
     
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
     
-    NSLog(@"After picking");
+    DLog(@"After picking");
     [delegate.delegate print_free_memory];
     
     NSData *dataJPG = UIImageJPEGRepresentation(pickedImage, IMAGE_QUALITY);
     
-    NSLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
+    DLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
@@ -229,7 +229,7 @@
     c.allowsEditing = YES;
     c.delegate = self;
     
-    NSLog(@"B4 picking");
+    DLog(@"B4 picking");
     [delegate.delegate print_free_memory];
     
     
@@ -262,7 +262,7 @@
     
     [delegate playMenuSound];
     
-    NSLog(@"Started");
+    DLog(@"Started");
     
     tapToSelectView.hidden = YES;
     
@@ -343,7 +343,7 @@
 
 - (void)gameStarted {
     
-    NSLog(@"Game is started");
+    DLog(@"Game is started");
     
     [timer invalidate];
 
@@ -368,7 +368,7 @@
 
 - (void)loadingFailed {
     
-    NSLog(@"Game failed");
+    DLog(@"Game failed");
     
     [timer invalidate];
     

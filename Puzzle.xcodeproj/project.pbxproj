@@ -214,6 +214,9 @@
 		B8B0E74315605E23002FE0A2 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74115605E23002FE0A2 /* Image.m */; };
 		B8B0E74715605EE8002FE0A2 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
 		B8B0E74815605EE8002FE0A2 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
+		B8DADF9615654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
+		B8DADF9715654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
+		B8DADF9815654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
 		B8DAFCC4155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC5155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC6155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */; };
@@ -381,6 +384,7 @@
 		B8B0E74515605EE8002FE0A2 /* Puzzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puzzle.h; sourceTree = "<group>"; };
 		B8B0E74615605EE8002FE0A2 /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
 		B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 8.xcdatamodel"; sourceTree = "<group>"; };
+		B8DADF9515654973002DCEF8 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
 		B8DAFCC2155BA1C400A901A3 /* PuzzleCompleted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PuzzleCompleted.mp3; path = Audio/PuzzleCompleted.mp3; sourceTree = "<group>"; };
@@ -536,6 +540,7 @@
 				B87C5CD015400B2A00AF69BC /* InfoPlist.strings */,
 				B87C5CD315400B2A00AF69BC /* main.m */,
 				B87C5CD515400B2A00AF69BC /* Puzzle-Prefix.pch */,
+				B8DADF9515654973002DCEF8 /* Notes.txt */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -814,6 +819,7 @@
 				B82375EB15626FC300426E92 /* BelloPro.ttf in Resources */,
 				B82375EC15626FC300426E92 /* PuzzleCompletedController_iPhone.xib in Resources */,
 				B82375ED15626FC300426E92 /* LoadGameController.xib in Resources */,
+				B8DADF9815654973002DCEF8 /* Notes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -898,6 +904,7 @@
 				B804EF3A1560870F00826712 /* BelloPro.ttf in Resources */,
 				B804EF3E156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */,
 				B82375821561B58000426E92 /* LoadGameController.xib in Resources */,
+				B8DADF9615654973002DCEF8 /* Notes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -981,6 +988,7 @@
 				B804EF3B1560870F00826712 /* BelloPro.ttf in Resources */,
 				B804EF3F156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */,
 				B82375831561B58000426E92 /* LoadGameController.xib in Resources */,
+				B8DADF9715654973002DCEF8 /* Notes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,6 +1118,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1126,6 +1135,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -1140,7 +1151,8 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_THUMB_SUPPORT = NO;
@@ -1150,6 +1162,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
