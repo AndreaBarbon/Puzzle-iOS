@@ -1788,13 +1788,13 @@
         }completion:^(BOOL finished) {
             
             [self checkNeighborsOfPiece:piece];
-
-            if (piece.hasNeighbors) {
-                [self createNewGroupForPiece:piece];
-            }
             
             if (!piece.isPositioned) {
                 [self isPositioned:piece];
+            }
+
+            if (piece.hasNeighbors) {
+                [self createNewGroupForPiece:piece];
             }
             
             [self updatePercentage];
