@@ -9949,6 +9949,7 @@ AAEAAQABA</bytes>
 								<string key="NSFrame">{{51, -4}, {50, 35}}</string>
 								<reference key="NSSuperview" ref="775788706"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<float key="IBUIAlpha">0.5</float>
@@ -10087,7 +10088,7 @@ AAEAAQABA</bytes>
 							</object>
 							<object class="IBUISwitch" id="785001214">
 								<reference key="NSNextResponder" ref="519583281"/>
-								<int key="NSvFlags">268</int>
+								<int key="NSvFlags">-2147483380</int>
 								<string key="NSFrame">{{-5, 22}, {94, 27}}</string>
 								<reference key="NSSuperview" ref="519583281"/>
 								<reference key="NSWindow"/>
@@ -10108,7 +10109,7 @@ AAEAAQABA</bytes>
 								<string key="NSFrame">{{2, 10}, {41, 49}}</string>
 								<reference key="NSSuperview" ref="519583281"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="785001214"/>
+								<reference key="NSNextKeyView" ref="673821725"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -10126,7 +10127,7 @@ AAEAAQABA</bytes>
 							<object class="IBUILabel" id="938444730">
 								<reference key="NSNextResponder" ref="519583281"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{95, 8}, {110, 55}}</string>
+								<string key="NSFrame">{{57, 8}, {133, 55}}</string>
 								<reference key="NSSuperview" ref="519583281"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="138747746"/>
@@ -10142,6 +10143,7 @@ AAEAAQABA</bytes>
 								<reference key="IBUIShadowColor" ref="778375862"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">2</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">2</int>
 									<double key="pointSize">25</double>
@@ -10151,6 +10153,31 @@ AAEAAQABA</bytes>
 									<double key="NSSize">25</double>
 									<int key="NSfFlags">16</int>
 								</object>
+							</object>
+							<object class="IBUIButton" id="673821725">
+								<reference key="NSNextResponder" ref="519583281"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{10, 20}, {39, 39}}</string>
+								<reference key="NSSuperview" ref="519583281"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="785001214"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<reference key="IBUIHighlightedTitleColor" ref="27754075"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="1061150384"/>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">PanningSwitch.png</string>
+								</object>
+								<reference key="IBUIFontDescription" ref="372193378"/>
+								<reference key="IBUIFont" ref="882161658"/>
 							</object>
 						</array>
 						<string key="NSFrame">{{0, -15}, {320, 66}}</string>
@@ -14601,14 +14628,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">panningSwitch</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="785001214"/>
-					</object>
-					<int key="connectionID">56</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">menuButtonView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="64352340"/>
@@ -14638,6 +14657,14 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<reference key="destination" ref="938444730"/>
 					</object>
 					<int key="connectionID">77</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">panningSwitch</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="673821725"/>
+					</object>
+					<int key="connectionID">79</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -14683,6 +14710,15 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<int key="IBEventType">2</int>
 					</object>
 					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">togglePanningMode:</string>
+						<reference key="source" ref="673821725"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">80</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -14743,6 +14779,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<reference ref="282070743"/>
 							<reference ref="138747746"/>
 							<reference ref="938444730"/>
+							<reference ref="673821725"/>
 						</array>
 						<reference key="parent" ref="811427304"/>
 						<string key="objectName">HUD</string>
@@ -14808,6 +14845,11 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<reference key="object" ref="248476264"/>
 						<reference key="parent" ref="950110971"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">78</int>
+						<reference key="object" ref="673821725"/>
+						<reference key="parent" ref="519583281"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -14830,6 +14872,8 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<string key="60.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="67.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="76.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="78.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -14837,7 +14881,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">77</int>
+			<int key="maxID">80</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -14889,7 +14933,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<string key="elapsedTimeLabel">UILabel</string>
 						<string key="firstPointView">UIView</string>
 						<string key="menuButtonView">UIView</string>
-						<string key="panningSwitch">UISwitch</string>
+						<string key="panningSwitch">UIButton</string>
 						<string key="percentageLabel">UILabel</string>
 						<string key="puzzleCompleteImage">UIImageView</string>
 						<string key="restartButton">UIButton</string>
@@ -14920,7 +14964,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="panningSwitch">
 							<string key="name">panningSwitch</string>
-							<string key="candidateClassName">UISwitch</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="percentageLabel">
 							<string key="name">percentageLabel</string>
@@ -14962,6 +15006,10 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">PanningSwitch.png</string>
+			<string key="NS.object.0">{50, 50}</string>
+		</object>
 		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>

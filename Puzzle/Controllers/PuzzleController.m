@@ -59,8 +59,7 @@
 }
 
 - (void)viewDidLoad {
-    
-    
+        
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:@"PiecesNotifications" object:nil];
 
     
@@ -532,14 +531,15 @@
     
     missedPieces = 0;
     loadedPieces = 0;
-    
+
+    panningSwitch.alpha = 0.3;
     drawerView.alpha = 1;
-    panningSwitch.alpha = 1;
     percentageLabel.alpha = 1;
     elapsedTimeLabel.alpha = 1;
     scoreLabel.alpha = 1;
 
     drawerStopped = NO;
+    panningMode = NO;
     
     puzzleCompleteImage.alpha = 0;
     completedController.view.alpha = 0;
@@ -793,7 +793,7 @@
         }
     }
     
-    if (movingPiece!=nil && !panningSwitch.isOn) {
+    if (movingPiece!=nil && !panningMode) {
 
         [movingPiece move:gesture];
         return;
@@ -1223,7 +1223,7 @@
     piece.oldPosition = [piece realCenter];
     
     
-    if (panningSwitch.isOn && piece.isFree) {
+    if (panningMode && piece.isFree) {
         piece.userInteractionEnabled = NO;
     }
     
@@ -2432,7 +2432,7 @@
         imageFrame.origin.y = 0;
         
         chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
-        panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize+25, panningSwitch.center.y);
+        panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
         
         lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y);
         
@@ -2457,7 +2457,7 @@
         imageFrame.origin.x = 0;
         
         chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
-        panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize-25, panningSwitch.center.y);
+        panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
         
         lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y);
         
@@ -2521,20 +2521,27 @@
 
 - (IBAction)togglePanningMode:(id)sender {
     
-    if (panningSwitch.isOn) {
-        for (PieceView *p in pieces) {
-            if (p.isFree) {
-                p.userInteractionEnabled = NO;
-            }
-        }
-        
-    } else {
+    if (panningMode) {
         
         for (PieceView *p in pieces) {
             if (p.isFree && !p.isPositioned) {
                 p.userInteractionEnabled = YES;
             }
         }
+
+        panningSwitch.alpha = 0.5;
+        panningMode = NO;
+        
+    } else {
+        
+        for (PieceView *p in pieces) {
+            if (p.isFree) {
+                p.userInteractionEnabled = NO;
+            }
+        }
+
+        panningSwitch.alpha = 1;
+        panningMode = YES;
     }    
 }
 

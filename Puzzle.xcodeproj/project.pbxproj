@@ -214,6 +214,12 @@
 		B8B0E74315605E23002FE0A2 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74115605E23002FE0A2 /* Image.m */; };
 		B8B0E74715605EE8002FE0A2 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
 		B8B0E74815605EE8002FE0A2 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
+		B8D28BC815667CCF00DCF1A0 /* PanningSwitch.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */; };
+		B8D28BC915667CCF00DCF1A0 /* PanningSwitch.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */; };
+		B8D28BCA15667CCF00DCF1A0 /* PanningSwitch.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */; };
+		B8D28BCB15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */; };
+		B8D28BCC15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */; };
+		B8D28BCD15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */; };
 		B8DADF9615654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
 		B8DADF9715654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
 		B8DADF9815654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
@@ -384,6 +390,8 @@
 		B8B0E74515605EE8002FE0A2 /* Puzzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puzzle.h; sourceTree = "<group>"; };
 		B8B0E74615605EE8002FE0A2 /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
 		B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 8.xcdatamodel"; sourceTree = "<group>"; };
+		B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanningSwitch.png; path = PNGs/PanningSwitch.png; sourceTree = "<group>"; };
+		B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanningSwitch@2x.png"; path = "PNGs/PanningSwitch@2x.png"; sourceTree = "<group>"; };
 		B8DADF9515654973002DCEF8 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
@@ -671,6 +679,8 @@
 		B8E1815E15503AF800A8B450 /* PNGs */ = {
 			isa = PBXGroup;
 			children = (
+				B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */,
+				B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */,
 				B8B0E720155FB612002FE0A2 /* ChooseLabel@2x.png */,
 				B8B0E721155FB612002FE0A2 /* ChooseLabel.png */,
 				B8B0E722155FB612002FE0A2 /* Wood.jpg */,
@@ -820,6 +830,8 @@
 				B82375EC15626FC300426E92 /* PuzzleCompletedController_iPhone.xib in Resources */,
 				B82375ED15626FC300426E92 /* LoadGameController.xib in Resources */,
 				B8DADF9815654973002DCEF8 /* Notes.txt in Resources */,
+				B8D28BCA15667CCF00DCF1A0 /* PanningSwitch.png in Resources */,
+				B8D28BCD15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,6 +917,8 @@
 				B804EF3E156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */,
 				B82375821561B58000426E92 /* LoadGameController.xib in Resources */,
 				B8DADF9615654973002DCEF8 /* Notes.txt in Resources */,
+				B8D28BC815667CCF00DCF1A0 /* PanningSwitch.png in Resources */,
+				B8D28BCB15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -989,6 +1003,8 @@
 				B804EF3F156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */,
 				B82375831561B58000426E92 /* LoadGameController.xib in Resources */,
 				B8DADF9715654973002DCEF8 /* Notes.txt in Resources */,
+				B8D28BC915667CCF00DCF1A0 /* PanningSwitch.png in Resources */,
+				B8D28BCC15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1151,8 +1167,8 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_THUMB_SUPPORT = NO;

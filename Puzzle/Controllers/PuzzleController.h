@@ -34,7 +34,7 @@
     BOOL didRotate;
     BOOL receivedFirstTouch;
     BOOL loadingGame;
-    
+    BOOL panningMode;
     BOOL panningDrawerUP;
     BOOL loadingFailed;
     
@@ -115,7 +115,7 @@
 @property (nonatomic, retain) IBOutlet UIView *menuButtonView;
 @property (nonatomic, retain) IBOutlet UIImageView *puzzleCompleteImage;
 @property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;;
-@property (nonatomic, retain) IBOutlet UISwitch *panningSwitch;
+@property (nonatomic, retain) IBOutlet UIButton *panningSwitch;
 
 
 @property (nonatomic, retain) NSMutableArray *pieces;
