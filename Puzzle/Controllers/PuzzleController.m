@@ -532,7 +532,7 @@
     missedPieces = 0;
     loadedPieces = 0;
 
-    panningSwitch.alpha = 0.3;
+    panningSwitch.alpha = 0.5;
     drawerView.alpha = 1;
     percentageLabel.alpha = 1;
     elapsedTimeLabel.alpha = 1;
