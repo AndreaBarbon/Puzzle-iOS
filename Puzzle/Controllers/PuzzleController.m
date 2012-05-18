@@ -107,18 +107,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
         
         imageSize *= 0.5;
-     
-//        percentageLabel.font = [UIFont boldSystemFontOfSize:20.0];
-//        percentageLabel.transform = CGAffineTransformMakeTranslation(10, 10);
-//        
-//        scoreLabel.font = [UIFont boldSystemFontOfSize:20.0];
-//        scoreLabel.transform = CGAffineTransformMakeTranslation(10, 10);
-//
-//        elapsedTimeLabel.font = [UIFont boldSystemFontOfSize:20.0];
-//        elapsedTimeLabel.transform = CGAffineTransformMakeTranslation(10, 10);
-//
-//        menuButtonView.transform = CGAffineTransformMakeTranslation(5, 10);
-//        panningSwitch.transform = CGAffineTransformMakeTranslation(-8, 10);
+
         panningSwitch.transform = CGAffineTransformScale(panningSwitch.transform, 0.8, 0.8);
                 
     }
@@ -257,7 +246,7 @@
 
 - (void)updateScoreLabel {
     
-    scoreLabel.text = [NSString stringWithFormat:@"%d", score];
+    scoreLabel.text = [NSString stringWithFormat:@"%d ", score];
 }
 
 - (int)pointsForPiece:(PieceView*)piece {
@@ -320,6 +309,11 @@
                 for (GroupView *g in groups) {
                     g.alpha = 0;
                 }
+                for (PieceView *p in pieces) {
+                    if (!p.group) {
+                        p.alpha = 0;
+                    }
+                }
                 
             }completion:^(BOOL finished) {
                 
@@ -375,7 +369,7 @@
         score = puzzleDB.score.intValue;
         [self updateScoreLabel];
         
-        DLog(@"Score = %d, piece number = %d", score, NumberSquare);
+        DLog(@"Score = %d, piece number = %d, percentage = %d", score, NumberSquare, [puzzleDB.percentage intValue]);
         
         if (puzzleDB.percentage.intValue==100) {
             puzzleCompete = YES;
@@ -416,10 +410,7 @@
 
         [self.managedObjectContext mergeChangesFromContextDidSaveNotification:saveNotification];
     
-//        if (!loadingGame) {
-//            loadingGame = YES;
-//            [self loadPuzzle:[self lastSavedPuzzle]];
-//        }
+        puzzleDB = [self lastSavedPuzzle];
 
     }
 }
@@ -574,7 +565,7 @@
         
         elapsedTime = 0.0;
         score = 0;
-        scoreLabel.text = @"0";
+        scoreLabel.text = @"0 ";
     }
     
     directions_numbers = [NSArray arrayWithArray:[self directionsUpdated_numbers]];
@@ -1161,12 +1152,21 @@
         if ([g isKindOfClass:[GroupView class]] && g!=group) {
             return g;
         }
+        
+//        PieceView *p = [self.view.subviews objectAtIndex:i];
+//        if ([p isKindOfClass:[PieceView class]] && p.isPositioned) {
+//            return p;
+//        }
     }
     
     return lattice;
 }
 
 - (void)createNewGroupForPiece:(PieceView*)piece {
+    
+    if ([self isTheFuckingPiecePositioned:piece] && !loadingGame) {
+        return;
+    }
         
     GroupView *newGroup = nil;
     
@@ -1201,7 +1201,11 @@
         [groups addObject:newGroup];
         [self.view insertSubview:newGroup aboveSubview:[self upperGroupBut:newGroup]];
         
-        DLog(@"New group created. Groups count %d", [groups count]);
+        if ([self isTheFuckingPiecePositioned:piece]) {
+            newGroup.isPositioned = YES;
+        }
+        
+        DLog(@"New group created, isPositioned = %d. Groups count %d", newGroup.isPositioned, [groups count]);
         
     } else {
 
@@ -1210,7 +1214,7 @@
         if (piece.group!=newGroup) {
             
             [self addPiece:piece toGroup:newGroup];
-            //DLog(@"Piece #%d added to existing group", piece.number);
+            DLog(@"Piece #%d added to existing group", piece.number);
 
         }        
     }
@@ -1221,6 +1225,10 @@
 
 - (void)addPiece:(PieceView*)piece toGroup:(GroupView*)group {
         
+    if ([self isTheFuckingPiecePositioned:piece] && !loadingGame) {
+        return;
+    }
+    
     if (piece.group==group) {
        
         return;
@@ -1674,7 +1682,7 @@
                                 if (
                                     !loadingGame &&
                                     !IS_DEVICE_PLAUYING_MUSIC &&
-                                    !(firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber) == piece.position)
+                                    !([self isTheFuckingPiecePositioned:piece])
                                     ) {
                                     
                                     [neighborSound play];
@@ -1682,10 +1690,9 @@
                                 
                                 //DLog(@"piece.isPositioned = %d, otherpiece.isPositioned = %d", piece.isPositioned, otherPiece.isPositioned);
                                 
-                                if (!piece.isPositioned) {
-                                    
-                                    
-                                    if (otherPiece.group!=nil) {
+                                if ((![self isTheFuckingPiecePositioned:piece] || ![self isTheFuckingPiecePositioned:otherPiece]) && !loadingGame) {
+                                                                        
+                                    if (otherPiece.group!=nil && !otherPiece.group.isPositioned) {
                                         
                                         if (piece.group!=nil) {
                                             for (PieceView *p in piece.group.pieces) {
@@ -1695,7 +1702,7 @@
                                             [self addPiece:piece toGroup:otherPiece.group];
                                         }
                                         
-                                    } else if (piece.group!=nil) {
+                                    } else if (piece.group!=nil && !piece.group.isPositioned) {
                                         
                                         if (otherPiece.group!=nil) {
                                             for (PieceView *p in otherPiece.group.pieces) {
@@ -1707,9 +1714,6 @@
                                         
                                     }
                                 }
-                                
-                                
-                                
                             }
                             
                         } else {
@@ -1737,11 +1741,16 @@
     
 }
 
+- (BOOL)isTheFuckingPiecePositioned:(PieceView*)piece {
+    
+    return (firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber) == piece.position);
+}
+
 - (BOOL)isPositioned:(PieceView*)piece  {
     
     //DLog(@"isPositioned? Position %d, number %d -> %d", piece.position, piece.number, firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber));
     
-    if (piece.isFree && (firstPiecePlace + 3*pieceNumber*(piece.number/pieceNumber) + (piece.number%pieceNumber) == piece.position) && ABS(piece.angle) < 1) {
+    if (piece.isFree && ([self isTheFuckingPiecePositioned:piece]) && ABS(piece.angle) < 1) {
         
         //DLog(@"Piece #%d positioned!", piece.number);
         //Flashes and block the piece
@@ -1756,6 +1765,10 @@
             
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
+            if (!piece.group) {
+                [piece removeFromSuperview];
+                [self.view insertSubview:piece aboveSubview:lattice];
+            }
     
             
             //DLog(@"Salvi! Piece #%d is positioned! :-)", piece.number);
@@ -1793,12 +1806,12 @@
             
             [self checkNeighborsOfPiece:piece];
             
-            if (!piece.isPositioned) {
-                [self isPositioned:piece];
-            }
-
             if (piece.hasNeighbors) {
                 [self createNewGroupForPiece:piece];
+            }
+            
+            if (!piece.isPositioned) {
+                [self isPositioned:piece];
             }
             
             [self updatePercentage];
@@ -2072,6 +2085,12 @@
         for (GroupView *g in groups) {
             g.alpha = 1;
         }
+        
+        for (PieceView *p in pieces) {
+            if (!p.group) {
+                p.alpha = 1;
+            }
+        }
     }];    
 }
 
@@ -2165,7 +2184,7 @@
             }
 
             if (!didRotate && UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad) {
-                point.y += 20;
+                //point.y += 20;
             }
             
             p.center = point;
@@ -2549,14 +2568,18 @@
     if (puzzleDB==nil) {
         
         DLog(@"PuzzleDB is nil");
-        [self createPuzzleInDB];
+        //[self createPuzzleInDB];
     }
+    
     
     puzzleDB.moves = [NSNumber numberWithInt:moves];
     puzzleDB.rotations = [NSNumber numberWithInt:rotations];
     puzzleDB.score = [NSNumber numberWithInt:score];
     puzzleDB.lastSaved = [NSDate date];
-    
+    puzzleDB.percentage = [NSNumber numberWithInt:[self completedPercentage]];
+
+    NSLog(@"Percentage = %d", puzzleDB.percentage.intValue);
+
     if ([managedObjectContext save:nil]) {
         //DLog(@"Puzzle saved");
     }

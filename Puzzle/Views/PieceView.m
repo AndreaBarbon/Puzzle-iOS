@@ -51,13 +51,16 @@
 
 - (void)pulse {    
     
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     if (delegate.loadingGame) return;
     
     if (group && !group.isPositioned) {
         [group pulse];
         return;
     }
-        
+
+    
     CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
 
     
