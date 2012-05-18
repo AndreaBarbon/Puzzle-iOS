@@ -134,7 +134,7 @@
     
     //Add the images;    
     imageView = [[UIImageView alloc] init];
-    rect = CGRectMake(0, (rect.size.height-rect.size.width)/1, rect.size.width, rect.size.width);
+    rect = CGRectMake(0, 0, rect.size.width, rect.size.width);
     imageView.frame = rect;
     imageView.alpha = 0;
     [self.view addSubview:imageView];
@@ -333,7 +333,11 @@
             } else {
                 translation = -screenHeight/2+puzzleCompleteImage.bounds.size.height/2;
             }
-            translation += 20;
+            translation += 30;
+            
+            if (!didRotate) {
+                translation +=20;
+            }
 
             
             [UIView animateWithDuration:1 animations:^{
@@ -656,7 +660,7 @@
 
 - (void)createPieces {
     
-    NSLog(@"Loading!");
+    DLog(@"Creating pieces");
     float IMAGE_SIZE_BOUND = 0;
     float SHAPE_QUALITY = 0;
     
@@ -2012,9 +2016,7 @@
 - (void)resetLatticePositionAndSizeWithDuration:(float)duration {
     
     float f = (screenWidth)/(pieceNumber+1)/(piceSize-2*padding);
-    
-    NSLog(@"f = %.1f, piecesize: %.1f, padding = %.1f, pieceNumber: %d", f, piceSize, padding, pieceNumber);
-    
+        
     [UIView animateWithDuration:duration animations:^{
 
         [self resizeLatticeToScale:f];
@@ -2720,8 +2722,7 @@
         
         stepperFrame.origin.y = drawerFrame.size.height;
         stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width-10;
-        float pad = (screenHeight - imageFrame.size.height)/1;
-        imageFrame.origin.y = pad;
+        imageFrame.origin.y = 0;
         imageFrame.origin.x = 0;
         
         chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
