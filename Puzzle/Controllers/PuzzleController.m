@@ -52,7 +52,17 @@
 #pragma mark -
 #pragma mark View Lifecycle
 
+- (void)piecesNotificationResponse:(NSNotification*)notification {
+   
+    //PieceView *piece = notification.object;
+    //DLog(@"Piece #%d sent a notification", piece.number);
+}
+
 - (void)viewDidLoad {
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:@"PiecesNotifications" object:nil];
+
     
     //DLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
         
@@ -545,14 +555,27 @@
     directions_positions = [NSArray arrayWithArray:[self directionsUpdated_positions]];
     [self computePieceSize];
     [self createLattice];
-    drawerFirstPoint = CGPointMake(-self.padding/2+10, screenHeight-drawerSize-self.padding/2+10);
+    drawerFirstPoint = CGPointMake(-4, 5);
     
     // add the importer to an operation queue for background processing (works on a separate thread)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myNotificationResponse:) name:@"GTCNotification" object:nil];
     puzzleOperation = [[CreatePuzzleOperation alloc] init];
     puzzleOperation.delegate = self;
     puzzleOperation.loadingGame = loadingGame;
     puzzleOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
         
+}
+
+- (void)myNotificationResponse:(NSNotification*)note {
+    NSNumber *count = [note object];
+    [self.view addSubview:[pieces objectAtIndex:count.intValue]];
+    //[self performSelectorOnMainThread:@selector(updateView:) withObject:count waitUntilDone:YES];
+}
+
+- (void)updateView:(NSNumber*)count {
+    
+    [self.view addSubview:[pieces objectAtIndex:count.intValue]];
+    
 }
 
 - (void)createPuzzleFromSavedGame {
@@ -893,7 +916,8 @@
         newGroup.boss = piece;
         newGroup.transform = lattice.transform;
         newGroup.delegate = self;
-        
+        newGroup.isPositioned = (piece.isPositioned && loadingGame);
+
         //piece.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.1];
         piece.isBoss = YES;
         piece.transform = CGAffineTransformScale(piece.transform, 1/lattice.scale, 1/lattice.scale);
@@ -926,7 +950,7 @@
 }
 
 - (void)addPiece:(PieceView*)piece toGroup:(GroupView*)group {
-    
+        
     if (piece.group==group) {
        
         return;
@@ -935,6 +959,8 @@
         
         piece.group = group;
     }
+
+    DLog(@"%s", __PRETTY_FUNCTION__);
 
     piece.isBoss = NO;
     [piece removeFromSuperview];
@@ -1075,7 +1101,7 @@
 
 - (void)checkNeighborsForGroup:(GroupView*)group {
     
-    //DLog(@"Starting %s", __FUNCTION__);
+    DLog(@"Starting %s", __FUNCTION__);
 
     for (int i=0; i<[group.pieces count]; i++) {
         
@@ -1138,23 +1164,10 @@
     
     
     
-    
-    
-    moves++;    
-//    if (piece.group==nil) {
-        if (piece.isFree) {
-            piece.moves++;
-        }
-//    } else {
-//        for (int i=0; i<piece.group.pieces.count; i++) {
-//            PieceView *p = [piece.group.pieces objectAtIndex:i];
-//            p.moves++;
-//        }
-//    }
-//    
-    
-    
-    
+    if (piece.isFree) {
+        piece.moves++;
+        moves++;    
+    }
     
     
     
@@ -1240,18 +1253,11 @@
 
 - (void)pieceRotated:(PieceView *)piece {
     
-    rotations++;
-//    if (piece.group==nil) {
-        if (piece.isFree) {
-            piece.rotations++;
-        }
-//    } else {
-//        for (int i=0; i<piece.group.pieces.count; i++) {
-//            PieceView *p = [piece.group.pieces objectAtIndex:i];
-//            p.rotations++;
-//        }
-//    }
-//    
+    if (piece.isFree) {
+        piece.rotations++;
+        rotations++;
+    }
+
     //DLog(@"Piece rotated! Angle = %.1f", piece.angle);
     
     if (piece.group==nil) {
@@ -1404,27 +1410,36 @@
                                     [neighborSound play];
                                 }
                                 
-                                if (otherPiece.group!=nil) {
+                                //DLog(@"piece.isPositioned = %d, otherpiece.isPositioned = %d", piece.isPositioned, otherPiece.isPositioned);
+                                
+                                if (!piece.isPositioned) {
                                     
-                                    if (piece.group!=nil) {
-                                        for (PieceView *p in piece.group.pieces) {
-                                            [self addPiece:p toGroup:otherPiece.group];
-                                        }
-                                    } else {
-                                        [self addPiece:piece toGroup:otherPiece.group];
-                                    }
-                                    
-                                } else if (piece.group!=nil) {
                                     
                                     if (otherPiece.group!=nil) {
-                                        for (PieceView *p in otherPiece.group.pieces) {
-                                            [self addPiece:p toGroup:piece.group];
+                                        
+                                        if (piece.group!=nil) {
+                                            for (PieceView *p in piece.group.pieces) {
+                                                [self addPiece:p toGroup:otherPiece.group];
+                                            }
+                                        } else {
+                                            [self addPiece:piece toGroup:otherPiece.group];
                                         }
-                                    } else {
-                                        [self addPiece:otherPiece toGroup:piece.group];
+                                        
+                                    } else if (piece.group!=nil) {
+                                        
+                                        if (otherPiece.group!=nil) {
+                                            for (PieceView *p in otherPiece.group.pieces) {
+                                                [self addPiece:p toGroup:piece.group];
+                                            }
+                                        } else {
+                                            [self addPiece:otherPiece toGroup:piece.group];
+                                        }
+                                        
                                     }
-
                                 }
+                                
+                                
+                                
                             }
                             
                         } else {
@@ -1471,10 +1486,7 @@
             
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
-            
-            if (piece.group!=nil) {
-                piece.group.isPositioned = YES;
-            }
+    
             
             //DLog(@"Salvi! Piece #%d is positioned! :-)", piece.number);
             
@@ -1901,7 +1913,7 @@
         
         if (!drawerStopped) {
             drawerStopped = YES;
-            drawerFirstPoint = CGPointMake(-self.padding/2+10, screenHeight-drawerSize-self.padding/2+10);
+            drawerFirstPoint = CGPointMake(-4, 5);
             [UIView animateWithDuration:0.5 animations:^{
                 [self organizeDrawerWithOrientation:self.interfaceOrientation];
             }];

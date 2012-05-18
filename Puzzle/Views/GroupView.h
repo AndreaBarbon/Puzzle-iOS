@@ -24,6 +24,7 @@
 
 
 - (void)translateWithVector:(CGPoint)traslation;
+- (void)pulse;
 
 @end
 

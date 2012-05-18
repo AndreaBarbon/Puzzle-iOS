@@ -76,7 +76,7 @@
 
     imagePath = [[NSString alloc] initWithFormat:@""];
 
-    typeOfImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    typeOfImageView.backgroundColor = WOOD;
     
 }
 

@@ -137,7 +137,10 @@
                         
                         [arrayPieces addObject:piece];
                         [delegate.view addSubview:piece];
-                        //piece.transform = CGAffineTransformMakeScale(0.5, 0.5);
+                        
+                        //[[NSNotificationCenter defaultCenter] postNotificationName:@"GTCNotification" object:[NSNumber numberWithInteger:i]];
+                        
+                        //[delegate.view  performSelectorOnMainThread:@selector(addSubview:) withObject:piece waitUntilDone:NO];
                         
                         
                     }
@@ -248,6 +251,7 @@
                     
                     [arrayPieces addObject:piece];
                     [delegate.view addSubview:piece];
+                    //[delegate.view  performSelectorOnMainThread:@selector(addSubview:) withObject:piece waitUntilDone:NO];
 
                     //piece.transform = CGAffineTransformMakeScale(0.5, 0.5);
                     

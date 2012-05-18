@@ -184,7 +184,7 @@
     CGRect screen = [[UIScreen mainScreen] bounds];
     CGRect rect = CGRectMake(0, 0, screen.size.height, screen.size.height);
     obscuringView = [[UIView alloc] initWithFrame:rect];
-    obscuringView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    obscuringView.backgroundColor = WOOD;
     
     
     chooseLabel = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ChooseLabel"]];

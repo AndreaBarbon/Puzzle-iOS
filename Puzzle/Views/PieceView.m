@@ -53,13 +53,13 @@
     
     if (delegate.loadingGame) return;
     
-    //CATransform3D trasform = CATransform3DMakeRotation(angle, 0, 0, 1);
+    if (group && !group.isPositioned) {
+        [group pulse];
+        return;
+    }
+        
     CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
-    trasform = CATransform3DRotate(trasform, -group.angle, 0, 0, 1);
 
-    
-    DLog(@"Piece angle %.1f", self.angle);
-    DLog(@"Group angle %.1f", group.angle);
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
     animation.toValue = [NSValue valueWithCATransform3D:trasform];
@@ -604,6 +604,9 @@
 }
 
 - (void)drawRect:(CGRect)rect {
+    
+    DLog(@"Drawing piece #%d", number);
+
 
     
     if (!delegate.loadingGame) {
@@ -651,8 +654,11 @@
     
     
     
-    //DLog(@"Piece #%d drawn", number);
+    DLog(@"Piece #%d drawn", number);
     delegate.loadedPieces++;
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PiecesNotifications" object:self];
 
     
     int pieceNumber = (delegate.NumberSquare-delegate.missedPieces);

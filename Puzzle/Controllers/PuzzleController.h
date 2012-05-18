@@ -172,6 +172,8 @@
 - (void)print_free_memory;
 - (void)removeOldPieces;
 
+- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view;
+
 
 - (void)allPiecesLoaded;
 - (Piece*)pieceOfCurrentPuzzleDB:(int)n;

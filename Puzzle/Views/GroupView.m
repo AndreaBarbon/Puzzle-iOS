@@ -14,6 +14,36 @@
 
 @synthesize boss, pieces, angle, delegate, isPositioned;
 
+- (void)pulse {    
+    
+    if (isPositioned) {
+        return;
+    }
+    
+    CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
+    
+    [delegate setAnchorPoint:boss.center forView:self];
+        
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    animation.toValue = [NSValue valueWithCATransform3D:trasform];
+    animation.autoreverses = YES;
+    animation.duration = 0.3;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animation.repeatCount = 2;
+    animation.delegate = self;
+    [self.layer addAnimation:animation forKey:@"pulseAnimationGroup"];
+    
+}
+
+
+
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+    if ([finished boolValue]) {
+
+        isPositioned = YES;
+    }
+}
+
 - (void)translateWithVector:(CGPoint)traslation {
 
     self.transform = CGAffineTransformTranslate(self.transform, traslation.x, traslation.y);
