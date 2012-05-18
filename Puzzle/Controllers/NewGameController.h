@@ -24,7 +24,6 @@
     IBOutlet UIButton *imageButton;
     IBOutlet UIButton *cameraButton;
     IBOutlet UIButton *yourPhotosButton;
-    IBOutlet UIProgressView *progressView;
     IBOutlet UIActivityIndicatorView *indicator;
     IBOutlet UIView *loadingView;
     IBOutlet UIView *tapToSelectView;
@@ -34,6 +33,8 @@
     
     int times;
 }
+
+@property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 
 @property (nonatomic, retain) UIPopoverController *popover;
 @property (nonatomic, retain) NSString *imagePath;

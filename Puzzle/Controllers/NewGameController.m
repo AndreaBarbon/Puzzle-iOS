@@ -22,7 +22,7 @@
 
 @implementation NewGameController
 
-@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton;
+@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton, progressView;
 
 - (void)viewDidLoad
 {
@@ -317,15 +317,15 @@
         
         int n = [delegate.delegate.puzzleDB.pieceNumber intValue]*[delegate.delegate.puzzleDB.pieceNumber intValue];
         pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", n];    
-        slider.hidden = YES;    
         tapToSelectView.hidden = YES;
         image.image = delegate.delegate.image;
 
     } else {
 
         image.image = delegate.delegate.image;
-
     }
+
+    slider.enabled = NO;    
     
     if (image.image==nil) {
         image.image = [UIImage imageNamed:@"Wood.jpg"];
@@ -335,7 +335,7 @@
     loadingView.hidden = NO;
     progressView.progress = 0.0;
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
+    //timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
     
 
 }
@@ -356,7 +356,7 @@
     startButton.hidden = NO;
     backButton.hidden = NO;
     pieceNumberLabel.hidden = NO;    
-    slider.hidden = NO;    
+    slider.enabled = YES;    
     piecesLabel.hidden = NO;
     tapToSelectView.hidden = NO;
     tapToSelectLabel.hidden = NO;
@@ -383,7 +383,7 @@
     backButton.hidden = NO;
     
     pieceNumberLabel.hidden = NO;    
-    slider.hidden = NO;    
+    slider.enabled = YES;    
     piecesLabel.hidden = NO;
     tapToSelectView.hidden = NO;
     tapToSelectLabel.hidden = NO ;
@@ -396,9 +396,9 @@
 
 
 - (void)moveBar {
-    
+        
     float a = (float)delegate.delegate.loadedPieces;
-    float b = 2*(float)((int)slider.value*(int)slider.value);
+    float b = (float)((int)slider.value*(int)slider.value);
     
     if (delegate.delegate.loadingGame) {
         

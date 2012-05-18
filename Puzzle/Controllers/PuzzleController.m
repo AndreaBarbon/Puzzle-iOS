@@ -9,6 +9,15 @@
 #define PIECE_NUMBER 4
 #define ORG_TIME 0.5
 
+
+#define IMAGE_SIZE_BOUND_IPAD 2*PIECE_SIZE_IPAD
+#define IMAGE_SIZE_BOUND_IPHONE 3*PIECE_SIZE_IPHONE
+
+#define JPG_QUALITY 1
+#define SHAPE_QUALITY_IPAD 1
+#define SHAPE_QUALITY_IPHONE 3
+
+
 #import "PuzzleController.h"
 #import "AppDelegate.h"
 #import "GroupView.h"
@@ -395,11 +404,24 @@
 // This method will be called on a secondary thread. Forward to the main thread for safe handling of UIKit objects.
 - (void)puzzleSaved:(NSNotification *)saveNotification {
         
-    if ([NSThread isMainThread]) {
-        [self.managedObjectContext mergeChangesFromContextDidSaveNotification:saveNotification];
-    } else {
+    if (![NSThread isMainThread]) {
+        
         [self performSelectorOnMainThread:@selector(puzzleSaved:) withObject:saveNotification waitUntilDone:NO];
+        
+    } else {
+
+        [self.managedObjectContext mergeChangesFromContextDidSaveNotification:saveNotification];
+    
+//        if (!loadingGame) {
+//            loadingGame = YES;
+//            [self loadPuzzle:[self lastSavedPuzzle]];
+//        }
+
     }
+}
+
+- (void)merged:(NSNotification *)saveNotification {
+    
 }
 
 - (void)addPiecesToView {
@@ -409,7 +431,7 @@
         for (PieceView *p in pieces) {
             
             [self.view addSubview:p];
-            loadedPieces++;
+            //loadedPieces++;
         }
     
     } else {
@@ -595,21 +617,265 @@
     
     [menu.game startLoading];
     
-    [self.operationQueue addOperations:[NSArray arrayWithObject:puzzleOperation] waitUntilFinished:NO];
-    
+    dispatch_queue_t main_queue = dispatch_get_main_queue();
+    dispatch_async(main_queue, ^{
+        
+        [self createPieces];
+        
+        dispatch_async(main_queue, ^{
+            
+            [self addAnothePieceToView];
+            
+        });
+    });
     
 }
 
 - (void)createPuzzleFromImage:(UIImage*)image_ {
-
+    
     loadingGame = NO;
     moves = 0;
     rotations = 0;
     
     [self prepareForNewPuzzle];
-
-    [self.operationQueue addOperation:puzzleOperation];
     
+    dispatch_queue_t main_queue = dispatch_get_main_queue();
+    dispatch_async(main_queue, ^{
+        
+        [self createPieces];
+        
+        dispatch_async(main_queue, ^{
+            
+            [self addAnothePieceToView];
+            
+        });
+    });
+       
+    
+}
+
+- (void)createPieces {
+    
+    NSLog(@"Loading!");
+    float IMAGE_SIZE_BOUND = 0;
+    float SHAPE_QUALITY = 0;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        IMAGE_SIZE_BOUND = IMAGE_SIZE_BOUND_IPAD;
+        SHAPE_QUALITY = SHAPE_QUALITY_IPAD;
+        
+    } else {  
+        
+        IMAGE_SIZE_BOUND = IMAGE_SIZE_BOUND_IPHONE;
+        SHAPE_QUALITY = SHAPE_QUALITY_IPHONE;
+        
+    } 
+    
+    NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
+    NSMutableArray *array;
+    
+    if (loadingGame) {
+        
+        if (self.image==nil) {
+            return;
+        }
+        
+    } else {
+        
+        //Compute the optimal part size
+        
+        float partSize = image.size.width/(pieceNumber*0.7);
+        
+        if (partSize>IMAGE_SIZE_BOUND) {
+            
+            partSize = IMAGE_SIZE_BOUND;
+        }
+        
+        //and split the big image using computed size
+                
+        float f = (float)(pieceNumber*partSize*0.7);
+        image = [image imageByScalingToSize:CGSizeMake(f,f)];
+        array = [[NSMutableArray alloc] initWithArray:[self splitImage:image partSize:partSize]];
+        
+    }
+    
+    
+    if (loadingGame) {
+    
+        for (int i=0;i<pieceNumber;i++){
+            for (int j=0;j<pieceNumber;j++){
+                
+                CGRect rect = CGRectMake( 0, 0, SHAPE_QUALITY*piceSize, SHAPE_QUALITY*piceSize);
+                
+                Piece *pieceDB = [self pieceOfCurrentPuzzleDB:j+pieceNumber*i];
+                
+                if (pieceDB!=nil) {
+                    
+                    PieceView *piece = [[PieceView alloc] initWithFrame:rect];
+                    piece.delegate = self;
+                    piece.image = [UIImage imageWithData:pieceDB.image.data];
+                    piece.number = j+pieceNumber*i;
+                    piece.size = piceSize;
+                    piece.isFree = [pieceDB isFreeScalar];
+                    piece.position = [pieceDB.position intValue];
+                    piece.angle = [pieceDB.angle floatValue];
+                    piece.moves = [pieceDB.moves intValue];
+                    piece.rotations = [pieceDB.rotations intValue];
+                    piece.transform = CGAffineTransformMakeRotation(piece.angle);
+                    
+                    piece.frame = rect;
+                    
+                    NSNumber *n = [NSNumber numberWithInt:NumberSquare];
+                    piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
+                    
+                    
+                    NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
+                    [a addObject:pieceDB.edge0];
+                    [a addObject:pieceDB.edge1];
+                    [a addObject:pieceDB.edge2];
+                    [a addObject:pieceDB.edge3];
+                    
+                    piece.edges = [NSArray arrayWithArray:a];
+                    
+                    [arrayPieces addObject:piece];
+                    
+                }
+            }
+        }
+        
+    } 
+    else {
+        
+        
+        for (int i=0;i<pieceNumber;i++){
+            
+            for (int j=0;j<pieceNumber;j++){
+                
+                CGRect rect = CGRectMake( 0, 0, SHAPE_QUALITY*piceSize, SHAPE_QUALITY*piceSize);
+                
+                PieceView *piece = [[PieceView alloc] initWithFrame:rect];
+                piece.delegate = self;
+                piece.image = [array objectAtIndex:j+pieceNumber*i];
+                piece.number = j+pieceNumber*i;
+                piece.size = piceSize;
+                piece.position = -1;
+                NSNumber *n = [NSNumber numberWithInt:NumberSquare];
+                piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
+                
+                //piece.frame = rect;
+                
+                
+                NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
+                
+                for (int k=0; k<4; k++) {
+                    int e = arc4random_uniform(3)+1;
+                    
+                    if (arc4random_uniform(2)>0) {
+                        e *= -1;
+                    }
+                                        
+                    [a addObject:[NSNumber numberWithInt:e]];
+                }
+                
+                if (i>0) {
+                    int l = [arrayPieces count]-pieceNumber;
+                    int e = [[[[arrayPieces objectAtIndex:l] edges] objectAtIndex:1] intValue];
+                    [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:-e]];
+                    //DLog(@"e = %d", e);
+                }
+                
+                if (j>0) {
+                    int e = [[[[arrayPieces lastObject] edges] objectAtIndex:2] intValue];
+                    [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:-e]];
+                    //DLog(@"e = %d", e);
+                }
+                
+                if (i==0) {
+                    [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:0]];
+                }
+                if (i==pieceNumber-1) {
+                    [a replaceObjectAtIndex:1 withObject:[NSNumber numberWithInt:0]];
+                }
+                if (j==0) {
+                    [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:0]];
+                }
+                if (j==pieceNumber-1) {
+                    [a replaceObjectAtIndex:2 withObject:[NSNumber numberWithInt:0]];
+                }
+                
+                
+                piece.edges = [NSArray arrayWithArray:a];                
+                
+                [arrayPieces addObject:piece];
+                
+            }
+        }
+    
+    } //end if loadingGame   
+            
+            
+    
+    
+    pieces = [[NSMutableArray alloc] initWithArray:arrayPieces];
+    
+    loadedPieces = 0;
+            
+    [self.operationQueue addOperations:[NSArray arrayWithObject:puzzleOperation] waitUntilFinished:NO];
+    
+    
+}
+
+
+
+- (void)addAnothePieceToView {
+        
+    [self.view insertSubview:[pieces objectAtIndex:loadedPieces] belowSubview:menu.obscuringView];
+}
+
+- (void)moveBar {
+    
+    float a = (float)loadedPieces;
+    float b = (float)NumberSquare;
+    
+    if (loadingGame) {
+        
+        b = NumberSquare;
+    }
+    
+    menu.game.progressView.progress = a/b;
+    
+}
+
+
+- (NSArray *)splitImage:(UIImage *)im partSize:(float)partSize {
+    
+    float x = pieceNumber;
+    float y= pieceNumber;
+    
+    float padding_temp = partSize*0.15;
+    
+    DLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", partSize, padding_temp, im.size.width);
+        
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
+    for (int i=0;i<x;i++){
+        for (int j=0;j<y;j++){
+            
+            CGRect rect = CGRectMake(i * (partSize-2*padding_temp)-padding_temp, 
+                                     j * (partSize-2*padding_temp)-padding_temp, 
+                                     partSize, partSize);
+            
+            [arr addObject:[im subimageWithRect:rect]]; 
+            
+            //loadedPieces++;
+            
+            //[arr addObject:[self clipImage:im toRect:rect]];          
+        }
+    }
+    
+    DLog(@"Image splitted");
+
+    return arr;
     
 }
 
@@ -1746,6 +2012,8 @@
 - (void)resetLatticePositionAndSizeWithDuration:(float)duration {
     
     float f = (screenWidth)/(pieceNumber+1)/(piceSize-2*padding);
+    
+    NSLog(@"f = %.1f, piecesize: %.1f, padding = %.1f, pieceNumber: %d", f, piceSize, padding, pieceNumber);
     
     [UIView animateWithDuration:duration animations:^{
 

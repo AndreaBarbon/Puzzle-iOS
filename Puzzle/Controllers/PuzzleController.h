@@ -191,5 +191,7 @@
 - (BOOL)isPositioned:(PieceView*)piece;
 
 - (UIView*)upperGroupBut:(GroupView*)group;
+- (void)moveBar;
+- (void)addAnothePieceToView;
 
 @end

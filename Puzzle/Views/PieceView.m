@@ -603,9 +603,11 @@
     
 }
 
+
 - (void)drawRect:(CGRect)rect {
     
-    DLog(@"Drawing piece #%d", number);
+    
+    //DLog(@"Drawing piece #%d", number);
 
 
     
@@ -654,20 +656,22 @@
     
     
     
-    DLog(@"Piece #%d drawn", number);
+    //DLog(@"Piece #%d drawn", number);
     delegate.loadedPieces++;
-    
+    [delegate moveBar];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PiecesNotifications" object:self];
 
     
     int pieceNumber = (delegate.NumberSquare-delegate.missedPieces);
     if (!delegate.loadingGame) {
-        pieceNumber *= 2;
+        //pieceNumber *= 2;
     }
     
     if (delegate.loadedPieces == pieceNumber) {
         [delegate allPiecesLoaded];
+    } else {
+        [delegate performSelectorOnMainThread:@selector(addAnothePieceToView) withObject:nil waitUntilDone:NO];
     }
     
 //    label = [[UILabel alloc] initWithFrame:self.bounds];

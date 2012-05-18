@@ -220,6 +220,10 @@
 		B8D28BCB15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */; };
 		B8D28BCC15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */; };
 		B8D28BCD15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */; };
+		B8D28BCF156683B900DCF1A0 /* Micetto furbetto_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731458155C373D00FB77FC /* Micetto furbetto_puzzle.jpg */; };
+		B8D28BD0156683B900DCF1A0 /* Micio matto_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8731459155C373D00FB77FC /* Micio matto_puzzle.jpg */; };
+		B8D28BD1156683C900DCF1A0 /* Copia di Micetto furbetto_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A3155C374D00FB77FC /* Copia di Micetto furbetto_puzzle_thumb.jpg */; };
+		B8D28BD2156683C900DCF1A0 /* Copia di Micio matto_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B87314A4155C374D00FB77FC /* Copia di Micio matto_puzzle_thumb.jpg */; };
 		B8DADF9615654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
 		B8DADF9715654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
 		B8DADF9815654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
@@ -832,6 +836,10 @@
 				B8DADF9815654973002DCEF8 /* Notes.txt in Resources */,
 				B8D28BCA15667CCF00DCF1A0 /* PanningSwitch.png in Resources */,
 				B8D28BCD15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */,
+				B8D28BCF156683B900DCF1A0 /* Micetto furbetto_puzzle.jpg in Resources */,
+				B8D28BD0156683B900DCF1A0 /* Micio matto_puzzle.jpg in Resources */,
+				B8D28BD1156683C900DCF1A0 /* Copia di Micetto furbetto_puzzle_thumb.jpg in Resources */,
+				B8D28BD2156683C900DCF1A0 /* Copia di Micio matto_puzzle_thumb.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1167,8 +1175,8 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_THUMB_SUPPORT = NO;

@@ -52,38 +52,19 @@
     }
 
     
-    float piceSize = SHAPE_QUALITY*delegate.piceSize;
     float pieceNumber = delegate.pieceNumber;
     float NumberSquare = delegate.NumberSquare;
     
+    
+    
+    
+    
+    
         
     NSMutableArray *arrayPieces = [[NSMutableArray alloc] initWithCapacity:NumberSquare];
-    NSMutableArray *array;
     
-    if (loadingGame) {
-        
-        if (delegate.image==nil) {
-            return;
-        }
-        
-    } else {
-        
-        //Compute the optimal part size
-        
-        float partSize = delegate.image.size.width/(delegate.pieceNumber*0.7);
-        
-        if (partSize>IMAGE_SIZE_BOUND) {
-            
-            partSize = IMAGE_SIZE_BOUND;
-        }
-        
-        //and split the big image using computed size
-        
-        float f = (float)(pieceNumber*partSize*0.7);
-        image = [[UIImage alloc] init];
-        image = [delegate.image imageByScalingToSize:CGSizeMake(f,f)];
-        array = [[NSMutableArray alloc] initWithArray:[self splitImage:image partSize:partSize]];
-
+    if (delegate.image==nil) {
+        return;
     }
     
     
@@ -91,69 +72,10 @@
     BOOL errors = YES;
     
     @try {
-        if (loadingGame) {
+        
+        if (!delegate.loadingGame) {
             
-            DLog(@"Loading in background");     
-            
-            for (int i=0;i<pieceNumber;i++){
-                for (int j=0;j<pieceNumber;j++){
-                    
-                    CGRect rect = CGRectMake( 0, 0, piceSize, piceSize);
-                    
-                    Piece *pieceDB = [delegate pieceOfCurrentPuzzleDB:j+pieceNumber*i];
-                    
-                    if (pieceDB!=nil) {
-                        
-                        PieceView *piece = [[PieceView alloc] initWithFrame:rect];
-                        piece.delegate = delegate;
-                        piece.image = [UIImage imageWithData:pieceDB.image.data];
-                        piece.number = j+pieceNumber*i;
-                        piece.size = piceSize;
-                        piece.isFree = [pieceDB isFreeScalar];
-                        piece.position = [pieceDB.position intValue];
-                        piece.angle = [pieceDB.angle floatValue];
-                        piece.moves = [pieceDB.moves intValue];
-                        piece.rotations = [pieceDB.rotations intValue];
-                        piece.transform = CGAffineTransformMakeRotation(piece.angle);
-                        
-                        piece.frame = rect;
-                        
-                        NSNumber *n = [NSNumber numberWithInt:NumberSquare];
-                        piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
-                        
-                        
-                        NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
-                        [a addObject:pieceDB.edge0];
-                        [a addObject:pieceDB.edge1];
-                        [a addObject:pieceDB.edge2];
-                        [a addObject:pieceDB.edge3];
-                        
-                        piece.edges = [NSArray arrayWithArray:a];
-                        
-                        for (int k=0; k<4; k++) {
-                            //DLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
-                        }
-                        
-                        
-                        [arrayPieces addObject:piece];
-                        [delegate.view addSubview:piece];
-                        
-                        //[[NSNotificationCenter defaultCenter] postNotificationName:@"GTCNotification" object:[NSNumber numberWithInteger:i]];
-                        
-                        //[delegate.view  performSelectorOnMainThread:@selector(addSubview:) withObject:piece waitUntilDone:NO];
-                        
-                        
-                    }
-                    
-                }
-            }
-            
-            
-            errors = NO;
-            
-        } else {
-            
-            //DLog(@"Starting creating puzzle in the DB");
+            DLog(@"Starting creating puzzle in the DB");
             
             Puzzle *puzzleDB = [self newPuzzleInCOntext:insertionContext];
             Image *imageDB = [self newImageInCOntext:insertionContext];
@@ -172,131 +94,51 @@
                 
                 for (int j=0;j<pieceNumber;j++){
                     
-                    CGRect rect = CGRectMake( 0, 0, piceSize, piceSize);
-                    
-                    PieceView *piece = [[PieceView alloc] initWithFrame:rect];
-                    piece.delegate = delegate;
-                    piece.image = [array objectAtIndex:0]; //j+pieceNumber*i];
-                    piece.number = j+pieceNumber*i;
-                    piece.size = piceSize;
-                    piece.position = -1;
-                    NSNumber *n = [NSNumber numberWithInt:NumberSquare];
-                    piece.neighbors = [[NSArray alloc] initWithObjects:n, n, n, n, nil];
-                    
-                    piece.frame = rect;
-                    
-                    
-                    NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:4];
-                    
-                    for (int k=0; k<4; k++) {
-                        int e = arc4random_uniform(3)+1;
-                        
-                        if (arc4random_uniform(2)>0) {
-                            e *= -1;
-                        }
-                        
-                        [a addObject:[NSNumber numberWithInt:e]];
-                    }
-                    
-                    if (i>0) {
-                        int l = [arrayPieces count]-pieceNumber;
-                        int e = [[[[arrayPieces objectAtIndex:l] edges] objectAtIndex:1] intValue];
-                        [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:-e]];
-                        //DLog(@"e = %d", e);
-                    }
-                    
-                    if (j>0) {
-                        int e = [[[[arrayPieces lastObject] edges] objectAtIndex:2] intValue];
-                        [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:-e]];
-                        //DLog(@"e = %d", e);
-                    }
-                    
-                    if (i==0) {
-                        [a replaceObjectAtIndex:3 withObject:[NSNumber numberWithInt:0]];
-                    }
-                    if (i==pieceNumber-1) {
-                        [a replaceObjectAtIndex:1 withObject:[NSNumber numberWithInt:0]];
-                    }
-                    if (j==0) {
-                        [a replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:0]];
-                    }
-                    if (j==pieceNumber-1) {
-                        [a replaceObjectAtIndex:2 withObject:[NSNumber numberWithInt:0]];
-                    }
-                    
-                    
-                    piece.edges = [NSArray arrayWithArray:a];
-                    
-                    for (int k=0; k<4; k++) {
-                        //DLog(@"Edge of %d, %d is %d", i, j, [[piece.edges objectAtIndex:k] intValue]);
-                    }
-                    
                     //Creating the piece in the database
                     Piece *pieceDB = [self newPieceInCOntext:insertionContext];
                     pieceDB.puzzle = puzzleDB;
                     pieceDB.number = [NSNumber numberWithInt:j+pieceNumber*i];
                     pieceDB.position = [NSNumber numberWithInt:-1];
                     Image *imagePieceDB = [self newImageInCOntext:insertionContext];
-                    imagePieceDB.data = UIImageJPEGRepresentation([array objectAtIndex:0], JPG_QUALITY);
+                    imagePieceDB.data = UIImageJPEGRepresentation([[delegate pieceWithNumber:j+pieceNumber*i] image], JPG_QUALITY);
                     pieceDB.image = imagePieceDB;
+                                        
                     
-                    [array removeObjectAtIndex:0];
-
-                    
-                    pieceDB.edge0 = [piece.edges objectAtIndex:0];
-                    pieceDB.edge1 = [piece.edges objectAtIndex:1];
-                    pieceDB.edge2 = [piece.edges objectAtIndex:2];
-                    pieceDB.edge3 = [piece.edges objectAtIndex:3];
+                    pieceDB.edge0 = [[[delegate pieceWithNumber:j+pieceNumber*i] edges] objectAtIndex:0];
+                    pieceDB.edge1 = [[[delegate pieceWithNumber:j+pieceNumber*i] edges] objectAtIndex:1];
+                    pieceDB.edge2 = [[[delegate pieceWithNumber:j+pieceNumber*i] edges] objectAtIndex:2];
+                    pieceDB.edge3 = [[[delegate pieceWithNumber:j+pieceNumber*i] edges] objectAtIndex:3];
                     
                     
-                    [arrayPieces addObject:piece];
-                    [delegate.view addSubview:piece];
-                    //[delegate.view  performSelectorOnMainThread:@selector(addSubview:) withObject:piece waitUntilDone:NO];
-
-                    //piece.transform = CGAffineTransformMakeScale(0.5, 0.5);
-                    
+                    [arrayPieces addObject:pieceDB];
                 }
             }
-            
-            [insertionContext save:nil];
 
+            [insertionContext save:nil];
         }
         
-        delegate.pieces = [[NSMutableArray alloc] initWithArray:arrayPieces];
-        
-        errors = NO;
 
-        
+        errors = NO;
     }
     @catch (NSException *exception) {
         
+        DLog(@"Some errors occured while creating the puzzle:");
         DLog(@"%@", [exception description]);
         
+        [delegate loadingFailed];
+        delegate.loadedPieces = 0;
     }
     @finally {
         
-        if (!errors) {
-            
-            if (delegate && [delegate respondsToSelector:@selector(puzzleSaved:)]) {
-                [[NSNotificationCenter defaultCenter] removeObserver:delegate name:NSManagedObjectContextDidSaveNotification object:self.insertionContext];
-            }
-            if (delegate && [self.delegate respondsToSelector:@selector(addPiecesToView)]) {
-                //[delegate addPiecesToView];
-            }
-            
-                        
-            DLog(@"loading \"finally\"");
-        
-        } else {
-            
-            DLog(@"Some errors occured");
-            [delegate loadingFailed];
-            delegate.loadedPieces = 0;
+        DLog(@"Puzzle created in the DB");
 
+        if (delegate && [delegate respondsToSelector:@selector(puzzleSaved:)]) {
+            [[NSNotificationCenter defaultCenter] removeObserver:delegate name:NSManagedObjectContextDidSaveNotification object:self.insertionContext];
         }
-
+        
+                
     }
-
+    
 
 }
 
