@@ -50,9 +50,7 @@
 }
 
 - (void)pulse {    
-    
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
+        
     if (delegate.loadingGame) return;
     
     if (group && !group.isPositioned) {

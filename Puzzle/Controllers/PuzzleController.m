@@ -2593,8 +2593,6 @@
     puzzleDB.lastSaved = [NSDate date];
     puzzleDB.percentage = [NSNumber numberWithInt:[self completedPercentage]];
 
-    NSLog(@"Percentage = %d", puzzleDB.percentage.intValue);
-
     if ([managedObjectContext save:nil]) {
         //DLog(@"Puzzle saved");
     }

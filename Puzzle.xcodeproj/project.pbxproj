@@ -394,6 +394,7 @@
 		B8B0E74515605EE8002FE0A2 /* Puzzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puzzle.h; sourceTree = "<group>"; };
 		B8B0E74615605EE8002FE0A2 /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
 		B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 8.xcdatamodel"; sourceTree = "<group>"; };
+		B8C0EE511567A20F0042EB89 /* Puzzle 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 9.xcdatamodel"; sourceTree = "<group>"; };
 		B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanningSwitch.png; path = PNGs/PanningSwitch.png; sourceTree = "<group>"; };
 		B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanningSwitch@2x.png"; path = "PNGs/PanningSwitch@2x.png"; sourceTree = "<group>"; };
 		B8DADF9515654973002DCEF8 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
@@ -1302,9 +1303,10 @@
 				B8B0E73F15605DA0002FE0A2 /* Puzzle 5.xcdatamodel */,
 				B8B0E74415605EB8002FE0A2 /* Puzzle 7.xcdatamodel */,
 				B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */,
+				B8C0EE511567A20F0042EB89 /* Puzzle 9.xcdatamodel */,
 				B8AE12201559912200742256 /* Puzzle.xcdatamodel */,
 			);
-			currentVersion = B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */;
+			currentVersion = B8C0EE511567A20F0042EB89 /* Puzzle 9.xcdatamodel */;
 			path = Puzzle.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

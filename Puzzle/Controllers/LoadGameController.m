@@ -57,6 +57,12 @@
 }
 
 - (void)fetchData {
+
+//    NSFetchRequest *fetchRequest2 = [[NSFetchRequest alloc] init];    
+//    NSEntityDescription *entity2 = [NSEntityDescription entityForName:@"Image"  inManagedObjectContext:delegate.delegate.managedObjectContext];
+//    [fetchRequest2 setEntity:entity2];    
+//    NSLog(@"Images: %d", [[NSMutableArray arrayWithArray:[delegate.delegate.managedObjectContext executeFetchRequest:fetchRequest2 error:nil]] count]);
+    
     
     NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
     
@@ -176,8 +182,12 @@
 - (void)tableView:(UITableView *)tableView_ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        Puzzle *puzzleToDelete = [contents objectAtIndex:indexPath.row];
 
-        [delegate.delegate.managedObjectContext deleteObject:[contents objectAtIndex:indexPath.row]];
+        [delegate.delegate.managedObjectContext deleteObject:puzzleToDelete];
+
+        [delegate.delegate.managedObjectContext deleteObject:puzzleToDelete];
         [contents removeObjectAtIndex:indexPath.row];
         [images removeObjectAtIndex:indexPath.row];
         
