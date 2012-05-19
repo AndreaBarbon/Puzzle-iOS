@@ -6,6 +6,12 @@
 //  Copyright (c) 2012 Università degli studi di Padova. All rights reserved.
 //
 
+
+#define IF_IPAD if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IF_IPHONE if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define HIDE_STATUS_BAR IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+#define SHOW_STATUS_BAR IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVAudioPlayer.h>

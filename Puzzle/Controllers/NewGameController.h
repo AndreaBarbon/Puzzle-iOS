@@ -43,7 +43,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *image;
 @property (nonatomic, retain) IBOutlet UIView *tapToSelectLabel;
 @property (nonatomic, retain) IBOutlet UIButton *puzzleLibraryButton;
-
+@property (nonatomic, retain) IBOutlet UISlider *slider;
 
 - (IBAction)startNewGame:(id)sender;
 - (IBAction)numberSelected:(UISlider*)sender;

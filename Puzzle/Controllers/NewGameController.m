@@ -22,7 +22,7 @@
 
 @implementation NewGameController
 
-@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton, progressView;
+@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton, progressView, slider;
 
 - (void)viewDidLoad
 {
@@ -315,8 +315,9 @@
     
     if (delegate.delegate.loadingGame) {
         
-        int n = [delegate.delegate.puzzleDB.pieceNumber intValue]*[delegate.delegate.puzzleDB.pieceNumber intValue];
-        pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", n];    
+        int n = [delegate.delegate.puzzleDB.pieceNumber intValue];
+        pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", n*n];
+        slider.value = (float)n;
         tapToSelectView.hidden = YES;
         image.image = delegate.delegate.image;
 

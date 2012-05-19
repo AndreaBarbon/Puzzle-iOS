@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-#define FRACTAL_DEBUG
+//#define FRACTAL_DEBUG
 
 #ifdef FRACTAL_DEBUG
 #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

@@ -85,8 +85,8 @@
     
     if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad){
       
-        self.view.frame = CGRectMake(0, 20, screenWidth, screenHeight-20);
-        HUDView.frame = CGRectMake(0, 10, screenWidth, HUDView.frame.size.height);
+        self.view.frame = CGRectMake(0, 0, screenWidth, screenHeight);
+        HUDView.frame = CGRectMake(0, 20, screenWidth, HUDView.frame.size.height);
     
     } else {
         
@@ -279,6 +279,9 @@
     puzzleCompleteImage.transform = CGAffineTransformScale(puzzleCompleteImage.transform, 1/1.8, 1/1.8);
     
     
+    
+    IF_IPHONE [self resetLatticePositionAndSizeWithDuration:1.75];
+    
     [UIView beginAnimations:@"pulseAnimation" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationRepeatAutoreverses:YES];
@@ -306,19 +309,20 @@
             
             [UIView animateWithDuration:0.5 animations:^{
                 
-                for (GroupView *g in groups) {
-                    g.alpha = 0;
-                }
-                for (PieceView *p in pieces) {
-                    if (!p.group) {
-                        p.alpha = 0;
-                    }
-                }
+//                for (GroupView *g in groups) {
+//                    g.alpha = 0;
+//                }
+//                for (PieceView *p in pieces) {
+//                    if (!p.group) {
+//                        p.alpha = 0;
+//                    }
+//                }
                 
             }completion:^(BOOL finished) {
                 
                 [self resizeLatticeToScale:f];
-                [self moveLatticeToLeftWithDuration:0.5];
+                IF_IPAD [self moveLatticeToLeftWithDuration:0.5];
+        
             }];
             
             float translation = 0;
@@ -326,6 +330,9 @@
                 translation = -screenWidth/2+puzzleCompleteImage.bounds.size.height/2;
             } else {
                 translation = -screenHeight/2+puzzleCompleteImage.bounds.size.height/2;
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                 translation += 30;   
+                }
             }
             translation += 30;
             
@@ -436,6 +443,12 @@
 }
 
 - (void)allPiecesLoaded {
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];   
+    }
+    //HUDView.frame = CGRectMake(0, 20, screenWidth, HUDView.frame.size.height);
+
     
     if (loadingFailed) {
         return;
@@ -913,11 +926,13 @@
             [self.view bringSubviewToFront:imageView];
             //
             imageView.alpha = 1;
-            
+            HIDE_STATUS_BAR
+
         } else if (imageView.alpha==1) {
             
             menuButtonView.userInteractionEnabled = YES;
             imageView.alpha = 0;
+            SHOW_STATUS_BAR
         }
     }];
     
@@ -2045,7 +2060,7 @@
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
                 -center.x/lattice.scale+(piceSize-2*padding)+drawerSize/lattice.scale, 
-                -center.y/lattice.scale+(piceSize-2*padding)-topBar);
+                -center.y/lattice.scale+(piceSize-2*padding)+10);
             } else {
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
@@ -2692,7 +2707,9 @@
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-        
+    
+    IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+    
     [completedController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     //Rotate the drawer
@@ -2709,11 +2726,12 @@
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
+        
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
         drawerFrame.size.width = drawerSize;
         drawerFrame.size.height = screenWidth;
-        drawerFrame.origin.x = -1;
+        drawerFrame.origin.x = 0;
         drawerFrame.origin.y = -10;
 
 
@@ -2740,8 +2758,8 @@
         
         drawerFrame.size.height = drawerSize;
         drawerFrame.size.width = screenWidth;
-        drawerFrame.origin.x = -1;
-        drawerFrame.origin.y = screenWidth-drawerSize-10; //Fucking status bar
+        drawerFrame.origin.x = 0;
+        drawerFrame.origin.y = screenWidth-drawerSize;
         
         stepperFrame.origin.y = drawerFrame.size.height;
         stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width-10;
@@ -2765,7 +2783,7 @@
     [self refreshPositions];    
     
     HUDFrame.origin.x = 0;
-    HUDFrame.origin.y = 0;
+    HUDFrame.origin.y = 20;
     
     [UIView animateWithDuration:duration animations:^{
         
@@ -2791,6 +2809,10 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+      
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+    } 
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && 
         [menu.game.popover isPopoverVisible]
