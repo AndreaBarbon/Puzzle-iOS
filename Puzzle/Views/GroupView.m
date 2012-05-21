@@ -125,8 +125,6 @@
         
         angle = 0;
         
-        UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];    
-        [self addGestureRecognizer:rot];
     }
     return self;
 }

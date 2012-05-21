@@ -44,6 +44,7 @@
             
             obscuringView.alpha = obscuring;
             self.view.alpha = 1;
+            delegate.completedController.view.alpha = 0;
         }];
         
         [delegate stopTimer];
@@ -57,6 +58,7 @@
             
             obscuringView.alpha = 0;
             self.view.alpha = 0;
+            if (delegate.puzzleCompete) delegate.completedController.view.alpha = 1;
             
         } completion:^(BOOL finished) {
 

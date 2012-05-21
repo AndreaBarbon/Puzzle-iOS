@@ -1202,7 +1202,9 @@
         newGroup.transform = lattice.transform;
         newGroup.delegate = self;
         newGroup.isPositioned = (piece.isPositioned && loadingGame);
-
+        UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:newGroup action:@selector(rotate:)];    
+        [newGroup addGestureRecognizer:rot];
+        
         //piece.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.1];
         piece.isBoss = YES;
         piece.transform = CGAffineTransformScale(piece.transform, 1/lattice.scale, 1/lattice.scale);
@@ -1642,10 +1644,20 @@
     
 }
 
+- (int)rotationFormAngle:(float)angle {
+    
+    int rotation = 3;
+    
+         if (angle<1) rotation = 0;
+    else if (angle<3) rotation = 1;
+    else if (angle<4) rotation = 2;
+    
+    return rotation;
+}
+
 - (void)checkNeighborsOfPiece:(PieceView*)piece {
     
-    int rotation = floor(piece.angle/(M_PI/2));
-    rotation = rotation%4;    
+    int rotation = [self rotationFormAngle:piece.angle];    
     
     PieceView *otherPiece;
     int j = piece.position;
@@ -1670,15 +1682,15 @@
             
             otherPiece = [self pieceAtPosition:j+i];
             
-            //DLog(@"j+i = %d ; numbers are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d",j+i, piece.number+l, otherPiece.number,  piece.number, otherPiece.number, direction, rotation, r);    
+            DLog(@"j+i = %d ; numbers are %d and %d for pieces #%d, and #%d. Direction = %d, rotation = %d, r = %d",j+i, piece.number+l, otherPiece.number,  piece.number, otherPiece.number, direction, rotation, r);    
             
-            //DLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", piece.number+i, piece.number+l, otherPiece.number);
+            DLog(@"Checking position %d, number+l = %d, otherPiece.number = %d", piece.number+i, piece.number+l, otherPiece.number);
             
             if (otherPiece != nil) {
                 
                 if (otherPiece.isFree) {
                     
-                    //DLog(@"Angles are %.1f (piece) and %.1f (other)", piece.angle, otherPiece.angle);
+                    DLog(@"Angles are %.1f (piece) and %.1f (other)\n\n", piece.angle, otherPiece.angle);
                     
                     
                     if (piece.number+l==otherPiece.number) {

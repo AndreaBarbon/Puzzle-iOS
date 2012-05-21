@@ -80,6 +80,118 @@
 		B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B84014EB1540D0880075734A /* QuartzCore.framework */; };
 		B84014F41540E57D0075734A /* UIImage+CWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B84014F31540E57D0075734A /* UIImage+CWAdditions.m */; };
 		B85381101548D91B00F3BFA5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B853810F1548D91B00F3BFA5 /* AVFoundation.framework */; };
+		B866561C1569C88200A4F5A9 /* Tiger_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656001569C88200A4F5A9 /* Tiger_puzzle.jpg */; };
+		B866561D1569C88200A4F5A9 /* Tiger_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656001569C88200A4F5A9 /* Tiger_puzzle.jpg */; };
+		B866561E1569C88200A4F5A9 /* The_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656011569C88200A4F5A9 /* The_puzzle.jpg */; };
+		B866561F1569C88200A4F5A9 /* The_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656011569C88200A4F5A9 /* The_puzzle.jpg */; };
+		B86656201569C88200A4F5A9 /* Rectil_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656021569C88200A4F5A9 /* Rectil_puzzle.jpg */; };
+		B86656211569C88200A4F5A9 /* Rectil_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656021569C88200A4F5A9 /* Rectil_puzzle.jpg */; };
+		B86656221569C88200A4F5A9 /* Pencils_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656031569C88200A4F5A9 /* Pencils_puzzle.jpg */; };
+		B86656231569C88200A4F5A9 /* Pencils_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656031569C88200A4F5A9 /* Pencils_puzzle.jpg */; };
+		B86656241569C88200A4F5A9 /* Old car_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656041569C88200A4F5A9 /* Old car_puzzle.jpg */; };
+		B86656251569C88200A4F5A9 /* Old car_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656041569C88200A4F5A9 /* Old car_puzzle.jpg */; };
+		B86656261569C88200A4F5A9 /* Nice view_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656051569C88200A4F5A9 /* Nice view_puzzle.jpg */; };
+		B86656271569C88200A4F5A9 /* Nice view_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656051569C88200A4F5A9 /* Nice view_puzzle.jpg */; };
+		B86656281569C88200A4F5A9 /* Micio mafioso_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656061569C88200A4F5A9 /* Micio mafioso_puzzle.jpg */; };
+		B86656291569C88200A4F5A9 /* Micio mafioso_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656061569C88200A4F5A9 /* Micio mafioso_puzzle.jpg */; };
+		B866562A1569C88200A4F5A9 /* Lion_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656071569C88200A4F5A9 /* Lion_puzzle.jpg */; };
+		B866562B1569C88200A4F5A9 /* Lion_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656071569C88200A4F5A9 /* Lion_puzzle.jpg */; };
+		B866562C1569C88200A4F5A9 /* Matrioska_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656081569C88200A4F5A9 /* Matrioska_puzzle.jpg */; };
+		B866562D1569C88200A4F5A9 /* Matrioska_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656081569C88200A4F5A9 /* Matrioska_puzzle.jpg */; };
+		B866562E1569C88200A4F5A9 /* Kiwi_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656091569C88200A4F5A9 /* Kiwi_puzzle.jpg */; };
+		B866562F1569C88200A4F5A9 /* Kiwi_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656091569C88200A4F5A9 /* Kiwi_puzzle.jpg */; };
+		B86656301569C88200A4F5A9 /* Hulk_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560A1569C88200A4F5A9 /* Hulk_puzzle.jpg */; };
+		B86656311569C88200A4F5A9 /* Hulk_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560A1569C88200A4F5A9 /* Hulk_puzzle.jpg */; };
+		B86656321569C88200A4F5A9 /* Hippo_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560B1569C88200A4F5A9 /* Hippo_puzzle.jpg */; };
+		B86656331569C88200A4F5A9 /* Hippo_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560B1569C88200A4F5A9 /* Hippo_puzzle.jpg */; };
+		B86656341569C88200A4F5A9 /* Horses_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560C1569C88200A4F5A9 /* Horses_puzzle.jpg */; };
+		B86656351569C88200A4F5A9 /* Horses_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560C1569C88200A4F5A9 /* Horses_puzzle.jpg */; };
+		B86656361569C88200A4F5A9 /* Girls 2_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560D1569C88200A4F5A9 /* Girls 2_puzzle.jpg */; };
+		B86656371569C88200A4F5A9 /* Girls 2_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560D1569C88200A4F5A9 /* Girls 2_puzzle.jpg */; };
+		B86656381569C88200A4F5A9 /* Girls_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560E1569C88200A4F5A9 /* Girls_puzzle.jpg */; };
+		B86656391569C88200A4F5A9 /* Girls_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560E1569C88200A4F5A9 /* Girls_puzzle.jpg */; };
+		B866563A1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560F1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg */; };
+		B866563B1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866560F1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg */; };
+		B866563C1569C88200A4F5A9 /* Girl_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656101569C88200A4F5A9 /* Girl_puzzle.jpg */; };
+		B866563D1569C88200A4F5A9 /* Girl_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656101569C88200A4F5A9 /* Girl_puzzle.jpg */; };
+		B866563E1569C88200A4F5A9 /* Fishing_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656111569C88200A4F5A9 /* Fishing_puzzle.jpg */; };
+		B866563F1569C88200A4F5A9 /* Fishing_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656111569C88200A4F5A9 /* Fishing_puzzle.jpg */; };
+		B86656401569C88200A4F5A9 /* Earth music_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656121569C88200A4F5A9 /* Earth music_puzzle.jpg */; };
+		B86656411569C88200A4F5A9 /* Earth music_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656121569C88200A4F5A9 /* Earth music_puzzle.jpg */; };
+		B86656421569C88200A4F5A9 /* Duck_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656131569C88200A4F5A9 /* Duck_puzzle.jpg */; };
+		B86656431569C88200A4F5A9 /* Duck_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656131569C88200A4F5A9 /* Duck_puzzle.jpg */; };
+		B86656441569C88200A4F5A9 /* Earth_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656141569C88200A4F5A9 /* Earth_puzzle.jpg */; };
+		B86656451569C88200A4F5A9 /* Earth_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656141569C88200A4F5A9 /* Earth_puzzle.jpg */; };
+		B86656461569C88200A4F5A9 /* Colors_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656151569C88200A4F5A9 /* Colors_puzzle.jpg */; };
+		B86656471569C88200A4F5A9 /* Colors_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656151569C88200A4F5A9 /* Colors_puzzle.jpg */; };
+		B86656481569C88200A4F5A9 /* Chines chess_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656161569C88200A4F5A9 /* Chines chess_puzzle.jpg */; };
+		B86656491569C88200A4F5A9 /* Chines chess_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656161569C88200A4F5A9 /* Chines chess_puzzle.jpg */; };
+		B866564A1569C88200A4F5A9 /* Car_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656171569C88200A4F5A9 /* Car_puzzle.jpg */; };
+		B866564B1569C88200A4F5A9 /* Car_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656171569C88200A4F5A9 /* Car_puzzle.jpg */; };
+		B866564C1569C88200A4F5A9 /* Chess_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656181569C88200A4F5A9 /* Chess_puzzle.jpg */; };
+		B866564D1569C88200A4F5A9 /* Chess_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656181569C88200A4F5A9 /* Chess_puzzle.jpg */; };
+		B866564E1569C88200A4F5A9 /* Butterfly_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656191569C88200A4F5A9 /* Butterfly_puzzle.jpg */; };
+		B866564F1569C88200A4F5A9 /* Butterfly_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656191569C88200A4F5A9 /* Butterfly_puzzle.jpg */; };
+		B86656501569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866561A1569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg */; };
+		B86656511569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866561A1569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg */; };
+		B86656521569C88200A4F5A9 /* Buddah_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866561B1569C88200A4F5A9 /* Buddah_puzzle.jpg */; };
+		B86656531569C88200A4F5A9 /* Buddah_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866561B1569C88200A4F5A9 /* Buddah_puzzle.jpg */; };
+		B86656711569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656551569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg */; };
+		B86656721569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656551569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg */; };
+		B86656731569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656561569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg */; };
+		B86656741569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656561569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg */; };
+		B86656751569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656571569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg */; };
+		B86656761569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656571569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg */; };
+		B86656771569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656581569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg */; };
+		B86656781569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656581569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg */; };
+		B86656791569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656591569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg */; };
+		B866567A1569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656591569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg */; };
+		B866567B1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565A1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg */; };
+		B866567C1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565A1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg */; };
+		B866567D1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565B1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg */; };
+		B866567E1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565B1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg */; };
+		B866567F1569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565C1569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg */; };
+		B86656801569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565C1569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg */; };
+		B86656811569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565D1569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg */; };
+		B86656821569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565D1569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg */; };
+		B86656831569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565E1569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg */; };
+		B86656841569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565E1569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg */; };
+		B86656851569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565F1569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg */; };
+		B86656861569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866565F1569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg */; };
+		B86656871569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656601569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg */; };
+		B86656881569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656601569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg */; };
+		B86656891569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656611569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg */; };
+		B866568A1569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656611569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg */; };
+		B866568B1569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656621569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg */; };
+		B866568C1569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656621569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg */; };
+		B866568D1569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656631569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg */; };
+		B866568E1569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656631569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg */; };
+		B866568F1569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656641569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg */; };
+		B86656901569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656641569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg */; };
+		B86656911569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656651569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg */; };
+		B86656921569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656651569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg */; };
+		B86656931569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656661569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg */; };
+		B86656941569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656661569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg */; };
+		B86656951569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656671569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg */; };
+		B86656961569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656671569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg */; };
+		B86656971569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656681569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg */; };
+		B86656981569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656681569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg */; };
+		B86656991569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656691569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg */; };
+		B866569A1569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656691569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg */; };
+		B866569B1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566A1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg */; };
+		B866569C1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566A1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg */; };
+		B866569D1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566B1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg */; };
+		B866569E1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566B1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg */; };
+		B866569F1569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566C1569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg */; };
+		B86656A01569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566C1569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg */; };
+		B86656A11569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566D1569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg */; };
+		B86656A21569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566D1569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg */; };
+		B86656A31569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566E1569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg */; };
+		B86656A41569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566E1569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg */; };
+		B86656A51569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566F1569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg */; };
+		B86656A61569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B866566F1569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg */; };
+		B86656A71569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656701569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg */; };
+		B86656A81569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B86656701569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg */; };
 		B8731465155C373D00FB77FC /* All seeing eye_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144C155C373D00FB77FC /* All seeing eye_puzzle.jpg */; };
 		B8731466155C373D00FB77FC /* All seeing eye_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144C155C373D00FB77FC /* All seeing eye_puzzle.jpg */; };
 		B8731467155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B873144D155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg */; };
@@ -298,6 +410,62 @@
 		B84014F21540E57D0075734A /* UIImage+CWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CWAdditions.h"; path = "Classes/UIImage+CWAdditions.h"; sourceTree = "<group>"; };
 		B84014F31540E57D0075734A /* UIImage+CWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CWAdditions.m"; path = "Classes/UIImage+CWAdditions.m"; sourceTree = "<group>"; };
 		B853810F1548D91B00F3BFA5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		B86656001569C88200A4F5A9 /* Tiger_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Tiger_puzzle.jpg; sourceTree = "<group>"; };
+		B86656011569C88200A4F5A9 /* The_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = The_puzzle.jpg; sourceTree = "<group>"; };
+		B86656021569C88200A4F5A9 /* Rectil_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Rectil_puzzle.jpg; sourceTree = "<group>"; };
+		B86656031569C88200A4F5A9 /* Pencils_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Pencils_puzzle.jpg; sourceTree = "<group>"; };
+		B86656041569C88200A4F5A9 /* Old car_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Old car_puzzle.jpg"; sourceTree = "<group>"; };
+		B86656051569C88200A4F5A9 /* Nice view_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Nice view_puzzle.jpg"; sourceTree = "<group>"; };
+		B86656061569C88200A4F5A9 /* Micio mafioso_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Micio mafioso_puzzle.jpg"; sourceTree = "<group>"; };
+		B86656071569C88200A4F5A9 /* Lion_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Lion_puzzle.jpg; sourceTree = "<group>"; };
+		B86656081569C88200A4F5A9 /* Matrioska_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Matrioska_puzzle.jpg; sourceTree = "<group>"; };
+		B86656091569C88200A4F5A9 /* Kiwi_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Kiwi_puzzle.jpg; sourceTree = "<group>"; };
+		B866560A1569C88200A4F5A9 /* Hulk_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Hulk_puzzle.jpg; sourceTree = "<group>"; };
+		B866560B1569C88200A4F5A9 /* Hippo_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Hippo_puzzle.jpg; sourceTree = "<group>"; };
+		B866560C1569C88200A4F5A9 /* Horses_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Horses_puzzle.jpg; sourceTree = "<group>"; };
+		B866560D1569C88200A4F5A9 /* Girls 2_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Girls 2_puzzle.jpg"; sourceTree = "<group>"; };
+		B866560E1569C88200A4F5A9 /* Girls_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Girls_puzzle.jpg; sourceTree = "<group>"; };
+		B866560F1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Fontana di trevi_puzzle.jpg"; sourceTree = "<group>"; };
+		B86656101569C88200A4F5A9 /* Girl_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Girl_puzzle.jpg; sourceTree = "<group>"; };
+		B86656111569C88200A4F5A9 /* Fishing_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Fishing_puzzle.jpg; sourceTree = "<group>"; };
+		B86656121569C88200A4F5A9 /* Earth music_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Earth music_puzzle.jpg"; sourceTree = "<group>"; };
+		B86656131569C88200A4F5A9 /* Duck_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Duck_puzzle.jpg; sourceTree = "<group>"; };
+		B86656141569C88200A4F5A9 /* Earth_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Earth_puzzle.jpg; sourceTree = "<group>"; };
+		B86656151569C88200A4F5A9 /* Colors_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Colors_puzzle.jpg; sourceTree = "<group>"; };
+		B86656161569C88200A4F5A9 /* Chines chess_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Chines chess_puzzle.jpg"; sourceTree = "<group>"; };
+		B86656171569C88200A4F5A9 /* Car_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Car_puzzle.jpg; sourceTree = "<group>"; };
+		B86656181569C88200A4F5A9 /* Chess_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Chess_puzzle.jpg; sourceTree = "<group>"; };
+		B86656191569C88200A4F5A9 /* Butterfly_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Butterfly_puzzle.jpg; sourceTree = "<group>"; };
+		B866561A1569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Buddah Bellin_puzzle.jpg"; sourceTree = "<group>"; };
+		B866561B1569C88200A4F5A9 /* Buddah_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Buddah_puzzle.jpg; sourceTree = "<group>"; };
+		B86656551569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Car_puzzle_thumb.jpg"; path = "Thumbs/Copia di Car_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656561569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Chess_puzzle_thumb.jpg"; path = "Thumbs/Copia di Chess_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656571569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Fishing_puzzle_thumb.jpg"; path = "Thumbs/Copia di Fishing_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656581569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Girls_puzzle_thumb.jpg"; path = "Thumbs/Copia di Girls_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656591569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Hulk_puzzle_thumb.jpg"; path = "Thumbs/Copia di Hulk_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866565A1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Micio mafioso_puzzle_thumb.jpg"; path = "Thumbs/Copia di Micio mafioso_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866565B1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Nice view_puzzle_thumb.jpg"; path = "Thumbs/Copia di Nice view_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866565C1569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Pencils_puzzle_thumb.jpg"; path = "Thumbs/Copia di Pencils_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866565D1569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Chines chess_puzzle_thumb.jpg"; path = "Thumbs/Copia di Chines chess_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866565E1569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Colors_puzzle_thumb.jpg"; path = "Thumbs/Copia di Colors_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866565F1569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Girls 2_puzzle_thumb.jpg"; path = "Thumbs/Copia di Girls 2_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656601569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Hippo_puzzle_thumb.jpg"; path = "Thumbs/Copia di Hippo_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656611569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Lion_puzzle_thumb.jpg"; path = "Thumbs/Copia di Lion_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656621569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Matrioska_puzzle_thumb.jpg"; path = "Thumbs/Copia di Matrioska_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656631569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Rectil_puzzle_thumb.jpg"; path = "Thumbs/Copia di Rectil_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656641569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di The_puzzle_thumb.jpg"; path = "Thumbs/Copia di The_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656651569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Buddah Bellin_puzzle_thumb.jpg"; path = "Thumbs/Copia di Buddah Bellin_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656661569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Buddah_puzzle_thumb.jpg"; path = "Thumbs/Copia di Buddah_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656671569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Butterfly_puzzle_thumb.jpg"; path = "Thumbs/Copia di Butterfly_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656681569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Duck_puzzle_thumb.jpg"; path = "Thumbs/Copia di Duck_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656691569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Earth music_puzzle_thumb.jpg"; path = "Thumbs/Copia di Earth music_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866566A1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Earth_puzzle_thumb.jpg"; path = "Thumbs/Copia di Earth_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866566B1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Fontana di trevi_puzzle_thumb.jpg"; path = "Thumbs/Copia di Fontana di trevi_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866566C1569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Horses_puzzle_thumb.jpg"; path = "Thumbs/Copia di Horses_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866566D1569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Kiwi_puzzle_thumb.jpg"; path = "Thumbs/Copia di Kiwi_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866566E1569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Girl_puzzle_thumb.jpg"; path = "Thumbs/Copia di Girl_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B866566F1569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Old car_puzzle_thumb.jpg"; path = "Thumbs/Copia di Old car_puzzle_thumb.jpg"; sourceTree = "<group>"; };
+		B86656701569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Copia di Tiger_puzzle_thumb.jpg"; path = "Thumbs/Copia di Tiger_puzzle_thumb.jpg"; sourceTree = "<group>"; };
 		B873144C155C373D00FB77FC /* All seeing eye_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "All seeing eye_puzzle.jpg"; sourceTree = "<group>"; };
 		B873144D155C373D00FB77FC /* Amsterdam bikes_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Amsterdam bikes_puzzle.jpg"; sourceTree = "<group>"; };
 		B873144E155C373D00FB77FC /* Amsterdam signs_puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Amsterdam signs_puzzle.jpg"; sourceTree = "<group>"; };
@@ -469,6 +637,34 @@
 		B86B28D7155BEF16007D122D /* Thumbs */ = {
 			isa = PBXGroup;
 			children = (
+				B86656551569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg */,
+				B86656561569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg */,
+				B86656571569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg */,
+				B86656581569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg */,
+				B86656591569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg */,
+				B866565A1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg */,
+				B866565B1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg */,
+				B866565C1569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg */,
+				B866565D1569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg */,
+				B866565E1569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg */,
+				B866565F1569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg */,
+				B86656601569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg */,
+				B86656611569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg */,
+				B86656621569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg */,
+				B86656631569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg */,
+				B86656641569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg */,
+				B86656651569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg */,
+				B86656661569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg */,
+				B86656671569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg */,
+				B86656681569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg */,
+				B86656691569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg */,
+				B866566A1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg */,
+				B866566B1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg */,
+				B866566C1569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg */,
+				B866566D1569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg */,
+				B866566E1569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg */,
+				B866566F1569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg */,
+				B86656701569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg */,
 				B8731497155C374D00FB77FC /* Copia di All seeing eye_puzzle_thumb.jpg */,
 				B8731498155C374D00FB77FC /* Copia di Amsterdam bikes_puzzle_thumb.jpg */,
 				B8731499155C374D00FB77FC /* Copia di Amsterdam signs_puzzle_thumb.jpg */,
@@ -657,6 +853,34 @@
 				B873145B155C373D00FB77FC /* Mother board_puzzle.jpg */,
 				B873145C155C373D00FB77FC /* Mountains_puzzle.JPG */,
 				B873145D155C373D00FB77FC /* Nano_puzzle.jpg */,
+				B86656001569C88200A4F5A9 /* Tiger_puzzle.jpg */,
+				B86656011569C88200A4F5A9 /* The_puzzle.jpg */,
+				B86656021569C88200A4F5A9 /* Rectil_puzzle.jpg */,
+				B86656031569C88200A4F5A9 /* Pencils_puzzle.jpg */,
+				B86656041569C88200A4F5A9 /* Old car_puzzle.jpg */,
+				B86656051569C88200A4F5A9 /* Nice view_puzzle.jpg */,
+				B86656061569C88200A4F5A9 /* Micio mafioso_puzzle.jpg */,
+				B86656071569C88200A4F5A9 /* Lion_puzzle.jpg */,
+				B86656081569C88200A4F5A9 /* Matrioska_puzzle.jpg */,
+				B86656091569C88200A4F5A9 /* Kiwi_puzzle.jpg */,
+				B866560A1569C88200A4F5A9 /* Hulk_puzzle.jpg */,
+				B866560B1569C88200A4F5A9 /* Hippo_puzzle.jpg */,
+				B866560C1569C88200A4F5A9 /* Horses_puzzle.jpg */,
+				B866560D1569C88200A4F5A9 /* Girls 2_puzzle.jpg */,
+				B866560E1569C88200A4F5A9 /* Girls_puzzle.jpg */,
+				B866560F1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg */,
+				B86656101569C88200A4F5A9 /* Girl_puzzle.jpg */,
+				B86656111569C88200A4F5A9 /* Fishing_puzzle.jpg */,
+				B86656121569C88200A4F5A9 /* Earth music_puzzle.jpg */,
+				B86656131569C88200A4F5A9 /* Duck_puzzle.jpg */,
+				B86656141569C88200A4F5A9 /* Earth_puzzle.jpg */,
+				B86656151569C88200A4F5A9 /* Colors_puzzle.jpg */,
+				B86656161569C88200A4F5A9 /* Chines chess_puzzle.jpg */,
+				B86656171569C88200A4F5A9 /* Car_puzzle.jpg */,
+				B86656181569C88200A4F5A9 /* Chess_puzzle.jpg */,
+				B86656191569C88200A4F5A9 /* Butterfly_puzzle.jpg */,
+				B866561A1569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg */,
+				B866561B1569C88200A4F5A9 /* Buddah_puzzle.jpg */,
 				B873145E155C373D00FB77FC /* Obiettivo_puzzle.jpg */,
 				B873145F155C373D00FB77FC /* Pane_puzzle.jpg */,
 				B8731460155C373D00FB77FC /* Pasta_puzzle.jpg */,
@@ -928,6 +1152,62 @@
 				B8DADF9615654973002DCEF8 /* Notes.txt in Resources */,
 				B8D28BC815667CCF00DCF1A0 /* PanningSwitch.png in Resources */,
 				B8D28BCB15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */,
+				B866561C1569C88200A4F5A9 /* Tiger_puzzle.jpg in Resources */,
+				B866561E1569C88200A4F5A9 /* The_puzzle.jpg in Resources */,
+				B86656201569C88200A4F5A9 /* Rectil_puzzle.jpg in Resources */,
+				B86656221569C88200A4F5A9 /* Pencils_puzzle.jpg in Resources */,
+				B86656241569C88200A4F5A9 /* Old car_puzzle.jpg in Resources */,
+				B86656261569C88200A4F5A9 /* Nice view_puzzle.jpg in Resources */,
+				B86656281569C88200A4F5A9 /* Micio mafioso_puzzle.jpg in Resources */,
+				B866562A1569C88200A4F5A9 /* Lion_puzzle.jpg in Resources */,
+				B866562C1569C88200A4F5A9 /* Matrioska_puzzle.jpg in Resources */,
+				B866562E1569C88200A4F5A9 /* Kiwi_puzzle.jpg in Resources */,
+				B86656301569C88200A4F5A9 /* Hulk_puzzle.jpg in Resources */,
+				B86656321569C88200A4F5A9 /* Hippo_puzzle.jpg in Resources */,
+				B86656341569C88200A4F5A9 /* Horses_puzzle.jpg in Resources */,
+				B86656361569C88200A4F5A9 /* Girls 2_puzzle.jpg in Resources */,
+				B86656381569C88200A4F5A9 /* Girls_puzzle.jpg in Resources */,
+				B866563A1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg in Resources */,
+				B866563C1569C88200A4F5A9 /* Girl_puzzle.jpg in Resources */,
+				B866563E1569C88200A4F5A9 /* Fishing_puzzle.jpg in Resources */,
+				B86656401569C88200A4F5A9 /* Earth music_puzzle.jpg in Resources */,
+				B86656421569C88200A4F5A9 /* Duck_puzzle.jpg in Resources */,
+				B86656441569C88200A4F5A9 /* Earth_puzzle.jpg in Resources */,
+				B86656461569C88200A4F5A9 /* Colors_puzzle.jpg in Resources */,
+				B86656481569C88200A4F5A9 /* Chines chess_puzzle.jpg in Resources */,
+				B866564A1569C88200A4F5A9 /* Car_puzzle.jpg in Resources */,
+				B866564C1569C88200A4F5A9 /* Chess_puzzle.jpg in Resources */,
+				B866564E1569C88200A4F5A9 /* Butterfly_puzzle.jpg in Resources */,
+				B86656501569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg in Resources */,
+				B86656521569C88200A4F5A9 /* Buddah_puzzle.jpg in Resources */,
+				B86656711569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg in Resources */,
+				B86656731569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg in Resources */,
+				B86656751569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg in Resources */,
+				B86656771569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg in Resources */,
+				B86656791569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg in Resources */,
+				B866567B1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg in Resources */,
+				B866567D1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg in Resources */,
+				B866567F1569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg in Resources */,
+				B86656811569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg in Resources */,
+				B86656831569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg in Resources */,
+				B86656851569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg in Resources */,
+				B86656871569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg in Resources */,
+				B86656891569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg in Resources */,
+				B866568B1569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg in Resources */,
+				B866568D1569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg in Resources */,
+				B866568F1569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg in Resources */,
+				B86656911569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg in Resources */,
+				B86656931569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg in Resources */,
+				B86656951569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg in Resources */,
+				B86656971569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg in Resources */,
+				B86656991569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg in Resources */,
+				B866569B1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg in Resources */,
+				B866569D1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg in Resources */,
+				B866569F1569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg in Resources */,
+				B86656A11569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg in Resources */,
+				B86656A31569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg in Resources */,
+				B86656A51569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg in Resources */,
+				B86656A71569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1014,6 +1294,62 @@
 				B8DADF9715654973002DCEF8 /* Notes.txt in Resources */,
 				B8D28BC915667CCF00DCF1A0 /* PanningSwitch.png in Resources */,
 				B8D28BCC15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */,
+				B866561D1569C88200A4F5A9 /* Tiger_puzzle.jpg in Resources */,
+				B866561F1569C88200A4F5A9 /* The_puzzle.jpg in Resources */,
+				B86656211569C88200A4F5A9 /* Rectil_puzzle.jpg in Resources */,
+				B86656231569C88200A4F5A9 /* Pencils_puzzle.jpg in Resources */,
+				B86656251569C88200A4F5A9 /* Old car_puzzle.jpg in Resources */,
+				B86656271569C88200A4F5A9 /* Nice view_puzzle.jpg in Resources */,
+				B86656291569C88200A4F5A9 /* Micio mafioso_puzzle.jpg in Resources */,
+				B866562B1569C88200A4F5A9 /* Lion_puzzle.jpg in Resources */,
+				B866562D1569C88200A4F5A9 /* Matrioska_puzzle.jpg in Resources */,
+				B866562F1569C88200A4F5A9 /* Kiwi_puzzle.jpg in Resources */,
+				B86656311569C88200A4F5A9 /* Hulk_puzzle.jpg in Resources */,
+				B86656331569C88200A4F5A9 /* Hippo_puzzle.jpg in Resources */,
+				B86656351569C88200A4F5A9 /* Horses_puzzle.jpg in Resources */,
+				B86656371569C88200A4F5A9 /* Girls 2_puzzle.jpg in Resources */,
+				B86656391569C88200A4F5A9 /* Girls_puzzle.jpg in Resources */,
+				B866563B1569C88200A4F5A9 /* Fontana di trevi_puzzle.jpg in Resources */,
+				B866563D1569C88200A4F5A9 /* Girl_puzzle.jpg in Resources */,
+				B866563F1569C88200A4F5A9 /* Fishing_puzzle.jpg in Resources */,
+				B86656411569C88200A4F5A9 /* Earth music_puzzle.jpg in Resources */,
+				B86656431569C88200A4F5A9 /* Duck_puzzle.jpg in Resources */,
+				B86656451569C88200A4F5A9 /* Earth_puzzle.jpg in Resources */,
+				B86656471569C88200A4F5A9 /* Colors_puzzle.jpg in Resources */,
+				B86656491569C88200A4F5A9 /* Chines chess_puzzle.jpg in Resources */,
+				B866564B1569C88200A4F5A9 /* Car_puzzle.jpg in Resources */,
+				B866564D1569C88200A4F5A9 /* Chess_puzzle.jpg in Resources */,
+				B866564F1569C88200A4F5A9 /* Butterfly_puzzle.jpg in Resources */,
+				B86656511569C88200A4F5A9 /* Buddah Bellin_puzzle.jpg in Resources */,
+				B86656531569C88200A4F5A9 /* Buddah_puzzle.jpg in Resources */,
+				B86656721569C89200A4F5A9 /* Copia di Car_puzzle_thumb.jpg in Resources */,
+				B86656741569C89200A4F5A9 /* Copia di Chess_puzzle_thumb.jpg in Resources */,
+				B86656761569C89200A4F5A9 /* Copia di Fishing_puzzle_thumb.jpg in Resources */,
+				B86656781569C89200A4F5A9 /* Copia di Girls_puzzle_thumb.jpg in Resources */,
+				B866567A1569C89200A4F5A9 /* Copia di Hulk_puzzle_thumb.jpg in Resources */,
+				B866567C1569C89200A4F5A9 /* Copia di Micio mafioso_puzzle_thumb.jpg in Resources */,
+				B866567E1569C89200A4F5A9 /* Copia di Nice view_puzzle_thumb.jpg in Resources */,
+				B86656801569C89200A4F5A9 /* Copia di Pencils_puzzle_thumb.jpg in Resources */,
+				B86656821569C89200A4F5A9 /* Copia di Chines chess_puzzle_thumb.jpg in Resources */,
+				B86656841569C89200A4F5A9 /* Copia di Colors_puzzle_thumb.jpg in Resources */,
+				B86656861569C89200A4F5A9 /* Copia di Girls 2_puzzle_thumb.jpg in Resources */,
+				B86656881569C89200A4F5A9 /* Copia di Hippo_puzzle_thumb.jpg in Resources */,
+				B866568A1569C89200A4F5A9 /* Copia di Lion_puzzle_thumb.jpg in Resources */,
+				B866568C1569C89200A4F5A9 /* Copia di Matrioska_puzzle_thumb.jpg in Resources */,
+				B866568E1569C89200A4F5A9 /* Copia di Rectil_puzzle_thumb.jpg in Resources */,
+				B86656901569C89200A4F5A9 /* Copia di The_puzzle_thumb.jpg in Resources */,
+				B86656921569C89200A4F5A9 /* Copia di Buddah Bellin_puzzle_thumb.jpg in Resources */,
+				B86656941569C89200A4F5A9 /* Copia di Buddah_puzzle_thumb.jpg in Resources */,
+				B86656961569C89200A4F5A9 /* Copia di Butterfly_puzzle_thumb.jpg in Resources */,
+				B86656981569C89200A4F5A9 /* Copia di Duck_puzzle_thumb.jpg in Resources */,
+				B866569A1569C89200A4F5A9 /* Copia di Earth music_puzzle_thumb.jpg in Resources */,
+				B866569C1569C89200A4F5A9 /* Copia di Earth_puzzle_thumb.jpg in Resources */,
+				B866569E1569C89200A4F5A9 /* Copia di Fontana di trevi_puzzle_thumb.jpg in Resources */,
+				B86656A01569C89200A4F5A9 /* Copia di Horses_puzzle_thumb.jpg in Resources */,
+				B86656A21569C89200A4F5A9 /* Copia di Kiwi_puzzle_thumb.jpg in Resources */,
+				B86656A41569C89200A4F5A9 /* Copia di Girl_puzzle_thumb.jpg in Resources */,
+				B86656A61569C89200A4F5A9 /* Copia di Old car_puzzle_thumb.jpg in Resources */,
+				B86656A81569C89200A4F5A9 /* Copia di Tiger_puzzle_thumb.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
