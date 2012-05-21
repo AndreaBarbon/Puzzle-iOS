@@ -22,7 +22,7 @@
     
     CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
     
-    [delegate setAnchorPoint:boss.center forView:self];
+    [self setAnchorPoint:boss.center forView:self];
         
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
     animation.toValue = [NSValue valueWithCATransform3D:trasform];
@@ -35,6 +35,26 @@
     
 }
 
+- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view {
+    
+    anchorPoint = CGPointMake(anchorPoint.x / view.bounds.size.width, anchorPoint.y / view.bounds.size.height);
+    CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
+    CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
+    
+    newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
+    oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+    
+    CGPoint pos = view.layer.position;
+    
+    pos.x -= oldPoint.x;
+    pos.x += newPoint.x;
+    
+    pos.y -= oldPoint.y;
+    pos.y += newPoint.y;
+    
+    view.layer.position = pos;
+    view.layer.anchorPoint = anchorPoint;
+}
 
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {

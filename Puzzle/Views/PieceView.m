@@ -54,8 +54,10 @@
     if (delegate.loadingGame) return;
     
     if (group && !group.isPositioned) {
+        
         [group pulse];
         return;
+        
     }
 
     
