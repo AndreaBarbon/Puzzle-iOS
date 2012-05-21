@@ -151,6 +151,9 @@
 }
 
 - (IBAction)showThePicture:(id)sender {
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Hint" message:@"A shortcut to show the image: hold one finger on the screen for 1 second.\nEnjoy!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [alertView show];
 
     //[self toggleMenu];    
     [delegate toggleImageWithDuration:0.5];

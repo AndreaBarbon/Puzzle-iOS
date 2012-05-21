@@ -78,7 +78,7 @@
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture {
     
-    DLog(@"%s", __func__);
+    NSLog(@"%s", __func__);
             
         float rotation = [gesture rotation];
         
@@ -142,6 +142,9 @@
        
         pieces = [[NSMutableArray alloc] init];
         //self.backgroundColor = [UIColor colorWithRed:0.5 green:0 blue:0.5 alpha:0.1];
+        
+        UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];    
+        [self addGestureRecognizer:rot];
         
         angle = 0;
         

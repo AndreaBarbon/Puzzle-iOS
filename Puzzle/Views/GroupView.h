@@ -10,7 +10,7 @@
 
 @class PieceView;
 
-@interface GroupView : UIView {
+@interface GroupView : UIView <UIGestureRecognizerDelegate>{
     
     float tempAngle;
 }

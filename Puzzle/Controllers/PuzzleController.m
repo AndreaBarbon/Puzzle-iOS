@@ -1202,8 +1202,7 @@
         newGroup.transform = lattice.transform;
         newGroup.delegate = self;
         newGroup.isPositioned = (piece.isPositioned && loadingGame);
-        UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:newGroup action:@selector(rotate:)];    
-        [newGroup addGestureRecognizer:rot];
+
         
         //piece.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.1];
         piece.isBoss = YES;
