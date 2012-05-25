@@ -77,12 +77,15 @@
 }
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture {
-    
-    NSLog(@"%s", __func__);
-            
+                
         float rotation = [gesture rotation];
         
-        if ([gesture state]==UIGestureRecognizerStateEnded || [gesture state]==UIGestureRecognizerStateCancelled || [gesture state]==UIGestureRecognizerStateFailed) {
+        [self setAnchorPoint:boss.center forView:self];
+
+    
+        if ([gesture state]==UIGestureRecognizerStateEnded || 
+            [gesture state]==UIGestureRecognizerStateCancelled || 
+            [gesture state]==UIGestureRecognizerStateFailed) {
             
             int t = floor(ABS(tempAngle)/(M_PI/4));
             
@@ -98,7 +101,7 @@
             angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
             [self setAngle:angle];
             
-            //DLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             
             [UIView animateWithDuration:0.2 animations:^{
                 

@@ -23,6 +23,7 @@
 @property (nonatomic, assign) PuzzleController *delegate;
 
 
+- (void)rotate:(UIRotationGestureRecognizer*)gesture;
 - (void)translateWithVector:(CGPoint)traslation;
 - (void)pulse;
 

@@ -406,6 +406,17 @@
     
 }
 
+- (void)toggleMenu {
+        
+    menu.duringGame = (puzzleDB!=nil);
+    [self.view bringSubviewToFront:menu.obscuringView];
+    [self.view bringSubviewToFront:menu.view];
+    [self.view bringSubviewToFront:menuButtonView];
+    
+    [menu toggleMenuWithDuration:0.5];
+    
+}
+
 // This method will be called on a secondary thread. Forward to the main thread for safe handling of UIKit objects.
 - (void)puzzleSaved:(NSNotification *)saveNotification {
         

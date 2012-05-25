@@ -157,6 +157,7 @@
 - (IBAction)togglePanningMode:(id)sender;
 - (IBAction)puzzleCompleted;
 - (IBAction)toggleMenu:(id)sender;
+- (void)toggleMenu;
 
 - (void)loadPuzzle:(Puzzle*)puzzleDB;
 - (BOOL)drawerStoppedShouldBeStopped;
