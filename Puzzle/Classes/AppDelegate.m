@@ -66,11 +66,21 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application {
         
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+
     if (puzzle.menu.view.alpha==0) {
         
         [puzzle saveGame];
         wasOpened = YES;
-        [puzzle toggleMenu];
+        
+        puzzle.menu.duringGame = (puzzle.puzzleDB!=nil);
+        [puzzle.view bringSubviewToFront:puzzle.menu.obscuringView];
+        [puzzle.view bringSubviewToFront:puzzle.menu.view];
+        [puzzle.view bringSubviewToFront:puzzle.menuButtonView];
+        
+        [puzzle.menu toggleMenuWithDuration:0];        
+        
+        //[puzzle toggleMenu];
     }
     
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -79,7 +89,6 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-        
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }

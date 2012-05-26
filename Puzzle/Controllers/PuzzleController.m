@@ -296,6 +296,9 @@
 }
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+
+    NSLog(@"Finished!");
+
     if ([finished boolValue]) {
         
         if ([animationID isEqualToString:@"pulseAnimation"]) {
@@ -413,7 +416,7 @@
     [self.view bringSubviewToFront:menu.view];
     [self.view bringSubviewToFront:menuButtonView];
     
-    [menu toggleMenuWithDuration:0.5];
+    [menu toggleMenuWithDuration:1];
     
 }
 
@@ -565,6 +568,8 @@
 }
 
 - (void)prepareForNewPuzzle {
+    
+    NSLog(@"Preparing for new puzzle");
     
     [self.view bringSubviewToFront:lattice];
     [self.view bringSubviewToFront:drawerView];
@@ -2009,6 +2014,33 @@
     //DLog(@"IN");
     
     return NO;
+}
+
+- (UIView*)upperPositionedThing {
+    
+    for (int i=0; i<self.view.subviews.count; i++) {
+        
+        UIView *v = [self.view.subviews objectAtIndex:i];
+        
+        if ([v isKindOfClass:[GroupView class]]) {            
+            
+            NSLog(@"Group");
+            
+            if ([(GroupView*)v isPositioned]) {
+                return v;
+            }
+        }
+        if ([v isKindOfClass:[PieceView class]]) {            
+            
+            NSLog(@"Piece #%d", [(PieceView*)v number]);
+            
+            if ([(PieceView*)v isPositioned]) {
+                return v;
+            }
+        }
+    }
+    
+    return lattice;
 }
 
 

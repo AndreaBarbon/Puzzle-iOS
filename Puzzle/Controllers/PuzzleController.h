@@ -166,6 +166,7 @@
 
 - (CGRect)frameOfLatticePiece:(int)i;
 
+- (UIView*)upperPositionedThing;
 
 - (void)panDrawer:(UIPanGestureRecognizer*)gesture;
 - (void)pan:(UIPanGestureRecognizer*)gesture;

@@ -59,7 +59,9 @@
         return;
         
     }
-
+    
+    [self removeFromSuperview];
+    [delegate.view insertSubview:self aboveSubview:[delegate upperPositionedThing]];
     
     CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
 
@@ -72,22 +74,8 @@
     animation.repeatCount = 2;
     [self.layer addAnimation:animation forKey:@"pulseAnimation"];
     
+    
     return;
-    
-    
-        
-    [UIView beginAnimations:@"pulseAnimation" context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationRepeatAutoreverses:NO];
-    [UIView setAnimationDuration:1];
-    [UIView setAnimationRepeatCount:2.0];
-    
-    self.transform = CGAffineTransformScale(self.transform, 1.15, 1.15);
-        
-    [UIView commitAnimations];
-    
-    DLog(@"%s", __func__);
-
 }
 
 
