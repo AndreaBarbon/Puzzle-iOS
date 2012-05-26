@@ -78,62 +78,66 @@
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture {
                 
-        float rotation = [gesture rotation];
-        
-        [self setAnchorPoint:boss.center forView:self];
-
+    return;
     
-        if ([gesture state]==UIGestureRecognizerStateEnded || 
-            [gesture state]==UIGestureRecognizerStateCancelled || 
-            [gesture state]==UIGestureRecognizerStateFailed) {
-            
-            int t = floor(ABS(tempAngle)/(M_PI/4));
-            
-            if (t%2==0) {
-                t/=2;
-            } else {
-                t= (t+1)/2;
-            }
-            
-            rotation = tempAngle/ABS(tempAngle) * t*M_PI/2 - tempAngle;
-            
-            angle += rotation;
-            angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
-            [self setAngle:angle];
-            
-            NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                
-                self.transform = CGAffineTransformRotate(self.transform, rotation);
-                
-            }completion:^(BOOL finished) {
-                
-                [delegate pieceRotated:self.boss];
-            }];
-            
-            //            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
-            
-            tempAngle = 0;
-            
-            
-            
-            
-        } else if (gesture.state==UIGestureRecognizerStateBegan || gesture.state==UIGestureRecognizerStateChanged){
-            
-            delegate.drawerView.userInteractionEnabled = NO;
-            
-            self.transform = CGAffineTransformRotate(self.transform, rotation);
-            tempAngle += rotation;
-            angle += rotation;
-            
+    
+    
+    float rotation = [gesture rotation];
+    
+    [self setAnchorPoint:boss.center forView:self];
+    
+    
+    if ([gesture state]==UIGestureRecognizerStateEnded || 
+        [gesture state]==UIGestureRecognizerStateCancelled || 
+        [gesture state]==UIGestureRecognizerStateFailed) {
+        
+        int t = floor(ABS(tempAngle)/(M_PI/4));
+        
+        if (t%2==0) {
+            t/=2;
+        } else {
+            t= (t+1)/2;
         }
         
-        //DLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
+        rotation = tempAngle/ABS(tempAngle) * t*M_PI/2 - tempAngle;
         
+        angle += rotation;
+        angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
+        [self setAngle:angle];
         
-        [gesture setRotation:0];
+        NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+        
+        [UIView animateWithDuration:0.2 animations:^{
             
+            self.transform = CGAffineTransformRotate(self.transform, rotation);
+            
+        }completion:^(BOOL finished) {
+            
+            [delegate pieceRotated:self.boss];
+        }];
+        
+        //            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
+        
+        tempAngle = 0;
+        
+        
+        
+        
+    } else if (gesture.state==UIGestureRecognizerStateBegan || gesture.state==UIGestureRecognizerStateChanged){
+        
+        delegate.drawerView.userInteractionEnabled = NO;
+        
+        self.transform = CGAffineTransformRotate(self.transform, rotation);
+        tempAngle += rotation;
+        angle += rotation;
+        
+    }
+    
+    //DLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
+    
+    
+    [gesture setRotation:0];
+    
     
 }
 

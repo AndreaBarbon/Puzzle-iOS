@@ -714,7 +714,8 @@
         //and split the big image using computed size
                 
         float f = (float)(pieceNumber*partSize*0.7);
-        image = [image imageByScalingToSize:CGSizeMake(f,f)];
+        image = [image imageCroppedToSquareWithSide:f];
+        imageView.image = image;
         array = [[NSMutableArray alloc] initWithArray:[self splitImage:image partSize:partSize]];
         
     }

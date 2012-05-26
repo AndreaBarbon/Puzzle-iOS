@@ -170,12 +170,11 @@
         [self dismissModalViewControllerAnimated:YES];
     }
     
-    UIImage *temp = [UIImage imageWithData:dataJPG];
+    image.image = [UIImage imageWithData:dataJPG];
     
     tapToSelectLabel.hidden = YES;
     startButton.enabled = YES;    
     
-    image.image = temp;    
 }
 
 
