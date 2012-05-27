@@ -43,7 +43,7 @@
     BOOL panningMode;
     BOOL panningDrawerUP;
     BOOL loadingFailed;
-    
+        
     CGPoint drawerFirstPoint;
     
     IBOutlet UIStepper *stepper;
@@ -96,9 +96,10 @@
 @property(nonatomic) int score;
 
 @property(nonatomic) BOOL loadingGame;
+@property(nonatomic) BOOL creatingGame;
 @property(nonatomic) BOOL puzzleCompete;
 @property(nonatomic) BOOL drawerStopped;
-
+@property(nonatomic) BOOL duringGame;
 
 
 
@@ -157,12 +158,12 @@
 - (IBAction)togglePanningMode:(id)sender;
 - (IBAction)puzzleCompleted;
 - (IBAction)toggleMenu:(id)sender;
-- (void)toggleMenu;
 
 - (void)loadPuzzle:(Puzzle*)puzzleDB;
 - (BOOL)drawerStoppedShouldBeStopped;
 - (Puzzle*)lastSavedPuzzle;
 - (void)prepareForNewPuzzle;
+- (void)prepareForLoading;
 
 - (CGRect)frameOfLatticePiece:(int)i;
 

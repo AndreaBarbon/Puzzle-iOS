@@ -343,7 +343,7 @@
 
 - (void)gameStarted {
     
-    DLog(@"Game is started");
+    NSLog(@"Game is started");
     
     [timer invalidate];
 
@@ -368,7 +368,7 @@
 
 - (void)loadingFailed {
     
-    DLog(@"Game failed");
+    NSLog(@"Game failed");
     
     [timer invalidate];
     

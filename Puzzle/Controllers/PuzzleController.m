@@ -52,7 +52,7 @@
 
 @synthesize positionedSound, completedSound, neighborSound;
 
-@synthesize puzzleCompete, loadingGame;
+@synthesize puzzleCompete, loadingGame, duringGame, creatingGame;
 
 @synthesize menu, completedController;
 
@@ -87,10 +87,16 @@
       
         self.view.frame = CGRectMake(0, 0, screenWidth, screenHeight);
         HUDView.frame = CGRectMake(0, 20, screenWidth, HUDView.frame.size.height);
+        panningSwitch.hidden = YES;
+        percentageLabel.center = CGPointMake(elapsedTimeLabel.center.x, elapsedTimeLabel.center.y + 30);
+        percentageLabel.textAlignment = UITextAlignmentRight;
+        
     
     } else {
         
         HUDView.frame = CGRectMake(0, -10, screenWidth, HUDView.frame.size.height);
+        imageSize *= 0.5;
+        panningSwitch.transform = CGAffineTransformScale(panningSwitch.transform, 0.8, 0.8);
     } 
 
     
@@ -102,15 +108,6 @@
 //    firstPointView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
 //    firstPointView.backgroundColor = [UIColor whiteColor];
 //    [self.view addSubview:firstPointView];
-    
-        
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-        
-        imageSize *= 0.5;
-
-        panningSwitch.transform = CGAffineTransformScale(panningSwitch.transform, 0.8, 0.8);
-                
-    }
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     drawerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
@@ -297,8 +294,6 @@
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
 
-    NSLog(@"Finished!");
-
     if ([finished boolValue]) {
         
         if ([animationID isEqualToString:@"pulseAnimation"]) {
@@ -409,14 +404,16 @@
     
 }
 
-- (void)toggleMenu {
+- (void)prepareForLoading {
         
     menu.duringGame = (puzzleDB!=nil);
     [self.view bringSubviewToFront:menu.obscuringView];
-    [self.view bringSubviewToFront:menu.view];
+    [self.view bringSubviewToFront:menu.game.view];
     [self.view bringSubviewToFront:menuButtonView];
+    menu.game.view.frame = CGRectMake(0, 0, menu.game.view.frame.size.width, menu.game.view.frame.size.height);
+    menu.mainView.frame = CGRectMake(-menu.mainView.frame.size.width, 0, menu.mainView.frame.size.width, menu.mainView.frame.size.height);
     
-    [menu toggleMenuWithDuration:1];
+    [menu toggleMenuWithDuration:0];
     
 }
 
@@ -458,6 +455,8 @@
 
 - (void)allPiecesLoaded {
     
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];   
     }
@@ -467,6 +466,9 @@
     if (loadingFailed) {
         return;
     }
+    
+    duringGame = YES;
+
         
     for (PieceView *p in pieces) {
         if (!p.isFree) {
@@ -522,6 +524,7 @@
             [self shuffle];
             [self updatePercentage];
             [self organizeDrawerWithOrientation:self.interfaceOrientation];
+            creatingGame = NO;
             DLog(@"-----------> All pieces created");
             
         }
@@ -569,7 +572,7 @@
 
 - (void)prepareForNewPuzzle {
     
-    NSLog(@"Preparing for new puzzle");
+    DLog(@"Preparing for new puzzle");
     
     [self.view bringSubviewToFront:lattice];
     [self.view bringSubviewToFront:drawerView];
@@ -586,6 +589,7 @@
 
     drawerStopped = NO;
     panningMode = NO;
+    duringGame = NO;
     
     puzzleCompleteImage.alpha = 0;
     completedController.view.alpha = 0;
@@ -658,6 +662,7 @@
 - (void)createPuzzleFromImage:(UIImage*)image_ {
     
     loadingGame = NO;
+    creatingGame = YES;
     moves = 0;
     rotations = 0;
     
@@ -851,8 +856,6 @@
     
 }
 
-
-
 - (void)addAnothePieceToView {
         
     [self.view insertSubview:[pieces objectAtIndex:loadedPieces] belowSubview:menu.obscuringView];
@@ -871,7 +874,6 @@
     menu.game.progressView.progress = a/b;
     
 }
-
 
 - (NSArray *)splitImage:(UIImage *)im partSize:(float)partSize {
     
@@ -2018,23 +2020,19 @@
 
 - (UIView*)upperPositionedThing {
     
+    int N = self.view.subviews.count;
+    
     for (int i=0; i<self.view.subviews.count; i++) {
         
-        UIView *v = [self.view.subviews objectAtIndex:i];
+        UIView *v = [self.view.subviews objectAtIndex:N-i-1];
         
         if ([v isKindOfClass:[GroupView class]]) {            
-            
-            NSLog(@"Group");
-            
-            if ([(GroupView*)v isPositioned]) {
-                return v;
-            }
+                        
+            return v;
         }
         if ([v isKindOfClass:[PieceView class]]) {            
-            
-            NSLog(@"Piece #%d", [(PieceView*)v number]);
-            
-            if ([(PieceView*)v isPositioned]) {
+                        
+            if (!v.userInteractionEnabled) {
                 return v;
             }
         }
@@ -2099,6 +2097,7 @@
 - (void)resetLatticePositionAndSizeWithDuration:(float)duration {
     
     float f = (screenWidth)/(pieceNumber+1)/(piceSize-2*padding);
+
         
     [UIView animateWithDuration:duration animations:^{
 
@@ -2122,6 +2121,7 @@
                 -center.x/lattice.scale+(piceSize-2*padding), 
                 -center.y/lattice.scale+(piceSize-2*padding)+HUDView.bounds.size.height/lattice.scale-topBar);
             }
+            
                         
             [self refreshPositions];
             
@@ -2797,6 +2797,7 @@
         
         chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
         panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
+        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x+drawerSize, percentageLabel.center.y);
         
         lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y);
         
@@ -2821,6 +2822,7 @@
         
         chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
         panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
+        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x-drawerSize, percentageLabel.center.y);
         
         lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y);
         

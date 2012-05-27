@@ -602,8 +602,10 @@
 
 
     
-    if (!delegate.loadingGame) {
-        //DLog(@"----------------> Should reset!");
+    if (!delegate.loadingGame && !delegate.creatingGame) {
+        [delegate prepareForLoading];
+        [delegate loadPuzzle:delegate.puzzleDB];
+        return;
     }
     
     padding = self.bounds.size.width*0.15;
@@ -645,21 +647,21 @@
     CGContextClosePath(ctx);
     CGContextDrawPath(ctx, kCGPathStroke);
     
-    
-    
-    //DLog(@"Piece #%d drawn", number);
-    delegate.loadedPieces++;
+    delegate.loadedPieces++;    
+    DLog(@"Piece #%d drawn, loadedPieces %d", number, delegate.loadedPieces);
     [delegate moveBar];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"PiecesNotifications" object:self];
-
-    
     int pieceNumber = (delegate.NumberSquare-delegate.missedPieces);
-    if (!delegate.loadingGame) {
-        //pieceNumber *= 2;
+
+    if (delegate.loadedPieces>pieceNumber) {
+        DLog(@"loadedPieces resetted");
+        delegate.loadedPieces = 0;
     }
     
-    if (delegate.loadedPieces == pieceNumber) {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PiecesNotifications" object:self];
+    
+    if (delegate.loadedPieces == pieceNumber && !delegate.duringGame) {
         [delegate allPiecesLoaded];
     } else {
         [delegate performSelectorOnMainThread:@selector(addAnothePieceToView) withObject:nil waitUntilDone:NO];

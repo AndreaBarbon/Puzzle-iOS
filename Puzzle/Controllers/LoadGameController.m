@@ -215,6 +215,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    delegate.delegate.puzzleCompete = NO;
+    
     [delegate.delegate.managedObjectContext save:nil];
     [delegate.delegate prepareForNewPuzzle];
     [delegate.delegate loadPuzzle:[contents objectAtIndex:indexPath.row]];

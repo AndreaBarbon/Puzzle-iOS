@@ -97,7 +97,7 @@
         angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
         [self setAngle:angle];
         
-        NSLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
+        DLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
         
         [UIView animateWithDuration:0.2 animations:^{
             
