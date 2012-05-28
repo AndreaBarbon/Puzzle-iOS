@@ -198,6 +198,10 @@
     if (!self.userInteractionEnabled) {
         return;
     }
+
+    if(delegate.imageView.alpha == 1) {
+        [delegate toggleImageWithDuration:0.5];
+    }
     
     CGPoint traslation = [gesture translationInView:self.superview];
     
