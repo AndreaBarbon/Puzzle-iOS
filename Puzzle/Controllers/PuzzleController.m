@@ -455,7 +455,7 @@
 
 - (void)allPiecesLoaded {
     
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    DLog(@"%s", __PRETTY_FUNCTION__);
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];   

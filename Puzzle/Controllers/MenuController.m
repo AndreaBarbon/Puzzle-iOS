@@ -145,7 +145,7 @@
 
 - (IBAction)resumeGame:(id)sender {
     
-    NSLog(@"Resume game");
+    DLog(@"Resume game");
     
     delegate.puzzleCompleteImage.alpha = 0;
     [self toggleMenuWithDuration:0.5];
