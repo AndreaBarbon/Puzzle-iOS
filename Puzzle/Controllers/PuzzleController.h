@@ -150,6 +150,7 @@
 + (float)computeFloat:(float)f modulo:(float)m;
 - (NSMutableArray*)shuffleArray:(NSMutableArray*)array;
 
+- (void)fuckingRotateTo:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 
 - (BOOL)pieceIsOut:(PieceView *)piece;
 - (PieceView*)pieceWithNumber:(int)j;

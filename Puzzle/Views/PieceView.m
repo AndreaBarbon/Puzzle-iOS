@@ -208,6 +208,8 @@
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
         [self.superview bringSubviewToFront:self];
+        [self.superview bringSubviewToFront:delegate.adBannerView];
+        
         oldPosition = [self realCenter];
         tr = 0;
         delegate.drawerStopped = [delegate drawerStoppedShouldBeStopped];

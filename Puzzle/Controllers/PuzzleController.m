@@ -559,6 +559,8 @@
                 
         //DLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
         
+        [self.adBannerView removeFromSuperview];
+        self.adBannerView = nil;
         [self createAdBannerView];
         [self bringDrawerToTop];
         [self resetLatticePositionAndSizeWithDuration:0.0];
@@ -574,7 +576,8 @@
     
     self.view.userInteractionEnabled = YES;
     
-        
+    [self.view bringSubviewToFront:self.adBannerView];
+
 }
 
 - (void)loadingFailed {
@@ -2155,8 +2158,8 @@
             if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
-                -center.x/lattice.scale+(piceSize-2*padding)+(drawerSize+ad)/lattice.scale, 
-                -center.y/lattice.scale+(piceSize-2*padding)+10);
+                -center.x/lattice.scale+(piceSize-2*padding)+(drawerSize)/lattice.scale, 
+                -center.y/lattice.scale+(piceSize-2*padding)+10-ad/lattice.scale/2);
             } else {
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
@@ -2259,6 +2262,9 @@
     }
     
 
+    float bannerHeight = (self.adBannerView.frame.size.height)*self.adBannerView.bannerLoaded;
+    IF_IPAD bannerHeight -= 20*self.adBannerView.bannerLoaded;
+    
     //[UIView animateWithDuration:ORG_TIME animations:^{
         
         for (int i=0; i<[temp count]; i++) {
@@ -2277,7 +2283,7 @@
                     point.x = drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
                 } else {
                     point.x = point2.x+p2.bounds.size.width+drawerMargin;
-                    point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2;;
+                    point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
                 }
                 
             } else {
@@ -2288,7 +2294,7 @@
                     point.x = drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
                 } else {
                     point.x = drawerFirstPoint.x+p.bounds.size.width/2+drawerMargin;
-                    point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2;
+                    point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
                 }
                 
                 //DLog(@"FirstPoint was %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
@@ -2778,18 +2784,84 @@
 
 - (void)adjustForAd:(int)direction {
     
-    float f = direction*self.adBannerView.bannerLoaded*self.adBannerView.frame.size.height;
+    //Adjust the drawer
     
-    lattice.center = CGPointMake(lattice.center.x, lattice.center.y - f);
-    
-    for (PieceView *p in pieces) {
-        if (!p.isFree) {
-            p.center = CGPointMake(p.center.x, p.center.y - f);
+    CGRect drawerFrame = drawerView.frame;
+        
+    if (direction==1) {
+        
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+                        
+            drawerFrame.size.width = drawerSize;
+            drawerFrame.size.height = screenWidth;
+            drawerFrame.origin.x = 0;
+            drawerFrame.origin.y = 0;
+            
+        } else if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
+                        
+            drawerFrame.size.height = drawerSize;
+            drawerFrame.size.width = screenWidth;
+            drawerFrame.origin.x = 0;
+            drawerFrame.origin.y = screenWidth;
+            IF_IPHONE drawerFrame.origin.y += 25;
+            
+        }
+        
+    } else {
+        
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            
+            drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
+            
+            drawerFrame.size.width = drawerSize;
+            drawerFrame.size.height = screenWidth;
+            drawerFrame.origin.x = 0;
+            drawerFrame.origin.y = 0;
+            
+        } else if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
+            
+            drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
+            
+            drawerFrame.size.height = drawerSize;
+            drawerFrame.size.width = screenWidth;
+            drawerFrame.origin.x = 0;
+            drawerFrame.origin.y = screenHeight-drawerSize;            
         }
     }
- 
     
-    [self refreshPositions];
+    [self refreshPositions];    
+    
+    [UIView animateWithDuration:0.5 animations:^{
+                
+        drawerView.frame = drawerFrame;
+        
+    }];
+    
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self organizeDrawerWithOrientation:self.interfaceOrientation];
+    }];
+    
+    
+    return;
+
+    
+    
+    IF_IPHONE {
+        
+        float f = direction*self.adBannerView.bannerLoaded*self.adBannerView.frame.size.height;
+        
+        lattice.center = CGPointMake(lattice.center.x, lattice.center.y - f);
+        
+        for (PieceView *p in pieces) {
+            if (!p.isFree) {
+                p.center = CGPointMake(p.center.x, p.center.y - f);
+            }
+        }
+        
+        [self refreshPositions];
+    }
+    
 }
 
 
@@ -2797,10 +2869,6 @@
 #pragma mark Rotation
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    
-    if (![super shouldAutorotateToInterfaceOrientation:interfaceOrientation]) {
-        return NO;
-    }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
@@ -2823,7 +2891,7 @@
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    
+        
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
@@ -2840,6 +2908,7 @@
     CGPoint chooseCenter = CGPointZero;
     CGPoint completedCenter = CGPointZero;
     
+    float bannerHeight = self.adBannerView.frame.size.height*self.adBannerView.bannerLoaded;
     
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
@@ -2878,7 +2947,7 @@
         drawerFrame.size.height = drawerSize;
         drawerFrame.size.width = screenWidth;
         drawerFrame.origin.x = 0;
-        drawerFrame.origin.y = screenWidth-drawerSize;
+        drawerFrame.origin.y = screenWidth-drawerSize-bannerHeight/2;
         
         stepperFrame.origin.y = drawerFrame.size.height;
         stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width-10;
@@ -2906,6 +2975,112 @@
     HUDFrame.origin.y = 20;
     
     [UIView animateWithDuration:duration animations:^{
+        
+        drawerView.frame = drawerFrame;
+        stepperDrawer.frame = stepperFrame;
+        imageView.frame = imageFrame;
+        menu.chooseLabel.center = chooseCenter;
+        puzzleCompleteImage.center = completedCenter;
+        completedController.view.frame = statsFrame;
+        HUDView.frame = HUDFrame;
+        
+    }];
+    
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self organizeDrawerWithOrientation:toInterfaceOrientation];
+    }];    
+    //DLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
+    
+    
+    
+}
+
+- (void)fuckingRotateTo:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    NSLog(@"Will fucking rotate");
+            
+    [completedController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    //Rotate the drawer
+    
+    CGRect drawerFrame = drawerView.frame;
+    CGRect HUDFrame = HUDView.frame;
+    CGRect stepperFrame = stepperDrawer.frame;
+    CGRect imageFrame = imageView.frame;    
+    CGRect statsFrame = completedController.view.frame;    
+    CGPoint chooseCenter = CGPointZero;
+    CGPoint completedCenter = CGPointZero;
+    
+    
+    
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        
+        
+        drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
+        
+        drawerFrame.size.width = drawerSize;
+        drawerFrame.size.height = screenWidth;
+        drawerFrame.origin.x = 0;
+        drawerFrame.origin.y = -10;
+        
+        
+        
+        stepperFrame.origin.y = drawerFrame.size.height - stepperFrame.size.height-30;
+        stepperFrame.origin.x = drawerFrame.size.width;
+        float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.width)/1;
+        imageFrame.origin.x = pad;
+        imageFrame.origin.y = 0;
+        
+        chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
+        panningSwitch.center = CGPointMake(panningSwitch.center.x+drawerSize, panningSwitch.center.y);
+        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x+drawerSize, percentageLabel.center.y);
+        
+        lattice.center = CGPointMake(lattice.center.x+drawerSize, lattice.center.y);
+        
+        completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
+        
+        statsFrame = CGRectMake(screenWidth/2-160+10, screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
+        
+        
+    } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+        
+        drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
+        
+        drawerFrame.size.height = drawerSize;
+        drawerFrame.size.width = screenWidth;
+        drawerFrame.origin.x = 0;
+        drawerFrame.origin.y = screenWidth;
+        
+        stepperFrame.origin.y = drawerFrame.size.height;
+        stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width-10;
+        imageFrame.origin.y = 0;
+        imageFrame.origin.x = 0;
+        
+        chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
+        panningSwitch.center = CGPointMake(panningSwitch.center.x-drawerSize, panningSwitch.center.y);
+        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x-drawerSize, percentageLabel.center.y);
+        
+        lattice.center = CGPointMake(lattice.center.x-drawerSize, lattice.center.y);
+        
+        completedCenter = CGPointMake(self.view.center.x, self.view.center.y);
+        
+        statsFrame = CGRectMake((screenHeight-statsFrame.size.width)/2, screenWidth-240-20, statsFrame.size.width, statsFrame.size.height);
+        
+        //DLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
+        
+    }
+    
+    
+    [self refreshPositions];    
+    
+    HUDFrame.origin.x = 0;
+    HUDFrame.origin.y = 20;
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        CGRect rect = drawerFrame;
+        NSLog(@"Rect = %.1f, %.1f, %.1f, %.1f",rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         
         drawerView.frame = drawerFrame;
         stepperDrawer.frame = stepperFrame;
