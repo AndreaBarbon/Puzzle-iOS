@@ -135,10 +135,11 @@
 - (IBAction)loadGame:(id)sender {
 
     [loadGameController reloadData];
-    
+
+    float f = 0;//delegate.adBannerView.bannerLoaded*delegate.adBannerView.frame.size.height;
+
     [UIView animateWithDuration:0.3 animations:^{
-        
-        loadGameController.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
+        loadGameController.view.frame = CGRectMake(0, f/2, game.view.frame.size.width, game.view.frame.size.height-f);
         mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
     }];
 }
@@ -215,7 +216,7 @@
     [self.view addSubview:game.view];
     
     loadGameController = [[LoadGameController alloc] init];   
-    loadGameController.view.frame = CGRectMake(self.view.frame.size.width, 0, loadGameController.view.frame.size.width, loadGameController.view.frame.size.height);
+    loadGameController.view.frame = CGRectMake(mainView.frame.size.width, 0, loadGameController.view.frame.size.width, loadGameController.view.frame.size.height);
     loadGameController.delegate = self;
     
     [self.view addSubview:loadGameController.view];

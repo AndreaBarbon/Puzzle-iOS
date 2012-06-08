@@ -42,16 +42,14 @@
         
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     }
-    
+
     
     puzzle = [[PuzzleController alloc] init];
     puzzle.managedObjectContext = self.managedObjectContext;
-    puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;    
     [puzzle loadPuzzle:[puzzle lastSavedPuzzle]];
-
     
     [self.window addSubview:puzzle.view];
-    
     
     
     return YES;

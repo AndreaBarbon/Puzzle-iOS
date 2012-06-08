@@ -38,6 +38,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic,retain) PuzzleController *puzzle;
+
 @property (nonatomic,retain) CreatePuzzleOperation *puzzleOperation;
 
 

@@ -26,6 +26,7 @@
 #import "Puzzle.h"
 #import "Image.h"
 #import "CreatePuzzleOperation.h"
+#import "iAdViewController.h"
 
 #define QUALITY 1.5
 
@@ -34,7 +35,8 @@
 
 
 
-@interface PuzzleController : UIViewController <UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
+@interface PuzzleController : iAdViewController <UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
+ 
     
     BOOL swiping;
     BOOL didRotate;
@@ -132,12 +134,16 @@
 @property (nonatomic, retain) UIPanGestureRecognizer *panDrawer;
 @property (nonatomic, retain) UIPinchGestureRecognizer *pinch;
 
+
 @property (nonatomic, retain) MenuController *menu;
 @property (nonatomic, retain) PuzzleCompletedController *completedController;
+@property (nonatomic,retain) UIViewController *adViewController;
+
 
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIImageView *imageViewLattice;
+
 
 
 
@@ -182,6 +188,8 @@
 - (void)removeOldPieces;
 
 - (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view;
+
+- (void)adjustForAd:(int)direction;
 
 
 - (void)allPiecesLoaded;

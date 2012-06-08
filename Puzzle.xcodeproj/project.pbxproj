@@ -342,6 +342,10 @@
 		B87C5CD415400B2A00AF69BC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B87C5CD315400B2A00AF69BC /* main.m */; };
 		B87C5CF11540174400AF69BC /* PuzzleController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87C5CEF1540174400AF69BC /* PuzzleController.m */; };
 		B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CF01540174400AF69BC /* PuzzleController.xib */; };
+		B88BF755158214000057F65D /* BannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88BF753158213FF0057F65D /* BannerViewController.m */; };
+		B88BF756158214000057F65D /* BannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88BF753158213FF0057F65D /* BannerViewController.m */; };
+		B88BF757158214000057F65D /* BannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88BF753158213FF0057F65D /* BannerViewController.m */; };
+		B88BF758158214000057F65D /* BannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88BF753158213FF0057F65D /* BannerViewController.m */; };
 		B8AA19BA154B502900750458 /* icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B2154B502900750458 /* icon-144.png */; };
 		B8AA19BB154B502900750458 /* icon-512.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B3154B502900750458 /* icon-512.png */; };
 		B8AA19BC154B502900750458 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B4154B502900750458 /* icon-72.png */; };
@@ -423,6 +427,12 @@
 		B8DAFCE7155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */; };
 		B8DAFCE8155BDB0700A901A3 /* PuzzleLibraryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */; };
 		B8DAFCE9155BDB0700A901A3 /* PuzzleLibraryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */; };
+		B8DBE9FD15813412005199B4 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBE9FC15813412005199B4 /* iAd.framework */; };
+		B8DBEA00158144AF005199B4 /* iAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBE9FF158144AF005199B4 /* iAdViewController.m */; };
+		B8DBEA01158144AF005199B4 /* iAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBE9FF158144AF005199B4 /* iAdViewController.m */; };
+		B8DBEA02158144AF005199B4 /* iAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBE9FF158144AF005199B4 /* iAdViewController.m */; };
+		B8DBEA03158144AF005199B4 /* iAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBE9FF158144AF005199B4 /* iAdViewController.m */; };
+		B8DBEA061581589B005199B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBEA0415815887005199B4 /* Security.framework */; };
 		B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
 		B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
 		B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
@@ -599,6 +609,8 @@
 		B87C5CEE1540174400AF69BC /* PuzzleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleController.h; path = Controllers/PuzzleController.h; sourceTree = "<group>"; };
 		B87C5CEF1540174400AF69BC /* PuzzleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleController.m; path = Controllers/PuzzleController.m; sourceTree = "<group>"; };
 		B87C5CF01540174400AF69BC /* PuzzleController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleController.xib; path = Controllers/PuzzleController.xib; sourceTree = "<group>"; };
+		B88BF753158213FF0057F65D /* BannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerViewController.m; sourceTree = "<group>"; };
+		B88BF754158214000057F65D /* BannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerViewController.h; sourceTree = "<group>"; };
 		B8AA19B2154B502900750458 /* icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-144.png"; sourceTree = "<group>"; };
 		B8AA19B3154B502900750458 /* icon-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-512.png"; sourceTree = "<group>"; };
 		B8AA19B4154B502900750458 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
@@ -657,6 +669,10 @@
 		B8DAFCE3155BDB0600A901A3 /* PuzzleLibraryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleLibraryController.h; path = Controllers/PuzzleLibraryController.h; sourceTree = "<group>"; };
 		B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleLibraryController.m; path = Controllers/PuzzleLibraryController.m; sourceTree = "<group>"; };
 		B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleLibraryController.xib; path = Controllers/PuzzleLibraryController.xib; sourceTree = "<group>"; };
+		B8DBE9FC15813412005199B4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		B8DBE9FE158144AF005199B4 /* iAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iAdViewController.h; path = Controllers/iAdViewController.h; sourceTree = "<group>"; };
+		B8DBE9FF158144AF005199B4 /* iAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iAdViewController.m; path = Controllers/iAdViewController.m; sourceTree = "<group>"; };
+		B8DBEA0415815887005199B4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
@@ -704,6 +720,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8DBEA061581589B005199B4 /* Security.framework in Frameworks */,
+				B8DBE9FD15813412005199B4 /* iAd.framework in Frameworks */,
 				B8E18159155000C200A8B450 /* MediaPlayer.framework in Frameworks */,
 				B85381101548D91B00F3BFA5 /* AVFoundation.framework in Frameworks */,
 				B84014ED1540D0CD0075734A /* QuartzCore.framework in Frameworks */,
@@ -809,6 +827,8 @@
 		B87C5CC415400B2A00AF69BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B8DBEA0415815887005199B4 /* Security.framework */,
+				B8DBE9FC15813412005199B4 /* iAd.framework */,
 				B8E18158155000C200A8B450 /* MediaPlayer.framework */,
 				B853810F1548D91B00F3BFA5 /* AVFoundation.framework */,
 				B84014EB1540D0880075734A /* QuartzCore.framework */,
@@ -901,6 +921,10 @@
 				B823757D1561B58000426E92 /* LoadGameController.h */,
 				B823757E1561B58000426E92 /* LoadGameController.m */,
 				B823757F1561B58000426E92 /* LoadGameController.xib */,
+				B8DBE9FE158144AF005199B4 /* iAdViewController.h */,
+				B8DBE9FF158144AF005199B4 /* iAdViewController.m */,
+				B88BF754158214000057F65D /* BannerViewController.h */,
+				B88BF753158213FF0057F65D /* BannerViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1558,6 +1582,8 @@
 				B823759515626FC300426E92 /* Image.m in Sources */,
 				B823759615626FC300426E92 /* Puzzle.m in Sources */,
 				B823759715626FC300426E92 /* LoadGameController.m in Sources */,
+				B8DBEA02158144AF005199B4 /* iAdViewController.m in Sources */,
+				B88BF757158214000057F65D /* BannerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1582,6 +1608,8 @@
 				B874B331156D67D80089D4E4 /* Image.m in Sources */,
 				B874B332156D67D80089D4E4 /* Puzzle.m in Sources */,
 				B874B333156D67D80089D4E4 /* LoadGameController.m in Sources */,
+				B8DBEA03158144AF005199B4 /* iAdViewController.m in Sources */,
+				B88BF758158214000057F65D /* BannerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1606,6 +1634,8 @@
 				B8B0E74215605E23002FE0A2 /* Image.m in Sources */,
 				B8B0E74715605EE8002FE0A2 /* Puzzle.m in Sources */,
 				B82375801561B58000426E92 /* LoadGameController.m in Sources */,
+				B8DBEA00158144AF005199B4 /* iAdViewController.m in Sources */,
+				B88BF755158214000057F65D /* BannerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1630,6 +1660,8 @@
 				B8B0E74315605E23002FE0A2 /* Image.m in Sources */,
 				B8B0E74815605EE8002FE0A2 /* Puzzle.m in Sources */,
 				B82375811561B58000426E92 /* LoadGameController.m in Sources */,
+				B8DBEA01158144AF005199B4 /* iAdViewController.m in Sources */,
+				B88BF756158214000057F65D /* BannerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1712,8 +1744,8 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Andrea Barbon";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Andrea Barbon";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrea Barbon (7WU452F7X9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andrea Barbon (7WU452F7X9)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1729,8 +1761,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PROVISIONING_PROFILE = "DA84BA24-715D-4C5E-8D8E-1ED3361B8CD3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DA84BA24-715D-4C5E-8D8E-1ED3361B8CD3";
+				PROVISIONING_PROFILE = "E5EB72A9-6342-4142-9328-BCA309ADC2B2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E5EB72A9-6342-4142-9328-BCA309ADC2B2";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -1745,7 +1777,7 @@
 					armv7,
 				);
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Andrea Barbon";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrea Barbon (7WU452F7X9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Andrea Barbon";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1756,7 +1788,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "DA84BA24-715D-4C5E-8D8E-1ED3361B8CD3";
+				PROVISIONING_PROFILE = "E5EB72A9-6342-4142-9328-BCA309ADC2B2";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DA84BA24-715D-4C5E-8D8E-1ED3361B8CD3";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;

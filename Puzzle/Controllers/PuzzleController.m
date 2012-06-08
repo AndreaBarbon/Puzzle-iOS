@@ -54,7 +54,7 @@
 
 @synthesize puzzleCompete, loadingGame, duringGame, creatingGame;
 
-@synthesize menu, completedController;
+@synthesize menu, completedController, adViewController;
 
 
 
@@ -68,9 +68,9 @@
 }
 
 - (void)viewDidLoad {
-        
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:@"PiecesNotifications" object:nil];
-
     
     //DLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
         
@@ -82,6 +82,10 @@
     screenWidth = [[UIScreen mainScreen] bounds].size.width;
     screenHeight = [[UIScreen mainScreen] bounds].size.height;
     
+    
+    adViewController = [[UIViewController alloc] init];
+    adViewController.view.frame = CGRectMake(0, screenHeight, screenWidth, screenHeight);    
+
     
     if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad){
       
@@ -267,7 +271,8 @@
     
     
     [self.view bringSubviewToFront:puzzleCompleteImage];
-    
+    [self.view bringSubviewToFront:self.adBannerView];
+
     [UIView animateWithDuration:1 animations:^{
         
         puzzleCompleteImage.alpha = 1;
@@ -399,6 +404,7 @@
     [self.view bringSubviewToFront:menu.obscuringView];
     [self.view bringSubviewToFront:menu.view];
     [self.view bringSubviewToFront:menuButtonView];
+    [self.view bringSubviewToFront:self.adBannerView];
     
     [menu toggleMenuWithDuration:(sender!=nil)*0.5];
     
@@ -414,7 +420,8 @@
     menu.mainView.frame = CGRectMake(-menu.mainView.frame.size.width, 0, menu.mainView.frame.size.width, menu.mainView.frame.size.height);
     
     [menu toggleMenuWithDuration:0];
-    
+    [self.view bringSubviewToFront:self.adBannerView];
+
 }
 
 // This method will be called on a secondary thread. Forward to the main thread for safe handling of UIKit objects.
@@ -456,6 +463,27 @@
 - (void)allPiecesLoaded {
     
     DLog(@"%s", __PRETTY_FUNCTION__);
+    
+    
+    //[self.view addSubview:self.adBannerView];
+
+    
+//    CGRect frame = self.view.frame;
+//    frame.origin.y = 0;
+//    frame.size.height = screenHeight;
+//    
+//    [UIView animateWithDuration:0.5 animations:^{
+//        
+//        self.view.frame = frame;
+//        self.adBannerView.alpha = 0;
+//        
+//    }completion:^(BOOL finished) {
+//        
+//        [self.adBannerView removeFromSuperview];
+//        self.adBannerView = nil;
+//
+//        
+//    }];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];   
@@ -531,6 +559,7 @@
                 
         //DLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
         
+        [self createAdBannerView];
         [self bringDrawerToTop];
         [self resetLatticePositionAndSizeWithDuration:0.0];
 
@@ -544,6 +573,7 @@
     
     
     self.view.userInteractionEnabled = YES;
+    
         
 }
 
@@ -572,11 +602,12 @@
 
 - (void)prepareForNewPuzzle {
     
-    DLog(@"Preparing for new puzzle");
+    DLog(@"Preparing for new puzzle");    
     
     [self.view bringSubviewToFront:lattice];
     [self.view bringSubviewToFront:drawerView];
     [self.view bringSubviewToFront:HUDView];
+    [self.view bringSubviewToFront:self.adBannerView];
     
     missedPieces = 0;
     loadedPieces = 0;
@@ -955,6 +986,8 @@
         }
     }];
     
+    [self.view bringSubviewToFront:self.adBannerView];
+    
 }
 
 - (IBAction)puzzleCompleted {
@@ -984,6 +1017,8 @@
         [self.view bringSubviewToFront:lattice];
         [self.view bringSubviewToFront:completedController.view];
         [self.view bringSubviewToFront:HUDView];
+        [self.view bringSubviewToFront:self.adBannerView];
+
     }];
     
     
@@ -1449,7 +1484,10 @@
             outOfDrawer = point.x>drawerSize-self.padding;
         }
         
-        if (outOfDrawer) {
+        point = [drawerView convertPoint:point fromView:self.view];
+        
+        
+        if (![drawerView pointInside:point withEvent:nil]) {
             
             
             if (!piece.isFree && ![self pieceIsOut:piece]) {
@@ -2089,7 +2127,8 @@
     imageViewLattice.alpha = 0;
     [lattice addSubview:imageViewLattice];
     
-    
+    [self.view bringSubviewToFront:self.adBannerView];
+
     //DLog(@"Lattice created");
     
 }
@@ -2110,16 +2149,19 @@
             CGPoint center = [self.view convertPoint:[[lattice objectAtIndex:firstPiecePlace] center] fromView:lattice];
             int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad && UIInterfaceOrientationIsLandscape(self.interfaceOrientation))*20;
 
+            float ad = self.adBannerView.bannerLoaded*self.adBannerView.frame.size.height;
+
+            
             if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
-                -center.x/lattice.scale+(piceSize-2*padding)+drawerSize/lattice.scale, 
+                -center.x/lattice.scale+(piceSize-2*padding)+(drawerSize+ad)/lattice.scale, 
                 -center.y/lattice.scale+(piceSize-2*padding)+10);
             } else {
                 
                 lattice.transform = CGAffineTransformTranslate(lattice.transform, 
                 -center.x/lattice.scale+(piceSize-2*padding), 
-                -center.y/lattice.scale+(piceSize-2*padding)+HUDView.bounds.size.height/lattice.scale-topBar);
+                -center.y/lattice.scale+(piceSize-2*padding)+(HUDView.bounds.size.height-ad)/lattice.scale-topBar);
             }
             
                         
@@ -2232,7 +2274,7 @@
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
                     point.y = point2.y+p2.bounds.size.width+drawerMargin;
-                    point.x = (self.padding*0.75)/2+p.bounds.size.width/2;;
+                    point.x = drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
                 } else {
                     point.x = point2.x+p2.bounds.size.width+drawerMargin;
                     point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2;;
@@ -2243,7 +2285,7 @@
                 
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
                     point.y = drawerFirstPoint.y+p.bounds.size.height/2+drawerMargin;
-                    point.x = (self.padding*0.75)/2+p.bounds.size.width/2;
+                    point.x = drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
                 } else {
                     point.x = drawerFirstPoint.x+p.bounds.size.width/2+drawerMargin;
                     point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2;
@@ -2436,14 +2478,14 @@
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
-        return CGRectMake((self.padding*0.75)/2, 
+        return CGRectMake(drawerView.frame.origin.x+drawerMargin, 
                           piece.frame.origin.y+piceSize+drawerMargin, 
                           piece.frame.size.width, 
                           piece.frame.size.height);
     } else {
         
         return CGRectMake(piece.frame.origin.x+piceSize+drawerMargin,
-                          screenHeight-drawerSize+(self.padding*0.75)/2,
+                          drawerView.frame.origin.y+drawerMargin,
                           piece.frame.size.width, 
                           piece.frame.size.height);
     }    
@@ -2453,14 +2495,14 @@
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         
-        return CGRectMake((self.padding*0.75)/2, 
+        return CGRectMake(drawerView.frame.origin.x+drawerMargin, 
                           piece.frame.origin.y-piceSize-drawerMargin, 
                           piece.frame.size.width, 
                           piece.frame.size.height);
     } else {
         
         return CGRectMake(piece.frame.origin.x-piceSize-drawerMargin,
-                          screenHeight-drawerSize+(self.padding*0.75)/2,
+                          drawerView.frame.origin.y+drawerMargin,
                           piece.frame.size.width, 
                           piece.frame.size.height);
     }
@@ -2731,13 +2773,34 @@
 }
 
 
+#pragma mark -
+#pragma mark iAd
+
+- (void)adjustForAd:(int)direction {
+    
+    float f = direction*self.adBannerView.bannerLoaded*self.adBannerView.frame.size.height;
+    
+    lattice.center = CGPointMake(lattice.center.x, lattice.center.y - f);
+    
+    for (PieceView *p in pieces) {
+        if (!p.isFree) {
+            p.center = CGPointMake(p.center.x, p.center.y - f);
+        }
+    }
+ 
+    
+    [self refreshPositions];
+}
+
 
 #pragma mark -
 #pragma mark Rotation
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     
-
+    if (![super shouldAutorotateToInterfaceOrientation:interfaceOrientation]) {
+        return NO;
+    }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
@@ -2760,6 +2823,8 @@
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
     
@@ -2879,7 +2944,6 @@
     }
     
     didRotate = YES;
-    
     
 }
 
@@ -3091,6 +3155,9 @@
             [self.view bringSubviewToFront:p];
         }
     }
+    
+    [self.view bringSubviewToFront:self.adBannerView];
+
 
 //    [self.view bringSubviewToFront:stepperDrawer];
 //    [self.view bringSubviewToFront:firstPointView];
@@ -3325,6 +3392,5 @@
     [self resignFirstResponder];
     [super viewWillDisappear:animated];
 }
-
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class PieceView;
+@class PieceView, PuzzleController;
 
 @interface GroupView : UIView <UIGestureRecognizerDelegate>{
     

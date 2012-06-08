@@ -9949,6 +9949,7 @@ AAEAAQABA</bytes>
 								<string key="NSFrame">{{51, -4}, {50, 35}}</string>
 								<reference key="NSSuperview" ref="775788706"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<float key="IBUIAlpha">0.5</float>
@@ -9985,7 +9986,7 @@ AAEAAQABA</bytes>
 										<string key="NSFrame">{{3, 3}, {60, 60}}</string>
 										<reference key="NSSuperview" ref="64352340"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="282070743"/>
+										<reference key="NSNextKeyView" ref="950110971"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -10026,7 +10027,7 @@ AAEAAQABA</bytes>
 								<string key="NSFrame">{{15, 56}, {83, 33}}</string>
 								<reference key="NSSuperview" ref="519583281"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="950110971"/>
+								<reference key="NSNextKeyView" ref="138747746"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -10071,7 +10072,7 @@ AAEAAQABA</bytes>
 								<string key="NSFrame">{{-5, 22}, {94, 27}}</string>
 								<reference key="NSSuperview" ref="519583281"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="138747746"/>
+								<reference key="NSNextKeyView" ref="282070743"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -14809,6 +14810,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBObjectRecord">
 						<int key="objectID">60</int>
 						<reference key="object" ref="248476264"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="950110971"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -14852,13 +14854,13 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">80</int>
+			<int key="maxID">83</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">PuzzleController</string>
-					<string key="superclassName">UIViewController</string>
+					<string key="superclassName">iAdViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="puzzleCompleted">id</string>
 						<string key="rateGame">id</string>
@@ -14965,6 +14967,25 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/PuzzleController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">iAdViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">adBannerView</string>
+						<string key="NS.object.0">ADBannerView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">adBannerView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">adBannerView</string>
+							<string key="candidateClassName">ADBannerView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/iAdViewController.h</string>
 					</object>
 				</object>
 			</array>
