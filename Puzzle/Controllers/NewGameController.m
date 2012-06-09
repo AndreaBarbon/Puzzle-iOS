@@ -82,7 +82,11 @@
 
 - (void)adjustForAd {
     
+    [delegate.delegate.view bringSubviewToFront:delegate.delegate.adBannerView];
     delegate.delegate.adBannerView.hidden = NO;
+
+    IF_IPAD return;
+    
 
     float origin = -delegate.delegate.adPresent*delegate.delegate.adBannerView.frame.size.height/2;
     
@@ -149,6 +153,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
     }];
+    
     [self dismissPicker];
     
     [self adjustForAd];
@@ -159,7 +164,7 @@
         
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
-        [popover dismissPopoverAnimated:YES];
+        [popover dismissPopoverAnimated:NO];
         
     } else {  
         
@@ -170,6 +175,8 @@
 
 - (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage {
     
+    typeOfImageView.hidden = YES;
+
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
     }];
@@ -184,14 +191,7 @@
     
     DLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        
-        [popover dismissPopoverAnimated:YES];
-        
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        
-        [self dismissModalViewControllerAnimated:YES];
-    }
+    [self dismissPicker];
     
     image.image = [UIImage imageWithData:dataJPG];
     
@@ -215,16 +215,18 @@
     PuzzleLibraryController *c = [[PuzzleLibraryController alloc] init];
     c.delegate = self;
     
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+    IF_IPAD {
         
+        delegate.delegate.adBannerView.hidden = YES;
+
         popover = [[UIPopoverController alloc] initWithContentViewController:c];
         popover.delegate = self;
         CGRect rect = CGRectMake(self.view.center.x, -20, 1, 1);
         [popover setPopoverContentSize:self.view.bounds.size];
         [popover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+
         
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    } else IF_IPHONE {
         
         [self presentModalViewController:c animated:YES];
     }
@@ -233,7 +235,7 @@
 
 - (IBAction)selectImageFromPhotoLibrary:(UIButton*)sender {
     
-    IF_IPHONE delegate.delegate.adBannerView.hidden = YES;
+    delegate.delegate.adBannerView.hidden = YES;
 
     [delegate playMenuSound];
     delegate.chooseLabel.alpha = 1;
@@ -259,15 +261,15 @@
     [delegate.delegate print_free_memory];
     
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+    IF_IPAD {
         
         popover = [[UIPopoverController alloc] initWithContentViewController:c];
         popover.delegate = self;
         CGRect rect = CGRectMake(self.view.center.x, -20, 1, 1);
         [popover setPopoverContentSize:self.view.bounds.size];
         [popover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:direction animated:YES];
-        
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+
+    } else IF_IPHONE {
         
         [self presentModalViewController:c animated:YES];
     }
