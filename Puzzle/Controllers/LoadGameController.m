@@ -112,8 +112,11 @@
     
     [UIView animateWithDuration:0.3 animations:^{
         
-        self.view.frame = CGRectMake(delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-        delegate.mainView.frame = CGRectMake(0, 0, delegate.mainView.frame.size.width, delegate.mainView.frame.size.height);
+        self.view.frame = CGRectMake(delegate.mainView.frame.size.width, self.view.frame.origin.y, 
+                                     self.view.frame.size.width, self.view.frame.size.height);
+        
+        delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y, 
+                                             delegate.mainView.frame.size.width, delegate.mainView.frame.size.height);
     
     }];
 
@@ -220,12 +223,17 @@
     [delegate.delegate.managedObjectContext save:nil];
     [delegate.delegate prepareForNewPuzzle];
     [delegate.delegate loadPuzzle:[contents objectAtIndex:indexPath.row]];
-    delegate.game.view.frame = CGRectMake(-delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);        
+    delegate.game.view.frame = CGRectMake(-delegate.mainView.frame.size.width, 
+                                          delegate.game.view.frame.origin.y, 
+                                          self.view.frame.size.width, 
+                                          self.view.frame.size.height);        
     
     [UIView animateWithDuration:0.3 animations:^{
         
-        delegate.game.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);        
-        self.view.frame = CGRectMake(delegate.mainView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);        
+        delegate.game.view.frame = CGRectMake(0, delegate.game.view.frame.origin.y,
+                                              self.view.frame.size.width, self.view.frame.size.height);        
+        self.view.frame = CGRectMake(delegate.mainView.frame.size.width, self.view.frame.origin.y, 
+                                     self.view.frame.size.width, self.view.frame.size.height);        
     }];
 }
 

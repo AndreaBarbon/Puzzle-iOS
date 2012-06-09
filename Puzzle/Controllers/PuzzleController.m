@@ -22,6 +22,7 @@
 #import "AppDelegate.h"
 #import "GroupView.h"
 #import "LoadGameController.h"
+#import "iAdViewController.h"
 
 #import <mach/mach.h>
 #import <mach/mach_host.h>
@@ -81,10 +82,6 @@
     
     screenWidth = [[UIScreen mainScreen] bounds].size.width;
     screenHeight = [[UIScreen mainScreen] bounds].size.height;
-    
-    
-    adViewController = [[UIViewController alloc] init];
-    adViewController.view.frame = CGRectMake(0, screenHeight, screenWidth, screenHeight);    
 
     
     if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad){
@@ -464,27 +461,6 @@
     
     DLog(@"%s", __PRETTY_FUNCTION__);
     
-    
-    //[self.view addSubview:self.adBannerView];
-
-    
-//    CGRect frame = self.view.frame;
-//    frame.origin.y = 0;
-//    frame.size.height = screenHeight;
-//    
-//    [UIView animateWithDuration:0.5 animations:^{
-//        
-//        self.view.frame = frame;
-//        self.adBannerView.alpha = 0;
-//        
-//    }completion:^(BOOL finished) {
-//        
-//        [self.adBannerView removeFromSuperview];
-//        self.adBannerView = nil;
-//
-//        
-//    }];
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
      [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];   
     }
@@ -557,17 +533,15 @@
             
         }
                 
-        //DLog(@"drawerFirstPoint = (%.0f, %.0f)", drawerFirstPoint.x, drawerFirstPoint.y);
-        
+        //Create the AD
         [self.adBannerView removeFromSuperview];
         self.adBannerView = nil;
         [self createAdBannerView];
         [self bringDrawerToTop];
-        [self resetLatticePositionAndSizeWithDuration:0.0];
 
         
     }
-        
+
     [menu.game gameStarted];
     
     DLog(@"Memory after creating:");
@@ -575,7 +549,9 @@
     
     
     self.view.userInteractionEnabled = YES;
-    
+
+    [self resetLatticePositionAndSizeWithDuration:0.0];
+
     [self.view bringSubviewToFront:self.adBannerView];
 
 }
@@ -2152,7 +2128,7 @@
             CGPoint center = [self.view convertPoint:[[lattice objectAtIndex:firstPiecePlace] center] fromView:lattice];
             int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad && UIInterfaceOrientationIsLandscape(self.interfaceOrientation))*20;
 
-            float ad = self.adBannerView.bannerLoaded*self.adBannerView.frame.size.height;
+            float ad = self.adPresent*self.adBannerView.frame.size.height;
 
             
             if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
@@ -2784,83 +2760,78 @@
 
 - (void)adjustForAd:(int)direction {
     
-    //Adjust the drawer
-    
     CGRect drawerFrame = drawerView.frame;
-        
-    if (direction==1) {
-        
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-                        
-            drawerFrame.size.width = drawerSize;
-            drawerFrame.size.height = screenWidth;
-            drawerFrame.origin.x = 0;
-            drawerFrame.origin.y = 0;
-            
-        } else if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-                        
-            drawerFrame.size.height = drawerSize;
-            drawerFrame.size.width = screenWidth;
-            drawerFrame.origin.x = 0;
-            drawerFrame.origin.y = screenWidth;
-            IF_IPHONE drawerFrame.origin.y += 25;
-            
-        }
+    float bannerHeight = self.adBannerView.frame.size.height;
+
+    if (direction==0) {
+        return;
         
     } else {
         
+        //Adjust the drawer
+        
+        drawerFrame.origin.x = 0;
+        
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            
-            drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
             
             drawerFrame.size.width = drawerSize;
             drawerFrame.size.height = screenWidth;
-            drawerFrame.origin.x = 0;
             drawerFrame.origin.y = 0;
             
         } else if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
             
-            drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
-            
-            drawerFrame.size.height = drawerSize;
-            drawerFrame.size.width = screenWidth;
-            drawerFrame.origin.x = 0;
-            drawerFrame.origin.y = screenHeight-drawerSize;            
-        }
-    }
-    
-    [self refreshPositions];    
-    
-    [UIView animateWithDuration:0.5 animations:^{
+            if (direction>0) { //Move UP
+                drawerFrame.size.height = drawerSize+bannerHeight;
+                drawerFrame.size.width = screenWidth;
+                drawerFrame.origin.y = screenWidth;
+                IF_IPHONE drawerFrame.origin.y += 25;
                 
-        drawerView.frame = drawerFrame;
-        
-    }];
-    
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        [self organizeDrawerWithOrientation:self.interfaceOrientation];
-    }];
-    
-    
-    return;
-
-    
-    
-    IF_IPHONE {
-        
-        float f = direction*self.adBannerView.bannerLoaded*self.adBannerView.frame.size.height;
-        
-        lattice.center = CGPointMake(lattice.center.x, lattice.center.y - f);
-        
-        for (PieceView *p in pieces) {
-            if (!p.isFree) {
-                p.center = CGPointMake(p.center.x, p.center.y - f);
+            } else { //Move DOWN
+                drawerFrame.size.height = drawerSize;
+                drawerFrame.size.width = screenWidth;
+                drawerFrame.origin.y = screenHeight-drawerSize;
             }
         }
         
-        [self refreshPositions];
-    }
+        
+        //Move the lattice and the menu
+        
+        IF_IPHONE {
+            
+            CGRect menuFrame = menu.mainView.frame;
+            menuFrame.origin.y -= direction*bannerHeight/2;
+            menu.mainView.frame = menuFrame;
+            
+            CGRect newGameFrame = menu.game.view.frame;
+            newGameFrame.origin.y -= direction*bannerHeight/2;
+            menu.game.view.frame = newGameFrame;
+            
+            
+            [UIView animateWithDuration:0.5 animations:^{
+                
+                float f = direction*self.adBannerView.frame.size.height;
+                
+                lattice.center = CGPointMake(lattice.center.x, lattice.center.y - f);
+                
+                for (PieceView *p in pieces) {
+                    if (!p.isFree) {
+                        p.center = CGPointMake(p.center.x, p.center.y - f);
+                    }
+                }
+                
+            }];
+        }
+
+    } //end if 0 or not 
+
+    
+    [UIView animateWithDuration:0.5 animations:^{
+
+        [self refreshPositions];    
+        drawerView.frame = drawerFrame;
+        [self organizeDrawerWithOrientation:self.interfaceOrientation];
+        
+    }];
     
 }
 

@@ -11,17 +11,31 @@
 
 @class PuzzleController;
 
+/*
+@protocol iAdProtocol
+
+-(void)adjustForAd:(int)direction;
+-(void)fuckingRotateTo:(UIInterfaceOrientation)orientation duration:(float)suration;
+
+@end
+*/
+
+
 @interface iAdViewController : UIViewController <ADBannerViewDelegate> {
     
-    BOOL duringAD;
-
     
+
 }
+
+//@property (nonatomic, assign) id<iAdProtocol> delegate;
 
 @property (nonatomic, retain) IBOutlet ADBannerView *adBannerView;
 @property (nonatomic, retain) PuzzleController *puzzle;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@property (nonatomic) UIInterfaceOrientation prevOrientation;
+@property (nonatomic) BOOL adPresent;
 
 -(void)createAdBannerView;
 

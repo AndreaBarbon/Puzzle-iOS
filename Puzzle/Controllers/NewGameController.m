@@ -80,8 +80,25 @@
     
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)adjustForAd {
     
+    delegate.delegate.adBannerView.hidden = NO;
+
+    float origin = -delegate.delegate.adPresent*delegate.delegate.adBannerView.frame.size.height/2;
+    
+    NSLog(@"Origin = %.1f", origin);
+    
+    CGRect frame = self.view.frame;
+    frame.origin.y = origin;
+    self.view.frame = frame;
+    
+    frame = delegate.view.frame;
+    frame.origin.y = origin;
+    //delegate.view.frame = frame;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+        
     typeOfImageView.hidden = YES;
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
@@ -111,28 +128,35 @@
 
     //image.image = [delegate.delegate clipImage:temp toRect:rect];
     image.image = temp;    
+    
+    [self adjustForAd];
+
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-
+    
     popover = nil;
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
     }];
 
+    [self adjustForAd];
+
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-
+    
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
     }];
     [self dismissPicker];
+    
+    [self adjustForAd];
 
 }
 
 - (void)dismissPicker {
-    
+        
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         
         [popover dismissPopoverAnimated:YES];
@@ -141,12 +165,11 @@
         
         [self dismissModalViewControllerAnimated:YES];
     }   
-    
+        
 }
 
 - (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage {
     
-    typeOfImageView.hidden = YES;
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
     }];
@@ -175,6 +198,8 @@
     tapToSelectLabel.hidden = YES;
     startButton.enabled = YES;    
     
+    [self adjustForAd];
+
 }
 
 
@@ -207,6 +232,8 @@
 }
 
 - (IBAction)selectImageFromPhotoLibrary:(UIButton*)sender {
+    
+    IF_IPHONE delegate.delegate.adBannerView.hidden = YES;
 
     [delegate playMenuSound];
     delegate.chooseLabel.alpha = 1;
@@ -291,8 +318,11 @@
         
         [UIView animateWithDuration:0.3 animations:^{
             
-            self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-            delegate.mainView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            self.view.frame = CGRectMake(self.view.frame.size.width, self.view.frame.origin.y, 
+                                         self.view.frame.size.width, self.view.frame.size.height);
+            
+            delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y, 
+                                                 self.view.frame.size.width, self.view.frame.size.height);
             
         }completion:^(BOOL finished) {
             
@@ -390,7 +420,8 @@
     
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];    
     
-    self.view.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = CGRectMake(self.view.frame.size.width, self.view.frame.origin.y, 
+                                 self.view.frame.size.width, self.view.frame.size.height);
 
 }
 

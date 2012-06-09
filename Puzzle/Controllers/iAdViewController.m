@@ -15,7 +15,7 @@
 
 @implementation iAdViewController
 
-@synthesize managedObjectContext, persistentStoreCoordinator, puzzle, adBannerView;
+@synthesize managedObjectContext, persistentStoreCoordinator, puzzle, adBannerView, prevOrientation, adPresent;
 
 
 #pragma mark -
@@ -30,7 +30,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     
-    return !duringAD;
+    return YES;
 
 }
 
@@ -107,29 +107,33 @@
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
     NSLog(@"------> AD");
+    [(PuzzleController*)self adjustForAd:!adPresent];
     [self adjustBannerViewWithOrientation:self.interfaceOrientation];
+    adPresent = YES;
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
 {
     NSLog(@"AD error");
-    
+    [(PuzzleController*)self adjustForAd:-1*adPresent];
     [self adjustBannerViewWithOrientation:self.interfaceOrientation];
+    adPresent = NO;
 }
 
 - (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
 {
     IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
-    duringAD = YES;
+    prevOrientation = self.interfaceOrientation;
     return YES;
 }
 
 - (void)bannerViewActionDidFinish:(ADBannerView *)banner
 {
     
+    if (self.interfaceOrientation != prevOrientation) [(PuzzleController*)self fuckingRotateTo:self.interfaceOrientation duration:0.5];
     [self adjustBannerViewWithOrientation:self.interfaceOrientation];
+    
     IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-    duringAD = NO;
 }
 
 
@@ -166,50 +170,6 @@
     
     return;
         
-    
-    
-    
-    
-    
-    CGRect windowViewFrame = [[[[UIApplication sharedApplication] windows] objectAtIndex:0] frame];
-    CGRect adBannerFrame = adBannerView.frame;
-    CGPoint adBannerCenter = adBannerView.center;
-    
-    
-
-
-    if([adBannerView isBannerLoaded])
-    {
-        //adBannerCenter.y -= bannerSize.height;
-        //windowViewFrame.size.height = windowViewFrame.size.height - bannerSize.height;
-    } else {
-        //adBannerCenter.y += bannerSize.height;
-    }
-    adBannerFrame.origin.y = windowViewFrame.size.height;
-
-    [self.view bringSubviewToFront:self.adBannerView];
-
-        
-    [UIView animateWithDuration:0.5 animations:^{
-        
-        adBannerView.center = adBannerCenter; 
-       
-        int direction = 1;
-        
-        if (windowViewFrame.size.height==self.view.frame.size.height) {
-            NSLog(@"Zero");
-            direction = 0;
-        }
-        
-        if (windowViewFrame.size.height>self.view.frame.size.height) {
-            direction = -1;
-            NSLog(@"meno uno");
-        }
-        
-       [(PuzzleController*)self adjustForAd:direction];
-        
-        self.view.frame = windowViewFrame;
-    }];
     
 }
 

@@ -62,8 +62,11 @@
             
         } completion:^(BOOL finished) {
 
-            game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
-            mainView.frame = CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height);
+            game.view.frame = CGRectMake(self.view.frame.size.width, game.view.frame.origin.y, 
+                                         game.view.frame.size.width, game.view.frame.size.height);
+            
+            mainView.frame = CGRectMake(0, mainView.frame.origin.y, 
+                                        mainView.frame.size.width, mainView.frame.size.height);
             [delegate startTimer];
 
         }];
@@ -72,20 +75,11 @@
 }
 
 - (void)createNewGame {
-    
         
-    [delegate startNewGame];
-        
-            
+    [delegate startNewGame];            
 }
 
-
 - (IBAction)startNewGame:(id)sender {
-    
-    //Warning: are you sure?
-    
-    //[self toggleMenu];
-    //[delegate startNewGame];
     
     if (sender!=nil) {
         
@@ -110,8 +104,8 @@
     chooseLabel.center = CGPointMake(self.view.center.x-5, self.view.center.y-280);
     game.tapToSelectLabel.hidden = NO;
     game.startButton.enabled = (game.image.image != nil);
-    game.view.frame = CGRectMake(0, 0, game.view.frame.size.width, game.view.frame.size.height);
-    mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+    game.view.frame = CGRectMake(0, game.view.frame.origin.y, game.view.frame.size.width, game.view.frame.size.height);
+    mainView.frame = CGRectMake(-mainView.frame.size.width, mainView.frame.origin.y, mainView.frame.size.width, mainView.frame.size.height);
     
 }
 
@@ -140,7 +134,7 @@
 
     [UIView animateWithDuration:0.3 animations:^{
         loadGameController.view.frame = CGRectMake(0, f/2, game.view.frame.size.width, game.view.frame.size.height-f);
-        mainView.frame = CGRectMake(-mainView.frame.size.width, 0, mainView.frame.size.width, mainView.frame.size.height);
+        mainView.frame = CGRectMake(-mainView.frame.size.width, mainView.frame.origin.y, mainView.frame.size.width, mainView.frame.size.height);
     }];
 }
 
